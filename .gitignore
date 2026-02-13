@@ -5,3 +5,6 @@ OR_precincts_with_results_and_VAP.geojson
 OR_precinct_graph.json
 AL-shapefile
 OR-shapefile
+
+.DS_Store
+**/.DS_Store
