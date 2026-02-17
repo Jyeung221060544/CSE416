@@ -1,13 +1,17 @@
-# AL-precincts-with-results.geojson
-# AL_precincts_with_results_and_VAP.geojson
-# AL_precinct_graph.json
-# OR_precincts_with_results_and_VAP.geojson
-# OR_precinct_graph.json
-# AL-shapefile
-# OR-shapefile
-# AL_Congressional_Districts_Shapefile
-# AL_precincts_full.geojson
-# AL-VAP-population.csv
-# AL-precincts-with-results-enacted.geojson
+AL_Congressional_Districts_Shapefile
+AL-shapefile
+OR-shapefile
+AL_precinct_graph.json
+AL_precincts_full.geojson
+AL-precincts-with-results-enacted.geojson
+AL-precincts-with-results.geojson
+AL-VAP-population.csv
+OR_Congressional_Districts.geojson
+OR_precinct_graph.json
+OR_precincts_full.geojson
+OR-precincts-with-results-enacted.geojson
+OR-precincts-with-results.geojson
+OR-VAP-population.csv
+
 .DS_Store
 **/.DS_Store
