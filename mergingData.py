@@ -13,7 +13,7 @@ def build_precinct_geojson_with_vap(
     precinct_id_col: str = "GEOID",         # in precinct file
     # spatial join settings
     target_crs: str = "EPSG:5070",
-    join_predicate: str = "within",
+    join_predicate: str = "intersects",
     use_nh_any_combo: bool = True,
     verbose: bool = False,
 ) -> gpd.GeoDataFrame:
@@ -149,6 +149,7 @@ def build_precinct_geojson_with_vap(
     # Spatial join using block centroids
     blocks_proj = blocks2.to_crs(target_crs)
     prec_proj = prec.to_crs(target_crs)
+    prec_proj["geometry"] = prec_proj["geometry"].buffer(0)
 
     blocks_pts = blocks_proj[["GEOID_BLOCK", "geometry"] + [c for c in agg_cols if c in blocks_proj.columns]].copy()
     blocks_pts["geometry"] = blocks_pts.geometry.centroid
@@ -197,9 +198,9 @@ def build_precinct_geojson_with_vap(
 
     # Create minimal precinct dataframe (preserve geometry)
     keep_cols = [
-        # identifiers (keep if they exist)
-        "state", precinct_id_col, "official_boundary",
-        # election results (keep if they exist)
+        # identifiers
+        "state", precinct_id_col, "official_boundary", "enacted_cd",
+        # election results
         "votes_dem", "votes_rep", "votes_total", "pct_dem_lead",
         # demographics
         "VAP", "HVAP", "NHVAP",
@@ -208,6 +209,7 @@ def build_precinct_geojson_with_vap(
         # geometry
         "geometry",
     ]
+
     keep_cols = [c for c in keep_cols if c in prec2.columns]
     prec_clean = prec2[keep_cols].copy()
 
@@ -230,17 +232,17 @@ def build_precinct_geojson_with_vap(
 AL = build_precinct_geojson_with_vap(
     vap_csv_path="AL-VAP-population.csv",
     blocks_shp_path="AL-shapefile/tl_2025_01_tabblock20.shp",
-    precincts_geojson_path="AL-precincts-with-results.geojson",
-    output_geojson_path="AL_precincts_with_results_and_VAP.geojson",
-    verbose=False,
+    precincts_geojson_path="AL-precincts-with-results-enacted.geojson",
+    output_geojson_path="AL_precincts_full.geojson",
+    verbose=True,
 )
 
 OR = build_precinct_geojson_with_vap(
     vap_csv_path="OR-VAP-population.csv",
     blocks_shp_path="OR-shapefile/tl_2025_41_tabblock20.shp",
-    precincts_geojson_path="OR-precincts-with-results.geojson",
-    output_geojson_path="OR_precincts_with_results_and_VAP.geojson",
-    verbose=False,
+    precincts_geojson_path="OR-precincts-with-results-enacted.geojson",
+    output_geojson_path="OR_precincts_full.geojson",
+    verbose=True,
 )
 
 def qa(df, name):

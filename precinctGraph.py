@@ -3,11 +3,16 @@ import networkx as nx
 from networkx.readwrite import json_graph
 import json
 
-def build_precinct_graph(geojson_path, output_json, buffer_eps=0.0001):
+def build_precinct_graph(geojson_path, output_json, buffer_m=5):
     gdf = gpd.read_file(geojson_path)
 
     # Fix geometries
     gdf["geometry"] = gdf["geometry"].buffer(0)
+
+    # Project so buffering is in meters
+    if gdf.crs is None:
+        raise ValueError("GeoJSON has no CRS. Set it before projecting.")
+    gdf = gdf.to_crs("EPSG:5070")
 
     G = nx.Graph()
 
@@ -20,14 +25,17 @@ def build_precinct_graph(geojson_path, output_json, buffer_eps=0.0001):
     sindex = gdf.sindex
 
     for i, row in gdf.iterrows():
-        geom_i = row.geometry.buffer(buffer_eps)
-        candidates = list(sindex.intersection(geom_i.bounds))
+        id_i = row["GEOID"]
+        geom_i = row.geometry.buffer(buffer_m)
 
-        for j in candidates:
-            if i == j:
+        for j in sindex.intersection(geom_i.bounds):
+            if i >= j:   # prevents duplicate checks + self
                 continue
-            if geom_i.intersects(gdf.loc[j, "geometry"]):
-                G.add_edge(row["GEOID"], gdf.loc[j, "GEOID"])
+            geom_j = gdf.loc[j, "geometry"].buffer(buffer_m)
+
+            # adjacency test
+            if geom_i.intersects(geom_j):
+                G.add_edge(id_i, gdf.loc[j, "GEOID"])
 
     with open(output_json, "w") as f:
         json.dump(json_graph.node_link_data(G), f)
@@ -38,12 +46,13 @@ def build_precinct_graph(geojson_path, output_json, buffer_eps=0.0001):
     print("Edges:", G.number_of_edges())
     print("Components:", len(comps))
 
+
 build_precinct_graph(
-    "AL_precincts_with_results_and_VAP.geojson",
+    "AL_precincts_full.geojson",
     "AL_precinct_graph.json"
 )
 print()
 build_precinct_graph(
-    "OR_precincts_with_results_and_VAP.geojson",
+    "OR_precincts_full.geojson",
     "OR_precinct_graph.json"
 )
