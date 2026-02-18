@@ -143,3 +143,14 @@ OR_G = build_precinct_adjacency_graph(
     out_graph_json="OR_graph.json",
     min_shared_boundary_feet=200,
 )
+
+# Save precinct GeoJSON restricted to nodes kept in the graph
+def save_connected_precincts(in_geojson, out_geojson, kept_nodes, precinct_id_col="GEOID"):
+    gdf = gpd.read_file(in_geojson)
+    gdf[precinct_id_col] = gdf[precinct_id_col].astype(str)
+    gdf2 = gdf[gdf[precinct_id_col].isin(set(map(str, kept_nodes)))].copy()
+    gdf2.to_file(out_geojson, driver="GeoJSON")
+    print("Saved connected precincts:", out_geojson, "rows:", len(gdf2))
+
+save_connected_precincts("AL_precincts_full.geojson", "AL_precincts_full_connected.geojson", AL_G.nodes())
+save_connected_precincts("OR_precincts_full.geojson", "OR_precincts_full_connected.geojson", OR_G.nodes())
