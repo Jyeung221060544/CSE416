@@ -245,6 +245,85 @@ OR = build_precinct_geojson_with_vap(
     verbose=True,
 )
 
+import pandas as pd
+import geopandas as gpd
+
+def add_region_type_from_ruca(
+    precincts_gdf: gpd.GeoDataFrame,
+    tracts_path: str,
+    ruca_csv_path: str,
+    *,
+    target_crs: str = "EPSG:5070",
+    tract_geoid_col: str = "GEOID",
+    ruca_tract_col: str = "TractFIPS20",
+) -> gpd.GeoDataFrame:
+    # Load tracts + RUCA
+    tracts = gpd.read_file(tracts_path)
+    ruca = pd.read_csv(ruca_csv_path, dtype=str, encoding="latin1")
+
+    # Normalize IDs
+    tracts["TRACT_ID"] = tracts[tract_geoid_col].astype(str).str.strip().str.zfill(11)
+    ruca["TRACT_ID"] = ruca[ruca_tract_col].astype(str).str.strip().str.zfill(11)
+
+    ruca_keep = ruca[["TRACT_ID", "PrimaryRUCA", "PrimaryRUCADescription"]].copy()
+    ruca_keep["PrimaryRUCA"] = pd.to_numeric(ruca_keep["PrimaryRUCA"], errors="coerce")
+
+    # Merge RUCA attributes onto tract geometries
+    tracts2 = tracts.merge(ruca_keep, on="TRACT_ID", how="left")
+
+    # Project both
+    prec_proj = precincts_gdf.to_crs(target_crs).copy()
+    tracts_proj = tracts2.to_crs(target_crs).copy()
+    tracts_proj["geometry"] = tracts_proj["geometry"].buffer(0)
+    prec_proj["geometry"] = prec_proj["geometry"].buffer(0)
+
+    # Centroid join: precinct -> tract
+    prec_pts = prec_proj[["geometry"]].copy()
+    prec_pts["geometry"] = prec_pts.geometry.centroid
+
+    joined = gpd.sjoin(
+        prec_pts,
+        tracts_proj[["TRACT_ID", "PrimaryRUCA", "PrimaryRUCADescription", "geometry"]],
+        how="left",
+        predicate="within"
+    )
+
+    # Map RUCA -> region_type
+    def ruca_to_region(x):
+        if pd.isna(x):
+            return None
+        x = float(x)
+        if 1 <= x <= 3:
+            return "urban"
+        if 4 <= x <= 6:
+            return "suburban"
+        if 7 <= x <= 10:
+            return "rural"
+        return "unknown"
+
+    precincts_out = precincts_gdf.copy()
+    precincts_out["PrimaryRUCA"] = joined["PrimaryRUCA"].values
+    precincts_out["PrimaryRUCADescription"] = joined["PrimaryRUCADescription"].values
+    precincts_out["region_type"] = precincts_out["PrimaryRUCA"].apply(ruca_to_region)
+
+    return precincts_out
+
+AL2 = add_region_type_from_ruca(
+    AL,
+    tracts_path="AL_tract/tl_2025_01_tract.shp",
+    ruca_csv_path="region-type.csv",
+)
+
+OR2 = add_region_type_from_ruca(
+    OR,
+    tracts_path="OR_tract/tl_2025_41_tract.shp",
+    ruca_csv_path="region-type.csv",
+)
+
+AL2.to_file("AL_precincts_full.geojson", driver="GeoJSON")
+OR2.to_file("OR_precincts_full.geojson", driver="GeoJSON")
+
+
 def qa(df, name):
     print("\n==", name, "==")
     print("rows:", len(df))
@@ -257,5 +336,17 @@ def qa(df, name):
         if c in df.columns:
             print(c, "max:", int(df[c].max()), "sum:", int(df[c].sum()), "over NHVAP rows:", int((df[c] > df["NHVAP"]).sum()))
 
-qa(AL, "AL")
-qa(OR, "OR")
+qa(AL2, "AL")
+qa(OR2, "OR")
+
+def qa_region(df, name):
+    print("\n==", name, "region_type QA ==")
+    print("has region_type col?", "region_type" in df.columns)
+    if "region_type" in df.columns:
+        print(df["region_type"].value_counts(dropna=False))
+        print("missing region_type:", int(df["region_type"].isna().sum()))
+        print("missing PrimaryRUCA:", int(df["PrimaryRUCA"].isna().sum()))
+
+
+qa_region(AL2, "AL2")
+qa_region(OR2, "OR2")

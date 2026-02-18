@@ -1,17 +1,20 @@
 AL_Congressional_Districts_Shapefile
 AL-shapefile
 OR-shapefile
-AL_precinct_graph.json
+AL_graph.json
 AL_precincts_full.geojson
 AL-precincts-with-results-enacted.geojson
 AL-precincts-with-results.geojson
 AL-VAP-population.csv
+AL_tract
 OR_Congressional_Districts.geojson
-OR_precinct_graph.json
+OR_graph.json
 OR_precincts_full.geojson
 OR-precincts-with-results-enacted.geojson
 OR-precincts-with-results.geojson
 OR-VAP-population.csv
+OR_tract
+region-type.csv
 
 .DS_Store
 **/.DS_Store

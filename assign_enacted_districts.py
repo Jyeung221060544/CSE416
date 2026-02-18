@@ -41,6 +41,10 @@ def assign_enacted_districts(
     )
 
     precincts.rename(columns={district_id_col: enacted_col}, inplace=True)
+    print("Missing enacted_cd:", int(precincts[enacted_col].isna().sum()))
+    print("Min enacted_cd:", precincts[enacted_col].min())
+    print("Max enacted_cd:", precincts[enacted_col].max())
+    print("Counts per enacted_cd:\n", precincts[enacted_col].value_counts(dropna=False).sort_index())
 
     # 7) Quick sanity checks
     missing = precincts[precincts[enacted_col].isna()]
