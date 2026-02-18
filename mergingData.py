@@ -245,9 +245,6 @@ OR = build_precinct_geojson_with_vap(
     verbose=True,
 )
 
-import pandas as pd
-import geopandas as gpd
-
 def add_region_type_from_ruca(
     precincts_gdf: gpd.GeoDataFrame,
     tracts_path: str,
