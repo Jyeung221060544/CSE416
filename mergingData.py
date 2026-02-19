@@ -317,8 +317,138 @@ OR2 = add_region_type_from_ruca(
     ruca_csv_path="region-type.csv",
 )
 
-AL2.to_file("AL_precincts_full.geojson", driver="GeoJSON")
-OR2.to_file("OR_precincts_full.geojson", driver="GeoJSON")
+def add_income_from_acs_s1901(
+    precincts_gdf: gpd.GeoDataFrame,
+    tracts_path: str,
+    income_csv_path: str,
+    *,
+    target_crs: str = "EPSG:5070",
+    tract_geoid_col: str = "GEOID",
+    keep_mean: bool = True,          # include mean income 
+    keep_moe: bool = True,           # include margins of error 
+) -> gpd.GeoDataFrame:
+    """
+    Adds tract-level ACS S1901 income fields onto precincts using centroid-in-tract join.
+
+    Keeps only what you need:
+      - HH_MEDIAN_INC (S1901_C01_012E)
+      - (optional) HH_MEAN_INC (S1901_C01_013E)
+      - (optional) MOEs
+      - (optional) HH_TOTAL (S1901_C01_001E)
+    """
+
+    # 1) Load tract geometries
+    tracts = gpd.read_file(tracts_path).copy()
+    tracts["TRACT_ID"] = tracts[tract_geoid_col].astype(str).str.strip().str.zfill(11)
+
+    # 2) Load ACS income CSV (ACS profile exports usually have a 2-row header)
+    inc_raw = pd.read_csv(income_csv_path, dtype=str, skiprows=[1])
+
+    # 11-digit tract GEOID from GEO_ID like "1400000US41001950100"
+    inc_raw["TRACT_ID"] = (
+        inc_raw["GEO_ID"]
+        .astype(str)
+        .str.replace("1400000US", "", regex=False)
+        .str.strip()
+        .str.zfill(11)
+    )
+
+    # 3) Select minimal columns
+    cols = ["TRACT_ID", "S1901_C01_001E", "S1901_C01_012E"]
+    if keep_mean:
+        cols.append("S1901_C01_013E")
+    if keep_moe:
+        cols += ["S1901_C01_012M"] + (["S1901_C01_013M"] if keep_mean else [])
+    cols = [c for c in cols if c in inc_raw.columns]
+
+    inc = inc_raw[cols].copy()
+
+    # 4) Clean numeric fields
+    # ACS sometimes uses "-" for missing and may include commas
+    def to_num(s):
+        return (
+            pd.to_numeric(
+                s.astype(str).str.replace(",", "", regex=False).replace({"-": None, "": None}),
+                errors="coerce",
+            )
+            .fillna(0)
+        )
+
+    if "S1901_C01_001E" in inc.columns:
+        inc["S1901_C01_001E"] = to_num(inc["S1901_C01_001E"]).astype(int)
+
+    # store incomes as int dollars
+    for c in ["S1901_C01_012E", "S1901_C01_013E", "S1901_C01_012M", "S1901_C01_013M"]:
+        if c in inc.columns:
+            inc[c] = to_num(inc[c]).round(0).astype(int)
+
+    # 5) Rename to friendly precinct columns
+    rename = {}
+    if "S1901_C01_001E" in inc.columns:
+        rename["S1901_C01_001E"] = "HH_TOTAL"
+    if "S1901_C01_012E" in inc.columns:
+        rename["S1901_C01_012E"] = "HH_MEDIAN_INC"
+    if "S1901_C01_013E" in inc.columns:
+        rename["S1901_C01_013E"] = "HH_MEAN_INC"
+    if "S1901_C01_012M" in inc.columns:
+        rename["S1901_C01_012M"] = "HH_MEDIAN_INC_MOE"
+    if "S1901_C01_013M" in inc.columns:
+        rename["S1901_C01_013M"] = "HH_MEAN_INC_MOE"
+
+    inc = inc.rename(columns=rename)
+
+    # 6) Merge income onto tract geometries
+    tracts2 = tracts.merge(inc, on="TRACT_ID", how="left")
+
+    for c in ["HH_TOTAL", "HH_MEDIAN_INC", "HH_MEAN_INC", "HH_MEDIAN_INC_MOE", "HH_MEAN_INC_MOE"]:
+        if c in tracts2.columns:
+            tracts2[c] = tracts2[c].fillna(0).astype(int)
+
+    # 7) Spatial join: precinct centroid -> tract polygon
+    prec_proj = precincts_gdf.to_crs(target_crs).copy()
+    tracts_proj = tracts2.to_crs(target_crs).copy()
+    prec_proj["geometry"] = prec_proj["geometry"].buffer(0)
+    tracts_proj["geometry"] = tracts_proj["geometry"].buffer(0)
+
+    prec_pts = prec_proj[["geometry"]].copy()
+    prec_pts["geometry"] = prec_pts.geometry.centroid
+
+    joined = gpd.sjoin(
+        prec_pts,
+        tracts_proj[["TRACT_ID", "geometry"] + [c for c in tracts_proj.columns if c in {
+            "HH_TOTAL", "HH_MEDIAN_INC", "HH_MEAN_INC", "HH_MEDIAN_INC_MOE", "HH_MEAN_INC_MOE"
+        }]],
+        how="left",
+        predicate="within",
+    )
+
+    # 8) Attach back to precincts
+    out = precincts_gdf.copy()
+    for c in ["HH_TOTAL", "HH_MEDIAN_INC", "HH_MEAN_INC", "HH_MEDIAN_INC_MOE", "HH_MEAN_INC_MOE"]:
+        if c in joined.columns:
+            out[c] = joined[c].values
+
+
+    # out["AVG_HH_INC"] = out["HH_MEDIAN_INC"]
+
+    out["AVG_HH_INC"] = out["HH_MEAN_INC"]
+
+    return out
+
+AL3 = add_income_from_acs_s1901(
+    AL2,
+    tracts_path="AL_tract/tl_2025_01_tract.shp",
+    income_csv_path="AL-income.csv",
+)
+
+OR3 = add_income_from_acs_s1901(
+    OR2,
+    tracts_path="OR_tract/tl_2025_41_tract.shp",
+    income_csv_path="OR-income.csv",
+)
+
+AL3.to_file("AL_precincts_full.geojson", driver="GeoJSON")
+OR3.to_file("OR_precincts_full.geojson", driver="GeoJSON")
 
 
 def qa(df, name):
@@ -333,8 +463,8 @@ def qa(df, name):
         if c in df.columns:
             print(c, "max:", int(df[c].max()), "sum:", int(df[c].sum()), "over NHVAP rows:", int((df[c] > df["NHVAP"]).sum()))
 
-qa(AL2, "AL")
-qa(OR2, "OR")
+qa(AL3, "AL")
+qa(OR3, "OR")
 
 def qa_region(df, name):
     print("\n==", name, "region_type QA ==")
@@ -345,5 +475,28 @@ def qa_region(df, name):
         print("missing PrimaryRUCA:", int(df["PrimaryRUCA"].isna().sum()))
 
 
-qa_region(AL2, "AL2")
-qa_region(OR2, "OR2")
+qa_region(AL3, "AL2")
+qa_region(OR3, "OR2")
+
+
+def qa_income(df, name):
+    print("\n==", name, "income QA ==")
+    for c in ["AVG_HH_INC", "HH_MEDIAN_INC", "HH_MEAN_INC", "HH_TOTAL"]:
+        if c in df.columns:
+            print(c, "min/max/sum_nonzero:",
+                  int(df[c].min()), int(df[c].max()), int((df[c] > 0).sum()))
+    if "AVG_HH_INC" in df.columns:
+        print("Missing AVG_HH_INC:", int((df["AVG_HH_INC"] == 0).sum()))
+
+qa_income(AL3, "AL3")
+qa_income(OR3, "OR3")
+
+# crude check: average of tract medians (unweighted) won't match state median, but should be in the same ballpark
+print(AL3["HH_MEDIAN_INC"].replace(0, pd.NA).dropna().median())
+print(OR3["HH_MEDIAN_INC"].replace(0, pd.NA).dropna().median())
+
+missing_al = AL3[AL3["HH_MEDIAN_INC"] == 0][["GEOID", "geometry"]]
+missing_or = OR3[OR3["HH_MEDIAN_INC"] == 0][["GEOID", "geometry"]]
+print("missing AL precincts:", len(missing_al))
+print("missing OR precincts:", len(missing_or))
+

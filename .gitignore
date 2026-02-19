@@ -17,6 +17,8 @@ OR_tract
 region-type.csv
 AL_precincts_full_connected.geojson
 OR_precincts_full_connected.geojson
+OR-income.csv
+AL-income.csv
 
 .DS_Store
 **/.DS_Store
