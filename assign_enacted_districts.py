@@ -62,9 +62,9 @@ def assign_enacted_districts(
 # print(districts.columns)
 # print(precincts.columns)
 assign_enacted_districts(
-    precinct_path="AL-precincts-with-results.geojson",
-    districts_path="AL_Congressional_Districts_Shapefile/SP_Remedial_Plan_3 2023-10-05.shp",
-    out_path="AL-precincts-with-results-enacted.geojson",
+    precinct_path="BASE_FILES/AL-precincts-with-results.geojson",
+    districts_path="BASE_FILES/AL_Congressional_Districts_Shapefile/SP_Remedial_Plan_3 2023-10-05.shp",
+    out_path="AL_data/AL-precincts-with-results-enacted.geojson",
     precinct_id_col="GEOID",
     district_id_col="DISTRICT",
 )
@@ -74,17 +74,17 @@ assign_enacted_districts(
 # print(districts.columns)
 # print(precincts.columns)
 assign_enacted_districts(
-    precinct_path="OR-precincts-with-results.geojson",
-    districts_path="OR_Congressional_Districts.geojson",
-    out_path="OR-precincts-with-results-enacted.geojson",
+    precinct_path="BASE_FILES/OR-precincts-with-results.geojson",
+    districts_path="BASE_FILES/OR_Congressional_Districts.geojson",
+    out_path="OR_data/OR-precincts-with-results-enacted.geojson",
     precinct_id_col="GEOID",
     district_id_col="DISTRICT",
 )
 
-al = gpd.read_file("AL-precincts-with-results-enacted.geojson")
+al = gpd.read_file("AL_data/AL-precincts-with-results-enacted.geojson")
 al["enacted_cd"] = al["enacted_cd"].astype(int)
-al.to_file("AL-precincts-with-results-enacted.geojson", driver="GeoJSON")
+al.to_file("AL_data/AL-precincts-with-results-enacted.geojson", driver="GeoJSON")
 
-or_ = gpd.read_file("OR-precincts-with-results-enacted.geojson")
+or_ = gpd.read_file("OR_data/OR-precincts-with-results-enacted.geojson")
 or_["enacted_cd"] = or_["enacted_cd"].astype(int)
-or_.to_file("OR-precincts-with-results-enacted.geojson", driver="GeoJSON")
+or_.to_file("OR_data/OR-precincts-with-results-enacted.geojson", driver="GeoJSON")

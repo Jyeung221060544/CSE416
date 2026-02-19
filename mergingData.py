@@ -230,18 +230,18 @@ def build_precinct_geojson_with_vap(
 
 
 AL = build_precinct_geojson_with_vap(
-    vap_csv_path="AL-VAP-population.csv",
-    blocks_shp_path="AL-shapefile/tl_2025_01_tabblock20.shp",
-    precincts_geojson_path="AL-precincts-with-results-enacted.geojson",
-    output_geojson_path="AL_precincts_full.geojson",
+    vap_csv_path="BASE_FILES/AL-VAP-population.csv",
+    blocks_shp_path="BASE_FILES/AL-shapefile/tl_2025_01_tabblock20.shp",
+    precincts_geojson_path="AL_data/AL-precincts-with-results-enacted.geojson",
+    output_geojson_path="AL_data/AL_precincts_full.geojson",
     verbose=True,
 )
 
 OR = build_precinct_geojson_with_vap(
-    vap_csv_path="OR-VAP-population.csv",
-    blocks_shp_path="OR-shapefile/tl_2025_41_tabblock20.shp",
-    precincts_geojson_path="OR-precincts-with-results-enacted.geojson",
-    output_geojson_path="OR_precincts_full.geojson",
+    vap_csv_path="BASE_FILES/OR-VAP-population.csv",
+    blocks_shp_path="BASE_FILES/OR-shapefile/tl_2025_41_tabblock20.shp",
+    precincts_geojson_path="OR_data/OR-precincts-with-results-enacted.geojson",
+    output_geojson_path="OR_data/OR_precincts_full.geojson",
     verbose=True,
 )
 
@@ -307,14 +307,14 @@ def add_region_type_from_ruca(
 
 AL2 = add_region_type_from_ruca(
     AL,
-    tracts_path="AL_tract/tl_2025_01_tract.shp",
-    ruca_csv_path="region-type.csv",
+    tracts_path="BASE_FILES/AL_tract/tl_2025_01_tract.shp",
+    ruca_csv_path="BASE_FILES/region-type.csv",
 )
 
 OR2 = add_region_type_from_ruca(
     OR,
-    tracts_path="OR_tract/tl_2025_41_tract.shp",
-    ruca_csv_path="region-type.csv",
+    tracts_path="BASE_FILES/OR_tract/tl_2025_41_tract.shp",
+    ruca_csv_path="BASE_FILES/region-type.csv",
 )
 
 def add_income_from_acs_s1901(
@@ -437,18 +437,18 @@ def add_income_from_acs_s1901(
 
 AL3 = add_income_from_acs_s1901(
     AL2,
-    tracts_path="AL_tract/tl_2025_01_tract.shp",
-    income_csv_path="AL-income.csv",
+    tracts_path="BASE_FILES/AL_tract/tl_2025_01_tract.shp",
+    income_csv_path="BASE_FILES/AL-income.csv",
 )
 
 OR3 = add_income_from_acs_s1901(
     OR2,
-    tracts_path="OR_tract/tl_2025_41_tract.shp",
-    income_csv_path="OR-income.csv",
+    tracts_path="BASE_FILES/OR_tract/tl_2025_41_tract.shp",
+    income_csv_path="BASE_FILES/OR-income.csv",
 )
 
-AL3.to_file("AL_precincts_full.geojson", driver="GeoJSON")
-OR3.to_file("OR_precincts_full.geojson", driver="GeoJSON")
+AL3.to_file("AL_data/AL_precincts_full.geojson", driver="GeoJSON")
+OR3.to_file("OR_data/OR_precincts_full.geojson", driver="GeoJSON")
 
 
 def qa(df, name):

@@ -175,13 +175,13 @@ def build_precinct_adjacency_graph(
 
 # Build both graphs
 AL_G = build_precinct_adjacency_graph(
-    precinct_geojson="AL_precincts_full.geojson",
-    out_graph_json="AL_graph.json",
+    precinct_geojson="AL_data/AL_precincts_full.geojson",
+    out_graph_json="AL_data/AL_graph.json",
     min_shared_boundary_feet=200,
 )
 
 OR_G = build_precinct_adjacency_graph(
-    precinct_geojson="OR_precincts_full.geojson",
-    out_graph_json="OR_graph.json",
+    precinct_geojson="OR_data/OR_precincts_full.geojson",
+    out_graph_json="OR_data/OR_graph.json",
     min_shared_boundary_feet=200,
 )
