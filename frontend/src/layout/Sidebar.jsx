@@ -41,6 +41,9 @@ export default function Sidebar() {
             <ScrollArea className="flex-1 overflow-hidden">
                 <div className="flex flex-col gap-6 py-5 px-3">
 
+                    {/* ── Sections Nav ───────────────────────── */}
+                    <SectionPanel collapsed={collapsed} />
+
                     {/* ── Local Filters ──────────────────────── */}
                     <div className="flex flex-col gap-2">
 
@@ -63,10 +66,6 @@ export default function Sidebar() {
                             </div>
                         )}
                     </div>
-
-                    {/* ── Sections Nav ───────────────────────── */}
-                    <SectionPanel collapsed={collapsed} />
-
                 </div>
             </ScrollArea>
         </aside>

@@ -135,3 +135,11 @@
     @apply bg-background text-foreground;
     }
 }
+
+/* ── Leaflet overrides ──────────────────────────────────────── */
+.leaflet-container {
+    background: transparent !important;
+}
+/* valid-state paths get a pointer, invalid states get default */
+.state-valid  { cursor: pointer; }
+.state-invalid { cursor: default; }
