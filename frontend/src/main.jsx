@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import MainLayout from './components/layout/MainLayout'
+import MainLayout from './layout/MainLayout'
 import Home from './pages/HomePage'
 import StatePage from './pages/StatePage'
 import './index.css'
