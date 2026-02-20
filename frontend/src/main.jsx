@@ -5,6 +5,7 @@ import MainLayout from './layout/MainLayout'
 import Home from './pages/HomePage'
 import StatePage from './pages/StatePage'
 import './index.css'
+import 'leaflet/dist/leaflet.css'
 
 /** Definition of router
  * path: '/' - route that matches the root URL

@@ -2,12 +2,9 @@ import { useState } from 'react'
 import { ChevronUp, ChevronDown } from 'lucide-react'
 import useAppStore from '../../store/useAppStore'
 
-const RACE_OPTIONS = [
-    { value: 'all',      label: 'All Groups' },
-    { value: 'white',    label: 'White' },
-    { value: 'black',    label: 'Black' },
-    { value: 'hispanic', label: 'Hispanic' },
-    { value: 'asian',    label: 'Asian' },
+const ENSEMBLE_OPTIONS = [
+    { value: 'race_blind', label: 'Race-Blind' },
+    { value: 'vra',        label: 'VRA-Constrained' },
 ]
 
 function CollapsibleGroup({ label, children }) {
@@ -23,20 +20,20 @@ function CollapsibleGroup({ label, children }) {
     )
 }
 
-export default function RaceFilter() {
-    const raceFilter = useAppStore((state) => state.raceFilter)
-    const setRaceFilter = useAppStore((state) => state.setRaceFilter)
+export default function EnsembleFilter() {
+    const ensembleFilter = useAppStore((state) => state.ensembleFilter)
+    const setEnsembleFilter = useAppStore((state) => state.setEnsembleFilter)
 
     return (
-        <CollapsibleGroup label="Race / Ethnicity">
-            {RACE_OPTIONS.map((opt) => (
+        <CollapsibleGroup label="Ensemble Type">
+            {ENSEMBLE_OPTIONS.map((opt) => (
                 <label key={opt.value} className="flex items-center gap-2 px-1 py-1 cursor-pointer">
                     <input
                         type="radio"
-                        name="raceFilter"
+                        name="ensembleFilter"
                         value={opt.value}
-                        checked={raceFilter === opt.value}
-                        onChange={() => setRaceFilter(opt.value)}
+                        checked={ensembleFilter === opt.value}
+                        onChange={() => setEnsembleFilter(opt.value)}
                         className="appearance-none w-4 h-4 rounded-full border border-slate-500 checked:bg-teal-400 checked:border-teal-400 transition-colors shrink-0"
                     />
                     <span className="text-sm text-slate-200">{opt.label}</span>

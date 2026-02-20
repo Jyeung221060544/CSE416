@@ -28,6 +28,7 @@ const useAppStore = create((set) => ({
     granularityFilter: 'precinct',
     selectedDistrict: null,
     ensembleFilter: 'race_blind',
+    eiRaceFilter: ['black'],
     darkMode: true,
     toggleDarkMode: () => set((state) => ({ darkMode: !state.darkMode })),
 
@@ -38,10 +39,21 @@ const useAppStore = create((set) => ({
     setGranularityFilter: (g) => set({ granularityFilter: g }),
     setSelectedDistrict: (district) => set({ selectedDistrict: district }),
     setEnsembleFilter: (ensemble) => set({ ensembleFilter: ensemble }),
+    toggleEiRaceFilter: (race) => set((state) => {
+        const current = state.eiRaceFilter
+        if (current.includes(race)) {
+            if (current.length > 1) {
+                return { eiRaceFilter: current.filter((r) => r !== race) }
+            }
+            return {}
+        }
+        return { eiRaceFilter: [...current, race] }
+    }),
     resetFilters: () => set({
         raceFilter: 'black',
         granularityFilter: 'precinct',
         ensembleFilter: 'race_blind',
+        eiRaceFilter: ['black'],
         selectedDistrict: null,
     }),
 }))
