@@ -35,21 +35,21 @@ export default function HomePage() {
         <div className="flex flex-col h-full bg-brand-darkest overflow-hidden">
 
             {/* ── Tagline ────────────────────────────────────────────── */}
-            <div className="shrink-0 flex items-center justify-between px-10 py-5 border-b border-brand-deep/40">
-                <div>
+            <div className="shrink-0 flex items-center justify-between px-4 sm:px-10 py-4 sm:py-5 border-b border-brand-deep/40 gap-4">
+                <div className="min-w-0">
                     <p className="text-brand-muted text-[10px] font-bold uppercase tracking-[0.2em] mb-1">
                         Voting Rights Act · Redistricting Analysis
                     </p>
-                    <h1 className="text-brand-surface text-3xl font-bold tracking-tight leading-tight">
+                    <h1 className="text-brand-surface text-xl sm:text-3xl font-bold tracking-tight leading-tight">
                         Redistricting Explorer
                     </h1>
-                    <p className="text-brand-muted/70 text-sm mt-1">
+                    <p className="text-brand-muted/70 text-xs sm:text-sm mt-1">
                         Congressional district plans, ensemble analysis, and racial polarization data.
                     </p>
                 </div>
 
                 {/* Available-states chips */}
-                <div className="hidden sm:flex flex-col items-end gap-2">
+                <div className="hidden sm:flex flex-col items-end gap-2 shrink-0">
                     <span className="text-brand-muted/50 text-[10px] uppercase tracking-widest">
                         Available States
                     </span>
@@ -68,18 +68,15 @@ export default function HomePage() {
             </div>
 
             {/* ── Map + Card ─────────────────────────────────────────── */}
-            <div className="flex flex-1 gap-5 p-6 min-h-0">
+            <div className="flex flex-col lg:flex-row flex-1 gap-4 sm:gap-5 p-4 sm:p-6 min-h-0">
 
-                {/* Map panel — 65% */}
-                <div
-                    className="rounded-xl overflow-hidden ring-1 ring-brand-deep/50 shadow-2xl"
-                    style={{ flex: '0 0 65%' }}
-                >
+                {/* Map panel — full width on small, 65% on lg */}
+                <div className="rounded-xl overflow-hidden ring-1 ring-brand-deep/50 shadow-2xl h-[280px] sm:h-[360px] lg:h-auto lg:flex-[0_0_65%]">
                     <USMap onStateHover={setHoveredState} />
                 </div>
 
-                {/* Info card — 35% */}
-                <div className="flex-1 min-w-0 flex flex-col">
+                {/* Info card — full width on small, 35% on lg */}
+                <div className="flex-1 min-w-0 flex flex-col min-h-[220px] lg:min-h-0">
                     <Card className="flex-1 p-0 bg-white/5 backdrop-blur-sm border-brand-deep/40 text-brand-surface shadow-xl overflow-hidden">
 
                         {hoveredState ? (

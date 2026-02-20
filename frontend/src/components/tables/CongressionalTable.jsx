@@ -28,9 +28,10 @@ export default function CongressionalTable({ districtSummary }) {
     }
 
     return (
-        <div className="overflow-hidden rounded-xl border border-brand-muted/25 shadow-sm">
+        <div className="overflow-x-auto rounded-xl border border-brand-muted/25 shadow-sm">
+          <div className="min-w-[560px]">
             {/* Header */}
-            <div className="grid grid-cols-[100px_1fr_140px_130px_120px] gap-x-4 items-center px-5 py-3 bg-brand-darkest text-brand-surface text-xs font-bold uppercase tracking-widest">
+            <div className="grid grid-cols-[80px_1fr_120px_110px_100px] gap-x-3 items-center px-4 py-3 bg-brand-darkest text-brand-surface text-xs font-bold uppercase tracking-widest">
                 <span>District</span>
                 <span>Representative</span>
                 <span>Party</span>
@@ -48,8 +49,8 @@ export default function CongressionalTable({ districtSummary }) {
                         key={d.districtId}
                         onClick={() => handleRowClick(d.districtNumber)}
                         className={[
-                            'grid grid-cols-[100px_1fr_140px_130px_120px] gap-x-4 items-center',
-                            'px-5 py-3.5 border-t border-brand-muted/15',
+                            'grid grid-cols-[80px_1fr_120px_110px_100px] gap-x-3 items-center',
+                            'px-4 py-3 border-t border-brand-muted/15',
                             'cursor-pointer select-none transition-colors',
                             isActive
                                 ? 'bg-brand-primary/15 ring-1 ring-inset ring-brand-primary/30'
@@ -76,6 +77,7 @@ export default function CongressionalTable({ districtSummary }) {
             <p className="text-xs text-brand-muted/50 text-center py-2 border-t border-brand-muted/10 bg-white">
                 Click a row to highlight the district on the map
             </p>
+          </div>
         </div>
     )
 }

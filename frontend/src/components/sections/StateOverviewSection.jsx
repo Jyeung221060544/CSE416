@@ -1,5 +1,6 @@
-import { MapPin } from 'lucide-react'
+import { MapPin, ArrowLeft, MousePointerClick } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import useAppStore from '../../store/useAppStore'
@@ -11,11 +12,11 @@ import EnsembleSummaryTable from '../tables/EnsembleSummaryTable'
 
 function StatCard({ label, value, sub }) {
     return (
-        <Card className="p-0 border-brand-muted/25 shadow-sm">
-            <CardContent className="px-5 py-4">
-                <p className="text-xs font-bold uppercase tracking-widest text-brand-muted mb-1">{label}</p>
-                <p className="text-3xl font-bold text-brand-darkest tabular-nums leading-tight">{value ?? '—'}</p>
-                {sub && <p className="text-sm text-gray-400 mt-1">{sub}</p>}
+        <Card className="p-0 border-brand-muted/25 shadow-sm min-w-0">
+            <CardContent className="px-3 py-3 min-w-0">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-brand-muted mb-1 truncate">{label}</p>
+                <p className="text-lg font-bold text-brand-darkest tabular-nums leading-tight break-words">{value ?? '—'}</p>
+                {sub && <p className="text-xs text-gray-400 mt-1 truncate">{sub}</p>}
             </CardContent>
         </Card>
     )
@@ -32,7 +33,7 @@ function SectionHeader({ title }) {
 
 function DistBar({ demPct, repPct }) {
     return (
-        <div className="flex h-3 w-44 rounded-full overflow-hidden shrink-0">
+        <div className="flex h-3 w-full rounded-full overflow-hidden">
             <div className="bg-blue-500" style={{ width: `${demPct}%` }} />
             <div className="bg-red-500"  style={{ width: `${repPct}%` }} />
         </div>
@@ -117,7 +118,8 @@ function DistrictDetailCard({ district }) {
 // ── Main section ──────────────────────────────────────────────────────
 
 export default function StateOverviewSection({ data, stateId }) {
-    const selectedDistrict     = useAppStore(s => s.selectedDistrict)
+    const selectedDistrict    = useAppStore(s => s.selectedDistrict)
+    const setSelectedDistrict = useAppStore(s => s.setSelectedDistrict)
 
     const s = data?.stateSummary
     const d = data?.districtSummary
@@ -133,133 +135,149 @@ export default function StateOverviewSection({ data, stateId }) {
     const repVote  = s?.voterDistribution?.republicanVoteShare
     const voteYear = s?.voterDistribution?.electionYear
 
-    // District detail card data — driven by the same selectedDistrict Zustand value
-    // that both the map click and table row click write to
     const selectedDistrictData = d?.districts?.find(dist => dist.districtNumber === selectedDistrict) ?? null
 
     return (
-        <section id="state-overview" className="p-8 border-b border-brand-muted/30">
+        <section id="state-overview" className="p-4 sm:p-6 lg:p-8 border-b border-brand-muted/30">
 
             {/* ── Header ───────────────────────────────────────────── */}
-            <div className="flex items-start justify-between mb-6">
-                <div>
-                    <h2 className="text-3xl font-bold text-brand-darkest tracking-tight">State Overview</h2>
-                    <p className="text-base text-brand-deep mt-1">
-                        {s?.stateName ?? stateId} · {s?.numDistricts ?? '—'} Congressional Districts
-                    </p>
-                </div>
+            <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-brand-darkest tracking-tight">State Overview</h2>
                 {s?.isPreclearance && (
-                    <Badge className="bg-brand-primary/10 text-brand-primary border-brand-primary/30 text-xs font-semibold mt-1">
+                    <Badge className="bg-brand-primary/10 text-brand-primary border-brand-primary/30 text-xs font-semibold">
                         VRA Preclearance Required
                     </Badge>
                 )}
             </div>
 
-            {/* ── GUI-3: Key stat cards ─────────────────────────────── */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-                <StatCard
-                    label="Total Population"
-                    value={s?.totalPopulation?.toLocaleString()}
-                    sub="Census estimate"
-                />
-                <StatCard
-                    label="Voting Age Pop."
-                    value={s?.votingAgePopulation?.toLocaleString()}
-                    sub="18+ residents"
-                />
-                <StatCard
-                    label="Congressional Districts"
-                    value={s?.numDistricts}
-                    sub={`Ideal pop. ${s?.idealDistrictPopulation?.toLocaleString() ?? '—'}`}
-                />
-                <StatCard
-                    label="Redistricting Control"
-                    value={s?.redistrictingControl?.controllingParty}
-                    sub="Controlling party"
-                />
+            {/* Map legend */}
+            <div className="flex items-center gap-4 mb-3 text-sm text-gray-500">
+                <span className="flex items-center gap-1.5">
+                    <span className="w-3 h-3 rounded-sm bg-blue-400/60 border border-blue-600 shrink-0" /> Democratic
+                </span>
+                <span className="flex items-center gap-1.5">
+                    <span className="w-3 h-3 rounded-sm bg-red-400/60 border border-red-600 shrink-0" /> Republican
+                </span>
+                <span className="flex items-center gap-1.5">
+                    <span className="w-3 h-3 rounded-sm bg-brand-primary/60 border border-brand-surface shrink-0" /> Selected
+                </span>
             </div>
 
-            {/* ── GUI-3: Voter distribution + Seat distribution (side by side) ── */}
-            <div className="grid grid-cols-2 gap-8 mb-8">
+            {/* ── Map (left) | Right panel (right) ─────────────────── */}
+            <div className="grid grid-cols-1 lg:grid-cols-[58fr_42fr] gap-5 mb-8">
 
-                {/* Voter distribution */}
-                {demVote != null && repVote != null && (
-                    <div>
-                        <SectionHeader title={`${voteYear ?? ''} Statewide Voter Distribution`} />
-                        <div className="flex items-center gap-4 flex-wrap">
-                            <div className="flex items-center gap-2">
-                                <span className="w-3 h-3 rounded-sm bg-blue-500 shrink-0" />
-                                <span className="text-base text-gray-700 font-medium">Democratic</span>
-                                <span className="text-2xl font-bold text-blue-600 tabular-nums ml-1">
-                                    {(demVote * 100).toFixed(1)}%
-                                </span>
+                {/* Map */}
+                <div className="rounded-xl overflow-hidden border border-brand-muted/25 shadow-sm h-[340px] sm:h-[420px] lg:h-[520px]">
+                    <DistrictMap2022 stateId={stateId} districtSummary={d} />
+                </div>
+
+                {/* Right panel — toggles between summary and district detail */}
+                {selectedDistrict ? (
+                    <div className="flex flex-col gap-4">
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setSelectedDistrict(null)}
+                            className="self-start flex items-center gap-1.5 text-brand-deep hover:text-brand-darkest"
+                        >
+                            <ArrowLeft className="w-4 h-4" />
+                            Back to Summary
+                        </Button>
+                        <div className="flex-1">
+                            <DistrictDetailCard district={selectedDistrictData} />
+                        </div>
+                    </div>
+                ) : (
+                    <div className="flex flex-col gap-5 overflow-y-auto pr-1">
+
+                        {/* Stat cards 2×2 */}
+                        <div className="grid grid-cols-2 gap-3">
+                            <StatCard
+                                label="Total Population"
+                                value={s?.totalPopulation?.toLocaleString()}
+                            />
+                            <StatCard
+                                label="Voting Age Pop."
+                                value={s?.votingAgePopulation?.toLocaleString()}
+                            />
+                            <StatCard
+                                label="Districts"
+                                value={s?.numDistricts}
+                            />
+                            <StatCard
+                                label="Controlling Party"
+                                value={s?.redistrictingControl?.controllingParty}
+                            />
+                        </div>
+
+                        {/* Voter distribution */}
+                        {demVote != null && repVote != null && (
+                            <div>
+                                <SectionHeader title={`${voteYear ?? ''} Voter Distribution`} />
+                                <div className="flex flex-col gap-2">
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-2">
+                                            <span className="w-3 h-3 rounded-sm bg-blue-500 shrink-0" />
+                                            <span className="text-sm text-gray-700 font-medium">Democratic</span>
+                                        </div>
+                                        <span className="text-base font-bold text-blue-600 tabular-nums">
+                                            {(demVote * 100).toFixed(1)}%
+                                        </span>
+                                    </div>
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-2">
+                                            <span className="w-3 h-3 rounded-sm bg-red-500 shrink-0" />
+                                            <span className="text-sm text-gray-700 font-medium">Republican</span>
+                                        </div>
+                                        <span className="text-base font-bold text-red-600 tabular-nums">
+                                            {(repVote * 100).toFixed(1)}%
+                                        </span>
+                                    </div>
+                                    <DistBar demPct={demVote * 100} repPct={repVote * 100} />
+                                </div>
                             </div>
-                            <Separator orientation="vertical" className="h-6 bg-brand-muted/30" />
-                            <div className="flex items-center gap-2">
-                                <span className="w-3 h-3 rounded-sm bg-red-500 shrink-0" />
-                                <span className="text-base text-gray-700 font-medium">Republican</span>
-                                <span className="text-2xl font-bold text-red-600 tabular-nums ml-1">
-                                    {(repVote * 100).toFixed(1)}%
-                                </span>
+                        )}
+
+                        {/* Seat distribution */}
+                        <div>
+                            <SectionHeader title={`${d?.electionYear ?? ''} Seat Distribution`} />
+                            <div className="flex flex-col gap-2">
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-2">
+                                        <span className="w-3 h-3 rounded-sm bg-blue-500 shrink-0" />
+                                        <span className="text-sm text-gray-700 font-medium">Democratic</span>
+                                    </div>
+                                    <span className="text-base font-bold text-blue-600 tabular-nums">
+                                        {demSeats} <span className="text-gray-400 text-sm font-normal">/ {total}</span>
+                                    </span>
+                                </div>
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-2">
+                                        <span className="w-3 h-3 rounded-sm bg-red-500 shrink-0" />
+                                        <span className="text-sm text-gray-700 font-medium">Republican</span>
+                                    </div>
+                                    <span className="text-base font-bold text-red-600 tabular-nums">
+                                        {repSeats} <span className="text-gray-400 text-sm font-normal">/ {total}</span>
+                                    </span>
+                                </div>
+                                {total > 0 && <DistBar demPct={(demSeats / total) * 100} repPct={(repSeats / total) * 100} />}
                             </div>
-                            <DistBar demPct={demVote * 100} repPct={repVote * 100} />
+                        </div>
+                        {/* Select-a-district hint — pinned to bottom */}
+                        <div className="mt-auto flex items-center gap-3 px-3 py-3 sm:px-4 sm:py-4 rounded-xl border border-dashed border-brand-muted/40 bg-brand-primary/[0.03]">
+                            <div className="shrink-0 w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-brand-primary/10 flex items-center justify-center">
+                                <MousePointerClick className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-brand-primary" />
+                            </div>
+                            <p className="text-xs sm:text-sm text-brand-muted/70 leading-relaxed">
+                                Click a district on the map or a table row to view its details here.
+                            </p>
                         </div>
                     </div>
                 )}
-
-                {/* Seat distribution */}
-                <div>
-                    <SectionHeader title={`${d?.electionYear ?? ''} Congressional Seat Distribution`} />
-                    <div className="flex items-center gap-4 flex-wrap">
-                        <div className="flex items-center gap-2">
-                            <span className="w-3 h-3 rounded-sm bg-blue-500 shrink-0" />
-                            <span className="text-base text-gray-700 font-medium">Democratic</span>
-                            <span className="text-2xl font-bold text-blue-600 tabular-nums ml-1">{demSeats}</span>
-                            <span className="text-gray-400 text-sm">/ {total}</span>
-                        </div>
-                        <Separator orientation="vertical" className="h-6 bg-brand-muted/30" />
-                        <div className="flex items-center gap-2">
-                            <span className="w-3 h-3 rounded-sm bg-red-500 shrink-0" />
-                            <span className="text-base text-gray-700 font-medium">Republican</span>
-                            <span className="text-2xl font-bold text-red-600 tabular-nums ml-1">{repSeats}</span>
-                            <span className="text-gray-400 text-sm">/ {total}</span>
-                        </div>
-                        {total > 0 && <DistBar demPct={(demSeats / total) * 100} repPct={(repSeats / total) * 100} />}
-                    </div>
-                </div>
-
             </div>
 
-            {/* ── GUI-2 + GUI-6/7: 60% Map | 40% District detail card ─── */}
-            <div className="mb-8">
-                <SectionHeader title={`${d?.electionYear ?? 'Enacted'} District Plan`} />
-                {/* Map legend */}
-                <div className="flex items-center gap-4 mb-3 text-sm text-gray-500">
-                    <span className="flex items-center gap-1.5">
-                        <span className="w-3 h-3 rounded-sm bg-blue-400/60 border border-blue-600 shrink-0" /> Democratic
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                        <span className="w-3 h-3 rounded-sm bg-red-400/60 border border-red-600 shrink-0" /> Republican
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                        <span className="w-3 h-3 rounded-sm bg-brand-primary/60 border border-brand-surface shrink-0" /> Selected
-                    </span>
-                </div>
-                <div className="grid h-[500px]" style={{ gridTemplateColumns: '60fr 40fr', gap: '1.25rem' }}>
-
-                    {/* GUI-2: District map (full state visible via fitBounds) */}
-                    <div className="rounded-xl overflow-hidden border border-brand-muted/25 shadow-sm">
-                        <DistrictMap2022 stateId={stateId} districtSummary={d} />
-                    </div>
-
-                    {/* GUI-6/7: District detail card — updates from map click OR table row click */}
-                    <DistrictDetailCard district={selectedDistrictData} />
-
-                </div>
-            </div>
-
-            {/* ── GUI-6 + GUI-1: Congressional table (60%) | Ensemble summary (40%) ── */}
-            <div className="mb-8 grid gap-6" style={{ gridTemplateColumns: '60fr 40fr' }}>
+            {/* ── Congressional table (60%) | Ensemble summary (40%) ── */}
+            <div className="mb-8 grid grid-cols-1 xl:grid-cols-[60fr_40fr] gap-6">
                 <div>
                     <SectionHeader title={`${d?.electionYear ?? 'Enacted'} Congressional Districts`} />
                     <CongressionalTable districtSummary={d} />
@@ -269,15 +287,6 @@ export default function StateOverviewSection({ data, stateId }) {
                     <EnsembleSummaryTable ensembleSummary={e} />
                 </div>
             </div>
-
-            {/*
-             * ── TODO: Demographic / Minority Table ──────────────────────────
-             * StateSummaryTable (racial group VAP + Gingles feasibility) belongs
-             * in DemographicSection.jsx alongside the precinct/census heatmap.
-             *
-             *   import StateSummaryTable from '../tables/StateSummaryTable'
-             *   <StateSummaryTable stateSummary={data?.stateSummary} />
-             * ─────────────────────────────────────────────────────────────── */}
 
         </section>
     )
