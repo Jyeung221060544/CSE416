@@ -1,0 +1,61 @@
+{
+  "stateId": "OR",
+  "planType": "enacted",
+  "electionYear": 2024,
+  "districts": [
+    {
+      "districtId": "OR-01",
+      "districtNumber": 1,
+      "representative": "Suzanne Bonamici",
+      "party": "Democratic",
+      "racialGroup": "White",
+      "voteMarginPercentage": 0.359,
+      "voteMarginDirection": "D"
+    },
+    {
+      "districtId": "OR-02",
+      "districtNumber": 2,
+      "representative": "Cliff Bentz",
+      "party": "Republican",
+      "racialGroup": "White",
+      "voteMarginPercentage": 0.352,
+      "voteMarginDirection": "R"
+    },
+    {
+      "districtId": "OR-03",
+      "districtNumber": 3,
+      "representative": "Maxine Dexter",
+      "party": "Democratic",
+      "racialGroup": "White",
+      "voteMarginPercentage": 0.425,
+      "voteMarginDirection": "D"
+    },
+    {
+      "districtId": "OR-04",
+      "districtNumber": 4,
+      "representative": "Val Hoyle",
+      "party": "Democratic",
+      "racialGroup": "White",
+      "voteMarginPercentage": 0.078,
+      "voteMarginDirection": "D"
+    },
+    {
+      "districtId": "OR-05",
+      "districtNumber": 5,
+      "representative": "Janelle Bynum",
+      "party": "Democratic",
+      "racialGroup": "Black",
+      "voteMarginPercentage": 0.027,
+      "voteMarginDirection": "D"
+    },
+    {
+      "districtId": "OR-06",
+      "districtNumber": 6,
+      "representative": "Andrea Salinas",
+      "party": "Democratic",
+      "racialGroup": "Hispanic",
+      "voteMarginPercentage": 0.069,
+      "voteMarginDirection": "D"
+    }
+  ]
+}

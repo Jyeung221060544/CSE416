@@ -1,6 +1,5 @@
-import { useState } from 'react'
-import { ChevronUp, ChevronDown } from 'lucide-react'
-import useAppStore from '../../store/useAppStore'
+import CollapsibleGroup from './CollapsibleGroup'
+import useFilters from '../../hooks/useFilters'
 
 const RACE_OPTIONS = [
     { value: 'all',      label: 'All Groups' },
@@ -10,22 +9,8 @@ const RACE_OPTIONS = [
     { value: 'asian',    label: 'Asian' },
 ]
 
-function CollapsibleGroup({ label, children }) {
-    const [open, setOpen] = useState(true)
-    return (
-        <div className="flex flex-col gap-1.5">
-            <button onClick={() => setOpen(!open)} className="flex items-center justify-between px-1 w-full">
-                <span className="text-slate-400 text-xs uppercase tracking-wider">{label}</span>
-                {open ? <ChevronUp className="w-3 h-3 text-slate-400" /> : <ChevronDown className="w-3 h-3 text-slate-400" />}
-            </button>
-            {open && <div className="flex flex-col">{children}</div>}
-        </div>
-    )
-}
-
 export default function RaceFilter() {
-    const raceFilter = useAppStore((state) => state.raceFilter)
-    const setRaceFilter = useAppStore((state) => state.setRaceFilter)
+    const { raceFilter, setRaceFilter } = useFilters()
 
     return (
         <CollapsibleGroup label="Race / Ethnicity">
@@ -37,9 +22,9 @@ export default function RaceFilter() {
                         value={opt.value}
                         checked={raceFilter === opt.value}
                         onChange={() => setRaceFilter(opt.value)}
-                        className="appearance-none w-4 h-4 rounded-full border border-slate-500 checked:bg-teal-400 checked:border-teal-400 transition-colors shrink-0"
+                        className="appearance-none w-4 h-4 rounded-full border border-brand-muted checked:bg-brand-primary checked:border-brand-primary transition-colors shrink-0"
                     />
-                    <span className="text-sm text-slate-200">{opt.label}</span>
+                    <span className="text-sm text-brand-surface">{opt.label}</span>
                 </label>
             ))}
         </CollapsibleGroup>

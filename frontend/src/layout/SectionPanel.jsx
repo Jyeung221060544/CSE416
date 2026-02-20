@@ -27,15 +27,15 @@ export default function SectionPanel({ collapsed }) {
 
             {/* Header */}
             <div className="flex items-center gap-2 px-1">
-                <LayoutList className="w-4 h-4 text-teal-400 shrink-0" />
+                <LayoutList className="w-4 h-4 text-brand-surface shrink-0" />
                 {!collapsed && (
-                    <span className="text-teal-400 text-xs font-semibold uppercase tracking-widest">
+                    <span className="text-brand-surface text-xs font-bold uppercase tracking-widest">
                         Sections
                     </span>
                 )}
             </div>
 
-            <Separator className="bg-slate-700" />
+            <Separator className="bg-brand-deep" />
 
             {/* Nav Buttons */}
             <div className="flex flex-col gap-1.5 px-1">
@@ -53,16 +53,16 @@ export default function SectionPanel({ collapsed }) {
                                         className={`
                                             w-8 h-8 mx-auto
                                             ${isActive
-                                                ? 'bg-teal-500 text-black'
-                                                : 'bg-slate-700 text-slate-100 hover:bg-teal-300 hover:text-black'
+                                                ? 'bg-brand-primary text-white'
+                                                : 'bg-white/15 text-brand-surface hover:bg-white hover:text-black'
                                             }
                                             shadow-sm shadow-black/10
                                         `}
                                     >
-                                        <span className={`w-2 h-2 rounded-full ${isActive ? 'bg-black' : 'bg-slate-100'}`} />
+                                        <span className={`w-2 h-2 rounded-full ${isActive ? 'bg-white' : 'bg-brand-muted'}`} />
                                     </Button>
                                 </TooltipTrigger>
-                                <TooltipContent side="right" className="bg-slate-800 text-slate-100 border-slate-700">
+                                <TooltipContent side="right" className="bg-brand-darkest text-brand-surface border-brand-deep">
                                     {section.label}
                                 </TooltipContent>
                             </Tooltip>
@@ -77,8 +77,8 @@ export default function SectionPanel({ collapsed }) {
                                 w-full justify-start text-sm font-medium
                                 transition-colors duration-150
                                 ${isActive
-                                    ? 'bg-teal-500 text-black'
-                                    : 'bg-slate-700 text-slate-100 hover:bg-teal-300 hover:text-black'
+                                    ? 'bg-brand-primary text-white'
+                                    : 'bg-white/15 text-brand-surface hover:bg-white hover:text-black'
                                 }
                                 shadow-sm shadow-black/10
                             `}

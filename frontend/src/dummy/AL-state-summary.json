@@ -1,0 +1,35 @@
+{
+  "stateId": "AL",
+  "stateName": "Alabama",
+  "totalPopulation": 5024279,
+  "votingAgePopulation": 3826000,
+  "numDistricts": 7,
+  "idealDistrictPopulation": 717754,
+  "isPreclearance": true,
+
+  "voterDistribution": {
+    "electionYear": 2024,
+    "democraticVoteShare": 0.365,
+    "republicanVoteShare": 0.635
+  },
+
+  "demographicGroups": [
+    { "group": "White", "vap": 2460518, "vapPercentage": 0.643, "isFeasible": true },
+    { "group": "Black", "vap": 1010064, "vapPercentage": 0.264, "isFeasible": true },
+    { "group": "Hispanic", "vap": 172170, "vapPercentage": 0.045, "isFeasible": false },
+    { "group": "Asian", "vap": 57390, "vapPercentage": 0.015, "isFeasible": false },
+    { "group": "Other", "vap": 126258, "vapPercentage": 0.033, "isFeasible": false }
+  ],
+
+  "redistrictingControl": {
+    "controllingParty": "Republican"
+  },
+
+  "congressionalRepresentatives": {
+    "totalSeats": 7,
+    "byParty": [
+      { "party": "Democratic", "seats": 1 },
+      { "party": "Republican", "seats": 6 }
+    ]
+  }
+}

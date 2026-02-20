@@ -5,6 +5,19 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+    /* ── Brand Palette ───────────────────────────────────────
+       brand-darkest  #041e26  sidebar background
+       brand-deep     #09637E  borders, hover bg, separators
+       brand-primary  #088395  active states, CTA buttons
+       brand-muted    #7AB2B2  labels, icons, unchecked inputs
+       brand-surface  #EBF4F6  page bg, text on dark surfaces
+    ─────────────────────────────────────────────────────── */
+    --color-brand-darkest: #041e26;
+    --color-brand-deep:    #09637E;
+    --color-brand-primary: #088395;
+    --color-brand-muted:   #7AB2B2;
+    --color-brand-surface: #EBF4F6;
+
     --radius-sm: calc(var(--radius) - 4px);
     --radius-md: calc(var(--radius) - 2px);
     --radius-lg: var(--radius);

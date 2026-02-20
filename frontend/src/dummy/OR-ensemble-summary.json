@@ -1,0 +1,19 @@
+{
+  "stateId": "OR",
+  "ensembles": [
+    {
+      "ensembleId": "OR_RACEBLIND",
+      "ensembleType": "race-blind",
+      "numPlans": 5000,
+      "populationEqualityThreshold": 0.05,
+      "description": "Race-blind ReCom ensemble"
+    },
+    {
+      "ensembleId": "OR_VRA",
+      "ensembleType": "vra-constrained",
+      "numPlans": 5000,
+      "populationEqualityThreshold": 0.05,
+      "description": "VRA-constrained ReCom ensemble"
+    }
+  ]
+}

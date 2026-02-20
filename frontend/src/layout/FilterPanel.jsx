@@ -14,14 +14,14 @@ export default function FilterPanel() {
 
             {/* ── STATE OVERVIEW ─────────────────────────────── */}
             {activeSection === 'state-overview' && (
-                <span className="text-xs px-1 text-slate-500 italic">No filters available</span>
+                <span className="text-xs px-1 text-brand-muted italic">No filters available</span>
             )}
 
             {/* ── DEMOGRAPHIC ────────────────────────────────── */}
             {activeSection === 'demographic' && (
                 <div className="flex flex-col gap-3">
                     <RaceFilter />
-                    <Separator className="bg-slate-700" />
+                    <Separator className="bg-brand-deep" />
                     <GranularityFilter />
                 </div>
             )}
@@ -30,7 +30,7 @@ export default function FilterPanel() {
             {activeSection === 'racial-polarization' && (
                 <div className="flex flex-col gap-3">
                     <RaceFilter />
-                    <Separator className="bg-slate-700" />
+                    <Separator className="bg-brand-deep" />
                     <EIRaceFilter />
                 </div>
             )}
@@ -39,13 +39,13 @@ export default function FilterPanel() {
             {activeSection === 'ensemble-analysis' && (
                 <div className="flex flex-col gap-3">
                     <EnsembleFilter />
-                    <Separator className="bg-slate-700" />
+                    <Separator className="bg-brand-deep" />
                     <RaceFilter />
                 </div>
             )}
 
             {/* ── Reset Button ───────────────────────────────── */}
-            <Separator className="bg-slate-700 mt-1" />
+            <Separator className="bg-brand-deep mt-1" />
             <ResetFiltersButton />
 
         </div>

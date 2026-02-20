@@ -1,0 +1,22 @@
+{
+  "states": [
+    {
+      "stateId": "AL",
+      "stateName": "Alabama",
+      "hasData": true,
+      "numDistricts": 7,
+      "isPreclearance": true,
+      "center": { "lat": 32.806671, "lng": -86.791130 },
+      "zoom": 7
+    },
+    {
+      "stateId": "OR",
+      "stateName": "Oregon",
+      "hasData": true,
+      "numDistricts": 6,
+      "isPreclearance": false,
+      "center": { "lat": 44.572021, "lng": -122.070938 },
+      "zoom": 7
+    }
+  ]
+}

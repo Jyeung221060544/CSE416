@@ -14,7 +14,7 @@ export default function Sidebar() {
     return (
         <aside
             className={`
-                relative flex flex-col h-full bg-slate-900 border-r border-slate-700
+                relative flex flex-col h-full bg-slate-800 border-r border-brand-deep
                 transition-all duration-300 ease-in-out shrink-0
                 ${collapsed ? 'w-14' : 'w-64'}
             `}
@@ -27,10 +27,10 @@ export default function Sidebar() {
                 className={`
                     absolute -right-3 top-6 z-10
                     w-6 h-6 rounded-full
-                    bg-teal-500 text-black
-                    hover:bg-black hover:text-white
-                    shadow-md shadow-black/10
-                    border border-teal-400
+                    bg-brand-primary text-white
+                    hover:bg-white hover:text-black
+                    shadow-md shadow-black/20
+                    border border-brand-muted
                     ${iconSize}
                 `}
             >
@@ -46,15 +46,15 @@ export default function Sidebar() {
 
                         {/* Header */}
                         <div className="flex items-center gap-2 px-1">
-                            <SlidersHorizontal className="w-4 h-4 text-teal-400 shrink-0" />
+                            <SlidersHorizontal className="w-4 h-4 text-brand-surface shrink-0" />
                             {!collapsed && (
-                                <span className="text-teal-400 text-xs font-semibold uppercase tracking-widest">
+                                <span className="text-brand-surface text-xs font-bold uppercase tracking-widest">
                                     Local Filters
                                 </span>
                             )}
                         </div>
 
-                        <Separator className="bg-slate-700" />
+                        <Separator className="bg-brand-deep" />
 
                         {/* Dynamic Filter Panel */}
                         {!collapsed && (

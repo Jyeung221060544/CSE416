@@ -1,0 +1,19 @@
+{
+  "stateId": "AL",
+  "ensembles": [
+    {
+      "ensembleId": "AL_RACEBLIND",
+      "ensembleType": "race-blind",
+      "numPlans": 5000,
+      "populationEqualityThreshold": 0.05,
+      "description": "Race-blind ReCom ensemble"
+    },
+    {
+      "ensembleId": "AL_VRA",
+      "ensembleType": "vra-constrained",
+      "numPlans": 5000,
+      "populationEqualityThreshold": 0.05,
+      "description": "VRA-constrained ReCom ensemble"
+    }
+  ]
+}

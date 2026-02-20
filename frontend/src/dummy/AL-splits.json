@@ -1,0 +1,43 @@
+{
+  "stateId": "AL",
+  "numDistricts": 7,
+  "totalPlans": 5000,
+  "unionSplitRange": {
+    "minRepublican": 0,
+    "maxRepublican": 7
+  },
+  "ensembles": [
+    {
+      "ensembleId": "AL_RACEBLIND_001",
+      "ensembleType": "race-blind",
+      "splits": [
+        { "republican": 0, "democratic": 7, "frequency": 0    },
+        { "republican": 1, "democratic": 6, "frequency": 0    },
+        { "republican": 2, "democratic": 5, "frequency": 0    },
+        { "republican": 3, "democratic": 4, "frequency": 87   },
+        { "republican": 4, "democratic": 3, "frequency": 412  },
+        { "republican": 5, "democratic": 2, "frequency": 2134 },
+        { "republican": 6, "democratic": 1, "frequency": 1893 },
+        { "republican": 7, "democratic": 0, "frequency": 474  }
+      ]
+    },
+    {
+      "ensembleId": "AL_VRA_001",
+      "ensembleType": "vra-constrained",
+      "splits": [
+        { "republican": 0, "democratic": 7, "frequency": 0   },
+        { "republican": 1, "democratic": 6, "frequency": 0   },
+        { "republican": 2, "democratic": 5, "frequency": 0   },
+        { "republican": 3, "democratic": 4, "frequency": 641 },
+        { "republican": 4, "democratic": 3, "frequency": 1823},
+        { "republican": 5, "democratic": 2, "frequency": 1702},
+        { "republican": 6, "democratic": 1, "frequency": 721 },
+        { "republican": 7, "democratic": 0, "frequency": 113 }
+      ]
+    }
+  ],
+  "enactedPlanSplit": {
+    "republican": 5,
+    "democratic": 2
+  }
+}
