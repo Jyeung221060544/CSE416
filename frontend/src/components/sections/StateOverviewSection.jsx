@@ -95,7 +95,7 @@ function DistrictDetailCard({ district }) {
                 <div className="flex items-center justify-between">
                     <span className="text-brand-muted font-medium text-sm">Vote Margin</span>
                     {uncontested ? (
-                        <span className="text-gray-400 text-base italic">Uncontested</span>
+                        <span className="font-extrabold tabular-nums text-xl text-gray-500">100%</span>
                     ) : (
                         <span className={`font-extrabold tabular-nums text-xl ${marginColor}`}>
                             {district.voteMarginDirection}+{(district.voteMarginPercentage * 100).toFixed(1)}%
@@ -114,25 +114,23 @@ function DistrictDetailCard({ district }) {
 export default function StateOverviewSection({ data, stateId }) {
     const selectedDistrict    = useAppStore(s => s.selectedDistrict)
     const setSelectedDistrict = useAppStore(s => s.setSelectedDistrict)
-    const raceFilter = useAppStore(s => s.raceFilter)
-    const setRaceFilter = useAppStore(s => s.setRaceFilter)
 
-    const s = data?.stateSummary
-    const d = data?.districtSummary
-    const e = data?.ensembleSummary
-    const demographicGroups = s?.demographicGroups ?? []
+    const stateData = data?.stateSummary
+    const districtData = data?.districtSummary
+    const ensembleData = data?.ensembleSummary
+    const demographicGroups = stateData?.demographicGroups ?? []
 
     // Seat counts
-    const demSeats = s?.congressionalRepresentatives?.byParty?.find(p => p.party === 'Democratic')?.seats ?? 0
-    const repSeats = s?.congressionalRepresentatives?.byParty?.find(p => p.party === 'Republican')?.seats ?? 0
-    const total    = s?.congressionalRepresentatives?.totalSeats ?? 0
+    const demSeats = stateData?.congressionalRepresentatives?.byParty?.find(p => p.party === 'Democratic')?.seats ?? 0
+    const repSeats = stateData?.congressionalRepresentatives?.byParty?.find(p => p.party === 'Republican')?.seats ?? 0
+    const total    = stateData?.congressionalRepresentatives?.totalSeats ?? 0
 
     // Voter distribution
-    const demVote  = s?.voterDistribution?.democraticVoteShare
-    const repVote  = s?.voterDistribution?.republicanVoteShare
-    const voteYear = s?.voterDistribution?.electionYear
+    const demVote  = stateData?.voterDistribution?.democraticVoteShare
+    const repVote  = stateData?.voterDistribution?.republicanVoteShare
+    const voteYear = stateData?.voterDistribution?.electionYear
 
-    const selectedDistrictData = d?.districts?.find(dist => dist.districtNumber === selectedDistrict) ?? null
+    const selectedDistrictData = districtData?.districts?.find(dist => dist.districtNumber === selectedDistrict) ?? null
 
     return (
         <section id="state-overview" className="p-4 sm:p-6 lg:p-8 border-b border-brand-muted/30">
@@ -140,7 +138,7 @@ export default function StateOverviewSection({ data, stateId }) {
             {/* ── Header ───────────────────────────────────────────── */}
             <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-brand-darkest tracking-tight">State Overview</h2>
-                {s?.isPreclearance && (
+                {stateData?.isPreclearance && (
                     <Badge className="bg-brand-primary/10 text-brand-primary border-brand-primary/30 text-xs font-semibold">
                         VRA Preclearance Required
                     </Badge>
@@ -165,7 +163,7 @@ export default function StateOverviewSection({ data, stateId }) {
 
                 {/* Map */}
                 <MapFrame className="h-[340px] sm:h-[420px] lg:h-[520px]">
-                    <DistrictMap2022 stateId={stateId} districtSummary={d} />
+                    <DistrictMap2022 stateId={stateId} districtSummary={districtData} />
                 </MapFrame>
 
                 {/* Right panel — toggles between summary and district detail */}
@@ -191,19 +189,19 @@ export default function StateOverviewSection({ data, stateId }) {
                         <div className="grid grid-cols-2 gap-3">
                             <StatCard
                                 label="Total Population"
-                                value={s?.totalPopulation?.toLocaleString()}
+                                value={stateData?.totalPopulation?.toLocaleString()}
                             />
                             <StatCard
                                 label="Voting Age Pop."
-                                value={s?.votingAgePopulation?.toLocaleString()}
+                                value={stateData?.votingAgePopulation?.toLocaleString()}
                             />
                             <StatCard
                                 label="Districts"
-                                value={s?.numDistricts}
+                                value={stateData?.numDistricts}
                             />
                             <StatCard
                                 label="Controlling Party"
-                                value={s?.redistrictingControl?.controllingParty}
+                                value={stateData?.redistrictingControl?.controllingParty}
                             />
                         </div>
 
@@ -237,7 +235,7 @@ export default function StateOverviewSection({ data, stateId }) {
 
                         {/* Seat distribution */}
                         <div>
-                            <SectionHeader title={`${d?.electionYear ?? ''} Seat Distribution`} />
+                            <SectionHeader title={`${districtData?.electionYear ?? ''} Seat Distribution`} />
                             <div className="flex flex-col gap-2">
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-2">
@@ -271,8 +269,8 @@ export default function StateOverviewSection({ data, stateId }) {
             {/* ── Congressional table (60%) | Ensemble summary (40%) ── */}
             <div className="mb-8 grid grid-cols-1 lg:grid-cols-[58fr_42fr] gap-5">
                 <div className="flex flex-col">
-                    <SectionHeader title={`${d?.electionYear ?? 'Enacted'} Congressional Districts`} />
-                    <CongressionalTable districtSummary={d} />
+                    <SectionHeader title={`${districtData?.electionYear ?? 'Enacted'} Congressional Districts`} />
+                    <CongressionalTable districtSummary={districtData} />
                     <InfoCallout icon={MousePointerClick} className="mt-auto pt-6">
                         Click a row to highlight the district on the map and view district details above!
                     </InfoCallout>
@@ -280,14 +278,12 @@ export default function StateOverviewSection({ data, stateId }) {
                 <div className="flex flex-col gap-6">
                     <div>
                         <SectionHeader title="Ensemble Summary" />
-                        <EnsembleSummaryTable ensembleSummary={e} />
+                        <EnsembleSummaryTable ensembleSummary={ensembleData} />
                     </div>
                     <div>
                         <SectionHeader title="Population by Group" />
                         <DemographicPopulationTable
                             demographicGroups={demographicGroups}
-                            raceFilter={raceFilter}
-                            setRaceFilter={setRaceFilter}
                         />
                     </div>
                 </div>

@@ -8,7 +8,7 @@ const PARTY = {
 }
 
 function VoteMargin({ pct, dir }) {
-    if (pct >= 1.0) return <span className="text-gray-400 text-sm italic">Uncontested</span>
+    if (pct >= 1.0) return <span className="tabular-nums font-bold text-sm text-gray-500">100%</span>
     const color = dir === 'D' ? 'text-blue-600' : 'text-red-600'
     return (
         <span className={`tabular-nums font-bold text-sm ${color}`}>

@@ -43,7 +43,7 @@ export default function RacialPolarizationSection({ data, stateId }) {
                     </div>
                     {stateId && (
                         <span className="text-xs text-brand-muted/60 font-medium tracking-wide hidden sm:block">
-                            2024 precinct results
+                            2024 Precinct Election Results
                         </span>
                     )}
                 </div>
