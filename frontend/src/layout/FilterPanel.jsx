@@ -1,6 +1,7 @@
 import { Separator } from '@/components/ui/separator'
 import useAppStore from '../store/useAppStore'
 import RaceFilter from '../components/filters/RaceFilter'
+import FeasibleRaceFilter from '../components/filters/FeasibleRaceFilter'
 import EIRaceFilter from '../components/filters/EIRaceFilter'
 import GranularityFilter from '../components/filters/GranularityFilter'
 import EnsembleFilter from '../components/filters/EnsembleFilter'
@@ -20,16 +21,16 @@ export default function FilterPanel() {
             {/* ── DEMOGRAPHIC ────────────────────────────────── */}
             {activeSection === 'demographic' && (
                 <div className="flex flex-col gap-3">
-                    <RaceFilter />
-                    <Separator className="bg-brand-deep" />
                     <GranularityFilter />
+                    <Separator className="bg-brand-deep" />
+                    <RaceFilter />
                 </div>
             )}
 
             {/* ── RACIAL POLARIZATION ────────────────────────── */}
             {activeSection === 'racial-polarization' && (
                 <div className="flex flex-col gap-3">
-                    <RaceFilter />
+                    <FeasibleRaceFilter />
                     <Separator className="bg-brand-deep" />
                     <EIRaceFilter />
                 </div>
