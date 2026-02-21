@@ -55,9 +55,11 @@ import ALDistrictSummary from '../dummy/AL-district-summary.json'
 import ALEnsembleSummary from '../dummy/AL-ensemble-summary.json'
 import ALSplits          from '../dummy/AL-splits.json'
 import ALBoxWhisker      from '../dummy/AL-boxwhisker.json'
-import ALGinglesCensus   from '../dummy/AL-Gingles-census.json'
-import ALGinglesPrecinct from '../dummy/AL-Gingles-precinct.json'
-import ALEI              from '../dummy/AL-EI.json'
+import ALGinglesCensus    from '../dummy/AL-Gingles-census.json'
+import ALGinglesPrecinct  from '../dummy/AL-Gingles-precinct.json'
+import ALEI               from '../dummy/AL-EI.json'
+import ALHeatmapPrecinct  from '../dummy/AL-heatmap-precinct.json'
+import ALHeatmapCensus    from '../dummy/AL-heatmap-census.json'
 
 import ORStateSummary    from '../dummy/OR-state-summary.json'
 import ORDistrictSummary from '../dummy/OR-district-summary.json'
@@ -71,9 +73,11 @@ const DUMMY = {
         ensembleSummary: ALEnsembleSummary,
         splits:          ALSplits,
         boxWhisker:      ALBoxWhisker,
-        ginglesCensus:   ALGinglesCensus,
-        ginglesPrecinct: ALGinglesPrecinct,
-        ei:              ALEI,
+        ginglesCensus:    ALGinglesCensus,
+        ginglesPrecinct:  ALGinglesPrecinct,
+        ei:               ALEI,
+        heatmapPrecinct:  ALHeatmapPrecinct,
+        heatmapCensus:    ALHeatmapCensus,
     },
     OR: {
         stateSummary:    ORStateSummary,
@@ -84,6 +88,8 @@ const DUMMY = {
         ginglesCensus:   null,
         ginglesPrecinct: null,
         ei:              null,
+        heatmapPrecinct: null,
+        heatmapCensus:   null,
     },
 }
 

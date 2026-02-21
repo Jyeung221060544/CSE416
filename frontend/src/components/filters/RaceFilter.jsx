@@ -2,11 +2,11 @@ import CollapsibleGroup from './CollapsibleGroup'
 import useFilters from '../../hooks/useFilters'
 
 const RACE_OPTIONS = [
-    { value: 'all',      label: 'All Groups' },
     { value: 'white',    label: 'White' },
     { value: 'black',    label: 'Black' },
     { value: 'hispanic', label: 'Hispanic' },
     { value: 'asian',    label: 'Asian' },
+    { value: 'other',    label: 'Other' },
 ]
 
 export default function RaceFilter() {

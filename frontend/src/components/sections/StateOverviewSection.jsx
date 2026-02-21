@@ -8,7 +8,6 @@ import DistrictMap2022 from '../maps/DistrictMap2022'
 import CongressionalTable from '../tables/CongressionalTable'
 import EnsembleSummaryTable from '../tables/EnsembleSummaryTable'
 
-// ── Shared sub-components ─────────────────────────────────────────────
 
 function StatCard({ label, value, sub }) {
     return (
