@@ -1,4 +1,5 @@
 import { Badge } from '@/components/ui/badge'
+import SurfacePanel from '@/components/ui/surface-panel'
 import useAppStore from '../../store/useAppStore'
 
 const PARTY = {
@@ -28,10 +29,10 @@ export default function CongressionalTable({ districtSummary }) {
     }
 
     return (
-        <div className="overflow-x-auto rounded-xl border border-brand-muted/25 shadow-sm">
+        <SurfacePanel className="overflow-x-auto border-brand-muted/25">
           <div className="min-w-[560px]">
             {/* Header */}
-            <div className="grid grid-cols-[80px_1fr_120px_110px_100px] gap-x-3 items-center px-4 py-3 bg-brand-darkest text-brand-surface text-xs font-bold uppercase tracking-widest">
+            <div className="grid grid-cols-[80px_1fr_120px_110px_100px] gap-x-3 items-center px-4 py-3 bg-brand-darkest text-brand-surface text-sm font-semibold">
                 <span>District</span>
                 <span>Representative</span>
                 <span>Party</span>
@@ -73,11 +74,7 @@ export default function CongressionalTable({ districtSummary }) {
                     </div>
                 )
             })}
-
-            <p className="text-xs text-brand-muted/50 text-center py-2 border-t border-brand-muted/10 bg-white">
-                Click a row to highlight the district on the map
-            </p>
           </div>
-        </div>
+        </SurfacePanel>
     )
 }

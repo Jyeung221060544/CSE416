@@ -19,12 +19,7 @@ import { useState } from 'react'
 import { MapPin, BarChart2, MousePointerClick } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle,} from '@/components/ui/card'
 import USMap from '../components/maps/USMap'
 import splashData from '../dummy/splash-states.json'  // TODO: replace with GET /api/states
 
@@ -33,7 +28,6 @@ export default function HomePage() {
 
     return (
         <div className="flex flex-col h-full bg-brand-darkest overflow-hidden">
-
             {/* ── Tagline ────────────────────────────────────────────── */}
             <div className="shrink-0 flex items-center justify-between px-4 sm:px-10 py-4 sm:py-5 border-b border-brand-deep/40 gap-4">
                 <div className="min-w-0">

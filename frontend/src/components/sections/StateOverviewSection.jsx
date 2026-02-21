@@ -3,10 +3,14 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import SectionHeader from '@/components/ui/section-header'
+import MapFrame from '@/components/ui/map-frame'
+import InfoCallout from '@/components/ui/info-callout'
 import useAppStore from '../../store/useAppStore'
 import DistrictMap2022 from '../maps/DistrictMap2022'
 import CongressionalTable from '../tables/CongressionalTable'
 import EnsembleSummaryTable from '../tables/EnsembleSummaryTable'
+import DemographicPopulationTable from '../tables/DemographicPopulationTable'
 
 
 function StatCard({ label, value, sub }) {
@@ -18,15 +22,6 @@ function StatCard({ label, value, sub }) {
                 {sub && <p className="text-xs text-gray-400 mt-1 truncate">{sub}</p>}
             </CardContent>
         </Card>
-    )
-}
-
-function SectionHeader({ title }) {
-    return (
-        <div className="flex items-center gap-3 mb-4">
-            <h3 className="text-base font-bold uppercase tracking-widest text-brand-deep shrink-0">{title}</h3>
-            <Separator className="flex-1 bg-brand-muted/25" />
-        </div>
     )
 }
 
@@ -119,10 +114,13 @@ function DistrictDetailCard({ district }) {
 export default function StateOverviewSection({ data, stateId }) {
     const selectedDistrict    = useAppStore(s => s.selectedDistrict)
     const setSelectedDistrict = useAppStore(s => s.setSelectedDistrict)
+    const raceFilter = useAppStore(s => s.raceFilter)
+    const setRaceFilter = useAppStore(s => s.setRaceFilter)
 
     const s = data?.stateSummary
     const d = data?.districtSummary
     const e = data?.ensembleSummary
+    const demographicGroups = s?.demographicGroups ?? []
 
     // Seat counts
     const demSeats = s?.congressionalRepresentatives?.byParty?.find(p => p.party === 'Democratic')?.seats ?? 0
@@ -166,9 +164,9 @@ export default function StateOverviewSection({ data, stateId }) {
             <div className="grid grid-cols-1 lg:grid-cols-[58fr_42fr] gap-5 mb-8">
 
                 {/* Map */}
-                <div className="rounded-xl overflow-hidden border border-brand-muted/25 shadow-sm h-[340px] sm:h-[420px] lg:h-[520px]">
+                <MapFrame className="h-[340px] sm:h-[420px] lg:h-[520px]">
                     <DistrictMap2022 stateId={stateId} districtSummary={d} />
-                </div>
+                </MapFrame>
 
                 {/* Right panel — toggles between summary and district detail */}
                 {selectedDistrict ? (
@@ -263,27 +261,35 @@ export default function StateOverviewSection({ data, stateId }) {
                             </div>
                         </div>
                         {/* Select-a-district hint — pinned to bottom */}
-                        <div className="mt-auto flex items-center gap-3 px-3 py-3 sm:px-4 sm:py-4 rounded-xl border border-dashed border-brand-muted/40 bg-brand-primary/[0.03]">
-                            <div className="shrink-0 w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-brand-primary/10 flex items-center justify-center">
-                                <MousePointerClick className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-brand-primary" />
-                            </div>
-                            <p className="text-xs sm:text-sm text-brand-muted/70 leading-relaxed">
-                                Click a district on the map or a table row to view its details here.
-                            </p>
-                        </div>
+                        <InfoCallout icon={MousePointerClick} className="mt-auto">
+                            Click a district on the map or a table row in the 2024 Congressional Districts Table to view its details here!
+                        </InfoCallout>
                     </div>
                 )}
             </div>
 
             {/* ── Congressional table (60%) | Ensemble summary (40%) ── */}
-            <div className="mb-8 grid grid-cols-1 xl:grid-cols-[60fr_40fr] gap-6">
-                <div>
+            <div className="mb-8 grid grid-cols-1 lg:grid-cols-[58fr_42fr] gap-5">
+                <div className="flex flex-col">
                     <SectionHeader title={`${d?.electionYear ?? 'Enacted'} Congressional Districts`} />
                     <CongressionalTable districtSummary={d} />
+                    <InfoCallout icon={MousePointerClick} className="mt-auto pt-6">
+                        Click a row to highlight the district on the map and view district details above!
+                    </InfoCallout>
                 </div>
-                <div>
-                    <SectionHeader title="Ensemble Summary" />
-                    <EnsembleSummaryTable ensembleSummary={e} />
+                <div className="flex flex-col gap-6">
+                    <div>
+                        <SectionHeader title="Ensemble Summary" />
+                        <EnsembleSummaryTable ensembleSummary={e} />
+                    </div>
+                    <div>
+                        <SectionHeader title="Population by Group" />
+                        <DemographicPopulationTable
+                            demographicGroups={demographicGroups}
+                            raceFilter={raceFilter}
+                            setRaceFilter={setRaceFilter}
+                        />
+                    </div>
                 </div>
             </div>
 

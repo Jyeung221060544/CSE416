@@ -1,4 +1,5 @@
 import { Badge } from '@/components/ui/badge'
+import SurfacePanel from '@/components/ui/surface-panel'
 
 const TYPE_META = {
     'race-blind': {
@@ -16,11 +17,11 @@ export default function EnsembleSummaryTable({ ensembleSummary }) {
     const { ensembles } = ensembleSummary
 
     return (
-        <div className="overflow-x-auto rounded-xl border border-brand-muted/25 shadow-sm">
+        <SurfacePanel className="overflow-x-auto border-brand-muted/25">
             <div className="min-w-[280px]">
 
                 {/* Header */}
-                <div className="grid grid-cols-[1fr_80px_90px] items-center px-5 py-3 bg-brand-darkest text-brand-surface text-xs font-bold uppercase tracking-widest">
+                <div className="grid grid-cols-[1fr_80px_90px] items-center px-5 py-3 bg-brand-darkest text-brand-surface text-sm font-semibold">
                     <span>Type</span>
                     <span className="text-center">Plans</span>
                     <span className="text-right">Threshold</span>
@@ -62,6 +63,6 @@ export default function EnsembleSummaryTable({ ensembleSummary }) {
                 })}
 
             </div>
-        </div>
+        </SurfacePanel>
     )
 }
