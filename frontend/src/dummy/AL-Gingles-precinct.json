@@ -11,168 +11,1282 @@
   "regressionCurves": {
     "equation": "polynomial",
     "degree": 2,
-    "democratic": { "coefficients": [0.21, 0.94, -0.31], "r2": 0.87 },
-    "republican":  { "coefficients": [0.79, -0.94, 0.31], "r2": 0.85 }
+    "democratic": {
+      "coefficients": [
+        0.21,
+        0.94,
+        -0.31
+      ],
+      "r2": 0.87
+    },
+    "republican": {
+      "coefficients": [
+        0.79,
+        -0.94,
+        0.31
+      ],
+      "r2": 0.85
+    }
   },
   "bins": [
-    { "binId": 1, "rangeMin": 0,  "rangeMax": 10,  "color": "#f7fbff", "count": 312 },
-    { "binId": 2, "rangeMin": 10, "rangeMax": 20,  "color": "#c6dbef", "count": 198 },
-    { "binId": 3, "rangeMin": 20, "rangeMax": 30,  "color": "#6baed6", "count": 167 },
-    { "binId": 4, "rangeMin": 30, "rangeMax": 40,  "color": "#2171b5", "count": 143 },
-    { "binId": 5, "rangeMin": 40, "rangeMax": 50,  "color": "#084594", "count": 98  },
-    { "binId": 6, "rangeMin": 50, "rangeMax": 60,  "color": "#08306b", "count": 87  },
-    { "binId": 7, "rangeMin": 60, "rangeMax": 70,  "color": "#041d42", "count": 62  },
-    { "binId": 8, "rangeMin": 70, "rangeMax": 80,  "color": "#021530", "count": 41  },
-    { "binId": 9, "rangeMin": 80, "rangeMax": 100, "color": "#010b1e", "count": 29  }
+    {
+      "binId": 1,
+      "rangeMin": 0,
+      "rangeMax": 10,
+      "color": "#f7fbff",
+      "count": 312
+    },
+    {
+      "binId": 2,
+      "rangeMin": 10,
+      "rangeMax": 20,
+      "color": "#c6dbef",
+      "count": 198
+    },
+    {
+      "binId": 3,
+      "rangeMin": 20,
+      "rangeMax": 30,
+      "color": "#6baed6",
+      "count": 167
+    },
+    {
+      "binId": 4,
+      "rangeMin": 30,
+      "rangeMax": 40,
+      "color": "#2171b5",
+      "count": 143
+    },
+    {
+      "binId": 5,
+      "rangeMin": 40,
+      "rangeMax": 50,
+      "color": "#084594",
+      "count": 98
+    },
+    {
+      "binId": 6,
+      "rangeMin": 50,
+      "rangeMax": 60,
+      "color": "#08306b",
+      "count": 87
+    },
+    {
+      "binId": 7,
+      "rangeMin": 60,
+      "rangeMax": 70,
+      "color": "#041d42",
+      "count": 62
+    },
+    {
+      "binId": 8,
+      "rangeMin": 70,
+      "rangeMax": 80,
+      "color": "#021530",
+      "count": 41
+    },
+    {
+      "binId": 9,
+      "rangeMin": 80,
+      "rangeMax": 100,
+      "color": "#010b1e",
+      "count": 29
+    }
   ],
   "precincts": [
-    { "precinctId": "AL-PREC-001", "precinctName": "Mobile County - Precinct 1",     "groupVapPercentage": 0.42, "democraticVoteShare": 0.61, "republicanVoteShare": 0.39, "binId": 5 },
-    { "precinctId": "AL-PREC-002", "precinctName": "Mobile County - Precinct 2",     "groupVapPercentage": 0.67, "democraticVoteShare": 0.72, "republicanVoteShare": 0.28, "binId": 7 },
-    { "precinctId": "AL-PREC-003", "precinctName": "Jefferson County - Precinct 1",  "groupVapPercentage": 0.08, "democraticVoteShare": 0.31, "republicanVoteShare": 0.69, "binId": 1 },
-    { "precinctId": "AL-PREC-004", "precinctName": "Jefferson County - Precinct 2",  "groupVapPercentage": 0.55, "democraticVoteShare": 0.68, "republicanVoteShare": 0.32, "binId": 6 },
-    { "precinctId": "AL-PREC-005", "precinctName": "Montgomery County - Precinct 1", "groupVapPercentage": 0.78, "democraticVoteShare": 0.81, "republicanVoteShare": 0.19, "binId": 8 },
-    { "precinctId": "AL-PREC-006", "precinctName": "Montgomery County - Precinct 2", "groupVapPercentage": 0.83, "democraticVoteShare": 0.86, "republicanVoteShare": 0.14, "binId": 9 },
-    { "precinctId": "AL-PREC-007", "precinctName": "Madison County - Precinct 1",    "groupVapPercentage": 0.19, "democraticVoteShare": 0.38, "republicanVoteShare": 0.62, "binId": 2 },
-    { "precinctId": "AL-PREC-008", "precinctName": "Madison County - Precinct 2",    "groupVapPercentage": 0.31, "democraticVoteShare": 0.49, "republicanVoteShare": 0.51, "binId": 4 },
-    { "precinctId": "AL-PREC-009", "precinctName": "Tuscaloosa County - Precinct 1", "groupVapPercentage": 0.44, "democraticVoteShare": 0.63, "republicanVoteShare": 0.37, "binId": 5 },
-    { "precinctId": "AL-PREC-010", "precinctName": "Tuscaloosa County - Precinct 2", "groupVapPercentage": 0.23, "democraticVoteShare": 0.41, "republicanVoteShare": 0.59, "binId": 3 }
+    {
+      "precinctId": "AL-PREC-001",
+      "precinctName": "Mobile County - Precinct 1",
+      "groupVapPercentage": 0.42,
+      "democraticVoteShare": 0.61,
+      "republicanVoteShare": 0.39,
+      "binId": 5
+    },
+    {
+      "precinctId": "AL-PREC-002",
+      "precinctName": "Mobile County - Precinct 2",
+      "groupVapPercentage": 0.67,
+      "democraticVoteShare": 0.72,
+      "republicanVoteShare": 0.28,
+      "binId": 7
+    },
+    {
+      "precinctId": "AL-PREC-003",
+      "precinctName": "Jefferson County - Precinct 1",
+      "groupVapPercentage": 0.08,
+      "democraticVoteShare": 0.31,
+      "republicanVoteShare": 0.69,
+      "binId": 1
+    },
+    {
+      "precinctId": "AL-PREC-004",
+      "precinctName": "Jefferson County - Precinct 2",
+      "groupVapPercentage": 0.55,
+      "democraticVoteShare": 0.68,
+      "republicanVoteShare": 0.32,
+      "binId": 6
+    },
+    {
+      "precinctId": "AL-PREC-005",
+      "precinctName": "Montgomery County - Precinct 1",
+      "groupVapPercentage": 0.78,
+      "democraticVoteShare": 0.81,
+      "republicanVoteShare": 0.19,
+      "binId": 8
+    },
+    {
+      "precinctId": "AL-PREC-006",
+      "precinctName": "Montgomery County - Precinct 2",
+      "groupVapPercentage": 0.83,
+      "democraticVoteShare": 0.86,
+      "republicanVoteShare": 0.14,
+      "binId": 9
+    },
+    {
+      "precinctId": "AL-PREC-007",
+      "precinctName": "Madison County - Precinct 1",
+      "groupVapPercentage": 0.19,
+      "democraticVoteShare": 0.38,
+      "republicanVoteShare": 0.62,
+      "binId": 2
+    },
+    {
+      "precinctId": "AL-PREC-008",
+      "precinctName": "Madison County - Precinct 2",
+      "groupVapPercentage": 0.31,
+      "democraticVoteShare": 0.49,
+      "republicanVoteShare": 0.51,
+      "binId": 4
+    },
+    {
+      "precinctId": "AL-PREC-009",
+      "precinctName": "Tuscaloosa County - Precinct 1",
+      "groupVapPercentage": 0.44,
+      "democraticVoteShare": 0.63,
+      "republicanVoteShare": 0.37,
+      "binId": 5
+    },
+    {
+      "precinctId": "AL-PREC-010",
+      "precinctName": "Tuscaloosa County - Precinct 2",
+      "groupVapPercentage": 0.23,
+      "democraticVoteShare": 0.41,
+      "republicanVoteShare": 0.59,
+      "binId": 3
+    }
   ],
   "feasibleSeriesByRace": {
-
     "black": {
       "race": "black",
       "points": [
-        { "id": "AL-B-001", "name": "Mobile County P1",      "x": 0.3764, "y": 0.6541, "totalPop": 4200, "regionType": "urban",    "minorityPop": 2100, "avgHHIncome": 42000, "demVotes": 1177, "repVotes": 623  },
-        { "id": "AL-B-002", "name": "Mobile County P2",      "x": 0.6164, "y": 0.7631, "totalPop": 3800, "regionType": "urban",    "minorityPop": 2600, "avgHHIncome": 38500, "demVotes": 1221, "repVotes": 379  },
-        { "id": "AL-B-003", "name": "Jefferson County P1",   "x": 0.0836, "y": 0.3570, "totalPop": 5200, "regionType": "suburban", "minorityPop": 640,  "avgHHIncome": 67000, "demVotes": 999,  "repVotes": 1801 },
-        { "id": "AL-B-004", "name": "Jefferson County P2",   "x": 0.4960, "y": 0.7235, "totalPop": 3600, "regionType": "urban",    "minorityPop": 2050, "avgHHIncome": 41000, "demVotes": 1085, "repVotes": 415  },
-        { "id": "AL-B-005", "name": "Montgomery County P1",  "x": 0.7176, "y": 0.8522, "totalPop": 2800, "regionType": "urban",    "minorityPop": 2200, "avgHHIncome": 33000, "demVotes": 1023, "repVotes": 177  },
-        { "id": "AL-B-006", "name": "Montgomery County P2",  "x": 0.7736, "y": 0.9017, "totalPop": 2400, "regionType": "urban",    "minorityPop": 1970, "avgHHIncome": 30500, "demVotes": 992,  "repVotes": 108  },
-        { "id": "AL-B-007", "name": "Madison County P1",     "x": 0.1648, "y": 0.4264, "totalPop": 4800, "regionType": "suburban", "minorityPop": 980,  "avgHHIncome": 58000, "demVotes": 1023, "repVotes": 1377 },
-        { "id": "AL-B-008", "name": "Madison County P2",     "x": 0.2852, "y": 0.5353, "totalPop": 4200, "regionType": "suburban", "minorityPop": 1430, "avgHHIncome": 52000, "demVotes": 1124, "repVotes": 976  },
-        { "id": "AL-B-009", "name": "Tuscaloosa County P1",  "x": 0.4148, "y": 0.6740, "totalPop": 3200, "regionType": "urban",    "minorityPop": 1580, "avgHHIncome": 44000, "demVotes": 944,  "repVotes": 456  },
-        { "id": "AL-B-010", "name": "Tuscaloosa County P2",  "x": 0.2016, "y": 0.4561, "totalPop": 4100, "regionType": "suburban", "minorityPop": 1020, "avgHHIncome": 55000, "demVotes": 912,  "repVotes": 1088 },
-        { "id": "AL-B-011", "name": "Baldwin County P1",     "x": 0.0320, "y": 0.2650, "totalPop": 6500, "regionType": "rural",    "minorityPop": 350,  "avgHHIncome": 72000, "demVotes": 848,  "repVotes": 2352 },
-        { "id": "AL-B-012", "name": "Baldwin County P2",     "x": 0.0510, "y": 0.2420, "totalPop": 5800, "regionType": "rural",    "minorityPop": 420,  "avgHHIncome": 70000, "demVotes": 702,  "repVotes": 2198 },
-        { "id": "AL-B-013", "name": "Shelby County P1",      "x": 0.0640, "y": 0.3050, "totalPop": 7200, "regionType": "suburban", "minorityPop": 680,  "avgHHIncome": 82000, "demVotes": 1251, "repVotes": 2849 },
-        { "id": "AL-B-014", "name": "Shelby County P2",      "x": 0.0920, "y": 0.3390, "totalPop": 6800, "regionType": "suburban", "minorityPop": 870,  "avgHHIncome": 79000, "demVotes": 1288, "repVotes": 2512 },
-        { "id": "AL-B-015", "name": "Calhoun County P1",     "x": 0.1050, "y": 0.3620, "totalPop": 3800, "regionType": "urban",    "minorityPop": 550,  "avgHHIncome": 48000, "demVotes": 652,  "repVotes": 1148 },
-        { "id": "AL-B-016", "name": "Calhoun County P2",     "x": 0.1380, "y": 0.3980, "totalPop": 3500, "regionType": "urban",    "minorityPop": 660,  "avgHHIncome": 46000, "demVotes": 637,  "repVotes": 963  },
-        { "id": "AL-B-017", "name": "Lee County P1",         "x": 0.1220, "y": 0.3780, "totalPop": 4400, "regionType": "suburban", "minorityPop": 740,  "avgHHIncome": 56000, "demVotes": 832,  "repVotes": 1368 },
-        { "id": "AL-B-018", "name": "Lee County P2",         "x": 0.1740, "y": 0.4420, "totalPop": 4000, "regionType": "suburban", "minorityPop": 890,  "avgHHIncome": 54000, "demVotes": 884,  "repVotes": 1116 },
-        { "id": "AL-B-019", "name": "Etowah County P1",      "x": 0.2030, "y": 0.4700, "totalPop": 3900, "regionType": "suburban", "minorityPop": 1010, "avgHHIncome": 50000, "demVotes": 893,  "repVotes": 1007 },
-        { "id": "AL-B-020", "name": "Etowah County P2",      "x": 0.2440, "y": 0.5080, "totalPop": 3600, "regionType": "suburban", "minorityPop": 1120, "avgHHIncome": 48000, "demVotes": 914,  "repVotes": 886  },
-        { "id": "AL-B-021", "name": "Autauga County P1",     "x": 0.2680, "y": 0.5210, "totalPop": 3200, "regionType": "rural",    "minorityPop": 1000, "avgHHIncome": 45000, "demVotes": 834,  "repVotes": 766  },
-        { "id": "AL-B-022", "name": "Autauga County P2",     "x": 0.3060, "y": 0.5520, "totalPop": 2900, "regionType": "rural",    "minorityPop": 1050, "avgHHIncome": 43000, "demVotes": 800,  "repVotes": 650  },
-        { "id": "AL-B-023", "name": "Elmore County P1",      "x": 0.3310, "y": 0.5740, "totalPop": 3100, "regionType": "suburban", "minorityPop": 1200, "avgHHIncome": 51000, "demVotes": 890,  "repVotes": 660  },
-        { "id": "AL-B-024", "name": "Elmore County P2",      "x": 0.3590, "y": 0.5980, "totalPop": 2800, "regionType": "suburban", "minorityPop": 1150, "avgHHIncome": 49000, "demVotes": 837,  "repVotes": 563  },
-        { "id": "AL-B-025", "name": "Bibb County P1",        "x": 0.3870, "y": 0.6230, "totalPop": 2100, "regionType": "rural",    "minorityPop": 940,  "avgHHIncome": 36000, "demVotes": 654,  "repVotes": 396  },
-        { "id": "AL-B-026", "name": "Dallas County P1",      "x": 0.4350, "y": 0.6640, "totalPop": 2400, "regionType": "rural",    "minorityPop": 1180, "avgHHIncome": 31000, "demVotes": 730,  "repVotes": 370  },
-        { "id": "AL-B-027", "name": "Dallas County P2",      "x": 0.4780, "y": 0.7010, "totalPop": 2200, "regionType": "rural",    "minorityPop": 1200, "avgHHIncome": 29500, "demVotes": 701,  "repVotes": 299  },
-        { "id": "AL-B-028", "name": "Lowndes County P1",     "x": 0.5240, "y": 0.7350, "totalPop": 1400, "regionType": "rural",    "minorityPop": 850,  "avgHHIncome": 27000, "demVotes": 515,  "repVotes": 185  },
-        { "id": "AL-B-029", "name": "Bullock County P1",     "x": 0.5560, "y": 0.7580, "totalPop": 1200, "regionType": "rural",    "minorityPop": 780,  "avgHHIncome": 25500, "demVotes": 470,  "repVotes": 150  },
-        { "id": "AL-B-030", "name": "Perry County P1",       "x": 0.5820, "y": 0.7790, "totalPop": 1100, "regionType": "rural",    "minorityPop": 720,  "avgHHIncome": 24000, "demVotes": 436,  "repVotes": 124  },
-        { "id": "AL-B-031", "name": "Perry County P2",       "x": 0.6030, "y": 0.7980, "totalPop": 950,  "regionType": "rural",    "minorityPop": 660,  "avgHHIncome": 23000, "demVotes": 391,  "repVotes": 99   },
-        { "id": "AL-B-032", "name": "Greene County P1",      "x": 0.6450, "y": 0.8260, "totalPop": 800,  "regionType": "rural",    "minorityPop": 580,  "avgHHIncome": 22000, "demVotes": 347,  "repVotes": 73   },
-        { "id": "AL-B-033", "name": "Hale County P1",        "x": 0.6680, "y": 0.8120, "totalPop": 1000, "regionType": "rural",    "minorityPop": 740,  "avgHHIncome": 23500, "demVotes": 414,  "repVotes": 96   },
-        { "id": "AL-B-034", "name": "Marengo County P1",     "x": 0.7010, "y": 0.8470, "totalPop": 1300, "regionType": "rural",    "minorityPop": 1010, "avgHHIncome": 26000, "demVotes": 542,  "repVotes": 98   },
-        { "id": "AL-B-035", "name": "Wilcox County P1",      "x": 0.7420, "y": 0.8780, "totalPop": 900,  "regionType": "rural",    "minorityPop": 750,  "avgHHIncome": 21000, "demVotes": 404,  "repVotes": 56   },
-        { "id": "AL-B-036", "name": "Wilcox County P2",      "x": 0.7620, "y": 0.8930, "totalPop": 820,  "regionType": "rural",    "minorityPop": 700,  "avgHHIncome": 20500, "demVotes": 375,  "repVotes": 45   },
-        { "id": "AL-B-037", "name": "Sumter County P1",      "x": 0.8030, "y": 0.9120, "totalPop": 750,  "regionType": "rural",    "minorityPop": 660,  "avgHHIncome": 20000, "demVotes": 347,  "repVotes": 33   },
-        { "id": "AL-B-038", "name": "Sumter County P2",      "x": 0.8350, "y": 0.9260, "totalPop": 680,  "regionType": "rural",    "minorityPop": 620,  "avgHHIncome": 19000, "demVotes": 324,  "repVotes": 26   },
-        { "id": "AL-B-039", "name": "Macon County P1",       "x": 0.8710, "y": 0.9360, "totalPop": 600,  "regionType": "rural",    "minorityPop": 560,  "avgHHIncome": 18500, "demVotes": 290,  "repVotes": 20   },
-        { "id": "AL-B-040", "name": "Macon County P2",       "x": 0.8940, "y": 0.9480, "totalPop": 550,  "regionType": "rural",    "minorityPop": 520,  "avgHHIncome": 18000, "demVotes": 266,  "repVotes": 14   }
+        {
+          "id": "AL-B-001",
+          "name": "Mobile County P1",
+          "x": 0.3764,
+          "y": 0.6541,
+          "totalPop": 4200,
+          "regionType": "urban",
+          "minorityPop": 2100,
+          "avgHHIncome": 42000,
+          "demVotes": 1177,
+          "repVotes": 623
+        },
+        {
+          "id": "AL-B-002",
+          "name": "Mobile County P2",
+          "x": 0.6164,
+          "y": 0.7631,
+          "totalPop": 3800,
+          "regionType": "urban",
+          "minorityPop": 2600,
+          "avgHHIncome": 38500,
+          "demVotes": 1221,
+          "repVotes": 379
+        },
+        {
+          "id": "AL-B-003",
+          "name": "Jefferson County P1",
+          "x": 0.0836,
+          "y": 0.357,
+          "totalPop": 5200,
+          "regionType": "suburban",
+          "minorityPop": 640,
+          "avgHHIncome": 67000,
+          "demVotes": 999,
+          "repVotes": 1801
+        },
+        {
+          "id": "AL-B-004",
+          "name": "Jefferson County P2",
+          "x": 0.496,
+          "y": 0.7235,
+          "totalPop": 3600,
+          "regionType": "urban",
+          "minorityPop": 2050,
+          "avgHHIncome": 41000,
+          "demVotes": 1085,
+          "repVotes": 415
+        },
+        {
+          "id": "AL-B-005",
+          "name": "Montgomery County P1",
+          "x": 0.7176,
+          "y": 0.8522,
+          "totalPop": 2800,
+          "regionType": "urban",
+          "minorityPop": 2200,
+          "avgHHIncome": 33000,
+          "demVotes": 1023,
+          "repVotes": 177
+        },
+        {
+          "id": "AL-B-006",
+          "name": "Montgomery County P2",
+          "x": 0.7736,
+          "y": 0.9017,
+          "totalPop": 2400,
+          "regionType": "urban",
+          "minorityPop": 1970,
+          "avgHHIncome": 30500,
+          "demVotes": 992,
+          "repVotes": 108
+        },
+        {
+          "id": "AL-B-007",
+          "name": "Madison County P1",
+          "x": 0.1648,
+          "y": 0.4264,
+          "totalPop": 4800,
+          "regionType": "suburban",
+          "minorityPop": 980,
+          "avgHHIncome": 58000,
+          "demVotes": 1023,
+          "repVotes": 1377
+        },
+        {
+          "id": "AL-B-008",
+          "name": "Madison County P2",
+          "x": 0.2852,
+          "y": 0.5353,
+          "totalPop": 4200,
+          "regionType": "suburban",
+          "minorityPop": 1430,
+          "avgHHIncome": 52000,
+          "demVotes": 1124,
+          "repVotes": 976
+        },
+        {
+          "id": "AL-B-009",
+          "name": "Tuscaloosa County P1",
+          "x": 0.4148,
+          "y": 0.674,
+          "totalPop": 3200,
+          "regionType": "urban",
+          "minorityPop": 1580,
+          "avgHHIncome": 44000,
+          "demVotes": 944,
+          "repVotes": 456
+        },
+        {
+          "id": "AL-B-010",
+          "name": "Tuscaloosa County P2",
+          "x": 0.2016,
+          "y": 0.4561,
+          "totalPop": 4100,
+          "regionType": "suburban",
+          "minorityPop": 1020,
+          "avgHHIncome": 55000,
+          "demVotes": 912,
+          "repVotes": 1088
+        },
+        {
+          "id": "AL-B-011",
+          "name": "Baldwin County P1",
+          "x": 0.032,
+          "y": 0.265,
+          "totalPop": 6500,
+          "regionType": "rural",
+          "minorityPop": 350,
+          "avgHHIncome": 72000,
+          "demVotes": 848,
+          "repVotes": 2352
+        },
+        {
+          "id": "AL-B-012",
+          "name": "Baldwin County P2",
+          "x": 0.051,
+          "y": 0.242,
+          "totalPop": 5800,
+          "regionType": "rural",
+          "minorityPop": 420,
+          "avgHHIncome": 70000,
+          "demVotes": 702,
+          "repVotes": 2198
+        },
+        {
+          "id": "AL-B-013",
+          "name": "Shelby County P1",
+          "x": 0.064,
+          "y": 0.305,
+          "totalPop": 7200,
+          "regionType": "suburban",
+          "minorityPop": 680,
+          "avgHHIncome": 82000,
+          "demVotes": 1251,
+          "repVotes": 2849
+        },
+        {
+          "id": "AL-B-014",
+          "name": "Shelby County P2",
+          "x": 0.092,
+          "y": 0.339,
+          "totalPop": 6800,
+          "regionType": "suburban",
+          "minorityPop": 870,
+          "avgHHIncome": 79000,
+          "demVotes": 1288,
+          "repVotes": 2512
+        },
+        {
+          "id": "AL-B-015",
+          "name": "Calhoun County P1",
+          "x": 0.105,
+          "y": 0.362,
+          "totalPop": 3800,
+          "regionType": "urban",
+          "minorityPop": 550,
+          "avgHHIncome": 48000,
+          "demVotes": 652,
+          "repVotes": 1148
+        },
+        {
+          "id": "AL-B-016",
+          "name": "Calhoun County P2",
+          "x": 0.138,
+          "y": 0.398,
+          "totalPop": 3500,
+          "regionType": "urban",
+          "minorityPop": 660,
+          "avgHHIncome": 46000,
+          "demVotes": 637,
+          "repVotes": 963
+        },
+        {
+          "id": "AL-B-017",
+          "name": "Lee County P1",
+          "x": 0.122,
+          "y": 0.378,
+          "totalPop": 4400,
+          "regionType": "suburban",
+          "minorityPop": 740,
+          "avgHHIncome": 56000,
+          "demVotes": 832,
+          "repVotes": 1368
+        },
+        {
+          "id": "AL-B-018",
+          "name": "Lee County P2",
+          "x": 0.174,
+          "y": 0.442,
+          "totalPop": 4000,
+          "regionType": "suburban",
+          "minorityPop": 890,
+          "avgHHIncome": 54000,
+          "demVotes": 884,
+          "repVotes": 1116
+        },
+        {
+          "id": "AL-B-019",
+          "name": "Etowah County P1",
+          "x": 0.203,
+          "y": 0.47,
+          "totalPop": 3900,
+          "regionType": "suburban",
+          "minorityPop": 1010,
+          "avgHHIncome": 50000,
+          "demVotes": 893,
+          "repVotes": 1007
+        },
+        {
+          "id": "AL-B-020",
+          "name": "Etowah County P2",
+          "x": 0.244,
+          "y": 0.508,
+          "totalPop": 3600,
+          "regionType": "suburban",
+          "minorityPop": 1120,
+          "avgHHIncome": 48000,
+          "demVotes": 914,
+          "repVotes": 886
+        },
+        {
+          "id": "AL-B-021",
+          "name": "Autauga County P1",
+          "x": 0.268,
+          "y": 0.521,
+          "totalPop": 3200,
+          "regionType": "rural",
+          "minorityPop": 1000,
+          "avgHHIncome": 45000,
+          "demVotes": 834,
+          "repVotes": 766
+        },
+        {
+          "id": "AL-B-022",
+          "name": "Autauga County P2",
+          "x": 0.306,
+          "y": 0.552,
+          "totalPop": 2900,
+          "regionType": "rural",
+          "minorityPop": 1050,
+          "avgHHIncome": 43000,
+          "demVotes": 800,
+          "repVotes": 650
+        },
+        {
+          "id": "AL-B-023",
+          "name": "Elmore County P1",
+          "x": 0.331,
+          "y": 0.574,
+          "totalPop": 3100,
+          "regionType": "suburban",
+          "minorityPop": 1200,
+          "avgHHIncome": 51000,
+          "demVotes": 890,
+          "repVotes": 660
+        },
+        {
+          "id": "AL-B-024",
+          "name": "Elmore County P2",
+          "x": 0.359,
+          "y": 0.598,
+          "totalPop": 2800,
+          "regionType": "suburban",
+          "minorityPop": 1150,
+          "avgHHIncome": 49000,
+          "demVotes": 837,
+          "repVotes": 563
+        },
+        {
+          "id": "AL-B-025",
+          "name": "Bibb County P1",
+          "x": 0.387,
+          "y": 0.623,
+          "totalPop": 2100,
+          "regionType": "rural",
+          "minorityPop": 940,
+          "avgHHIncome": 36000,
+          "demVotes": 654,
+          "repVotes": 396
+        },
+        {
+          "id": "AL-B-026",
+          "name": "Dallas County P1",
+          "x": 0.435,
+          "y": 0.664,
+          "totalPop": 2400,
+          "regionType": "rural",
+          "minorityPop": 1180,
+          "avgHHIncome": 31000,
+          "demVotes": 730,
+          "repVotes": 370
+        },
+        {
+          "id": "AL-B-027",
+          "name": "Dallas County P2",
+          "x": 0.478,
+          "y": 0.701,
+          "totalPop": 2200,
+          "regionType": "rural",
+          "minorityPop": 1200,
+          "avgHHIncome": 29500,
+          "demVotes": 701,
+          "repVotes": 299
+        },
+        {
+          "id": "AL-B-028",
+          "name": "Lowndes County P1",
+          "x": 0.524,
+          "y": 0.735,
+          "totalPop": 1400,
+          "regionType": "rural",
+          "minorityPop": 850,
+          "avgHHIncome": 27000,
+          "demVotes": 515,
+          "repVotes": 185
+        },
+        {
+          "id": "AL-B-029",
+          "name": "Bullock County P1",
+          "x": 0.556,
+          "y": 0.758,
+          "totalPop": 1200,
+          "regionType": "rural",
+          "minorityPop": 780,
+          "avgHHIncome": 25500,
+          "demVotes": 470,
+          "repVotes": 150
+        },
+        {
+          "id": "AL-B-030",
+          "name": "Perry County P1",
+          "x": 0.582,
+          "y": 0.779,
+          "totalPop": 1100,
+          "regionType": "rural",
+          "minorityPop": 720,
+          "avgHHIncome": 24000,
+          "demVotes": 436,
+          "repVotes": 124
+        },
+        {
+          "id": "AL-B-031",
+          "name": "Perry County P2",
+          "x": 0.603,
+          "y": 0.798,
+          "totalPop": 950,
+          "regionType": "rural",
+          "minorityPop": 660,
+          "avgHHIncome": 23000,
+          "demVotes": 391,
+          "repVotes": 99
+        },
+        {
+          "id": "AL-B-032",
+          "name": "Greene County P1",
+          "x": 0.645,
+          "y": 0.826,
+          "totalPop": 800,
+          "regionType": "rural",
+          "minorityPop": 580,
+          "avgHHIncome": 22000,
+          "demVotes": 347,
+          "repVotes": 73
+        },
+        {
+          "id": "AL-B-033",
+          "name": "Hale County P1",
+          "x": 0.668,
+          "y": 0.812,
+          "totalPop": 1000,
+          "regionType": "rural",
+          "minorityPop": 740,
+          "avgHHIncome": 23500,
+          "demVotes": 414,
+          "repVotes": 96
+        },
+        {
+          "id": "AL-B-034",
+          "name": "Marengo County P1",
+          "x": 0.701,
+          "y": 0.847,
+          "totalPop": 1300,
+          "regionType": "rural",
+          "minorityPop": 1010,
+          "avgHHIncome": 26000,
+          "demVotes": 542,
+          "repVotes": 98
+        },
+        {
+          "id": "AL-B-035",
+          "name": "Wilcox County P1",
+          "x": 0.742,
+          "y": 0.878,
+          "totalPop": 900,
+          "regionType": "rural",
+          "minorityPop": 750,
+          "avgHHIncome": 21000,
+          "demVotes": 404,
+          "repVotes": 56
+        },
+        {
+          "id": "AL-B-036",
+          "name": "Wilcox County P2",
+          "x": 0.762,
+          "y": 0.893,
+          "totalPop": 820,
+          "regionType": "rural",
+          "minorityPop": 700,
+          "avgHHIncome": 20500,
+          "demVotes": 375,
+          "repVotes": 45
+        },
+        {
+          "id": "AL-B-037",
+          "name": "Sumter County P1",
+          "x": 0.803,
+          "y": 0.912,
+          "totalPop": 750,
+          "regionType": "rural",
+          "minorityPop": 660,
+          "avgHHIncome": 20000,
+          "demVotes": 347,
+          "repVotes": 33
+        },
+        {
+          "id": "AL-B-038",
+          "name": "Sumter County P2",
+          "x": 0.835,
+          "y": 0.926,
+          "totalPop": 680,
+          "regionType": "rural",
+          "minorityPop": 620,
+          "avgHHIncome": 19000,
+          "demVotes": 324,
+          "repVotes": 26
+        },
+        {
+          "id": "AL-B-039",
+          "name": "Macon County P1",
+          "x": 0.871,
+          "y": 0.936,
+          "totalPop": 600,
+          "regionType": "rural",
+          "minorityPop": 560,
+          "avgHHIncome": 18500,
+          "demVotes": 290,
+          "repVotes": 20
+        },
+        {
+          "id": "AL-B-040",
+          "name": "Macon County P2",
+          "x": 0.894,
+          "y": 0.948,
+          "totalPop": 550,
+          "regionType": "rural",
+          "minorityPop": 520,
+          "avgHHIncome": 18000,
+          "demVotes": 266,
+          "repVotes": 14
+        }
       ],
       "democraticTrendline": [
-        { "x": 0.00, "y": 0.2100 },
-        { "x": 0.25, "y": 0.5244 },
-        { "x": 0.50, "y": 0.6932 },
-        { "x": 0.75, "y": 0.8336 },
-        { "x": 1.00, "y": 0.9556 }
+        {
+          "x": 0,
+          "y": 0.21
+        },
+        {
+          "x": 0.25,
+          "y": 0.5244
+        },
+        {
+          "x": 0.5,
+          "y": 0.6932
+        },
+        {
+          "x": 0.75,
+          "y": 0.8336
+        },
+        {
+          "x": 1,
+          "y": 0.9556
+        }
       ],
       "republicanTrendline": [
-        { "x": 0.00, "y": 0.7900 },
-        { "x": 0.25, "y": 0.4756 },
-        { "x": 0.50, "y": 0.3068 },
-        { "x": 0.75, "y": 0.1664 },
-        { "x": 1.00, "y": 0.0444 }
+        {
+          "x": 0,
+          "y": 0.79
+        },
+        {
+          "x": 0.25,
+          "y": 0.4756
+        },
+        {
+          "x": 0.5,
+          "y": 0.3068
+        },
+        {
+          "x": 0.75,
+          "y": 0.1664
+        },
+        {
+          "x": 1,
+          "y": 0.0444
+        }
       ],
       "summaryRows": [
-        { "rangeLabel": "0–20%",   "precinctCount": 10, "avgDemocraticVoteShare": 0.3581 },
-        { "rangeLabel": "20–40%",  "precinctCount": 10, "avgDemocraticVoteShare": 0.5397 },
-        { "rangeLabel": "40–60%",  "precinctCount": 8,  "avgDemocraticVoteShare": 0.6988 },
-        { "rangeLabel": "60–80%",  "precinctCount": 8,  "avgDemocraticVoteShare": 0.8391 },
-        { "rangeLabel": "80–100%", "precinctCount": 4,  "avgDemocraticVoteShare": 0.9305 }
+        {
+          "rangeLabel": "0–20%",
+          "precinctCount": 10,
+          "avgDemocraticVoteShare": 0.3581
+        },
+        {
+          "rangeLabel": "20–40%",
+          "precinctCount": 10,
+          "avgDemocraticVoteShare": 0.5397
+        },
+        {
+          "rangeLabel": "40–60%",
+          "precinctCount": 8,
+          "avgDemocraticVoteShare": 0.6988
+        },
+        {
+          "rangeLabel": "60–80%",
+          "precinctCount": 8,
+          "avgDemocraticVoteShare": 0.8391
+        },
+        {
+          "rangeLabel": "80–100%",
+          "precinctCount": 4,
+          "avgDemocraticVoteShare": 0.9305
+        }
       ]
     },
-
     "white": {
       "race": "white",
       "points": [
-        { "id": "AL-W-001", "name": "Jefferson County - Ensley",        "x": 0.12, "y": 0.6440 },
-        { "id": "AL-W-002", "name": "Jefferson County - Fairfield",     "x": 0.15, "y": 0.6050 },
-        { "id": "AL-W-003", "name": "Mobile County - Prichard",         "x": 0.16, "y": 0.6230 },
-        { "id": "AL-W-004", "name": "Montgomery County - West",         "x": 0.19, "y": 0.5920 },
-        { "id": "AL-W-005", "name": "Jefferson County - Bessemer",      "x": 0.21, "y": 0.5780 },
-        { "id": "AL-W-006", "name": "Tuscaloosa County - Northport",    "x": 0.23, "y": 0.5640 },
-        { "id": "AL-W-007", "name": "Mobile County - Eight Mile",       "x": 0.25, "y": 0.5700 },
-        { "id": "AL-W-008", "name": "Lee County - Auburn West",         "x": 0.27, "y": 0.5450 },
-        { "id": "AL-W-009", "name": "Madison County - Meridianville",   "x": 0.29, "y": 0.5290 },
-        { "id": "AL-W-010", "name": "Shelby County - Alabaster N",      "x": 0.32, "y": 0.5120 },
-        { "id": "AL-W-011", "name": "St. Clair County - Pell City",     "x": 0.34, "y": 0.5010 },
-        { "id": "AL-W-012", "name": "Calhoun County - Oxford",          "x": 0.36, "y": 0.4840 },
-        { "id": "AL-W-013", "name": "Talladega County - Sylacauga",     "x": 0.38, "y": 0.4890 },
-        { "id": "AL-W-014", "name": "Etowah County - Gadsden South",    "x": 0.40, "y": 0.4710 },
-        { "id": "AL-W-015", "name": "Lee County - Opelika",             "x": 0.42, "y": 0.4630 },
-        { "id": "AL-W-016", "name": "Tuscaloosa County - Cottondale",   "x": 0.44, "y": 0.4520 },
-        { "id": "AL-W-017", "name": "Morgan County - Decatur SE",       "x": 0.46, "y": 0.4350 },
-        { "id": "AL-W-018", "name": "Madison County - Huntsville NW",   "x": 0.48, "y": 0.4440 },
-        { "id": "AL-W-019", "name": "Limestone County - Athens",        "x": 0.50, "y": 0.4200 },
-        { "id": "AL-W-020", "name": "Baldwin County - Daphne",          "x": 0.52, "y": 0.4100 },
-        { "id": "AL-W-021", "name": "Shelby County - Pelham",           "x": 0.54, "y": 0.3930 },
-        { "id": "AL-W-022", "name": "DeKalb County - Fort Payne",       "x": 0.56, "y": 0.3820 },
-        { "id": "AL-W-023", "name": "Marshall County - Guntersville",   "x": 0.58, "y": 0.3720 },
-        { "id": "AL-W-024", "name": "Calhoun County - Anniston N",      "x": 0.60, "y": 0.3600 },
-        { "id": "AL-W-025", "name": "Shelby County - Hoover SW",        "x": 0.62, "y": 0.3440 },
-        { "id": "AL-W-026", "name": "Baldwin County - Spanish Fort",    "x": 0.64, "y": 0.3330 },
-        { "id": "AL-W-027", "name": "Madison County - Jones Valley",    "x": 0.66, "y": 0.3210 },
-        { "id": "AL-W-028", "name": "Limestone County - Elkmont",       "x": 0.68, "y": 0.3140 },
-        { "id": "AL-W-029", "name": "Morgan County - Hartselle",        "x": 0.70, "y": 0.2980 },
-        { "id": "AL-W-030", "name": "Madison County - Harvest",         "x": 0.72, "y": 0.2870 },
-        { "id": "AL-W-031", "name": "Shelby County - Chelsea",          "x": 0.74, "y": 0.2760 },
-        { "id": "AL-W-032", "name": "St. Clair County - Springville",   "x": 0.76, "y": 0.2700 },
-        { "id": "AL-W-033", "name": "Baldwin County - Fairhope N",      "x": 0.78, "y": 0.2640 },
-        { "id": "AL-W-034", "name": "Blount County - Oneonta",          "x": 0.80, "y": 0.2530 },
-        { "id": "AL-W-035", "name": "Walker County - Jasper NE",        "x": 0.82, "y": 0.2420 },
-        { "id": "AL-W-036", "name": "Etowah County - Gadsden N",        "x": 0.85, "y": 0.2300 },
-        { "id": "AL-W-037", "name": "Cleburne County - Heflin",         "x": 0.87, "y": 0.2190 },
-        { "id": "AL-W-038", "name": "Cullman County - Cullman City",    "x": 0.89, "y": 0.2070 },
-        { "id": "AL-W-039", "name": "Blount County - Hayden",           "x": 0.92, "y": 0.1960 },
-        { "id": "AL-W-040", "name": "Winston County - Double Springs",  "x": 0.95, "y": 0.1820 }
+        {
+          "id": "AL-W-001",
+          "name": "Jefferson County - Ensley",
+          "x": 0.12,
+          "y": 0.644,
+          "totalPop": 3355,
+          "regionType": "urban",
+          "minorityPop": 445,
+          "avgHHIncome": 47000,
+          "demVotes": 1273,
+          "repVotes": 704
+        },
+        {
+          "id": "AL-W-002",
+          "name": "Jefferson County - Fairfield",
+          "x": 0.15,
+          "y": 0.605,
+          "totalPop": 4184,
+          "regionType": "urban",
+          "minorityPop": 692,
+          "avgHHIncome": 43000,
+          "demVotes": 1466,
+          "repVotes": 957
+        },
+        {
+          "id": "AL-W-003",
+          "name": "Mobile County - Prichard",
+          "x": 0.16,
+          "y": 0.623,
+          "totalPop": 4140,
+          "regionType": "urban",
+          "minorityPop": 744,
+          "avgHHIncome": 47000,
+          "demVotes": 1421,
+          "repVotes": 860
+        },
+        {
+          "id": "AL-W-004",
+          "name": "Montgomery County - West",
+          "x": 0.19,
+          "y": 0.592,
+          "totalPop": 4431,
+          "regionType": "urban",
+          "minorityPop": 933,
+          "avgHHIncome": 46000,
+          "demVotes": 1512,
+          "repVotes": 1042
+        },
+        {
+          "id": "AL-W-005",
+          "name": "Jefferson County - Bessemer",
+          "x": 0.21,
+          "y": 0.578,
+          "totalPop": 3801,
+          "regionType": "urban",
+          "minorityPop": 868,
+          "avgHHIncome": 53000,
+          "demVotes": 1367,
+          "repVotes": 998
+        },
+        {
+          "id": "AL-W-006",
+          "name": "Tuscaloosa County - Northport",
+          "x": 0.23,
+          "y": 0.564,
+          "totalPop": 6156,
+          "regionType": "suburban",
+          "minorityPop": 1488,
+          "avgHHIncome": 75000,
+          "demVotes": 2368,
+          "repVotes": 1830
+        },
+        {
+          "id": "AL-W-007",
+          "name": "Mobile County - Eight Mile",
+          "x": 0.25,
+          "y": 0.57,
+          "totalPop": 4268,
+          "regionType": "suburban",
+          "minorityPop": 1134,
+          "avgHHIncome": 74000,
+          "demVotes": 1442,
+          "repVotes": 1088
+        },
+        {
+          "id": "AL-W-008",
+          "name": "Lee County - Auburn West",
+          "x": 0.27,
+          "y": 0.545,
+          "totalPop": 4392,
+          "regionType": "urban",
+          "minorityPop": 1315,
+          "avgHHIncome": 54000,
+          "demVotes": 1556,
+          "repVotes": 1299
+        },
+        {
+          "id": "AL-W-009",
+          "name": "Madison County - Meridianville",
+          "x": 0.29,
+          "y": 0.529,
+          "totalPop": 5626,
+          "regionType": "suburban",
+          "minorityPop": 1809,
+          "avgHHIncome": 74000,
+          "demVotes": 1668,
+          "repVotes": 1485
+        },
+        {
+          "id": "AL-W-010",
+          "name": "Shelby County - Alabaster N",
+          "x": 0.32,
+          "y": 0.512,
+          "totalPop": 5681,
+          "regionType": "suburban",
+          "minorityPop": 1937,
+          "avgHHIncome": 78000,
+          "demVotes": 1803,
+          "repVotes": 1719
+        },
+        {
+          "id": "AL-W-011",
+          "name": "St. Clair County - Pell City",
+          "x": 0.34,
+          "y": 0.501,
+          "totalPop": 5852,
+          "regionType": "suburban",
+          "minorityPop": 2225,
+          "avgHHIncome": 75000,
+          "demVotes": 1871,
+          "repVotes": 1863
+        },
+        {
+          "id": "AL-W-012",
+          "name": "Calhoun County - Oxford",
+          "x": 0.36,
+          "y": 0.484,
+          "totalPop": 5734,
+          "regionType": "suburban",
+          "minorityPop": 2304,
+          "avgHHIncome": 73000,
+          "demVotes": 1566,
+          "repVotes": 1670
+        },
+        {
+          "id": "AL-W-013",
+          "name": "Talladega County - Sylacauga",
+          "x": 0.38,
+          "y": 0.489,
+          "totalPop": 3287,
+          "regionType": "urban",
+          "minorityPop": 1430,
+          "avgHHIncome": 47000,
+          "demVotes": 1073,
+          "repVotes": 1121
+        },
+        {
+          "id": "AL-W-014",
+          "name": "Etowah County - Gadsden South",
+          "x": 0.4,
+          "y": 0.471,
+          "totalPop": 4340,
+          "regionType": "urban",
+          "minorityPop": 1837,
+          "avgHHIncome": 46000,
+          "demVotes": 1319,
+          "repVotes": 1481
+        },
+        {
+          "id": "AL-W-015",
+          "name": "Lee County - Opelika",
+          "x": 0.42,
+          "y": 0.463,
+          "totalPop": 6151,
+          "regionType": "suburban",
+          "minorityPop": 2858,
+          "avgHHIncome": 66000,
+          "demVotes": 1973,
+          "repVotes": 2288
+        },
+        {
+          "id": "AL-W-016",
+          "name": "Tuscaloosa County - Cottondale",
+          "x": 0.44,
+          "y": 0.452,
+          "totalPop": 6825,
+          "regionType": "suburban",
+          "minorityPop": 3187,
+          "avgHHIncome": 71000,
+          "demVotes": 2099,
+          "repVotes": 2544
+        },
+        {
+          "id": "AL-W-017",
+          "name": "Morgan County - Decatur SE",
+          "x": 0.46,
+          "y": 0.435,
+          "totalPop": 3732,
+          "regionType": "urban",
+          "minorityPop": 1844,
+          "avgHHIncome": 49000,
+          "demVotes": 1127,
+          "repVotes": 1463
+        },
+        {
+          "id": "AL-W-018",
+          "name": "Madison County - Huntsville NW",
+          "x": 0.48,
+          "y": 0.444,
+          "totalPop": 6275,
+          "regionType": "suburban",
+          "minorityPop": 3384,
+          "avgHHIncome": 74000,
+          "demVotes": 1860,
+          "repVotes": 2330
+        },
+        {
+          "id": "AL-W-019",
+          "name": "Limestone County - Athens",
+          "x": 0.5,
+          "y": 0.42,
+          "totalPop": 5360,
+          "regionType": "suburban",
+          "minorityPop": 3051,
+          "avgHHIncome": 74000,
+          "demVotes": 1417,
+          "repVotes": 1957
+        },
+        {
+          "id": "AL-W-020",
+          "name": "Baldwin County - Daphne",
+          "x": 0.52,
+          "y": 0.41,
+          "totalPop": 6254,
+          "regionType": "suburban",
+          "minorityPop": 3579,
+          "avgHHIncome": 77000,
+          "demVotes": 1465,
+          "repVotes": 2108
+        },
+        {
+          "id": "AL-W-021",
+          "name": "Shelby County - Pelham",
+          "x": 0.54,
+          "y": 0.393,
+          "totalPop": 5651,
+          "regionType": "suburban",
+          "minorityPop": 3235,
+          "avgHHIncome": 81000,
+          "demVotes": 1415,
+          "repVotes": 2186
+        },
+        {
+          "id": "AL-W-022",
+          "name": "DeKalb County - Fort Payne",
+          "x": 0.56,
+          "y": 0.382,
+          "totalPop": 2392,
+          "regionType": "rural",
+          "minorityPop": 1506,
+          "avgHHIncome": 42000,
+          "demVotes": 516,
+          "repVotes": 834
+        },
+        {
+          "id": "AL-W-023",
+          "name": "Marshall County - Guntersville",
+          "x": 0.58,
+          "y": 0.372,
+          "totalPop": 3698,
+          "regionType": "rural",
+          "minorityPop": 2359,
+          "avgHHIncome": 42000,
+          "demVotes": 890,
+          "repVotes": 1502
+        },
+        {
+          "id": "AL-W-024",
+          "name": "Calhoun County - Anniston N",
+          "x": 0.6,
+          "y": 0.36,
+          "totalPop": 4730,
+          "regionType": "urban",
+          "minorityPop": 3115,
+          "avgHHIncome": 57000,
+          "demVotes": 1163,
+          "repVotes": 2068
+        },
+        {
+          "id": "AL-W-025",
+          "name": "Shelby County - Hoover SW",
+          "x": 0.62,
+          "y": 0.344,
+          "totalPop": 5547,
+          "regionType": "suburban",
+          "minorityPop": 3891,
+          "avgHHIncome": 74000,
+          "demVotes": 1144,
+          "repVotes": 2182
+        },
+        {
+          "id": "AL-W-026",
+          "name": "Baldwin County - Spanish Fort",
+          "x": 0.64,
+          "y": 0.333,
+          "totalPop": 5406,
+          "regionType": "suburban",
+          "minorityPop": 3708,
+          "avgHHIncome": 67000,
+          "demVotes": 1150,
+          "repVotes": 2304
+        },
+        {
+          "id": "AL-W-027",
+          "name": "Madison County - Jones Valley",
+          "x": 0.66,
+          "y": 0.321,
+          "totalPop": 5593,
+          "regionType": "suburban",
+          "minorityPop": 4182,
+          "avgHHIncome": 82000,
+          "demVotes": 1219,
+          "repVotes": 2578
+        },
+        {
+          "id": "AL-W-028",
+          "name": "Limestone County - Elkmont",
+          "x": 0.68,
+          "y": 0.314,
+          "totalPop": 2670,
+          "regionType": "rural",
+          "minorityPop": 2007,
+          "avgHHIncome": 50000,
+          "demVotes": 580,
+          "repVotes": 1268
+        },
+        {
+          "id": "AL-W-029",
+          "name": "Morgan County - Hartselle",
+          "x": 0.7,
+          "y": 0.298,
+          "totalPop": 2923,
+          "regionType": "rural",
+          "minorityPop": 2175,
+          "avgHHIncome": 47000,
+          "demVotes": 565,
+          "repVotes": 1331
+        },
+        {
+          "id": "AL-W-030",
+          "name": "Madison County - Harvest",
+          "x": 0.72,
+          "y": 0.287,
+          "totalPop": 5967,
+          "regionType": "suburban",
+          "minorityPop": 4748,
+          "avgHHIncome": 78000,
+          "demVotes": 996,
+          "repVotes": 2475
+        },
+        {
+          "id": "AL-W-031",
+          "name": "Shelby County - Chelsea",
+          "x": 0.74,
+          "y": 0.276,
+          "totalPop": 5651,
+          "regionType": "suburban",
+          "minorityPop": 4666,
+          "avgHHIncome": 84000,
+          "demVotes": 863,
+          "repVotes": 2265
+        },
+        {
+          "id": "AL-W-032",
+          "name": "St. Clair County - Springville",
+          "x": 0.76,
+          "y": 0.27,
+          "totalPop": 3794,
+          "regionType": "rural",
+          "minorityPop": 3306,
+          "avgHHIncome": 50000,
+          "demVotes": 581,
+          "repVotes": 1570
+        },
+        {
+          "id": "AL-W-033",
+          "name": "Baldwin County - Fairhope N",
+          "x": 0.78,
+          "y": 0.264,
+          "totalPop": 5582,
+          "regionType": "suburban",
+          "minorityPop": 4606,
+          "avgHHIncome": 68000,
+          "demVotes": 996,
+          "repVotes": 2778
+        },
+        {
+          "id": "AL-W-034",
+          "name": "Blount County - Oneonta",
+          "x": 0.8,
+          "y": 0.253,
+          "totalPop": 2809,
+          "regionType": "rural",
+          "minorityPop": 2418,
+          "avgHHIncome": 45000,
+          "demVotes": 482,
+          "repVotes": 1423
+        },
+        {
+          "id": "AL-W-035",
+          "name": "Walker County - Jasper NE",
+          "x": 0.82,
+          "y": 0.242,
+          "totalPop": 2482,
+          "regionType": "rural",
+          "minorityPop": 2333,
+          "avgHHIncome": 51000,
+          "demVotes": 363,
+          "repVotes": 1137
+        },
+        {
+          "id": "AL-W-036",
+          "name": "Etowah County - Gadsden N",
+          "x": 0.85,
+          "y": 0.23,
+          "totalPop": 4430,
+          "regionType": "urban",
+          "minorityPop": 4124,
+          "avgHHIncome": 47000,
+          "demVotes": 586,
+          "repVotes": 1961
+        },
+        {
+          "id": "AL-W-037",
+          "name": "Cleburne County - Heflin",
+          "x": 0.87,
+          "y": 0.219,
+          "totalPop": 6771,
+          "regionType": "suburban",
+          "minorityPop": 6647,
+          "avgHHIncome": 87000,
+          "demVotes": 827,
+          "repVotes": 2950
+        },
+        {
+          "id": "AL-W-038",
+          "name": "Cullman County - Cullman City",
+          "x": 0.89,
+          "y": 0.207,
+          "totalPop": 2941,
+          "regionType": "rural",
+          "minorityPop": 2617,
+          "avgHHIncome": 50000,
+          "demVotes": 376,
+          "repVotes": 1441
+        },
+        {
+          "id": "AL-W-039",
+          "name": "Blount County - Hayden",
+          "x": 0.92,
+          "y": 0.196,
+          "totalPop": 3296,
+          "regionType": "rural",
+          "minorityPop": 3032,
+          "avgHHIncome": 42000,
+          "demVotes": 405,
+          "repVotes": 1660
+        },
+        {
+          "id": "AL-W-040",
+          "name": "Winston County - Double Springs",
+          "x": 0.95,
+          "y": 0.182,
+          "totalPop": 2396,
+          "regionType": "rural",
+          "minorityPop": 2276,
+          "avgHHIncome": 52000,
+          "demVotes": 302,
+          "repVotes": 1359
+        }
       ],
       "democraticTrendline": [
-        { "x": 0.00, "y": 0.6800 },
-        { "x": 0.25, "y": 0.5400 },
-        { "x": 0.50, "y": 0.4000 },
-        { "x": 0.75, "y": 0.2600 },
-        { "x": 1.00, "y": 0.1650 }
+        {
+          "x": 0,
+          "y": 0.68
+        },
+        {
+          "x": 0.25,
+          "y": 0.54
+        },
+        {
+          "x": 0.5,
+          "y": 0.4
+        },
+        {
+          "x": 0.75,
+          "y": 0.26
+        },
+        {
+          "x": 1,
+          "y": 0.165
+        }
       ],
       "republicanTrendline": [
-        { "x": 0.00, "y": 0.3200 },
-        { "x": 0.25, "y": 0.4600 },
-        { "x": 0.50, "y": 0.6000 },
-        { "x": 0.75, "y": 0.7400 },
-        { "x": 1.00, "y": 0.8350 }
+        {
+          "x": 0,
+          "y": 0.32
+        },
+        {
+          "x": 0.25,
+          "y": 0.46
+        },
+        {
+          "x": 0.5,
+          "y": 0.6
+        },
+        {
+          "x": 0.75,
+          "y": 0.74
+        },
+        {
+          "x": 1,
+          "y": 0.835
+        }
       ],
       "summaryRows": [
-        { "rangeLabel": "0–20%",   "precinctCount": 5,  "avgDemocraticVoteShare": 0.6084 },
-        { "rangeLabel": "20–40%",  "precinctCount": 10, "avgDemocraticVoteShare": 0.4929 },
-        { "rangeLabel": "40–60%",  "precinctCount": 11, "avgDemocraticVoteShare": 0.4227 },
-        { "rangeLabel": "60–80%",  "precinctCount": 10, "avgDemocraticVoteShare": 0.3016 },
-        { "rangeLabel": "80–100%", "precinctCount": 4,  "avgDemocraticVoteShare": 0.2138 }
+        {
+          "rangeLabel": "0–20%",
+          "precinctCount": 5,
+          "avgDemocraticVoteShare": 0.6084
+        },
+        {
+          "rangeLabel": "20–40%",
+          "precinctCount": 10,
+          "avgDemocraticVoteShare": 0.4929
+        },
+        {
+          "rangeLabel": "40–60%",
+          "precinctCount": 11,
+          "avgDemocraticVoteShare": 0.4227
+        },
+        {
+          "rangeLabel": "60–80%",
+          "precinctCount": 10,
+          "avgDemocraticVoteShare": 0.3016
+        },
+        {
+          "rangeLabel": "80–100%",
+          "precinctCount": 4,
+          "avgDemocraticVoteShare": 0.2138
+        }
       ]
     }
-
   }
 }
-

@@ -52,11 +52,6 @@ export default function DemographicSection({ data, stateId }) {
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-brand-darkest tracking-tight">
                     Demographic Analysis
                 </h2>
-                {s?.stateName && (
-                    <span className="text-xs text-brand-muted/60 font-medium tracking-wide hidden sm:block">
-                        {s.stateName}
-                    </span>
-                )}
             </div>
 
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">

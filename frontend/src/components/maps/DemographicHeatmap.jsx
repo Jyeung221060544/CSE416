@@ -10,7 +10,7 @@
  *   features: [{ idx, binId }]                         (no raw percentages)
  *
  * Geometry sources:
- *   precinct     → ALPrecinct_4326.json  (1947 real precincts, WGS84)
+ *   precinct     → ALPrecinctMap.json  (1947 real precincts, WGS84)
  *   census_block → ALBlock-sample.json  (100 real census blocks, NW Alabama)
  *
  * TODO: Replace with backend tile endpoint once available:
@@ -21,8 +21,8 @@ import { useEffect } from 'react'
 import { MapContainer, GeoJSON, TileLayer, useMap } from 'react-leaflet'
 import L from 'leaflet'
 
-import ALPrecinctFull from '../../assets/ALPrecinct_4326.json'
-import ALBlockSample  from '../../assets/ALBlock-sample.json'
+import ALPrecinctFull from '../../assets/ALPrecinctMap.json'
+import ALBlockSample  from '../../assets/ALBlockMap.json'
 import ALDistricts    from '../../assets/ALCongressionalDistricts.json'
 import ORDistricts    from '../../assets/ORCongressionalDistrict.json'
 

@@ -68,12 +68,7 @@ export default function RacialPolarizationSection({ data, stateId }) {
                         <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-brand-darkest tracking-tight">
                             Gingles Analysis
                         </h2>
-                    </div>
-                    {stateId && (
-                        <span className="text-xs text-brand-muted/60 font-medium tracking-wide hidden sm:block">
-                            2024 Precinct Election Results
-                        </span>
-                    )}
+                    </div>                    
                 </div>
 
                 {/* Scatter (left) + Precinct table (right) */}
@@ -116,11 +111,6 @@ export default function RacialPolarizationSection({ data, stateId }) {
                             Ecological Inference
                         </h2>
                     </div>
-                    {stateId && (
-                        <span className="text-xs text-brand-muted/60 font-medium tracking-wide hidden sm:block">
-                            2024 Presidential Election · PyEI / MGGG
-                        </span>
-                    )}
                 </div>
 
                 {/* Two KDE charts side by side */}

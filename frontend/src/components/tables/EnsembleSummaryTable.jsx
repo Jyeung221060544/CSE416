@@ -1,15 +1,8 @@
-import { Badge } from '@/components/ui/badge'
 import SurfacePanel from '@/components/ui/surface-panel'
 
 const TYPE_META = {
-    'race-blind': {
-        label: 'Race-Blind',
-        badge: 'text-gray-700 border-gray-300 bg-gray-50',
-    },
-    'vra-constrained': {
-        label: 'VRA-Constrained',
-        badge: 'text-brand-primary border-brand-primary/40 bg-brand-primary/5',
-    },
+    'race-blind':      { label: 'Race-Blind' },
+    'vra-constrained': { label: 'VRA-Constrained' },
 }
 
 export default function EnsembleSummaryTable({ ensembleSummary }) {
@@ -29,7 +22,7 @@ export default function EnsembleSummaryTable({ ensembleSummary }) {
 
                 {/* Rows */}
                 {ensembles.map((e, i) => {
-                    const meta = TYPE_META[e.ensembleType] ?? { label: e.ensembleType, badge: TYPE_META['race-blind'].badge }
+                    const meta = TYPE_META[e.ensembleType] ?? { label: e.ensembleType }
                     const threshold = e.populationEqualityThreshold != null
                         ? `±${(e.populationEqualityThreshold * 100).toFixed(0)}%`
                         : '—'
@@ -44,12 +37,9 @@ export default function EnsembleSummaryTable({ ensembleSummary }) {
                                 i % 2 === 0 ? 'bg-white' : 'bg-brand-surface/60',
                             ].join(' ')}
                         >
-                            <Badge
-                                variant="outline"
-                                className={`w-fit text-sm font-semibold px-2.5 ${meta.badge}`}
-                            >
+                            <span className="font-bold text-sm text-brand-deep">
                                 {meta.label}
-                            </Badge>
+                            </span>
 
                             <span className="text-center tabular-nums font-bold text-brand-deep text-sm">
                                 {e.numPlans.toLocaleString()}

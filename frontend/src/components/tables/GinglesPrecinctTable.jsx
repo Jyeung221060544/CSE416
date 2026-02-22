@@ -20,7 +20,7 @@ function fmt(n)       { return n?.toLocaleString() ?? '—' }
 function fmtIncome(n) { return n == null ? '—' : '$' + (n / 1000).toFixed(0) + 'k' }
 
 export default function GinglesPrecinctTable({ points = [], selectedId, onSelectId }) {
-    const rows = points.filter(p => p.totalPop != null) // only enriched black points
+    const rows = points.filter(p => p.totalPop != null) // only enriched points (black + white)
 
     // ── Auto-jump to page of selectedId ──────────────────────────────────────
     const [page, setPage] = useState(0)

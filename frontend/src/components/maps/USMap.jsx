@@ -19,7 +19,7 @@
  */
 
 import { useRef, useEffect } from 'react'
-import { MapContainer, GeoJSON, useMap } from 'react-leaflet'
+import { MapContainer, TileLayer, GeoJSON, useMap } from 'react-leaflet'
 import { useNavigate } from 'react-router-dom'
 import useAppStore from '../../store/useAppStore'
 import splashData from '../../dummy/splash-states.json'   // TODO: replace with GET /api/states
@@ -105,9 +105,13 @@ export default function USMap({ onStateHover }) {
             dragging={false}
             touchZoom={false}
             attributionControl={false}
-            style={{ height: '100%', width: '100%', background: 'transparent' }}
+            style={{ height: '100%', width: '100%', background: '#071e28' }}
         >
             <SizeInvalidator />
+            <TileLayer
+                url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+            />
             <GeoJSON
                 ref={geoJsonRef}
                 data={usGeoJson}

@@ -174,9 +174,6 @@ export default function EIBarChart({ demCandidate, repCandidate, activeRaces, cl
                     </svg>
                     <span style={{ fontSize: 11, fontWeight: 500, color: '#94a3b8' }}>95% CI</span>
                 </div>
-                <span className="ml-auto text-[11px] font-semibold text-slate-500 opacity-70 select-none">
-                    Peak EI vote-share estimate by racial group
-                </span>
             </div>
 
             {/* Chart */}

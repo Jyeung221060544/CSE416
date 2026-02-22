@@ -88,8 +88,10 @@ function makeEnactedLayer(enactedLabel) {
 
 // ── Tooltip ─────────────────────────────────────────────────────────────────
 function SplitTooltip({ indexValue, value, data }) {
-    const isRMaj = data.r > data.d
-    const isDMaj = data.d > data.r
+    const r = data.r ?? 0
+    const d = data.d ?? 0
+    const isRMaj = r > d
+    const isDMaj = d > r
     const color  = isRMaj ? REP_COLOR : isDMaj ? DEM_COLOR : TIE_COLOR
     const pct    = ((value / data.total) * 100).toFixed(1)
     return (
@@ -152,7 +154,8 @@ export default function EnsembleSplitChart({ ensembleData, enactedSplit, yMax, c
     const enactedLayer = useMemo(() => makeEnactedLayer(enactedLabel), [enactedLabel])
 
     const getBarColor = bar => {
-        const { r, d } = bar.data
+        const r = bar.data.r ?? 0
+        const d = bar.data.d ?? 0
         if (r > d) return REP_COLOR
         if (d > r) return DEM_COLOR
         return TIE_COLOR

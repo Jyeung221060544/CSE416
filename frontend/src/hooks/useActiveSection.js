@@ -7,6 +7,7 @@ const SECTION_IDS = ['state-overview', 'demographic', 'racial-polarization', 'en
 // Sub-sections nested inside a parent section
 const SUB_SECTIONS = {
     'racial-polarization': ['gingles-analysis', 'ecological-inference'],
+    'ensemble-analysis':   ['ensemble-splits', 'box-whisker'],
 }
 
 export default function useActiveSection(scrollRef) {

@@ -195,9 +195,6 @@ export default function EIKDEChart({ candidate, activeRaces, yMax, className }) 
                 <span className="text-xs text-slate-400 font-medium ml-1">
                     ({candidate.party})
                 </span>
-                <span className="ml-auto text-[11px] text-slate-400 font-medium select-none">
-                    Estimated vote share by racial group
-                </span>
             </div>
 
             {/* Legend row */}
