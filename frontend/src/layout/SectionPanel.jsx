@@ -19,9 +19,15 @@ const RP_SUBSECTIONS = [
     { id: 'ecological-inference', label: 'Ecological Inference' },
 ]
 
+const EA_SUBSECTIONS = [
+    { id: 'ensemble-splits', label: 'Ensemble Splits' },
+    { id: 'box-whisker',     label: 'Box & Whisker' },
+]
+
 export default function SectionPanel({ collapsed }) {
     const { activeSection, setActiveSection, activeSubSection, setActiveSubSection } = useAppStore()
-    const [subOpen, setSubOpen] = useState(true)
+    const [subOpen,   setSubOpen]   = useState(true)
+    const [subOpenEA, setSubOpenEA] = useState(true)
 
     const scrollToSection = (id) => {
         lockScroll()
@@ -30,22 +36,29 @@ export default function SectionPanel({ collapsed }) {
         if (el) el.scrollIntoView({ behavior: 'smooth' })
     }
 
-    const scrollToSubSection = (id) => {
+    const scrollToSubSection = (id, parentId) => {
         lockScroll()
         setActiveSubSection(id)
-        setActiveSection('racial-polarization')
+        setActiveSection(parentId)
         const el = document.getElementById(id)
         if (el) el.scrollIntoView({ behavior: 'smooth' })
     }
 
     const handleRPClick = () => {
         if (activeSection === 'racial-polarization') {
-            // Already active → toggle the sub-nav open/closed
             setSubOpen(o => !o)
         } else {
-            // Navigate to section and open sub-nav
             setSubOpen(true)
             scrollToSection('racial-polarization')
+        }
+    }
+
+    const handleEAClick = () => {
+        if (activeSection === 'ensemble-analysis') {
+            setSubOpenEA(o => !o)
+        } else {
+            setSubOpenEA(true)
+            scrollToSection('ensemble-analysis')
         }
     }
 
@@ -69,6 +82,13 @@ export default function SectionPanel({ collapsed }) {
                 {SECTIONS.map((section) => {
                     const isActive = activeSection === section.id
                     const isRP = section.id === 'racial-polarization'
+                    const isEA = section.id === 'ensemble-analysis'
+                    const hasSubNav = isRP || isEA
+
+                    const handleClick = isRP ? handleRPClick : isEA ? handleEAClick : () => scrollToSection(section.id)
+                    const subNavOpen  = isRP ? subOpen : subOpenEA
+                    const subsections = isRP ? RP_SUBSECTIONS : EA_SUBSECTIONS
+                    const parentId    = isRP ? 'racial-polarization' : 'ensemble-analysis'
 
                     return (
                         <div key={section.id}>
@@ -79,7 +99,7 @@ export default function SectionPanel({ collapsed }) {
                                             <Button
                                                 variant="ghost"
                                                 size="icon"
-                                                onClick={() => isRP ? handleRPClick() : scrollToSection(section.id)}
+                                                onClick={handleClick}
                                                 className={`
                                                     w-8 h-8 mx-auto
                                                     ${isActive
@@ -101,7 +121,7 @@ export default function SectionPanel({ collapsed }) {
                                 <Button
                                     variant="ghost"
                                     size="sm"
-                                    onClick={() => isRP ? handleRPClick() : scrollToSection(section.id)}
+                                    onClick={handleClick}
                                     className={`
                                         w-full justify-between text-sm font-medium
                                         transition-colors duration-150
@@ -113,21 +133,21 @@ export default function SectionPanel({ collapsed }) {
                                     `}
                                 >
                                     <span>{section.label}</span>
-                                    {/* Chevron for RP pill only */}
-                                    {isRP && !collapsed && (
-                                        subOpen && isActive
+                                    {/* Chevron for sections with subsections */}
+                                    {hasSubNav && !collapsed && (
+                                        subNavOpen && isActive
                                             ? <ChevronDown className="w-3.5 h-3.5 opacity-70 shrink-0" />
                                             : <ChevronRight className="w-3.5 h-3.5 opacity-70 shrink-0" />
                                     )}
                                 </Button>
                             )}
 
-                            {/* Sub-section tabs — visible only when RP is active and subOpen */}
-                            {isRP && isActive && subOpen && (
+                            {/* Sub-section tabs */}
+                            {hasSubNav && isActive && subNavOpen && (
                                 <SubSectionNav
-                                    subsections={RP_SUBSECTIONS}
+                                    subsections={subsections}
                                     activeId={activeSubSection}
-                                    onSelect={scrollToSubSection}
+                                    onSelect={(id) => scrollToSubSection(id, parentId)}
                                     collapsed={collapsed}
                                 />
                             )}

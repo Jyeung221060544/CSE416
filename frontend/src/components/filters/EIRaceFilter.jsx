@@ -6,6 +6,7 @@ const EI_RACE_OPTIONS = [
     { value: 'black',    label: 'Black' },
     { value: 'hispanic', label: 'Hispanic' },
     { value: 'asian',    label: 'Asian' },
+    { value: 'other',    label: 'Other' },
 ]
 
 export default function EIRaceFilter() {

@@ -176,79 +176,77 @@ export default function GinglesScatterPlot({ ginglesData, raceFilter, selectedId
 
     // ── Render ────────────────────────────────────────────────────────────────
     return (
-        <div className={`w-full rounded-xl border border-brand-muted/25 shadow-sm bg-white overflow-hidden relative ${className ?? 'h-[404px]'}`}>
+        <div className={`w-full rounded-xl border border-brand-muted/25 shadow-sm bg-white flex flex-col ${className ?? 'h-[404px]'}`}>
             {points.length === 0 ? (
                 <div className="h-full flex items-center justify-center text-brand-muted/60 text-sm italic">
                     No Gingles scatter data available for this race.
                 </div>
             ) : (
                 <>
-                    {/* Sample size */}
-                    <span className="absolute top-3 left-[76px] text-[11px] font-semibold text-slate-500 opacity-70 z-10 pointer-events-none select-none">
-                        n = {points.length} precincts
-                    </span>
+                    {/* Legend row */}
+                    <div className="flex items-center gap-5 px-4 pt-3 pb-1 flex-shrink-0">
+                        <div className="flex items-center gap-1.5">
+                            <span style={{ width: 10, height: 10, borderRadius: '50%', background: DEM_COLOR, display: 'inline-block', flexShrink: 0 }} />
+                            <span style={{ fontSize: 12, fontWeight: 600, color: LABEL_COLOR }}>Democratic</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                            <span style={{ width: 10, height: 10, borderRadius: '50%', background: REP_COLOR, display: 'inline-block', flexShrink: 0 }} />
+                            <span style={{ fontSize: 12, fontWeight: 600, color: LABEL_COLOR }}>Republican</span>
+                        </div>
+                        <span className="ml-auto text-[11px] font-semibold text-slate-500 opacity-70 select-none">
+                            n = {points.length} precincts
+                        </span>
+                    </div>
 
-                    <ResponsiveScatterPlot
-                        data={nivoData}
-                        margin={{ top: 32, right: 36, bottom: 64, left: 72 }}
-                        xScale={{ type: 'linear', min: 0, max: 1 }}
-                        yScale={{ type: 'linear', min: 0, max: 1 }}
-                        colors={[DEM_COLOR, REP_COLOR]}
-                        theme={NIVO_THEME}
+                    {/* Chart fills remaining height */}
+                    <div className="flex-1 min-h-0">
+                        <ResponsiveScatterPlot
+                            data={nivoData}
+                            margin={{ top: 16, right: 36, bottom: 64, left: 72 }}
+                            xScale={{ type: 'linear', min: 0, max: 1 }}
+                            yScale={{ type: 'linear', min: 0, max: 1 }}
+                            colors={[DEM_COLOR, REP_COLOR]}
+                            theme={NIVO_THEME}
 
-                        layers={[
-                            bgLayer,
-                            'grid',
-                            'axes',
-                            thresholdLayer,
-                            trendlineLayer,
-                            customNodesLayer,
-                            'mesh',
-                            'legends',
-                        ]}
+                            layers={[
+                                bgLayer,
+                                'grid',
+                                'axes',
+                                thresholdLayer,
+                                trendlineLayer,
+                                customNodesLayer,
+                                'mesh',
+                            ]}
 
-                        gridXValues={[0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]}
-                        gridYValues={[0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]}
+                            gridXValues={[0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]}
+                            gridYValues={[0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]}
 
-                        axisBottom={{
-                            tickSize: 7,
-                            tickPadding: 5,
-                            format: v => `${Math.round(v * 100)}%`,
-                            tickValues: [0, 0.25, 0.5, 0.75, 1],
-                            legend: `${raceName} Group VAP Share`,
-                            legendOffset: 50,
-                            legendPosition: 'middle',
-                        }}
-                        axisLeft={{
-                            tickSize: 7,
-                            tickPadding: 5,
-                            format: v => `${Math.round(v * 100)}%`,
-                            tickValues: [0, 0.25, 0.5, 0.75, 1],
-                            legend: 'Vote Share',
-                            legendOffset: -58,
-                            legendPosition: 'middle',
-                        }}
+                            axisBottom={{
+                                tickSize: 6,
+                                tickPadding: 5,
+                                format: v => `${Math.round(v * 100)}%`,
+                                tickValues: [0, 0.25, 0.5, 0.75, 1],
+                                legend: `${raceName} Group VAP Share`,
+                                legendOffset: 50,
+                                legendPosition: 'middle',
+                            }}
+                            axisLeft={{
+                                tickSize: 6,
+                                tickPadding: 5,
+                                format: v => `${Math.round(v * 100)}%`,
+                                tickValues: [0, 0.25, 0.5, 0.75, 1],
+                                legend: 'Vote Share',
+                                legendOffset: -58,
+                                legendPosition: 'middle',
+                            }}
 
-                        tooltip={GinglesTooltip}
-                        isInteractive
-                        onClick={node => onDotClick?.(
-                            node.data.precinctId === selectedId ? null : node.data.precinctId
-                        )}
-
-                        legends={[{
-                            anchor: 'top-right',
-                            direction: 'column',
-                            justify: false,
-                            translateX: -8,
-                            translateY: 8,
-                            itemWidth: 120,
-                            itemHeight: 24,
-                            itemsSpacing: 4,
-                            symbolSize: 10,
-                            symbolShape: 'circle',
-                            itemTextColor: LABEL_COLOR,
-                        }]}
-                    />
+                            tooltip={GinglesTooltip}
+                            isInteractive
+                            onClick={node => onDotClick?.(
+                                node.data.precinctId === selectedId ? null : node.data.precinctId
+                            )}
+                        />
+                    </div>
                 </>
             )}
         </div>

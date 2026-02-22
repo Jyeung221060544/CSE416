@@ -7,7 +7,7 @@
  * ║                                                                      ║
  * ║  Replace with:  GET /api/states/:stateId/districts/geojson          ║
  * ║    → returns GeoJSON FeatureCollection                              ║
- * ║    → each Feature.properties.CD118FP  = district number (string)   ║
+ * ║    → each Feature.properties.CD119FP  = district number (string)   ║
  * ║    → each Feature.properties.NAMELSAD20 = "Congressional District N"║
  * ║                                                                      ║
  * ║  Also: state center/zoom comes from splash-states.json (dummy).     ║
@@ -19,7 +19,7 @@ import { useRef, useEffect, useCallback } from 'react'
 import { MapContainer, GeoJSON, TileLayer, useMap } from 'react-leaflet'
 import L from 'leaflet'
 import useAppStore from '../../store/useAppStore'
-import ALDistricts from '../../assets/ALCongressionalDistrict.json'
+import ALDistricts from '../../assets/ALCongressionalDistricts.json'
 import ORDistricts from '../../assets/ORCongressionalDistrict.json'
 
 // ── Static lookups ────────────────────────────────────────────────────
@@ -27,7 +27,7 @@ const DISTRICT_GEOJSON = { AL: ALDistricts, OR: ORDistricts }
 
 // ── Styles ────────────────────────────────────────────────────────────
 function getStyle(feature, districtByNumber, selectedDistrict) {
-    const distNum  = parseInt(feature.properties.CD118FP, 10)
+    const distNum  = parseInt(feature.properties.CD119FP, 10)
     const distData = districtByNumber[distNum]
     const isSelected = distNum === selectedDistrict
 
@@ -107,7 +107,7 @@ export default function DistrictMap2022({ stateId, districtSummary }) {
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const onEachFeature = useCallback((feature, layer) => {
-        const distNum = parseInt(feature.properties.CD118FP, 10)
+        const distNum = parseInt(feature.properties.CD119FP, 10)
 
         layer.on({
             mouseover(e) {

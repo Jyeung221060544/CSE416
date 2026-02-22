@@ -1,16 +1,44 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import SectionHeader from '@/components/ui/section-header'
 import useAppStore from '../../store/useAppStore'
 import GinglesScatterPlot from '../charts/GinglesScatterPlot'
 import GinglesPrecinctTable from '../tables/GinglesPrecinctTable'
+import EIKDEChart from '../charts/EIKDEChart'
+import EIBarChart from '../charts/EIBarChart'
 
 export default function RacialPolarizationSection({ data, stateId }) {
     const feasibleRaceFilter = useAppStore(s => s.feasibleRaceFilter)
-    const ginglesPrecinct    = data?.ginglesPrecinct ?? null
-    const series             = ginglesPrecinct?.feasibleSeriesByRace?.[feasibleRaceFilter] ?? null
+    const eiRaceFilter       = useAppStore(s => s.eiRaceFilter)
+
+    const ginglesPrecinct = data?.ginglesPrecinct ?? null
+    const eiData          = data?.ei ?? null
+    const series          = ginglesPrecinct?.feasibleSeriesByRace?.[feasibleRaceFilter] ?? null
 
     const [selectedId, setSelectedId] = useState(null)
     useEffect(() => { setSelectedId(null) }, [feasibleRaceFilter])
+
+    // Find Dem / Rep candidate entries for EI
+    const demCandidate = useMemo(
+        () => eiData?.candidates?.find(c => c.party === 'Democratic') ?? null,
+        [eiData]
+    )
+    const repCandidate = useMemo(
+        () => eiData?.candidates?.find(c => c.party === 'Republican') ?? null,
+        [eiData]
+    )
+
+    // Shared y-axis max across both charts + all selected races (keeps them synced)
+    const eiYMax = useMemo(() => {
+        if (!eiData) return 10
+        let max = 0
+        eiData.candidates.forEach(candidate => {
+            candidate.racialGroups.forEach(group => {
+                if (!eiRaceFilter.includes(group.group.toLowerCase())) return
+                group.kdePoints.forEach(pt => { if (pt.y > max) max = pt.y })
+            })
+        })
+        return Math.ceil(max * 1.1 * 10) / 10
+    }, [eiData, eiRaceFilter])
 
     if (stateId !== 'AL') {
         return (
@@ -75,7 +103,7 @@ export default function RacialPolarizationSection({ data, stateId }) {
             </div>
 
             {/* ══════════════════════════════════════════════════════════
-                Sub-section 2: Ecological Inference (placeholder)
+                Sub-section 2: Ecological Inference  (GUI-12)
             ══════════════════════════════════════════════════════════ */}
             <div id="ecological-inference" className="p-4 sm:p-6 lg:p-8">
 
@@ -88,13 +116,46 @@ export default function RacialPolarizationSection({ data, stateId }) {
                             Ecological Inference
                         </h2>
                     </div>
+                    {stateId && (
+                        <span className="text-xs text-brand-muted/60 font-medium tracking-wide hidden sm:block">
+                            2024 Presidential Election · PyEI / MGGG
+                        </span>
+                    )}
                 </div>
 
-                <div className="rounded-xl border border-dashed border-brand-muted/30 bg-brand-surface/20 p-10 flex items-center justify-center min-h-[240px]">
-                    <p className="text-brand-muted/50 text-sm italic">
-                        Ecological inference analysis coming soon.
-                    </p>
+                {/* Two KDE charts side by side */}
+                <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 items-start">
+                    <div className="flex flex-col gap-3">
+                        <SectionHeader title="Democratic Support" />
+                        <EIKDEChart
+                            candidate={demCandidate}
+                            activeRaces={eiRaceFilter}
+                            yMax={eiYMax}
+                            className="h-[400px]"
+                        />
+                    </div>
+                    <div className="flex flex-col gap-3">
+                        <SectionHeader title="Republican Support" />
+                        <EIKDEChart
+                            candidate={repCandidate}
+                            activeRaces={eiRaceFilter}
+                            yMax={eiYMax}
+                            className="h-[400px]"
+                        />
+                    </div>
                 </div>
+
+                {/* GUI-13: Bar chart of peak EI estimates with CI */}
+                <div className="flex flex-col gap-3 mt-6">
+                    <SectionHeader title="Peak Support Estimates" />
+                    <EIBarChart
+                        demCandidate={demCandidate}
+                        repCandidate={repCandidate}
+                        activeRaces={eiRaceFilter}
+                        className="h-[420px]"
+                    />
+                </div>
+
 
             </div>
 

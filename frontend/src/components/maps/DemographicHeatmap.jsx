@@ -23,7 +23,7 @@ import L from 'leaflet'
 
 import ALPrecinctFull from '../../assets/ALPrecinct_4326.json'
 import ALBlockSample  from '../../assets/ALBlock-sample.json'
-import ALDistricts    from '../../assets/ALCongressionalDistrict.json'
+import ALDistricts    from '../../assets/ALCongressionalDistricts.json'
 import ORDistricts    from '../../assets/ORCongressionalDistrict.json'
 
 // ── GeoJSON lookup ─────────────────────────────────────────────────────
