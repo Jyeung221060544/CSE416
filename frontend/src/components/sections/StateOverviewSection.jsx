@@ -1,30 +1,72 @@
+/**
+ * StateOverviewSection.jsx — First section on StatePage (id="state-overview").
+ *
+ * LAYOUT
+ *   ┌──────────────────────────────────┬───────────────────────────────┐
+ *   │  DistrictMap2024                 │  Summary panel OR             │
+ *   │  (interactive choropleth)        │  DistrictDetailCard           │
+ *   │                                  │  (when a district is selected)│
+ *   ├──────────────────────────────────┼───────────────────────────────┤
+ *   │  CongressionalTable              │  EnsembleSummaryTable         │
+ *   │  (click row → select district)   │  DemographicPopulationTable   │
+ *   └──────────────────────────────────┴───────────────────────────────┘
+ *
+ * PROPS
+ *   data    {object|null} — Full state data bundle from useStateData.
+ *   stateId {string}      — Two-letter state abbreviation (e.g. 'AL').
+ *
+ * STATE SOURCES
+ *   selectedDistrict / setSelectedDistrict — Zustand; district number (1-based int).
+ *   raceFilter / setRaceFilter             — Zustand; active race for population table.
+ */
+
 import { MapPin, ArrowLeft, MousePointerClick } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import SectionHeader from '@/components/ui/section-header'
-import MapFrame from '@/components/ui/map-frame'
-import InfoCallout from '@/components/ui/info-callout'
-import useAppStore from '../../store/useAppStore'
-import DistrictMap2022 from '../maps/DistrictMap2024'
-import CongressionalTable from '../tables/CongressionalTable'
-import EnsembleSummaryTable from '../tables/EnsembleSummaryTable'
+import SectionHeader  from '@/components/ui/section-header'
+import MapFrame       from '@/components/ui/map-frame'
+import InfoCallout    from '@/components/ui/info-callout'
+import { PARTY_BADGE, DEM_TEXT, REP_TEXT } from '@/lib/partyColors'
+import useAppStore           from '../../store/useAppStore'
+import DistrictMap2024       from '../maps/DistrictMap2024'
+import CongressionalTable    from '../tables/CongressionalTable'
+import EnsembleSummaryTable  from '../tables/EnsembleSummaryTable'
 import DemographicPopulationTable from '../tables/DemographicPopulationTable'
 
 
+/* ── Step 0: Sub-components ──────────────────────────────────────────────── */
+
+/**
+ * StatCard — Small summary tile with a label, primary value, and optional subtitle.
+ *
+ * @param {{ label: string, value: string|number|null, sub?: string }} props
+ *   label — Short uppercase key shown in tiny text.
+ *   value — Main display value (e.g. population, district count). Renders '—' if null.
+ *   sub   — Optional secondary line shown below value in muted smaller text.
+ * @returns {JSX.Element}
+ */
 function StatCard({ label, value, sub }) {
     return (
         <Card className="p-0 border-brand-muted/25 shadow-sm min-w-0">
             <CardContent className="px-3 py-3 min-w-0">
                 <p className="text-[10px] font-bold uppercase tracking-widest text-brand-muted mb-1 truncate">{label}</p>
                 <p className="text-lg font-bold text-brand-darkest tabular-nums leading-tight break-words">{value ?? '—'}</p>
-                {sub && <p className="text-xs text-gray-400 mt-1 truncate">{sub}</p>}
+                {sub && <p className="text-xs text-brand-muted/60 mt-1 truncate">{sub}</p>}
             </CardContent>
         </Card>
     )
 }
 
+/**
+ * DistBar — Horizontal stacked bar showing Democratic vs Republican share.
+ *
+ * @param {{ demPct: number, repPct: number }} props
+ *   demPct — Democratic percentage (0–100); controls the blue segment width.
+ *   repPct — Republican percentage (0–100); controls the red segment width.
+ * @returns {JSX.Element}
+ */
 function DistBar({ demPct, repPct }) {
     return (
         <div className="flex h-3 w-full rounded-full overflow-hidden">
@@ -34,9 +76,21 @@ function DistBar({ demPct, repPct }) {
     )
 }
 
-// ── District detail card (right panel, 40%) ───────────────────────────
-
+/**
+ * DistrictDetailCard — Right-panel card displaying a single district's details.
+ *
+ * Renders an empty-state prompt if no district is selected.
+ * Sourced from: districtData.districts[n] filtered by districtNumber === selectedDistrict.
+ *
+ * @param {{ district: object|null }} props
+ *   district — District record from districtSummary.districts, or null if none selected.
+ *              Fields: districtNumber, representative, party, racialGroup,
+ *                      voteMarginPercentage, voteMarginDirection.
+ * @returns {JSX.Element}
+ */
 function DistrictDetailCard({ district }) {
+
+    /* ── Empty state — no district selected yet ── */
     if (!district) {
         return (
             <Card className="h-full p-0 border-brand-muted/25 shadow-sm">
@@ -55,12 +109,12 @@ function DistrictDetailCard({ district }) {
         )
     }
 
-    const partyBadge    = district.party === 'Democratic'
-        ? 'bg-blue-50 text-blue-700 border-blue-200'
-        : 'bg-red-50 text-red-700 border-red-200'
-    const marginColor   = district.voteMarginDirection === 'D' ? 'text-blue-600' : 'text-red-600'
-    const uncontested   = district.voteMarginPercentage >= 1.0
+    /* ── Derive display values from raw district data ── */
+    const isUncontested = district.voteMarginPercentage >= 1.0
+    const marginCls     = district.voteMarginDirection === 'D' ? DEM_TEXT : REP_TEXT
+    const marginLabel   = `${district.voteMarginDirection}+${isUncontested ? '100' : (district.voteMarginPercentage * 100).toFixed(1)}%`
 
+    /* ── Populated district card ── */
     return (
         <Card className="h-full p-0 border-brand-muted/25 shadow-sm overflow-hidden">
             <CardHeader className="pb-3 pt-6 px-6">
@@ -84,7 +138,7 @@ function DistrictDetailCard({ district }) {
                 </div>
                 <div className="flex items-center justify-between">
                     <span className="text-brand-muted font-medium text-sm">Party</span>
-                    <Badge variant="outline" className={`text-sm font-bold px-3 py-0.5 ${partyBadge}`}>
+                    <Badge variant="outline" className={`text-sm font-bold px-3 py-0.5 ${PARTY_BADGE[district.party]}`}>
                         {district.party}
                     </Badge>
                 </div>
@@ -94,13 +148,9 @@ function DistrictDetailCard({ district }) {
                 </div>
                 <div className="flex items-center justify-between">
                     <span className="text-brand-muted font-medium text-sm">Vote Margin</span>
-                    {uncontested ? (
-                        <span className="font-extrabold tabular-nums text-xl text-gray-500">100%</span>
-                    ) : (
-                        <span className={`font-extrabold tabular-nums text-xl ${marginColor}`}>
-                            {district.voteMarginDirection}+{(district.voteMarginPercentage * 100).toFixed(1)}%
-                        </span>
-                    )}
+                    <span className={`font-extrabold tabular-nums text-xl ${marginCls}`}>
+                        {marginLabel}
+                    </span>
                 </div>
                 <Separator className="bg-brand-muted/20" />
                 <p className="text-brand-muted/40 text-xs text-center">Click again to deselect</p>
@@ -109,33 +159,51 @@ function DistrictDetailCard({ district }) {
     )
 }
 
-// ── Main section ──────────────────────────────────────────────────────
 
+/* ── Step 1: Main exported section component ─────────────────────────────── */
+
+/**
+ * StateOverviewSection — Top section of StatePage showing maps, stats, and tables.
+ *
+ * @param {{ data: object|null, stateId: string }} props
+ *   data    — Full state data bundle (stateSummary, districtSummary, ensembleSummary, …).
+ *   stateId — Two-letter abbreviation for the current state (e.g. 'AL').
+ * @returns {JSX.Element}
+ */
 export default function StateOverviewSection({ data, stateId }) {
+
+    /* ── Step 2: Zustand state ────────────────────────────────────────────── */
     const selectedDistrict    = useAppStore(s => s.selectedDistrict)
     const setSelectedDistrict = useAppStore(s => s.setSelectedDistrict)
+    const raceFilter          = useAppStore(s => s.raceFilter)
+    const setRaceFilter       = useAppStore(s => s.setRaceFilter)
 
-    const stateData = data?.stateSummary
-    const districtData = data?.districtSummary
-    const ensembleData = data?.ensembleSummary
+
+    /* ── Step 3: Derived data slices from the state bundle ───────────────── */
+    const stateData         = data?.stateSummary
+    const districtData      = data?.districtSummary
+    const ensembleData      = data?.ensembleSummary
     const demographicGroups = stateData?.demographicGroups ?? []
 
-    // Seat counts
+    /* Congressional seat breakdown */
     const demSeats = stateData?.congressionalRepresentatives?.byParty?.find(p => p.party === 'Democratic')?.seats ?? 0
     const repSeats = stateData?.congressionalRepresentatives?.byParty?.find(p => p.party === 'Republican')?.seats ?? 0
     const total    = stateData?.congressionalRepresentatives?.totalSeats ?? 0
 
-    // Voter distribution
+    /* Voter distribution percentages */
     const demVote  = stateData?.voterDistribution?.democraticVoteShare
     const repVote  = stateData?.voterDistribution?.republicanVoteShare
     const voteYear = stateData?.voterDistribution?.electionYear
 
-    const selectedDistrictData = districtData?.districts?.find(dist => dist.districtNumber === selectedDistrict) ?? null
+    /* Full district record for the currently-selected district number */
+    const selectedDistrictData = districtData?.districts?.find(d => d.districtNumber === selectedDistrict) ?? null
 
+
+    /* ── Step 4: Render ──────────────────────────────────────────────────── */
     return (
         <section id="state-overview" className="p-4 sm:p-6 lg:p-8 border-b border-brand-muted/30">
 
-            {/* ── Header ───────────────────────────────────────────── */}
+            {/* ── SECTION HEADER ───────────────────────────────────────────── */}
             <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-brand-darkest tracking-tight">State Overview</h2>
                 {stateData?.isPreclearance && (
@@ -145,8 +213,9 @@ export default function StateOverviewSection({ data, stateId }) {
                 )}
             </div>
 
-            {/* Map legend */}
-            <div className="flex items-center gap-4 mb-3 text-sm text-gray-500">
+            {/* ── MAP LEGEND ───────────────────────────────────────────────── */}
+            {/* Color key for the choropleth district fill */}
+            <div className="flex items-center gap-4 mb-3 text-sm text-brand-muted/70">
                 <span className="flex items-center gap-1.5">
                     <span className="w-3 h-3 rounded-sm bg-blue-400/60 border border-blue-600 shrink-0" /> Democratic
                 </span>
@@ -158,16 +227,20 @@ export default function StateOverviewSection({ data, stateId }) {
                 </span>
             </div>
 
-            {/* ── Map (left) | Right panel (right) ─────────────────── */}
+            {/* ── MAP | RIGHT PANEL ────────────────────────────────────────── */}
+            {/* Left: interactive district choropleth.
+                Right: stat summary (default) OR district detail card (when selected). */}
             <div className="grid grid-cols-1 lg:grid-cols-[58fr_42fr] gap-5 mb-8">
 
-                {/* Map */}
+                {/* ── DISTRICT MAP ─────────────────────────────────────────── */}
                 <MapFrame className="h-[340px] sm:h-[420px] lg:h-[520px]">
-                    <DistrictMap2022 stateId={stateId} districtSummary={districtData} />
+                    <DistrictMap2024 stateId={stateId} districtSummary={districtData} />
                 </MapFrame>
 
-                {/* Right panel — toggles between summary and district detail */}
+                {/* ── RIGHT PANEL: detail card or summary stats ──────────── */}
                 {selectedDistrict ? (
+
+                    /* ── DISTRICT DETAIL MODE ──────────────────────────────── */
                     <div className="flex flex-col gap-4">
                         <Button
                             variant="ghost"
@@ -182,30 +255,22 @@ export default function StateOverviewSection({ data, stateId }) {
                             <DistrictDetailCard district={selectedDistrictData} />
                         </div>
                     </div>
+
                 ) : (
+
+                    /* ── SUMMARY STATS MODE ────────────────────────────────── */
                     <div className="flex flex-col gap-5 overflow-y-auto pr-1">
 
-                        {/* Stat cards 2×2 */}
+                        {/* ── STAT CARDS 2×2 ─────────────────────────────── */}
+                        {/* Quick-glance tiles for population, districts, party control */}
                         <div className="grid grid-cols-2 gap-3">
-                            <StatCard
-                                label="Total Population"
-                                value={stateData?.totalPopulation?.toLocaleString()}
-                            />
-                            <StatCard
-                                label="Voting Age Pop."
-                                value={stateData?.votingAgePopulation?.toLocaleString()}
-                            />
-                            <StatCard
-                                label="Districts"
-                                value={stateData?.numDistricts}
-                            />
-                            <StatCard
-                                label="Controlling Party"
-                                value={stateData?.redistrictingControl?.controllingParty}
-                            />
+                            <StatCard label="Total Population"  value={stateData?.totalPopulation?.toLocaleString()} />
+                            <StatCard label="Voting Age Pop."   value={stateData?.votingAgePopulation?.toLocaleString()} />
+                            <StatCard label="Districts"         value={stateData?.numDistricts} />
+                            <StatCard label="Controlling Party" value={stateData?.redistrictingControl?.controllingParty} />
                         </div>
 
-                        {/* Voter distribution */}
+                        {/* ── VOTER DISTRIBUTION BAR ──────────────────────── */}
                         {demVote != null && repVote != null && (
                             <div>
                                 <SectionHeader title={`${voteYear ?? ''} Voter Distribution`} />
@@ -213,18 +278,18 @@ export default function StateOverviewSection({ data, stateId }) {
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-2">
                                             <span className="w-3 h-3 rounded-sm bg-blue-500 shrink-0" />
-                                            <span className="text-sm text-gray-700 font-medium">Democratic</span>
+                                            <span className="text-sm text-brand-deep font-medium">Democratic</span>
                                         </div>
-                                        <span className="text-base font-bold text-blue-600 tabular-nums">
+                                        <span className={`text-base font-bold tabular-nums ${DEM_TEXT}`}>
                                             {(demVote * 100).toFixed(1)}%
                                         </span>
                                     </div>
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-2">
                                             <span className="w-3 h-3 rounded-sm bg-red-500 shrink-0" />
-                                            <span className="text-sm text-gray-700 font-medium">Republican</span>
+                                            <span className="text-sm text-brand-deep font-medium">Republican</span>
                                         </div>
-                                        <span className="text-base font-bold text-red-600 tabular-nums">
+                                        <span className={`text-base font-bold tabular-nums ${REP_TEXT}`}>
                                             {(repVote * 100).toFixed(1)}%
                                         </span>
                                     </div>
@@ -233,32 +298,33 @@ export default function StateOverviewSection({ data, stateId }) {
                             </div>
                         )}
 
-                        {/* Seat distribution */}
+                        {/* ── SEAT DISTRIBUTION BAR ───────────────────────── */}
                         <div>
                             <SectionHeader title={`${districtData?.electionYear ?? ''} Seat Distribution`} />
                             <div className="flex flex-col gap-2">
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-2">
                                         <span className="w-3 h-3 rounded-sm bg-blue-500 shrink-0" />
-                                        <span className="text-sm text-gray-700 font-medium">Democratic</span>
+                                        <span className="text-sm text-brand-deep font-medium">Democratic</span>
                                     </div>
-                                    <span className="text-base font-bold text-blue-600 tabular-nums">
-                                        {demSeats} <span className="text-gray-400 text-sm font-normal">/ {total}</span>
+                                    <span className={`text-base font-bold tabular-nums ${DEM_TEXT}`}>
+                                        {demSeats} <span className="text-brand-muted/60 text-sm font-normal">/ {total}</span>
                                     </span>
                                 </div>
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-2">
                                         <span className="w-3 h-3 rounded-sm bg-red-500 shrink-0" />
-                                        <span className="text-sm text-gray-700 font-medium">Republican</span>
+                                        <span className="text-sm text-brand-deep font-medium">Republican</span>
                                     </div>
-                                    <span className="text-base font-bold text-red-600 tabular-nums">
-                                        {repSeats} <span className="text-gray-400 text-sm font-normal">/ {total}</span>
+                                    <span className={`text-base font-bold tabular-nums ${REP_TEXT}`}>
+                                        {repSeats} <span className="text-brand-muted/60 text-sm font-normal">/ {total}</span>
                                     </span>
                                 </div>
                                 {total > 0 && <DistBar demPct={(demSeats / total) * 100} repPct={(repSeats / total) * 100} />}
                             </div>
                         </div>
-                        {/* Select-a-district hint — pinned to bottom */}
+
+                        {/* ── INTERACTION HINT ─────────────────────────────── */}
                         <InfoCallout icon={MousePointerClick} className="mt-auto">
                             Click a district on the map or a table row in the 2024 Congressional Districts Table to view its details here!
                         </InfoCallout>
@@ -266,8 +332,12 @@ export default function StateOverviewSection({ data, stateId }) {
                 )}
             </div>
 
-            {/* ── Congressional table (60%) | Ensemble summary (40%) ── */}
+            {/* ── TABLES ROW ───────────────────────────────────────────────── */}
+            {/* Left: full congressional district list.
+                Right: ensemble summary + demographic population breakdown. */}
             <div className="mb-8 grid grid-cols-1 lg:grid-cols-[58fr_42fr] gap-5">
+
+                {/* ── CONGRESSIONAL TABLE ──────────────────────────────────── */}
                 <div className="flex flex-col">
                     <SectionHeader title={`${districtData?.electionYear ?? 'Enacted'} Congressional Districts`} />
                     <CongressionalTable districtSummary={districtData} />
@@ -275,6 +345,8 @@ export default function StateOverviewSection({ data, stateId }) {
                         Click a row to highlight the district on the map and view district details above!
                     </InfoCallout>
                 </div>
+
+                {/* ── ENSEMBLE + DEMOGRAPHIC TABLES ───────────────────────── */}
                 <div className="flex flex-col gap-6">
                     <div>
                         <SectionHeader title="Ensemble Summary" />
@@ -284,9 +356,12 @@ export default function StateOverviewSection({ data, stateId }) {
                         <SectionHeader title="Population by Group" />
                         <DemographicPopulationTable
                             demographicGroups={demographicGroups}
+                            raceFilter={raceFilter}
+                            setRaceFilter={setRaceFilter}
                         />
                     </div>
                 </div>
+
             </div>
 
         </section>

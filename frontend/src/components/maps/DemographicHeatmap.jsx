@@ -1,34 +1,64 @@
 /**
- * DemographicHeatmap
+ * ========================================================================
+ * TODO – Replace Dummy Data with Real Backend API
+ * ========================================================================
  *
- * Renders precinct or census-block polygons colored by the server-assigned
- * minority (non-white) VAP bin. The server decides bin boundaries and which
- * bin each unit belongs to — the frontend is a pure renderer.
+ * CURRENT IMPLEMENTATION
+ * - Imports ALPrecinctMap.json (1947 precincts) and ALBlockMap.json
+ *   (100 census blocks) from src/assets/ as static GeoJSON geometry
+ * - Imports ALCongressionalDistricts.json and ORCongressionalDistrict.json
+ *   for the state outline layer
+ * - heatmapData (bins + per-feature binIds) comes via props from useStateData,
+ *   which reads from dummy AL-heatmap-precinct.json / AL-heatmap-census.json
  *
- * Data shape (from AL-heatmap-precinct.json / AL-heatmap-census.json):
- *   bins:     [{ binId, rangeMin, rangeMax, color }]   (10 teal stops)
- *   features: [{ idx, binId }]                         (no raw percentages)
+ * REQUIRED API CALLS
+ * - HTTP Method: GET
+ * - Endpoint A: /api/states/:stateId/heatmap?granularity=precinct|census_block
+ *   Purpose:     Returns geometry + server-assigned bin colors for each unit
+ * - Endpoint B: /api/states/:stateId/districts/geojson
+ *   Purpose:     Returns the state outline (already shared with DistrictMap2024)
  *
- * Geometry sources:
- *   precinct     → ALPrecinctMap.json  (1947 real precincts, WGS84)
- *   census_block → ALBlock-sample.json  (100 real census blocks, NW Alabama)
+ * RESPONSE SNAPSHOT (keys only) — Endpoint A
+ * {
+ *   stateId, granularity,
+ *   bins: [{ binId, rangeMin, rangeMax, color }],
+ *   features: [{
+ *     idx,
+ *     black, white, hispanic, asian, other,  (each is a binId int)
+ *     geometry: { type, coordinates }        (or served separately as GeoJSON)
+ *   }]
+ * }
  *
- * TODO: Replace with backend tile endpoint once available:
- *   GET /api/states/:stateId/heatmap?granularity=precinct
+ * INTEGRATION INSTRUCTIONS
+ * - Replace GEO_SAMPLES static asset imports with geometry embedded in or
+ *   alongside the API response (or keep as static assets if geometry is large)
+ * - Replace STATE_OUTLINE static imports with GeoJSON from Endpoint B
+ * - heatmapData (bins + features) flows in via props — wire useStateData to
+ *   fetch Endpoint A and pass the result as heatmapPrecinct / heatmapCensus
+ *
+ * SEARCHABLE MARKER
+ * //CONNECT HERE: GEO_SAMPLES + STATE_OUTLINE — replace asset imports with API data
+ *
+ * ========================================================================
  */
 
 import { useEffect } from 'react'
 import { MapContainer, GeoJSON, TileLayer, useMap } from 'react-leaflet'
 import L from 'leaflet'
 
+//CONNECT HERE: GEO_SAMPLES + STATE_OUTLINE — delete these 4 asset imports and both
+// static lookup objects; replace with geometry from GET /api/states/:stateId/heatmap
+// and outline from GET /api/states/:stateId/districts/geojson
 import ALPrecinctFull from '../../assets/ALPrecinctMap.json'
 import ALBlockSample  from '../../assets/ALBlockMap.json'
 import ALDistricts    from '../../assets/ALCongressionalDistricts.json'
 import ORDistricts    from '../../assets/ORCongressionalDistrict.json'
 
 // ── GeoJSON lookup ─────────────────────────────────────────────────────
+//CONNECT HERE: STATE_OUTLINE — replace with GeoJSON from /api/states/:stateId/districts/geojson
 const STATE_OUTLINE = { AL: ALDistricts, OR: ORDistricts }
 
+//CONNECT HERE: GEO_SAMPLES — replace with geometry embedded in the heatmap API response
 const GEO_SAMPLES = {
     AL: {
         precinct:     ALPrecinctFull,   // 1947 real precincts, reprojected to WGS84

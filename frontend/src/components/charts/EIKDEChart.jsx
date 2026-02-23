@@ -1,25 +1,6 @@
 import { useMemo, useCallback } from 'react'
 import { ResponsiveLine } from '@nivo/line'
-
-// ── Race colour palette (distinct from party colours) ─────────────────────────
-const RACE_COLORS = {
-    black:    '#6366f1', // indigo
-    white:    '#0ea5e9', // sky
-    hispanic: '#f59e0b', // amber
-    asian:    '#10b981', // emerald
-    other:    '#a855f7', // purple
-}
-
-const RACE_LABELS = {
-    black:    'Black',
-    white:    'White',
-    hispanic: 'Hispanic',
-    asian:    'Asian',
-    other:    'Other',
-}
-
-const AXIS_COLOR  = '#64748b'
-const LABEL_COLOR = '#334155'
+import { DEM_COLOR, REP_COLOR, RACE_COLORS, RACE_LABELS, AXIS_COLOR, LABEL_COLOR } from '@/lib/partyColors'
 
 // ── Nivo theme (mirrors GinglesScatterPlot) ───────────────────────────────────
 const NIVO_THEME = {
@@ -41,8 +22,15 @@ const NIVO_THEME = {
 
 // ── Slice tooltip factory — captures candidate for party border colour ────────
 function makeSliceTooltip(candidate) {
-    const partyColor = candidate?.party === 'Democratic' ? '#3b82f6' : '#ef4444'
+    const partyColor = candidate?.party === 'Democratic' ? DEM_COLOR : REP_COLOR
     const partyName  = candidate?.party ?? ''
+
+    // Build peak lookup: lowercase race key → peakSupportEstimate x value
+    const peakMap = {}
+    candidate?.racialGroups?.forEach(g => {
+        peakMap[g.group.toLowerCase()] = g.peakSupportEstimate
+    })
+
     return function EISliceTooltip({ slice }) {
         const x   = slice.points[0]?.data.x
         const pts = [...slice.points].sort((a, b) => b.data.y - a.data.y)
@@ -64,12 +52,21 @@ function makeSliceTooltip(candidate) {
                     Vote share: <strong style={{ color: LABEL_COLOR }}>{(x * 100).toFixed(1)}%</strong>
                 </div>
                 {pts.map(pt => {
-                    const sid   = pt.seriesId ?? pt.serieId
-                    const color = pt.seriesColor ?? pt.serieColor ?? RACE_COLORS[sid] ?? '#94a3b8'
+                    const sid    = pt.seriesId ?? pt.serieId
+                    const color  = pt.seriesColor ?? pt.serieColor ?? RACE_COLORS[sid] ?? '#94a3b8'
+                    const peak   = peakMap[sid]
+                    const atPeak = peak != null && Math.abs(x - peak) < 0.026
                     return (
                         <div key={sid} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 1, color: '#475569' }}>
                             <span style={{ width: 8, height: 8, borderRadius: '50%', background: color, display: 'inline-block', flexShrink: 0 }} />
-                            <span style={{ flex: 1 }}>{RACE_LABELS[sid] ?? sid}</span>
+                            <span style={{ flex: 1 }}>
+                                {RACE_LABELS[sid] ?? sid}
+                                {atPeak && (
+                                    <span style={{ marginLeft: 5, color: color, fontWeight: 700, fontSize: 10, background: `${color}18`, borderRadius: 4, padding: '1px 5px', letterSpacing: '0.04em' }}>
+                                        Peak
+                                    </span>
+                                )}
+                            </span>
                             <strong style={{ color: LABEL_COLOR }}>Density: {Number(pt.data.y).toFixed(2)}</strong>
                         </div>
                     )
@@ -139,7 +136,7 @@ function BgLayer({ innerWidth, innerHeight }) {
 export default function EIKDEChart({ candidate, activeRaces, yMax, className }) {
     if (!candidate) return null
 
-    const partyColor = candidate.party === 'Democratic' ? '#3b82f6' : '#ef4444'
+    const partyColor = candidate.party === 'Democratic' ? DEM_COLOR : REP_COLOR
 
     // Filter to active races and build Nivo line series
     const nivoData = useMemo(() => {

@@ -1,9 +1,8 @@
 import { Badge } from '@/components/ui/badge'
 import SurfacePanel from '@/components/ui/surface-panel'
 import { cn } from '@/lib/utils'
-
-const ACTIVE = { bg: 'bg-brand-primary/15 ring-1 ring-inset ring-brand-primary/30', text: 'text-brand-primary', dot: 'bg-brand-primary' }
-const HOVER = 'hover:bg-brand-primary/5'
+import { FEASIBLE_CLS, NOT_FEASIBLE_CLS } from '@/lib/partyColors'
+import { ROW_BORDER, ACTIVE_LABEL, INACTIVE_LABEL, rowBg } from '@/lib/tableStyles'
 
 function groupKey(g) { return g.toLowerCase() }
 
@@ -33,12 +32,12 @@ export default function DemographicPopulationTable({ demographicGroups, raceFilt
                                 key={row.group}
                                 onClick={() => setRaceFilter(key)}
                                 className={[
-                                    'border-t border-brand-muted/15 transition-colors cursor-pointer',
-                                    isActive ? ACTIVE.bg : `${i % 2 === 0 ? 'bg-white' : 'bg-brand-surface/60'} ${HOVER}`,
+                                    ROW_BORDER, 'transition-colors cursor-pointer',
+                                    rowBg(i, isActive),
                                 ].join(' ')}
                             >
                                 <td className="px-4 py-3">
-                                    <span className={`font-bold text-sm ${isActive ? ACTIVE.text : 'text-brand-deep'}`}>
+                                    <span className={`font-bold text-sm ${isActive ? ACTIVE_LABEL : INACTIVE_LABEL}`}>
                                         {row.group}
                                     </span>
                                 </td>
@@ -46,14 +45,14 @@ export default function DemographicPopulationTable({ demographicGroups, raceFilt
                                     {row.vap?.toLocaleString() ?? '-'}
                                 </td>
                                 <td className="px-4 py-3 text-right">
-                                    <span className={`tabular-nums font-bold text-base ${isActive ? ACTIVE.text : 'text-brand-deep'}`}>
+                                    <span className={`tabular-nums font-bold text-base ${isActive ? ACTIVE_LABEL : INACTIVE_LABEL}`}>
                                         {row.vapPercentage != null ? `${(row.vapPercentage * 100).toFixed(1)}%` : '-'}
                                     </span>
                                 </td>
                                 <td className="px-4 py-3 text-center">
                                     {row.isFeasible
-                                        ? <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 text-[10px] font-semibold px-2 py-0.5">Feasible</Badge>
-                                        : <Badge className="bg-red-50 text-red-500 border-red-200 text-[10px] font-semibold px-2 py-0.5">Not Feasible</Badge>
+                                        ? <Badge className={FEASIBLE_CLS}>Feasible</Badge>
+                                        : <Badge className={NOT_FEASIBLE_CLS}>Not Feasible</Badge>
                                     }
                                 </td>
                             </tr>

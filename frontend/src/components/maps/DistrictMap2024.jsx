@@ -1,28 +1,56 @@
 /**
- * ╔══════════════════════════════════════════════════════════════════════╗
- * ║  TODO – Replace local GeoJSON assets with backend API (GUI-2)       ║
- * ║                                                                      ║
- * ║  Currently:  imports ALCongressionalDistrict.json and               ║
- * ║              ORCongressionalDistrict.json from src/assets/           ║
- * ║                                                                      ║
- * ║  Replace with:  GET /api/states/:stateId/districts/geojson          ║
- * ║    → returns GeoJSON FeatureCollection                              ║
- * ║    → each Feature.properties.CD119FP  = district number (string)   ║
- * ║    → each Feature.properties.NAMELSAD20 = "Congressional District N"║
- * ║                                                                      ║
- * ║  Also: state center/zoom comes from splash-states.json (dummy).     ║
- * ║  Replace with:  GET /api/states  (returns center + zoom per state)  ║
- * ╚══════════════════════════════════════════════════════════════════════╝
+ * ========================================================================
+ * TODO – Replace Dummy Data with Real Backend API
+ * ========================================================================
+ *
+ * CURRENT IMPLEMENTATION
+ * - Imports ALCongressionalDistricts.json and ORCongressionalDistrict.json
+ *   from src/assets/ as static GeoJSON bundles
+ * - Builds a DISTRICT_GEOJSON lookup keyed by stateId: { AL: ..., OR: ... }
+ * - districtSummary (party, representative, etc.) comes via props from
+ *   useStateData, which currently reads from dummy JSON
+ *
+ * REQUIRED API CALL
+ * - HTTP Method: GET
+ * - Endpoint:    /api/states/:stateId/districts/geojson
+ * - Purpose:     Returns the GeoJSON FeatureCollection for the state's districts
+ *
+ * RESPONSE SNAPSHOT (keys only)
+ * {
+ *   type: "FeatureCollection",
+ *   features: [{
+ *     type: "Feature",
+ *     properties: {
+ *       CD119FP,    (district number as string, e.g. "01")
+ *       NAMELSAD20  (e.g. "Congressional District 1")
+ *     },
+ *     geometry: { type, coordinates }
+ *   }]
+ * }
+ *
+ * INTEGRATION INSTRUCTIONS
+ * - Fetch inside a useEffect keyed on stateId
+ * - Store result in: const [geoData, setGeoData] = useState(null)
+ * - Replace the DISTRICT_GEOJSON[stateId] lookup with the fetched geoData
+ * - districtSummary (party coloring) still flows in via props from useStateData
+ *
+ * SEARCHABLE MARKER
+ * //CONNECT HERE: DISTRICT_GEOJSON lookup — replace asset imports + static object
+ *
+ * ========================================================================
  */
 
 import { useRef, useEffect, useCallback } from 'react'
 import { MapContainer, GeoJSON, TileLayer, useMap } from 'react-leaflet'
 import L from 'leaflet'
 import useAppStore from '../../store/useAppStore'
+//CONNECT HERE: DISTRICT_GEOJSON — delete these asset imports and the static lookup below,
+// then fetch from GET /api/states/:stateId/districts/geojson in a useEffect
 import ALDistricts from '../../assets/ALCongressionalDistricts.json'
 import ORDistricts from '../../assets/ORCongressionalDistrict.json'
 
 // ── Static lookups ────────────────────────────────────────────────────
+//CONNECT HERE: DISTRICT_GEOJSON — replace with useState(null) populated by the fetch above
 const DISTRICT_GEOJSON = { AL: ALDistricts, OR: ORDistricts }
 
 // ── Styles ────────────────────────────────────────────────────────────
@@ -32,7 +60,7 @@ function getStyle(feature, districtByNumber, selectedDistrict) {
     const isSelected = distNum === selectedDistrict
 
     if (isSelected) {
-        return { fillColor: '#088395', fillOpacity: 0.75, color: '#EBF4F6', weight: 3 }
+        return { fillColor: 'var(--color-brand-primary)', fillOpacity: 0.75, color: 'var(--color-brand-darkest)', weight: 3 }
     }
     if (distData?.party === 'Democratic') {
         return { fillColor: '#3B82F6', fillOpacity: 0.30, color: '#1D4ED8', weight: 1 }
@@ -113,7 +141,13 @@ export default function DistrictMap2022({ stateId, districtSummary }) {
             mouseover(e) {
                 const el = e.target.getElement()
                 if (el) el.style.filter = 'drop-shadow(0 4px 8px rgba(0,0,0,0.35))'
-                e.target.setStyle({ fillOpacity: e.target.options.fillOpacity < 0.6 ? 0.55 : undefined })
+                e.target.setStyle({
+                    fillColor:   'var(--color-brand-deep)',
+                    fillOpacity: 0.85,
+                    weight:      3.5,
+                    color:       'var(--color-brand-darkest)',
+                })
+                if (el) el.style.filter = 'drop-shadow(0 0 10px var(--color-brand-glow))'
                 e.target.bringToFront()
             },
             mouseout(e) {

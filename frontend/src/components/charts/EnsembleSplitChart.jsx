@@ -1,12 +1,6 @@
 import { useMemo } from 'react'
 import { ResponsiveBar } from '@nivo/bar'
-
-const DEM_COLOR     = '#3b82f6'
-const REP_COLOR     = '#ef4444'
-const TIE_COLOR     = '#a855f7'
-const ENACTED_COLOR = '#f59e0b'
-const AXIS_COLOR    = '#64748b'
-const LABEL_COLOR   = '#334155'
+import { DEM_COLOR, REP_COLOR, TIE_COLOR, ENACTED_COLOR, AXIS_COLOR, LABEL_COLOR } from '@/lib/partyColors'
 
 // ── Nivo theme ──────────────────────────────────────────────────────────────
 const NIVO_THEME = {

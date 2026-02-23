@@ -1,14 +1,7 @@
-import { useMemo, useCallback } from 'react'
+import { useMemo, useCallback, useState, useRef } from 'react'
 import { ResponsiveScatterPlot } from '@nivo/scatterplot'
 import * as d3 from 'd3'
-
-const DEM_COLOR    = '#3b82f6'   // blue-500
-const DEM_DARK     = '#1d4ed8'   // blue-700
-const REP_COLOR    = '#ef4444'   // red-500
-const REP_DARK     = '#b91c1c'   // red-700
-const THRESH_COLOR = '#94a3b8'
-const LABEL_COLOR  = '#334155'
-const AXIS_COLOR   = '#64748b'
+import { DEM_COLOR, DEM_DARK, REP_COLOR, REP_DARK, THRESH_COLOR, AXIS_COLOR, LABEL_COLOR } from '@/lib/partyColors'
 
 function getSeries(ginglesData, raceFilter) {
     const byRace = ginglesData?.feasibleSeriesByRace ?? {}
@@ -73,6 +66,9 @@ export default function GinglesScatterPlot({ ginglesData, raceFilter, selectedId
     const points   = series?.points ?? []
     const demTrend = series?.democraticTrendline ?? []
     const repTrend = series?.republicanTrendline ?? []
+
+    const containerRef = useRef(null)
+    const [tooltip, setTooltip] = useState(null)  // { node, left, top }
 
     const raceName = raceFilter
         ? raceFilter.charAt(0).toUpperCase() + raceFilter.slice(1)
@@ -148,7 +144,7 @@ export default function GinglesScatterPlot({ ginglesData, raceFilter, selectedId
         )
     }, [demTrend, repTrend])
 
-    // Custom nodes with selected-state styling
+    // Custom nodes with selected-state styling + hover-only tooltip
     const customNodesLayer = useCallback(({ nodes }) => (
         <g>
             {nodes.map(node => {
@@ -168,15 +164,35 @@ export default function GinglesScatterPlot({ ginglesData, raceFilter, selectedId
                         strokeWidth={isSel ? 2.5 : 1.2}
                         strokeOpacity={isSel ? 1 : 0.50}
                         style={{ cursor: 'pointer', transition: 'r 0.15s, fill-opacity 0.15s' }}
+                        onMouseEnter={(e) => {
+                            if (!containerRef.current) return
+                            const rect = containerRef.current.getBoundingClientRect()
+                            setTooltip({ node, left: e.clientX - rect.left + 14, top: e.clientY - rect.top - 60 })
+                        }}
+                        onMouseMove={(e) => {
+                            if (!containerRef.current) return
+                            const rect = containerRef.current.getBoundingClientRect()
+                            setTooltip(prev => prev ? { ...prev, left: e.clientX - rect.left + 14, top: e.clientY - rect.top - 60 } : null)
+                        }}
+                        onMouseLeave={() => setTooltip(null)}
+                        onClick={() => onDotClick?.(
+                            node.data.precinctId === selectedId ? null : node.data.precinctId
+                        )}
                     />
                 )
             })}
         </g>
-    ), [selectedId])
+    ), [selectedId, onDotClick, setTooltip])
 
     // ── Render ────────────────────────────────────────────────────────────────
     return (
-        <div className={`w-full rounded-xl border border-brand-muted/25 shadow-sm bg-white flex flex-col ${className ?? 'h-[404px]'}`}>
+        <div ref={containerRef} className={`w-full rounded-xl border border-brand-muted/25 shadow-sm bg-white flex flex-col relative ${className ?? 'h-[404px]'}`}>
+            {/* Hover-only tooltip — only visible while cursor is on a dot */}
+            {tooltip && (
+                <div style={{ position: 'absolute', left: tooltip.left, top: tooltip.top, zIndex: 10, pointerEvents: 'none' }}>
+                    <GinglesTooltip node={tooltip.node} />
+                </div>
+            )}
             {points.length === 0 ? (
                 <div className="h-full flex items-center justify-center text-brand-muted/60 text-sm italic">
                     No Gingles scatter data available for this race.
@@ -215,7 +231,7 @@ export default function GinglesScatterPlot({ ginglesData, raceFilter, selectedId
                                 thresholdLayer,
                                 trendlineLayer,
                                 customNodesLayer,
-                                'mesh',
+                                // 'mesh' intentionally omitted — tooltip + click handled per-circle
                             ]}
 
                             gridXValues={[0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]}
@@ -240,11 +256,7 @@ export default function GinglesScatterPlot({ ginglesData, raceFilter, selectedId
                                 legendPosition: 'middle',
                             }}
 
-                            tooltip={GinglesTooltip}
-                            isInteractive
-                            onClick={node => onDotClick?.(
-                                node.data.precinctId === selectedId ? null : node.data.precinctId
-                            )}
+                            isInteractive={false}
                         />
                     </div>
                 </>

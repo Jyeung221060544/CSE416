@@ -1,52 +1,75 @@
 /**
- * ╔══════════════════════════════════════════════════════════════════════╗
- * ║  TODO – Replace splash-states.json with a real API call             ║
- * ║                                                                      ║
- * ║  Currently: imports splash-states.json to know which states have    ║
- * ║  data (hasData), their names, and their center/zoom.                ║
- * ║                                                                      ║
- * ║  Replace with:  GET /api/states                                     ║
- * ║    → returns an array of available states, each with:               ║
- * ║      { stateId, stateName, hasData, isPreclearance,                 ║
- * ║        numDistricts, center: { lat, lng }, zoom }                   ║
- * ║                                                                      ║
- * ║  Wire it: fetch on mount, store result in useState, build           ║
- * ║  `stateByName` from the response instead of the JSON import.        ║
- * ║                                                                      ║
- * ║  The US-48-States.geojson boundary file stays as a static asset —   ║
- * ║  only the per-state metadata comes from the backend.                ║
- * ╚══════════════════════════════════════════════════════════════════════╝
+ * ========================================================================
+ * TODO – Replace Dummy Data with Real Backend API
+ * ========================================================================
+ *
+ * CURRENT IMPLEMENTATION
+ * - Imports splash-states.json (src/dummy/) to build the stateByName lookup
+ * - stateByName drives which states are colored/clickable on the map
+ *   (hasData), and supplies the hover payload (stateId, stateName,
+ *   numDistricts, isPreclearance, center, zoom)
+ * - US-48-States.geojson stays as a static asset (boundary shapes only)
+ *
+ * REQUIRED API CALL
+ * - HTTP Method: GET
+ * - Endpoint:    /api/states
+ * - Purpose:     Returns the list of states that have analysis data
+ *
+ * RESPONSE SNAPSHOT (keys only)
+ * {
+ *   states: [{
+ *     stateId, stateName, hasData, numDistricts, isPreclearance,
+ *     center: { lat, lng },
+ *     zoom
+ *   }]
+ * }
+ *
+ * INTEGRATION INSTRUCTIONS
+ * - Accept the fetched states array as a prop OR fetch inside this component
+ * - Rebuild stateByName from the API response: Object.fromEntries(states.map(...))
+ * - The US-48-States.geojson import is static — keep it as-is
+ * - Pass the hovered state object to onStateHover — no other render changes
+ *
+ * SEARCHABLE MARKER
+ * //CONNECT HERE: splashData import + stateByName lookup
+ *
+ * ========================================================================
  */
 
 import { useRef, useEffect } from 'react'
 import { MapContainer, TileLayer, GeoJSON, useMap } from 'react-leaflet'
 import { useNavigate } from 'react-router-dom'
 import useAppStore from '../../store/useAppStore'
-import splashData from '../../dummy/splash-states.json'   // TODO: replace with GET /api/states
+//CONNECT HERE: splashData import — replace with fetched states from GET /api/states,
+// then rebuild stateByName from the response array instead of the JSON import
+import splashData from '../../dummy/splash-states.json'
 import usGeoJson from '../../assets/US-48-States.geojson'
 
 // Lookup: stateName → splash-states object
+//CONNECT HERE: stateByName — rebuild this from the API response array
 const stateByName = Object.fromEntries(
     splashData.states.map(s => [s.stateName, s])
 )
 
 function baseStyle(feature) {
     const data = stateByName[feature.properties.name]
+
     if (data?.hasData) {
         return {
-            fillColor: '#088395',   // brand-primary
-            fillOpacity: 0.80,
-            color: '#7AB2B2',       // brand-muted border
-            weight: 1,
-            className: 'state-valid',
+            fillColor:   'var(--color-brand-primary)',
+            fillOpacity: 0.65,
+            color:       'var(--color-brand-darkest)',
+            weight:      2.5,
+            className:   'state-valid',
         }
     }
+
     return {
-        fillColor: '#0b2d3b',       // near-invisible on dark bg
-        fillOpacity: 0.70,
-        color: '#09637E',           // brand-deep border
-        weight: 0.4,
-        className: 'state-invalid',
+        fillColor:   'var(--color-brand-surface)',
+        fillOpacity: 0.9,
+        color:       'var(--color-brand-deep)',
+        weight:      1,
+        className:   'state-invalid',
     }
 }
 
@@ -72,14 +95,14 @@ export default function USMap({ onStateHover }) {
         layer.on({
             mouseover(e) {
                 e.target.setStyle({
-                    fillColor:   '#7AB2B2',  // brand-muted — pops light on dark bg
-                    fillOpacity: 0.95,
-                    weight:      2,
-                    color:       '#EBF4F6',  // brand-surface border
+                    fillColor:   'var(--color-brand-deep)',
+                    fillOpacity: 0.85,
+                    weight:      3.5,
+                    color:       'var(--color-brand-darkest)',
                 })
                 e.target.bringToFront()
                 const el = e.target.getElement()
-                if (el) el.style.filter = 'drop-shadow(0 0 14px rgba(122,178,178,0.7))'
+                if (el) el.style.filter = 'drop-shadow(0 0 10px var(--color-brand-glow))'
                 onStateHover(data)
             },
             mouseout(e) {
@@ -105,11 +128,11 @@ export default function USMap({ onStateHover }) {
             dragging={false}
             touchZoom={false}
             attributionControl={false}
-            style={{ height: '100%', width: '100%', background: '#071e28' }}
+            style={{ height: '100%', width: '100%', background: '#EBF4F6' }}
         >
             <SizeInvalidator />
             <TileLayer
-                url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
             />
             <GeoJSON
