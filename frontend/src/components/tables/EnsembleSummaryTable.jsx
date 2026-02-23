@@ -1,4 +1,5 @@
 import SurfacePanel from '@/components/ui/surface-panel'
+import { ROW_BORDER, TABLE_HEADER, rowBg } from '@/lib/tableStyles'
 
 const TYPE_META = {
     'race-blind':      { label: 'Race-Blind' },
@@ -14,7 +15,7 @@ export default function EnsembleSummaryTable({ ensembleSummary }) {
             <div className="min-w-[280px]">
 
                 {/* Header */}
-                <div className="grid grid-cols-[1fr_80px_90px] items-center px-5 py-3 bg-brand-darkest text-brand-surface text-sm font-semibold">
+                <div className={`grid grid-cols-[1fr_80px_90px] items-center px-5 py-3 ${TABLE_HEADER}`}>
                     <span>Type</span>
                     <span className="text-center">Plans</span>
                     <span className="text-right">Threshold</span>
@@ -32,9 +33,9 @@ export default function EnsembleSummaryTable({ ensembleSummary }) {
                             key={e.ensembleId}
                             className={[
                                 'grid grid-cols-[1fr_80px_90px] items-center',
-                                'px-5 py-3.5 border-t border-brand-muted/15',
-                                'transition-colors hover:bg-brand-primary/5',
-                                i % 2 === 0 ? 'bg-white' : 'bg-brand-surface/60',
+                                'px-5 py-3.5 transition-colors',
+                                ROW_BORDER,
+                                rowBg(i),
                             ].join(' ')}
                         >
                             <span className="font-bold text-sm text-brand-deep">

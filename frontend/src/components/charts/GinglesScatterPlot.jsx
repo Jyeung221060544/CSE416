@@ -1,14 +1,7 @@
 import { useMemo, useCallback } from 'react'
 import { ResponsiveScatterPlot } from '@nivo/scatterplot'
 import * as d3 from 'd3'
-
-const DEM_COLOR    = '#3b82f6'   // blue-500
-const DEM_DARK     = '#1d4ed8'   // blue-700
-const REP_COLOR    = '#ef4444'   // red-500
-const REP_DARK     = '#b91c1c'   // red-700
-const THRESH_COLOR = '#94a3b8'
-const LABEL_COLOR  = '#334155'
-const AXIS_COLOR   = '#64748b'
+import { DEM_COLOR, DEM_DARK, REP_COLOR, REP_DARK, THRESH_COLOR, AXIS_COLOR, LABEL_COLOR } from '@/lib/partyColors'
 
 function getSeries(ginglesData, raceFilter) {
     const byRace = ginglesData?.feasibleSeriesByRace ?? {}

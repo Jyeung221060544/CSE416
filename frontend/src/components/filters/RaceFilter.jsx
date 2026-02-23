@@ -22,7 +22,7 @@ export default function RaceFilter() {
                         value={opt.value}
                         checked={raceFilter === opt.value}
                         onChange={() => setRaceFilter(opt.value)}
-                        className="appearance-none w-4 h-4 rounded-full border border-brand-muted checked:bg-brand-primary checked:border-brand-primary transition-colors shrink-0"
+                        className="appearance-none w-4 h-4 rounded-full border border-brand-primary checked:bg-brand-primary checked:border-brand-primary transition-colors shrink-0"
                     />
                     <span className="text-sm text-brand-surface">{opt.label}</span>
                 </label>

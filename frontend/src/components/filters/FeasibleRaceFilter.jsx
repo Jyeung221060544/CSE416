@@ -12,7 +12,7 @@ export default function FeasibleRaceFilter() {
     const { feasibleRaceFilter, setFeasibleRaceFilter } = useFilters()
 
     return (
-        <CollapsibleGroup label="Race / Ethnicity">
+        <CollapsibleGroup label="Feasible Race / Ethnicity">
             {FEASIBLE_RACES.map((opt) => (
                 <label key={opt.value} className="flex items-center gap-2 px-1 py-1 cursor-pointer">
                     <input
@@ -21,13 +21,13 @@ export default function FeasibleRaceFilter() {
                         value={opt.value}
                         checked={feasibleRaceFilter === opt.value}
                         onChange={() => setFeasibleRaceFilter(opt.value)}
-                        className="appearance-none w-4 h-4 rounded-full border border-brand-muted checked:bg-brand-primary checked:border-brand-primary transition-colors shrink-0"
+                        className="appearance-none w-4 h-4 rounded-full border border-brand-primary checked:bg-brand-primary checked:border-brand-primary transition-colors shrink-0"
                     />
                     <span className="text-sm text-brand-surface">{opt.label}</span>
                 </label>
             ))}
-            <p className="text-[10px] text-brand-muted/50 px-1 pt-1 leading-snug">
-                Only groups with ≥ 400k VAP shown
+            <p className="text-[10px] text-white/70 px-1 pt-1 leading-snug">
+                Groups with ≥ 400k VAP
             </p>
         </CollapsibleGroup>
     )

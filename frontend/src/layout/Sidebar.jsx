@@ -14,7 +14,7 @@ export default function Sidebar() {
     return (
         <aside
             className={`
-                relative flex flex-col h-full bg-slate-800 border-r border-brand-deep
+                relative flex flex-col h-full bg-brand-darkest border-r border-brand-deep
                 transition-all duration-300 ease-in-out shrink-0
                 ${collapsed ? 'w-14' : 'w-64'}
             `}

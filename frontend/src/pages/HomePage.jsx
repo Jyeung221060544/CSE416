@@ -19,7 +19,7 @@ import { useState } from 'react'
 import { MapPin, BarChart2, MousePointerClick } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import { Card, CardContent, CardHeader, CardTitle,} from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import USMap from '../components/maps/USMap'
 import splashData from '../dummy/splash-states.json'  // TODO: replace with GET /api/states
 
@@ -27,102 +27,72 @@ export default function HomePage() {
     const [hoveredState, setHoveredState] = useState(null)
 
     return (
-        <div className="flex flex-col h-full bg-brand-darkest overflow-hidden">
-            {/* ── Tagline ────────────────────────────────────────────── */}
-            <div className="shrink-0 flex items-center justify-between px-4 sm:px-10 py-4 sm:py-5 border-b border-brand-deep/40 gap-4">
-                <div className="min-w-0">
-                    <p className="text-brand-muted text-[10px] font-bold uppercase tracking-[0.2em] mb-1">
-                        Voting Rights Act · Redistricting Analysis
-                    </p>
-                    <h1 className="text-brand-surface text-xl sm:text-3xl font-bold tracking-tight leading-tight">
-                        Redistricting Explorer
-                    </h1>
-                    <p className="text-brand-muted/70 text-xs sm:text-sm mt-1">
-                        Congressional district plans, ensemble analysis, and racial polarization data.
-                    </p>
-                </div>
+        <div className="flex flex-col h-full bg-brand-surface overflow-hidden">
 
-                {/* Available-states chips */}
-                <div className="hidden sm:flex flex-col items-end gap-2 shrink-0">
-                    <span className="text-brand-muted/50 text-[10px] uppercase tracking-widest">
-                        Available States
-                    </span>
-                    <div className="flex gap-2">
-                        {splashData.states.map(s => (
-                            <Badge
-                                key={s.stateId}
-                                variant="outline"
-                                className="text-brand-muted border-brand-deep/60 bg-brand-deep/20 text-xs"
-                            >
-                                {s.stateName}
-                            </Badge>
-                        ))}
-                    </div>
-                </div>
+            {/* ── Header ────────────────────────────────────────────── */}
+            <div className="shrink-0 px-4 sm:px-8 lg:px-10 py-6 border-b border-brand-muted/30">
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-muted mb-1">
+                    Voting Rights Act · Redistricting Analysis
+                </p>
+                <h1 className="text-2xl sm:text-3xl font-bold text-brand-darkest tracking-tight">
+                    Redistricting Explorer
+                </h1>
+                <p className="text-brand-muted/70 text-sm mt-1">
+                    Analyze the Impact of the Voting Rights Act on Minorities
+                </p>
             </div>
 
-            {/* ── Map + Card ─────────────────────────────────────────── */}
-            <div className="flex flex-col lg:flex-row flex-1 gap-4 sm:gap-5 p-4 sm:p-6 min-h-0">
+            {/* ── Map + Info card ───────────────────────────────────── */}
+            <div className="flex flex-col lg:flex-row flex-1 gap-5 p-4 sm:p-6 lg:p-8 min-h-0">
 
-                {/* Map panel — full width on small, 65% on lg */}
-                <div className="rounded-xl overflow-hidden ring-1 ring-brand-deep/50 shadow-2xl h-[280px] sm:h-[360px] lg:h-auto lg:flex-[0_0_65%]">
+                {/* Map panel */}
+                <div className="rounded-xl overflow-hidden border border-brand-muted/25 shadow-sm h-[280px] sm:h-[360px] lg:h-auto lg:flex-[0_0_65%]">
                     <USMap onStateHover={setHoveredState} />
                 </div>
 
-                {/* Info card — full width on small, 35% on lg */}
+                {/* Info card */}
                 <div className="flex-1 min-w-0 flex flex-col min-h-[220px] lg:min-h-0">
-                    <Card className="flex-1 p-0 bg-white/5 backdrop-blur-sm border-brand-deep/40 text-brand-surface shadow-xl overflow-hidden">
+                    <Card className="flex-1 p-0 border-brand-muted/25 shadow-sm overflow-hidden">
 
                         {hoveredState ? (
-                            /* ── Hovered state ── */
                             <>
                                 <CardHeader className="pb-3 pt-6 px-6">
                                     <div className="flex items-center gap-2 mb-2">
-                                        <MapPin className="w-3.5 h-3.5 text-brand-muted" />
-                                        <span className="text-brand-muted text-[10px] uppercase tracking-[0.18em] font-semibold">
+                                        <MapPin className="w-4 h-4 text-brand-muted" />
+                                        <span className="text-brand-muted text-xs uppercase tracking-[0.18em] font-semibold">
                                             State Profile
                                         </span>
                                     </div>
-                                    <CardTitle className="text-brand-surface text-2xl font-bold tracking-tight">
+                                    <CardTitle className="text-brand-darkest text-2xl font-bold tracking-tight">
                                         {hoveredState.stateName}
                                     </CardTitle>
                                 </CardHeader>
 
-                                <Separator className="bg-brand-deep/40 mx-6" />
+                                <Separator className="mx-6 bg-brand-muted/20" />
 
-                                <CardContent className="pt-5 px-6 flex flex-col gap-4">
-                                    {/* Districts */}
+                                <CardContent className="pt-5 px-6 flex flex-col gap-5">
                                     <div className="flex items-center justify-between">
-                                        <span className="text-brand-muted/80 text-sm">
-                                            Congressional Districts
-                                        </span>
-                                        <span className="text-brand-surface font-semibold text-xl tabular-nums">
+                                        <span className="text-brand-muted font-medium text-sm">Congressional Districts</span>
+                                        <span className="text-brand-darkest font-bold text-xl tabular-nums">
                                             {hoveredState.numDistricts}
                                         </span>
                                     </div>
 
-                                    {/* VRA Preclearance */}
                                     <div className="flex items-center justify-between">
-                                        <span className="text-brand-muted/80 text-sm">
-                                            VRA Preclearance
-                                        </span>
+                                        <span className="text-brand-muted font-medium text-sm">VRA Preclearance</span>
                                         {hoveredState.isPreclearance ? (
-                                            <Badge className="bg-brand-primary/90 text-white border-0 text-xs px-2.5">
+                                            <Badge className="bg-brand-primary/10 text-brand-primary border-brand-primary/30 text-xs font-semibold">
                                                 Required
                                             </Badge>
                                         ) : (
-                                            <Badge
-                                                variant="outline"
-                                                className="text-brand-muted border-brand-deep/60 text-xs px-2.5"
-                                            >
+                                            <Badge variant="outline" className="text-brand-muted border-brand-muted/40 text-xs">
                                                 Not Required
                                             </Badge>
                                         )}
                                     </div>
 
-                                    <Separator className="bg-brand-deep/30" />
+                                    <Separator className="bg-brand-muted/20" />
 
-                                    {/* Click hint */}
                                     <div className="flex items-center justify-center gap-2 text-brand-muted/50">
                                         <MousePointerClick className="w-3.5 h-3.5" />
                                         <span className="text-xs">Click the state to open analysis</span>
@@ -130,25 +100,22 @@ export default function HomePage() {
                                 </CardContent>
                             </>
                         ) : (
-                            /* ── Default / nothing hovered ── */
                             <CardContent className="flex-1 flex flex-col items-center justify-center gap-5 text-center px-8 py-8">
-                                <div className="w-14 h-14 rounded-full bg-brand-deep/20 flex items-center justify-center ring-1 ring-brand-deep/40">
-                                    <BarChart2 className="w-6 h-6 text-brand-muted/60" />
+                                <div className="w-14 h-14 rounded-full bg-brand-muted/10 flex items-center justify-center ring-1 ring-brand-muted/20">
+                                    <BarChart2 className="w-6 h-6 text-brand-muted/40" />
                                 </div>
 
                                 <div>
-                                    <p className="text-brand-surface font-semibold text-base tracking-tight">
-                                        Select a State
-                                    </p>
-                                    <p className="text-brand-muted/60 text-sm mt-1.5 leading-relaxed">
-                                        Hover over a highlighted state on the map to preview its profile.
+                                    <p className="text-brand-darkest font-bold text-base">Select a State</p>
+                                    <p className="font-semibold text-brand-muted/60 text-sm mt-1.5 leading-relaxed">
+                                        Hover over a highlighted state on the map to analyze its profile.
                                     </p>
                                 </div>
 
-                                <Separator className="bg-brand-deep/30 w-12" />
+                                <Separator className="bg-brand-muted/20 w-12" />
 
                                 <div className="flex flex-col items-center gap-2">
-                                    <span className="text-brand-muted/40 text-[10px] uppercase tracking-widest">
+                                    <span className="font-semibold text-brand-muted text-[10px] uppercase tracking-widest">
                                         Available for Analysis
                                     </span>
                                     <div className="flex gap-2 flex-wrap justify-center">
@@ -156,7 +123,7 @@ export default function HomePage() {
                                             <Badge
                                                 key={s.stateId}
                                                 variant="outline"
-                                                className="text-brand-muted border-brand-deep/50 bg-brand-deep/10 text-xs"
+                                                className="text-brand-deep border-brand-muted/40 bg-brand-muted/5 text-xs"
                                             >
                                                 {s.stateName}
                                             </Badge>
@@ -165,6 +132,7 @@ export default function HomePage() {
                                 </div>
                             </CardContent>
                         )}
+
                     </Card>
                 </div>
 

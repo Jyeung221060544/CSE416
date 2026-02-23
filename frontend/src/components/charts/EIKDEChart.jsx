@@ -1,25 +1,6 @@
 import { useMemo, useCallback } from 'react'
 import { ResponsiveLine } from '@nivo/line'
-
-// ── Race colour palette (distinct from party colours) ─────────────────────────
-const RACE_COLORS = {
-    black:    '#6366f1', // indigo
-    white:    '#0ea5e9', // sky
-    hispanic: '#f59e0b', // amber
-    asian:    '#10b981', // emerald
-    other:    '#a855f7', // purple
-}
-
-const RACE_LABELS = {
-    black:    'Black',
-    white:    'White',
-    hispanic: 'Hispanic',
-    asian:    'Asian',
-    other:    'Other',
-}
-
-const AXIS_COLOR  = '#64748b'
-const LABEL_COLOR = '#334155'
+import { DEM_COLOR, REP_COLOR, RACE_COLORS, RACE_LABELS, AXIS_COLOR, LABEL_COLOR } from '@/lib/partyColors'
 
 // ── Nivo theme (mirrors GinglesScatterPlot) ───────────────────────────────────
 const NIVO_THEME = {
@@ -41,7 +22,7 @@ const NIVO_THEME = {
 
 // ── Slice tooltip factory — captures candidate for party border colour ────────
 function makeSliceTooltip(candidate) {
-    const partyColor = candidate?.party === 'Democratic' ? '#3b82f6' : '#ef4444'
+    const partyColor = candidate?.party === 'Democratic' ? DEM_COLOR : REP_COLOR
     const partyName  = candidate?.party ?? ''
     return function EISliceTooltip({ slice }) {
         const x   = slice.points[0]?.data.x
@@ -139,7 +120,7 @@ function BgLayer({ innerWidth, innerHeight }) {
 export default function EIKDEChart({ candidate, activeRaces, yMax, className }) {
     if (!candidate) return null
 
-    const partyColor = candidate.party === 'Democratic' ? '#3b82f6' : '#ef4444'
+    const partyColor = candidate.party === 'Democratic' ? DEM_COLOR : REP_COLOR
 
     // Filter to active races and build Nivo line series
     const nivoData = useMemo(() => {

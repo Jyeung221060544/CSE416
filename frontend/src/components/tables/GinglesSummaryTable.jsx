@@ -1,15 +1,7 @@
 import { Badge } from '@/components/ui/badge'
 import SurfacePanel from '@/components/ui/surface-panel'
-
-// ── Classify each bin by political outcome ─────────────────────────────
-function getOutcome(dem) {
-    const d = dem * 100
-    if (d >= 65) return { label: 'Dem-Won',   cls: 'bg-blue-50 text-blue-700 border-blue-200' }
-    if (d >= 52) return { label: 'Lean Dem',  cls: 'bg-blue-50/60 text-blue-600 border-blue-100' }
-    if (d >= 48) return { label: 'Contested', cls: 'bg-slate-50 text-slate-500 border-slate-200' }
-    if (d >= 35) return { label: 'Lean Rep',  cls: 'bg-red-50/60 text-red-600 border-red-100' }
-    return           { label: 'Rep-Won',   cls: 'bg-red-50 text-red-700 border-red-200' }
-}
+import { getOutcome, DEM_TEXT, REP_TEXT, DEM_HEADER_TEXT, REP_HEADER_TEXT } from '@/lib/partyColors'
+import { ROW_BORDER, rowBg } from '@/lib/tableStyles'
 
 // ── Mini Dem/Rep split bar ─────────────────────────────────────────────
 function SplitBar({ demPct }) {
@@ -56,8 +48,8 @@ export default function GinglesSummaryTable({ summaryRows, raceFilter }) {
             <div className="shrink-0 grid grid-cols-[1fr_40px_60px_60px_88px] items-center px-4 py-2.5 bg-brand-darkest text-brand-surface text-xs font-semibold">
                 <span>{raceName} VAP Range</span>
                 <span className="text-center">n</span>
-                <span className="text-right text-blue-300">Avg Dem</span>
-                <span className="text-right text-red-300">Avg Rep</span>
+                <span className={`text-right ${DEM_HEADER_TEXT}`}>Avg Dem</span>
+                <span className={`text-right ${REP_HEADER_TEXT}`}>Avg Rep</span>
                 <span className="text-center">Result</span>
             </div>
 
@@ -75,8 +67,9 @@ export default function GinglesSummaryTable({ summaryRows, raceFilter }) {
                             key={row.rangeLabel}
                             className={[
                                 'grid grid-cols-[1fr_40px_60px_60px_88px] items-center',
-                                'px-4 py-3 border-t border-brand-muted/15',
-                                i % 2 === 0 ? 'bg-white' : 'bg-brand-surface/40',
+                                'px-4 py-3',
+                                ROW_BORDER,
+                                rowBg(i),
                             ].join(' ')}
                         >
                             {/* Range label + visual split bar */}
@@ -93,12 +86,12 @@ export default function GinglesSummaryTable({ summaryRows, raceFilter }) {
                             </span>
 
                             {/* Avg Dem share */}
-                            <span className="text-right tabular-nums font-bold text-blue-600 text-sm">
+                            <span className={`text-right tabular-nums font-bold ${DEM_TEXT} text-sm`}>
                                 {demPct.toFixed(1)}%
                             </span>
 
                             {/* Derived avg Rep share */}
-                            <span className="text-right tabular-nums font-bold text-red-600 text-sm">
+                            <span className={`text-right tabular-nums font-bold ${REP_TEXT} text-sm`}>
                                 {repPct.toFixed(1)}%
                             </span>
 
@@ -110,7 +103,7 @@ export default function GinglesSummaryTable({ summaryRows, raceFilter }) {
                                 >
                                     {outcome.label}
                                 </Badge>
-                                <span className={`text-[10px] font-bold tabular-nums ${isDem ? 'text-blue-500' : 'text-red-500'}`}>
+                                <span className={`text-[10px] font-bold tabular-nums ${isDem ? DEM_TEXT : REP_TEXT}`}>
                                     {isDem ? 'D' : 'R'}+{margin.toFixed(1)}%
                                 </span>
                             </div>

@@ -13,7 +13,7 @@ export default function EIRaceFilter() {
     const { eiRaceFilter, toggleEiRaceFilter } = useFilters()
 
     return (
-        <CollapsibleGroup label="Ecological Inference Race">
+        <CollapsibleGroup label="EI Race / Minority">
             {EI_RACE_OPTIONS.map((opt) => {
                 const checked = eiRaceFilter.includes(opt.value)
                 const isLast = checked && eiRaceFilter.length === 1
@@ -25,7 +25,7 @@ export default function EIRaceFilter() {
                             checked={checked}
                             disabled={isLast}
                             onChange={() => toggleEiRaceFilter(opt.value)}
-                            className="appearance-none w-4 h-4 rounded border border-brand-muted checked:bg-brand-primary checked:border-brand-primary transition-colors shrink-0 disabled:opacity-50"
+                            className="appearance-none w-4 h-4 rounded border border-brand-primary checked:bg-brand-primary checked:border-brand-primary transition-colors shrink-0 disabled:opacity-50"
                         />
                         <span className="text-sm text-brand-surface">{opt.label}</span>
                     </label>

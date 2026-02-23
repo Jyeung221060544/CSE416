@@ -15,7 +15,7 @@ export default function FilterPanel() {
 
             {/* ── STATE OVERVIEW ─────────────────────────────── */}
             {activeSection === 'state-overview' && (
-                <span className="text-xs px-1 text-brand-muted italic">No filters available</span>
+                <span className="text-xs px-1 text-white/90 italic">No filters available</span>
             )}
 
             {/* ── DEMOGRAPHIC ────────────────────────────────── */}
@@ -37,7 +37,7 @@ export default function FilterPanel() {
 
             {/* ── ENSEMBLE ANALYSIS ──────────────────────────── */}
             {activeSection === 'ensemble-analysis' && activeSubSection !== 'box-whisker' && (
-                <span className="text-xs px-1 text-brand-muted italic">No filters available</span>
+                <span className="text-xs px-1 text-white/90 italic">No filters available</span>
             )}
             {activeSection === 'ensemble-analysis' && activeSubSection === 'box-whisker' && (
                 <FeasibleRaceFilter />

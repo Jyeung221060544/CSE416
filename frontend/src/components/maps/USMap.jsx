@@ -32,21 +32,23 @@ const stateByName = Object.fromEntries(
 
 function baseStyle(feature) {
     const data = stateByName[feature.properties.name]
+
     if (data?.hasData) {
         return {
-            fillColor: '#088395',   // brand-primary
-            fillOpacity: 0.80,
-            color: '#7AB2B2',       // brand-muted border
-            weight: 1,
-            className: 'state-valid',
+            fillColor:   'var(--color-brand-primary)',
+            fillOpacity: 0.65,
+            color:       'var(--color-brand-darkest)',
+            weight:      2.5,
+            className:   'state-valid',
         }
     }
+
     return {
-        fillColor: '#0b2d3b',       // near-invisible on dark bg
-        fillOpacity: 0.70,
-        color: '#09637E',           // brand-deep border
-        weight: 0.4,
-        className: 'state-invalid',
+        fillColor:   'var(--color-brand-surface)',
+        fillOpacity: 0.9,
+        color:       'var(--color-brand-deep)',
+        weight:      1,
+        className:   'state-invalid',
     }
 }
 
@@ -72,14 +74,14 @@ export default function USMap({ onStateHover }) {
         layer.on({
             mouseover(e) {
                 e.target.setStyle({
-                    fillColor:   '#7AB2B2',  // brand-muted — pops light on dark bg
-                    fillOpacity: 0.95,
-                    weight:      2,
-                    color:       '#EBF4F6',  // brand-surface border
+                    fillColor:   'var(--color-brand-deep)',
+                    fillOpacity: 0.85,
+                    weight:      3.5,
+                    color:       'var(--color-brand-darkest)',
                 })
                 e.target.bringToFront()
                 const el = e.target.getElement()
-                if (el) el.style.filter = 'drop-shadow(0 0 14px rgba(122,178,178,0.7))'
+                if (el) el.style.filter = 'drop-shadow(0 0 10px var(--color-brand-glow))'
                 onStateHover(data)
             },
             mouseout(e) {
@@ -105,11 +107,11 @@ export default function USMap({ onStateHover }) {
             dragging={false}
             touchZoom={false}
             attributionControl={false}
-            style={{ height: '100%', width: '100%', background: '#071e28' }}
+            style={{ height: '100%', width: '100%', background: '#EBF4F6' }}
         >
             <SizeInvalidator />
             <TileLayer
-                url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
             />
             <GeoJSON

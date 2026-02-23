@@ -19,7 +19,7 @@ export default function GranularityFilter() {
                         value={opt.value}
                         checked={granularityFilter === opt.value}
                         onChange={() => setGranularityFilter(opt.value)}
-                        className="appearance-none w-4 h-4 rounded-full border border-brand-muted checked:bg-brand-primary checked:border-brand-primary transition-colors shrink-0"
+                        className="appearance-none w-4 h-4 rounded-full border border-brand-primary checked:bg-brand-primary checked:border-brand-primary transition-colors shrink-0"
                     />
                     <span className="text-sm text-brand-surface">{opt.label}</span>
                 </label>

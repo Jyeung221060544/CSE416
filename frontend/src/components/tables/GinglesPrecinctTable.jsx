@@ -3,15 +3,10 @@ import { ChevronLeft, ChevronRight, MousePointerClick } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import SurfacePanel from '@/components/ui/surface-panel'
 import InfoCallout from '@/components/ui/info-callout'
+import { REGION_CLS, DEM_TEXT, REP_TEXT, DEM_HEADER_TEXT, REP_HEADER_TEXT } from '@/lib/partyColors'
+import { ROW_BORDER, ACTIVE_LABEL, INACTIVE_LABEL, rowBg } from '@/lib/tableStyles'
 
 const PAGE_SIZE = 8
-
-// ── Region badge colours ────────────────────────────────────────────────────
-const REGION_CLS = {
-    urban:    'bg-purple-50 text-purple-700 border-purple-200',
-    suburban: 'bg-sky-50    text-sky-700    border-sky-200',
-    rural:    'bg-amber-50  text-amber-700  border-amber-200',
-}
 
 // Shared column definition — keeps header + rows in sync
 const COLS = 'grid-cols-[1fr_50px_60px_62px_52px_50px_50px]'
@@ -54,8 +49,8 @@ export default function GinglesPrecinctTable({ points = [], selectedId, onSelect
                     <span className="text-center">Region</span>
                     <span className="text-right">Minority</span>
                     <span className="text-right">Income</span>
-                    <span className="text-right text-blue-300">Dem</span>
-                    <span className="text-right text-red-300">Rep</span>
+                    <span className={`text-right ${DEM_HEADER_TEXT}`}>Dem</span>
+                    <span className={`text-right ${REP_HEADER_TEXT}`}>Rep</span>
                 </div>
 
                 {/* ── Data rows ── */}
@@ -68,14 +63,12 @@ export default function GinglesPrecinctTable({ points = [], selectedId, onSelect
                                 onClick={() => onSelectId?.(isSelected ? null : row.id)}
                                 className={[
                                     `grid ${COLS}`,
-                                    'items-center px-3 py-2.5 border-t border-brand-muted/15 cursor-pointer',
-                                    'transition-colors duration-100',
-                                    isSelected
-                                        ? 'bg-brand-primary/15 ring-1 ring-inset ring-brand-primary/30'
-                                        : i % 2 === 0 ? 'bg-white hover:bg-brand-surface/50' : 'bg-brand-surface/40 hover:bg-brand-surface/70',
+                                    'items-center px-3 py-2.5 cursor-pointer transition-colors duration-100',
+                                    ROW_BORDER,
+                                    rowBg(i, isSelected),
                                 ].join(' ')}
                             >
-                                <p className={`text-xs font-semibold leading-tight truncate pr-2 ${isSelected ? 'text-brand-primary' : 'text-brand-darkest'}`}>
+                                <p className={`text-xs font-semibold leading-tight truncate pr-2 ${isSelected ? ACTIVE_LABEL : INACTIVE_LABEL}`}>
                                     {row.name}
                                 </p>
 
@@ -100,11 +93,11 @@ export default function GinglesPrecinctTable({ points = [], selectedId, onSelect
                                     {fmtIncome(row.avgHHIncome)}
                                 </span>
 
-                                <span className="text-right tabular-nums font-bold text-blue-600 text-xs">
+                                <span className={`text-right tabular-nums font-bold ${DEM_TEXT} text-xs`}>
                                     {fmt(row.demVotes)}
                                 </span>
 
-                                <span className="text-right tabular-nums font-bold text-red-600 text-xs">
+                                <span className={`text-right tabular-nums font-bold ${REP_TEXT} text-xs`}>
                                     {fmt(row.repVotes)}
                                 </span>
                             </div>

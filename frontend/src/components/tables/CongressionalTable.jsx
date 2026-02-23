@@ -1,14 +1,11 @@
 import { Badge } from '@/components/ui/badge'
 import SurfacePanel from '@/components/ui/surface-panel'
 import useAppStore from '../../store/useAppStore'
-
-const PARTY = {
-    Democratic: { badge: 'bg-blue-50 text-blue-700 border-blue-200' },
-    Republican:  { badge: 'bg-red-50  text-red-700  border-red-200'  },
-}
+import { PARTY_BADGE, DEM_TEXT, REP_TEXT } from '@/lib/partyColors'
+import { ROW_BORDER, ACTIVE_LABEL, INACTIVE_LABEL, rowBg } from '@/lib/tableStyles'
 
 function VoteMargin({ pct, dir }) {
-    const color = dir === 'D' ? 'text-blue-600' : 'text-red-600'
+    const color = dir === 'D' ? DEM_TEXT : REP_TEXT
     return (
         <span className={`tabular-nums font-bold text-sm ${color}`}>
             {dir}+{pct >= 1.0 ? '100%' : `${(pct * 100).toFixed(1)}%`}
@@ -41,7 +38,7 @@ export default function CongressionalTable({ districtSummary }) {
 
             {/* Rows — clicking a row highlights that district on the map (GUI-7) */}
             {districts.map((d, i) => {
-                const p         = PARTY[d.party] ?? PARTY.Republican
+                const p         = PARTY_BADGE[d.party] ?? PARTY_BADGE.Republican
                 const isActive  = d.districtNumber === selectedDistrict
 
                 return (
@@ -50,20 +47,16 @@ export default function CongressionalTable({ districtSummary }) {
                         onClick={() => handleRowClick(d.districtNumber)}
                         className={[
                             'grid grid-cols-[80px_1fr_120px_110px_100px] gap-x-3 items-center',
-                            'px-4 py-3 border-t border-brand-muted/15',
-                            'cursor-pointer select-none transition-colors',
-                            isActive
-                                ? 'bg-brand-primary/15 ring-1 ring-inset ring-brand-primary/30'
-                                : i % 2 === 0
-                                    ? 'bg-white hover:bg-brand-primary/5'
-                                    : 'bg-brand-surface/60 hover:bg-brand-primary/5',
+                            'px-4 py-3 cursor-pointer select-none transition-colors',
+                            ROW_BORDER,
+                            rowBg(i, isActive),
                         ].join(' ')}
                     >
-                        <span className={`font-bold text-sm ${isActive ? 'text-brand-primary' : 'text-brand-deep'}`}>
+                        <span className={`font-bold text-sm ${isActive ? ACTIVE_LABEL : INACTIVE_LABEL}`}>
                             District {d.districtNumber}
                         </span>
                         <span className="text-gray-800 font-semibold text-sm">{d.representative}</span>
-                        <Badge variant="outline" className={`w-fit text-sm font-semibold px-2.5 ${p.badge}`}>
+                        <Badge variant="outline" className={`w-fit text-sm font-semibold px-2.5 ${p}`}>
                             {d.party}
                         </Badge>
                         <span className="text-gray-600 text-sm">{d.racialGroup}</span>

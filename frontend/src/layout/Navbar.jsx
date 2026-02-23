@@ -30,7 +30,7 @@ export default function Navbar() {
     <nav className="h-14 bg-white border-b border-brand-muted/40 flex items-center justify-between px-6 shrink-0">
         {/* Title */}
         <div className="flex items-center gap-3">
-            <span className="text-black font-semibold text-lg tracking-wide">
+            <span className="text-brand-darkest font-semibold text-xl tracking-wide">
                 VRA Redistricting Tool
             </span>
             {isStatePage && selectedState && (
@@ -60,8 +60,8 @@ export default function Navbar() {
                 className={`
                     flex items-center gap-1
                     ${isHomePage
-                        ? 'text-brand-muted/50 cursor-not-allowed'
-                        : 'bg-brand-primary text-white hover:bg-black hover:text-white shadow-sm'
+                        ? 'text-brand-darkest cursor-not-allowed'
+                        : 'bg-brand-darkest text-white hover:bg-brand-deep hover:text-white shadow-sm'
                     }
                     ${iconSize}
                 `}

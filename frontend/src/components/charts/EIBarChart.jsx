@@ -1,18 +1,6 @@
 import { useMemo } from 'react'
 import { ResponsiveBar } from '@nivo/bar'
-
-const DEM_COLOR = '#3b82f6'
-const REP_COLOR = '#ef4444'
-const AXIS_COLOR  = '#64748b'
-const LABEL_COLOR = '#334155'
-
-const RACE_LABELS = {
-    black:    'Black',
-    white:    'White',
-    hispanic: 'Hispanic',
-    asian:    'Asian',
-    other:    'Other',
-}
+import { DEM_COLOR, REP_COLOR, AXIS_COLOR, LABEL_COLOR, THRESH_COLOR, RACE_LABELS } from '@/lib/partyColors'
 
 // ── Nivo theme ─────────────────────────────────────────────────────────────────
 const NIVO_THEME = {
@@ -172,7 +160,7 @@ export default function EIBarChart({ demCandidate, repCandidate, activeRaces, cl
                         <line x1="3" y1="1" x2="11" y2="1" stroke={AXIS_COLOR} strokeWidth={1.5} strokeOpacity={0.7} />
                         <line x1="3" y1="15" x2="11" y2="15" stroke={AXIS_COLOR} strokeWidth={1.5} strokeOpacity={0.7} />
                     </svg>
-                    <span style={{ fontSize: 11, fontWeight: 500, color: '#94a3b8' }}>95% CI</span>
+                    <span style={{ fontSize: 11, fontWeight: 500, color: THRESH_COLOR }}>95% CI</span>
                 </div>
             </div>
 
@@ -231,14 +219,14 @@ export default function EIBarChart({ demCandidate, repCandidate, activeRaces, cl
                         axis: 'y',
                         value: 0.5,
                         lineStyle: {
-                            stroke: '#94a3b8',
+                            stroke: THRESH_COLOR,
                             strokeWidth: 1.5,
                             strokeDasharray: '8 5',
                         },
                         legend: '50%',
                         legendPosition: 'right',
                         legendOrientation: 'horizontal',
-                        textStyle: { fill: '#94a3b8', fontSize: 10, fontWeight: 700 },
+                        textStyle: { fill: THRESH_COLOR, fontSize: 10, fontWeight: 700 },
                     }]}
 
                     tooltip={EIBarTooltip}

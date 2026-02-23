@@ -32,7 +32,7 @@ function getStyle(feature, districtByNumber, selectedDistrict) {
     const isSelected = distNum === selectedDistrict
 
     if (isSelected) {
-        return { fillColor: '#088395', fillOpacity: 0.75, color: '#EBF4F6', weight: 3 }
+        return { fillColor: 'var(--color-brand-primary)', fillOpacity: 0.75, color: 'var(--color-brand-darkest)', weight: 3 }
     }
     if (distData?.party === 'Democratic') {
         return { fillColor: '#3B82F6', fillOpacity: 0.30, color: '#1D4ED8', weight: 1 }
@@ -113,7 +113,13 @@ export default function DistrictMap2022({ stateId, districtSummary }) {
             mouseover(e) {
                 const el = e.target.getElement()
                 if (el) el.style.filter = 'drop-shadow(0 4px 8px rgba(0,0,0,0.35))'
-                e.target.setStyle({ fillOpacity: e.target.options.fillOpacity < 0.6 ? 0.55 : undefined })
+                e.target.setStyle({
+                    fillColor:   'var(--color-brand-deep)',
+                    fillOpacity: 0.85,
+                    weight:      3.5,
+                    color:       'var(--color-brand-darkest)',
+                })
+                if (el) el.style.filter = 'drop-shadow(0 0 10px var(--color-brand-glow))'
                 e.target.bringToFront()
             },
             mouseout(e) {
