@@ -1,18 +1,38 @@
 /**
- * ╔══════════════════════════════════════════════════════════════════════╗
- * ║  TODO – Replace splash-states.json with a real API call             ║
- * ║                                                                      ║
- * ║  Currently: `splashData` (splash-states.json) drives the right-hand ║
- * ║  info card — it supplies stateName, numDistricts, isPreclearance.   ║
- * ║                                                                      ║
- * ║  Replace with:  GET /api/states                                     ║
- * ║    → fetch on mount with useState/useEffect                         ║
- * ║    → pass the resulting array to USMap (for which states light up)  ║
- * ║    → use the hovered state object from the same array for the card  ║
- * ║                                                                      ║
- * ║  The card already displays whatever is in `hoveredState`, so no     ║
- * ║  other changes are needed here once the data source is swapped.     ║
- * ╚══════════════════════════════════════════════════════════════════════╝
+ * ========================================================================
+ * TODO – Replace Dummy Data with Real Backend API
+ * ========================================================================
+ *
+ * CURRENT IMPLEMENTATION
+ * - Imports splash-states.json (src/dummy/) for the list of available states
+ * - splashData.states drives the badge list at the bottom of the info card
+ * - The same data flows into <USMap> to determine which states are clickable
+ *
+ * REQUIRED API CALL
+ * - HTTP Method: GET
+ * - Endpoint:    /api/states
+ * - Purpose:     Returns all states that have analysis data available
+ *
+ * RESPONSE SNAPSHOT (keys only)
+ * {
+ *   states: [{
+ *     stateId, stateName, hasData, numDistricts, isPreclearance,
+ *     center: { lat, lng },
+ *     zoom
+ *   }]
+ * }
+ *
+ * INTEGRATION INSTRUCTIONS
+ * - Fetch on mount: useEffect(() => fetch('/api/states')..., [])
+ * - Store result in: const [statesData, setStatesData] = useState([])
+ * - Replace splashData.states with statesData in the badge list
+ * - Pass statesData into <USMap> so it knows which states to highlight
+ * - The info card reads hoveredState (set by USMap) — no other changes needed
+ *
+ * SEARCHABLE MARKER
+ * //CONNECT HERE: splashData import
+ *
+ * ========================================================================
  */
 
 import { useState } from 'react'
@@ -21,7 +41,8 @@ import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import USMap from '../components/maps/USMap'
-import splashData from '../dummy/splash-states.json'  // TODO: replace with GET /api/states
+//CONNECT HERE: splashData — replace with fetch('/api/states') in a useEffect, store result in useState
+import splashData from '../dummy/splash-states.json'
 
 export default function HomePage() {
     const [hoveredState, setHoveredState] = useState(null)
@@ -95,7 +116,7 @@ export default function HomePage() {
 
                                     <div className="flex items-center justify-center gap-2 text-brand-muted/50">
                                         <MousePointerClick className="w-3.5 h-3.5" />
-                                        <span className="text-xs">Click the state to open analysis</span>
+                                        <span className="text-xs">Click the state to begin analysis</span>
                                     </div>
                                 </CardContent>
                             </>

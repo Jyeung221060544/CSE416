@@ -24,6 +24,13 @@ const NIVO_THEME = {
 function makeSliceTooltip(candidate) {
     const partyColor = candidate?.party === 'Democratic' ? DEM_COLOR : REP_COLOR
     const partyName  = candidate?.party ?? ''
+
+    // Build peak lookup: lowercase race key → peakSupportEstimate x value
+    const peakMap = {}
+    candidate?.racialGroups?.forEach(g => {
+        peakMap[g.group.toLowerCase()] = g.peakSupportEstimate
+    })
+
     return function EISliceTooltip({ slice }) {
         const x   = slice.points[0]?.data.x
         const pts = [...slice.points].sort((a, b) => b.data.y - a.data.y)
@@ -45,12 +52,21 @@ function makeSliceTooltip(candidate) {
                     Vote share: <strong style={{ color: LABEL_COLOR }}>{(x * 100).toFixed(1)}%</strong>
                 </div>
                 {pts.map(pt => {
-                    const sid   = pt.seriesId ?? pt.serieId
-                    const color = pt.seriesColor ?? pt.serieColor ?? RACE_COLORS[sid] ?? '#94a3b8'
+                    const sid    = pt.seriesId ?? pt.serieId
+                    const color  = pt.seriesColor ?? pt.serieColor ?? RACE_COLORS[sid] ?? '#94a3b8'
+                    const peak   = peakMap[sid]
+                    const atPeak = peak != null && Math.abs(x - peak) < 0.026
                     return (
                         <div key={sid} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 1, color: '#475569' }}>
                             <span style={{ width: 8, height: 8, borderRadius: '50%', background: color, display: 'inline-block', flexShrink: 0 }} />
-                            <span style={{ flex: 1 }}>{RACE_LABELS[sid] ?? sid}</span>
+                            <span style={{ flex: 1 }}>
+                                {RACE_LABELS[sid] ?? sid}
+                                {atPeak && (
+                                    <span style={{ marginLeft: 5, color: color, fontWeight: 700, fontSize: 10, background: `${color}18`, borderRadius: 4, padding: '1px 5px', letterSpacing: '0.04em' }}>
+                                        Peak
+                                    </span>
+                                )}
+                            </span>
                             <strong style={{ color: LABEL_COLOR }}>Density: {Number(pt.data.y).toFixed(2)}</strong>
                         </div>
                     )

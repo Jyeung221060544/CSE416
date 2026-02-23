@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { ResponsiveBar } from '@nivo/bar'
-import { DEM_COLOR, REP_COLOR, AXIS_COLOR, LABEL_COLOR, THRESH_COLOR, RACE_LABELS } from '@/lib/partyColors'
+import { DEM_COLOR, REP_COLOR, AXIS_COLOR, LABEL_COLOR, THRESH_COLOR, RACE_LABELS, RACE_COLORS } from '@/lib/partyColors'
 
 // ── Nivo theme ─────────────────────────────────────────────────────────────────
 const NIVO_THEME = {
@@ -130,6 +130,7 @@ export default function EIBarChart({ demCandidate, repCandidate, activeRaces, cl
             const dem = demCandidate.racialGroups.find(g => g.group.toLowerCase() === race)
             const rep = repCandidate.racialGroups.find(g => g.group.toLowerCase() === race)
             return {
+                raceKey:          race,
                 race:             RACE_LABELS[race] ?? race,
                 Democratic:       dem?.peakSupportEstimate  ?? 0,
                 DemocraticCILow:  dem?.confidenceIntervalLow  ?? 0,
@@ -181,7 +182,8 @@ export default function EIBarChart({ demCandidate, repCandidate, activeRaces, cl
 
                     colors={[DEM_COLOR, REP_COLOR]}
                     borderRadius={3}
-                    borderWidth={0}
+                    borderWidth={2}
+                    borderColor={({ data }) => RACE_COLORS[data.data.raceKey] ?? '#94a3b8'}
 
                     theme={NIVO_THEME}
 

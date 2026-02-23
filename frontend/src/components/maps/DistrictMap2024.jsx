@@ -1,28 +1,56 @@
 /**
- * ╔══════════════════════════════════════════════════════════════════════╗
- * ║  TODO – Replace local GeoJSON assets with backend API (GUI-2)       ║
- * ║                                                                      ║
- * ║  Currently:  imports ALCongressionalDistrict.json and               ║
- * ║              ORCongressionalDistrict.json from src/assets/           ║
- * ║                                                                      ║
- * ║  Replace with:  GET /api/states/:stateId/districts/geojson          ║
- * ║    → returns GeoJSON FeatureCollection                              ║
- * ║    → each Feature.properties.CD119FP  = district number (string)   ║
- * ║    → each Feature.properties.NAMELSAD20 = "Congressional District N"║
- * ║                                                                      ║
- * ║  Also: state center/zoom comes from splash-states.json (dummy).     ║
- * ║  Replace with:  GET /api/states  (returns center + zoom per state)  ║
- * ╚══════════════════════════════════════════════════════════════════════╝
+ * ========================================================================
+ * TODO – Replace Dummy Data with Real Backend API
+ * ========================================================================
+ *
+ * CURRENT IMPLEMENTATION
+ * - Imports ALCongressionalDistricts.json and ORCongressionalDistrict.json
+ *   from src/assets/ as static GeoJSON bundles
+ * - Builds a DISTRICT_GEOJSON lookup keyed by stateId: { AL: ..., OR: ... }
+ * - districtSummary (party, representative, etc.) comes via props from
+ *   useStateData, which currently reads from dummy JSON
+ *
+ * REQUIRED API CALL
+ * - HTTP Method: GET
+ * - Endpoint:    /api/states/:stateId/districts/geojson
+ * - Purpose:     Returns the GeoJSON FeatureCollection for the state's districts
+ *
+ * RESPONSE SNAPSHOT (keys only)
+ * {
+ *   type: "FeatureCollection",
+ *   features: [{
+ *     type: "Feature",
+ *     properties: {
+ *       CD119FP,    (district number as string, e.g. "01")
+ *       NAMELSAD20  (e.g. "Congressional District 1")
+ *     },
+ *     geometry: { type, coordinates }
+ *   }]
+ * }
+ *
+ * INTEGRATION INSTRUCTIONS
+ * - Fetch inside a useEffect keyed on stateId
+ * - Store result in: const [geoData, setGeoData] = useState(null)
+ * - Replace the DISTRICT_GEOJSON[stateId] lookup with the fetched geoData
+ * - districtSummary (party coloring) still flows in via props from useStateData
+ *
+ * SEARCHABLE MARKER
+ * //CONNECT HERE: DISTRICT_GEOJSON lookup — replace asset imports + static object
+ *
+ * ========================================================================
  */
 
 import { useRef, useEffect, useCallback } from 'react'
 import { MapContainer, GeoJSON, TileLayer, useMap } from 'react-leaflet'
 import L from 'leaflet'
 import useAppStore from '../../store/useAppStore'
+//CONNECT HERE: DISTRICT_GEOJSON — delete these asset imports and the static lookup below,
+// then fetch from GET /api/states/:stateId/districts/geojson in a useEffect
 import ALDistricts from '../../assets/ALCongressionalDistricts.json'
 import ORDistricts from '../../assets/ORCongressionalDistrict.json'
 
 // ── Static lookups ────────────────────────────────────────────────────
+//CONNECT HERE: DISTRICT_GEOJSON — replace with useState(null) populated by the fetch above
 const DISTRICT_GEOJSON = { AL: ALDistricts, OR: ORDistricts }
 
 // ── Styles ────────────────────────────────────────────────────────────

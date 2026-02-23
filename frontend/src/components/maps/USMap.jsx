@@ -1,31 +1,52 @@
 /**
- * ╔══════════════════════════════════════════════════════════════════════╗
- * ║  TODO – Replace splash-states.json with a real API call             ║
- * ║                                                                      ║
- * ║  Currently: imports splash-states.json to know which states have    ║
- * ║  data (hasData), their names, and their center/zoom.                ║
- * ║                                                                      ║
- * ║  Replace with:  GET /api/states                                     ║
- * ║    → returns an array of available states, each with:               ║
- * ║      { stateId, stateName, hasData, isPreclearance,                 ║
- * ║        numDistricts, center: { lat, lng }, zoom }                   ║
- * ║                                                                      ║
- * ║  Wire it: fetch on mount, store result in useState, build           ║
- * ║  `stateByName` from the response instead of the JSON import.        ║
- * ║                                                                      ║
- * ║  The US-48-States.geojson boundary file stays as a static asset —   ║
- * ║  only the per-state metadata comes from the backend.                ║
- * ╚══════════════════════════════════════════════════════════════════════╝
+ * ========================================================================
+ * TODO – Replace Dummy Data with Real Backend API
+ * ========================================================================
+ *
+ * CURRENT IMPLEMENTATION
+ * - Imports splash-states.json (src/dummy/) to build the stateByName lookup
+ * - stateByName drives which states are colored/clickable on the map
+ *   (hasData), and supplies the hover payload (stateId, stateName,
+ *   numDistricts, isPreclearance, center, zoom)
+ * - US-48-States.geojson stays as a static asset (boundary shapes only)
+ *
+ * REQUIRED API CALL
+ * - HTTP Method: GET
+ * - Endpoint:    /api/states
+ * - Purpose:     Returns the list of states that have analysis data
+ *
+ * RESPONSE SNAPSHOT (keys only)
+ * {
+ *   states: [{
+ *     stateId, stateName, hasData, numDistricts, isPreclearance,
+ *     center: { lat, lng },
+ *     zoom
+ *   }]
+ * }
+ *
+ * INTEGRATION INSTRUCTIONS
+ * - Accept the fetched states array as a prop OR fetch inside this component
+ * - Rebuild stateByName from the API response: Object.fromEntries(states.map(...))
+ * - The US-48-States.geojson import is static — keep it as-is
+ * - Pass the hovered state object to onStateHover — no other render changes
+ *
+ * SEARCHABLE MARKER
+ * //CONNECT HERE: splashData import + stateByName lookup
+ *
+ * ========================================================================
  */
 
 import { useRef, useEffect } from 'react'
 import { MapContainer, TileLayer, GeoJSON, useMap } from 'react-leaflet'
 import { useNavigate } from 'react-router-dom'
 import useAppStore from '../../store/useAppStore'
-import splashData from '../../dummy/splash-states.json'   // TODO: replace with GET /api/states
+//CONNECT HERE: splashData import — replace with fetched states from GET /api/states,
+// then rebuild stateByName from the response array instead of the JSON import
+import splashData from '../../dummy/splash-states.json'
 import usGeoJson from '../../assets/US-48-States.geojson'
 
 // Lookup: stateName → splash-states object
+//CONNECT HERE: stateByName — rebuild this from the API response array
 const stateByName = Object.fromEntries(
     splashData.states.map(s => [s.stateName, s])
 )
