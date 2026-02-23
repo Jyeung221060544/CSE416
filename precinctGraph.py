@@ -167,7 +167,7 @@ def build_precinct_adjacency_graph(
 
     # Save node-link graph JSON
     data = json_graph.adjacency_data(G)
-    sanitize_obj(data)
+    data = sanitize_obj(data)
     with open(out_graph_json, "w") as f:
         json.dump(data, f)
 
@@ -183,5 +183,16 @@ AL_G = build_precinct_adjacency_graph(
 OR_G = build_precinct_adjacency_graph(
     precinct_geojson="OR_data/OR_precincts_full.geojson",
     out_graph_json="OR_data/OR_graph.json",
+    min_shared_boundary_feet=200,
+)
+
+build_precinct_adjacency_graph(
+    precinct_geojson="AL_data/AL_precincts_full.geojson",
+    out_graph_json="seawulf_runs/AL/input/AL_graph.json",
+    min_shared_boundary_feet=200,
+)
+build_precinct_adjacency_graph(
+    precinct_geojson="OR_data/OR_precincts_full.geojson",
+    out_graph_json="seawulf_runs/OR/input/OR_graph.json",
     min_shared_boundary_feet=200,
 )

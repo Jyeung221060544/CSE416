@@ -83,3 +83,6 @@ def save_enacted_baseline(graph_path, out_json, num_districts):
 
 save_enacted_baseline("AL_data/AL_graph.json", "AL_data/AL_enacted_baseline.json", num_districts=7)
 save_enacted_baseline("OR_data/OR_graph.json", "OR_data/OR_enacted_baseline.json", num_districts=6)
+
+save_enacted_baseline("AL_data/AL_graph.json", "seawulf_runs/AL/input/AL_enacted_baseline.json", num_districts=7)
+save_enacted_baseline("OR_data/OR_graph.json", "seawulf_runs/OR/input/OR_enacted_baseline.json", num_districts=6)

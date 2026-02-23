@@ -1,0 +1,11 @@
+{
+  "state": "AL",
+  "graph_path": "input/AL_graph.json",
+  "assignment_col": "enacted_cd",
+  "pop_col": "VAP",
+  "num_districts": 7,
+  "pop_tolerance": 0.035,
+  "steps_test": 250,
+  "steps_final": 5000,
+  "output_dir": "output_raceblind"
+}
