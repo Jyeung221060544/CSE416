@@ -1,107 +1,218 @@
+/* ============================================================
+   index.css — Global Styles & Design System
+   ============================================================
+
+   ┌──────────────────────────────────────────────────────────┐
+   │  COLOR GUIDE — What every color token is used for        │
+   ├──────────────────────────────────────────────────────────┤
+   │                                                          │
+   │  BRAND PALETTE  (defined in @theme inline below)         │
+   │  ─────────────────────────────────────────────────────   │
+   │  brand-darkest  #0D0236  · Sidebar background, navbar,   │
+   │                           deepest surfaces, table heads  │
+   │                                                          │
+   │  brand-deep     #2C2F66  · Border colors, separator      │
+   │                           lines, hover backgrounds,      │
+   │                           secondary text on dark         │
+   │                                                          │
+   │  brand-primary  #595a96  · Active nav buttons, CTA       │
+   │                           buttons (Reset Filters),       │
+   │                           selected district highlight,   │
+   │                           ring/focus indicators          │
+   │                                                          │
+   │  brand-muted    #232652  · Label text, icon tints,       │
+   │                           unchecked radio/checkbox,      │
+   │                           inactive elements at ~30%      │
+   │                           opacity                        │
+   │                                                          │
+   │  brand-surface  #FBFAFF  · Page background, text on      │
+   │                           dark surfaces (sidebar         │
+   │                           labels, filter text)           │
+   │                                                          │
+   │  brand-glow     rgba(89,90,150,0.55)                      │
+   │                         · Drop-shadow glow on hover      │
+   │                           for map state/district polys   │
+   │                                                          │
+   │  POLITICAL COLORS  (see partyColors.js for full guide)   │
+   │  ─────────────────────────────────────────────────────   │
+   │  DEM_COLOR  #3b82f6  blue-500  · Dem dots, bars, text    │
+   │  DEM_DARK   #1d4ed8  blue-700  · Dem trendline strokes   │
+   │  REP_COLOR  #ef4444  red-500   · Rep dots, bars, text    │
+   │  REP_DARK   #b91c1c  red-700   · Rep trendline strokes   │
+   │  TIE_COLOR  #a855f7  purple-500· Tied bars (splits)      │
+   │  ENACTED    #595a96  (=primary)· Enacted plan highlight  │
+   │  THRESH     #94a3b8  slate-400 · 50% threshold lines     │
+   │                                                          │
+   │  RACE COLORS  (EI / heatmap — see partyColors.js)        │
+   │  ─────────────────────────────────────────────────────   │
+   │  black    #6366f1  indigo  · Black VAP KDE/bar line      │
+   │  white    #e90eb6  pink    · White VAP KDE/bar line      │
+   │  hispanic #f59e0b  amber   · Hispanic VAP KDE/bar        │
+   │  asian    #10b981  emerald · Asian VAP KDE/bar           │
+   │  other    #a855f7  purple  · Other VAP KDE/bar           │
+   │                                                          │
+   │  REGION BADGE  (GinglesPrecinctTable)                    │
+   │  ─────────────────────────────────────────────────────   │
+   │  urban    purple-50/700 · Urban precinct badge           │
+   │  suburban sky-50/700    · Suburban precinct badge        │
+   │  rural    amber-50/700  · Rural precinct badge           │
+   │                                                          │
+   │  FEASIBILITY BADGE  (DemographicPopulationTable)         │
+   │  ─────────────────────────────────────────────────────   │
+   │  Feasible     emerald-50/700 · VAP >= 400k group         │
+   │  Not Feasible red-50/500    · VAP < 400k group           │
+   │                                                          │
+   │  SHADCN / OKLCH TOKENS  (light + dark, set in :root)     │
+   │  ─────────────────────────────────────────────────────   │
+   │  background  · Page canvas                               │
+   │  foreground  · Default body text                         │
+   │  card        · Card component background                 │
+   │  popover     · Dropdown / tooltip surface                │
+   │  primary     · Primary interactive elements              │
+   │  secondary   · Secondary / muted interactive elements    │
+   │  muted       · Subdued content surfaces                  │
+   │  accent      · Accent on hover/focus                     │
+   │  destructive · Error / danger actions                    │
+   │  border      · Default component border                  │
+   │  input       · Form input border                         │
+   │  ring        · Focus-visible ring                        │
+   └──────────────────────────────────────────────────────────┘
+   ============================================================ */
+
+/* Step 0: Load Tailwind v4 base + animation utilities + Shadcn tokens */
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/* Step 1: Enable .dark class variant so dark: utilities work */
 @custom-variant dark (&:is(.dark *));
 
-@theme inline {
-    /* ── Brand Palette ───────────────────────────────────────
-       brand-darkest  #041e26  sidebar background
-       brand-deep     #09637E  borders, hover bg, separators
-       brand-primary  #088395  active states, CTA buttons
-       brand-muted    #7AB2B2  labels, icons, unchecked inputs
-       brand-surface  #EBF4F6  page bg, text on dark surfaces
-    ─────────────────────────────────────────────────────── */
-    --color-brand-darkest: #0D0236;
-    --color-brand-deep:    #2C2F66;
-    --color-brand-primary: #595a96;
-    --color-brand-muted:   #232652;
-    --color-brand-surface: #FBFAFF;
 
-    --radius-sm: calc(var(--radius) - 4px);
-    --radius-md: calc(var(--radius) - 2px);
-    --radius-lg: var(--radius);
-    --radius-xl: calc(var(--radius) + 4px);
+/* ── Step 2: Register custom design tokens in the Tailwind theme ─── */
+@theme inline {
+
+    /*
+     * Brand palette — hex (not oklch) so they can be copy-pasted into
+     * SVG style props and Nivo chart config without conversion.
+     * Usage: bg-brand-darkest, text-brand-surface, border-brand-deep, etc.
+     */
+    --color-brand-darkest: #0D0236;   /* Sidebar bg, table headers, deepest UI */
+    --color-brand-deep:    #2C2F66;   /* Borders, separators, hover states */
+    --color-brand-primary: #595a96;   /* Active buttons, highlights, rings */
+    --color-brand-muted:   #232652;   /* Icon tints, inactive labels */
+    --color-brand-surface: #FBFAFF;   /* Page bg, text rendered on dark surfaces */
+
+    /* Border-radius scale derived from --radius base value */
+    --radius-sm:  calc(var(--radius) - 4px);
+    --radius-md:  calc(var(--radius) - 2px);
+    --radius-lg:  var(--radius);
+    --radius-xl:  calc(var(--radius) + 4px);
     --radius-2xl: calc(var(--radius) + 8px);
     --radius-3xl: calc(var(--radius) + 12px);
     --radius-4xl: calc(var(--radius) + 16px);
-    --color-background: var(--background);
-    --color-foreground: var(--foreground);
-    --color-card: var(--card);
-    --color-card-foreground: var(--card-foreground);
-    --color-popover: var(--popover);
-    --color-popover-foreground: var(--popover-foreground);
-    --color-primary: var(--primary);
-    --color-primary-foreground: var(--primary-foreground);
-    --color-secondary: var(--secondary);
+
+    /* Shadcn semantic aliases — forward CSS variables set in :root / .dark */
+    --color-background:           var(--background);
+    --color-foreground:           var(--foreground);
+    --color-card:                 var(--card);
+    --color-card-foreground:      var(--card-foreground);
+    --color-popover:              var(--popover);
+    --color-popover-foreground:   var(--popover-foreground);
+    --color-primary:              var(--primary);
+    --color-primary-foreground:   var(--primary-foreground);
+    --color-secondary:            var(--secondary);
     --color-secondary-foreground: var(--secondary-foreground);
-    --color-muted: var(--muted);
-    --color-muted-foreground: var(--muted-foreground);
-    --color-accent: var(--accent);
-    --color-accent-foreground: var(--accent-foreground);
-    --color-destructive: var(--destructive);
-    --color-border: var(--border);
-    --color-input: var(--input);
-    --color-ring: var(--ring);
+    --color-muted:                var(--muted);
+    --color-muted-foreground:     var(--muted-foreground);
+    --color-accent:               var(--accent);
+    --color-accent-foreground:    var(--accent-foreground);
+    --color-destructive:          var(--destructive);
+    --color-border:               var(--border);
+    --color-input:                var(--input);
+    --color-ring:                 var(--ring);
 }
 
+
+/* ── Step 3: Light-mode (default) CSS variable values ──────────────── */
 :root {
+    /* Glow for map polygon hover drop-shadow (USMap.jsx, DistrictMap2024.jsx) */
     --color-brand-glow: rgba(89, 90, 150, 0.55);
+
+    /* Base corner radius consumed by the radius scale above */
     --radius: 0.625rem;
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.129 0.042 264.695);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.129 0.042 264.695);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.129 0.042 264.695);
-    --primary: oklch(0.208 0.042 265.755);
-    --primary-foreground: oklch(0.984 0.003 247.858);
-    --secondary: oklch(0.968 0.007 247.896);
+
+    /* Shadcn light-mode palette in oklch perceptual color space */
+    --background:           oklch(1 0 0);
+    --foreground:           oklch(0.129 0.042 264.695);
+    --card:                 oklch(1 0 0);
+    --card-foreground:      oklch(0.129 0.042 264.695);
+    --popover:              oklch(1 0 0);
+    --popover-foreground:   oklch(0.129 0.042 264.695);
+    --primary:              oklch(0.208 0.042 265.755);
+    --primary-foreground:   oklch(0.984 0.003 247.858);
+    --secondary:            oklch(0.968 0.007 247.896);
     --secondary-foreground: oklch(0.208 0.042 265.755);
-    --muted: oklch(0.968 0.007 247.896);
-    --muted-foreground: oklch(0.554 0.046 257.417);
-    --accent: oklch(0.968 0.007 247.896);
-    --accent-foreground: oklch(0.208 0.042 265.755);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.929 0.013 255.508);
-    --input: oklch(0.929 0.013 255.508);
-    --ring: oklch(0.704 0.04 256.788);
+    --muted:                oklch(0.968 0.007 247.896);
+    --muted-foreground:     oklch(0.554 0.046 257.417);
+    --accent:               oklch(0.968 0.007 247.896);
+    --accent-foreground:    oklch(0.208 0.042 265.755);
+    --destructive:          oklch(0.577 0.245 27.325);
+    --border:               oklch(0.929 0.013 255.508);
+    --input:                oklch(0.929 0.013 255.508);
+    --ring:                 oklch(0.704 0.04 256.788);
 }
 
+
+/* ── Step 4: Dark-mode overrides (add .dark to <html> to activate) ── */
 .dark {
-    --background: oklch(0.129 0.042 264.695);
-    --foreground: oklch(0.984 0.003 247.858);
-    --card: oklch(0.208 0.042 265.755);
-    --card-foreground: oklch(0.984 0.003 247.858);
-    --popover: oklch(0.208 0.042 265.755);
-    --popover-foreground: oklch(0.984 0.003 247.858);
-    --primary: oklch(0.929 0.013 255.508);
-    --primary-foreground: oklch(0.208 0.042 265.755);
-    --secondary: oklch(0.279 0.041 260.031);
+    --background:           oklch(0.129 0.042 264.695);
+    --foreground:           oklch(0.984 0.003 247.858);
+    --card:                 oklch(0.208 0.042 265.755);
+    --card-foreground:      oklch(0.984 0.003 247.858);
+    --popover:              oklch(0.208 0.042 265.755);
+    --popover-foreground:   oklch(0.984 0.003 247.858);
+    --primary:              oklch(0.929 0.013 255.508);
+    --primary-foreground:   oklch(0.208 0.042 265.755);
+    --secondary:            oklch(0.279 0.041 260.031);
     --secondary-foreground: oklch(0.984 0.003 247.858);
-    --muted: oklch(0.279 0.041 260.031);
-    --muted-foreground: oklch(0.704 0.04 256.788);
-    --accent: oklch(0.279 0.041 260.031);
-    --accent-foreground: oklch(0.984 0.003 247.858);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.551 0.027 264.364);
+    --muted:                oklch(0.279 0.041 260.031);
+    --muted-foreground:     oklch(0.704 0.04 256.788);
+    --accent:               oklch(0.279 0.041 260.031);
+    --accent-foreground:    oklch(0.984 0.003 247.858);
+    --destructive:          oklch(0.704 0.191 22.216);
+    --border:               oklch(1 0 0 / 10%);
+    --input:                oklch(1 0 0 / 15%);
+    --ring:                 oklch(0.551 0.027 264.364);
 }
 
+
+/* ── Step 5: Apply token defaults to all elements ─────────────────── */
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+    * {
+        /* All elements use the design-system border color + focus ring */
+        @apply border-border outline-ring/50;
     }
-  body {
-    @apply bg-background text-foreground;
+    body {
+        /* Page canvas and default text driven by the semantic tokens above */
+        @apply bg-background text-foreground;
     }
 }
 
-/* ── Leaflet overrides ──────────────────────────────────────── */
+
+/* ── Step 6: Leaflet map container overrides ──────────────────────── */
+
+/*
+ * Leaflet renders a solid grey canvas by default.
+ * transparent lets the parent <MapFrame> background show through
+ * before tiles have loaded.
+ */
 .leaflet-container {
     background: transparent !important;
 }
-/* valid-state paths get a pointer, invalid states get default */
-.state-valid  { cursor: pointer; }
+
+/*
+ * Cursor classes injected by USMap.jsx via GeoJSON style() callbacks.
+ * States with hasData=true get a pointer; all others keep default cursor.
+ */
+.state-valid   { cursor: pointer; }
 .state-invalid { cursor: default; }
