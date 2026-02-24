@@ -1,4 +1,31 @@
 /**
+ * @file DemographicHeatmap.jsx
+ * @description Leaflet choropleth map that colors precincts or census blocks by
+ *   the concentration of a selected racial/ethnic group (race-density heatmap).
+ *   Colors come from server-assigned bin IDs so the client only maps binId → hex.
+ *
+ * PROPS
+ * @prop {string} stateId      - Two-letter state abbreviation ("AL" | "OR").
+ * @prop {string} granularity  - Spatial granularity: "precinct" | "census_block".
+ * @prop {object} heatmapData  - Binning data from useStateData:
+ *   { bins: [{ binId, color }], features: [{ idx, black, white, hispanic, ... }] }
+ * @prop {string} raceFilter   - Currently selected race group key
+ *   ("black" | "white" | "hispanic" | "asian" | "other").
+ *
+ * STATE SOURCES
+ * - GEO_SAMPLES  : Static GeoJSON geometries keyed by stateId + granularity.
+ *                  Replace with geometry embedded in the heatmap API response.
+ * - STATE_OUTLINE: Static district GeoJSON used for the state border overlay.
+ *                  Replace with GET /api/states/:stateId/districts/geojson.
+ * - heatmapData  : Passed in via props from useStateData (currently dummy JSON).
+ *
+ * LAYOUT
+ * - Full-bleed <MapContainer> (Leaflet), re-keyed on state+granularity+race.
+ * - <FitBounds>       : fits to state outline on mount.
+ * - <MapResizeHandler>: invalidates + re-fits on container resize.
+ * - State outline GeoJSON layer (teal border, near-transparent fill).
+ * - Heatmap GeoJSON layer (per-feature fill from server binId color).
+ *
  * ========================================================================
  * TODO – Replace Dummy Data with Real Backend API
  * ========================================================================
@@ -42,10 +69,12 @@
  * ========================================================================
  */
 
+/* ── Step 0: React + map library imports ──────────────────────────────── */
 import { useEffect } from 'react'
 import { MapContainer, GeoJSON, TileLayer, useMap } from 'react-leaflet'
 import L from 'leaflet'
 
+/* ── Step 1: Static GeoJSON assets (replace with API fetch) ───────────── */
 //CONNECT HERE: GEO_SAMPLES + STATE_OUTLINE — delete these 4 asset imports and both
 // static lookup objects; replace with geometry from GET /api/states/:stateId/heatmap
 // and outline from GET /api/states/:stateId/districts/geojson
@@ -54,7 +83,7 @@ import ALBlockSample  from '../../assets/ALBlockMap.json'
 import ALDistricts    from '../../assets/ALCongressionalDistricts.json'
 import ORDistricts    from '../../assets/ORCongressionalDistrict.json'
 
-// ── GeoJSON lookup ─────────────────────────────────────────────────────
+/* ── Step 2: Static lookups (replace with API data) ──────────────────── */
 //CONNECT HERE: STATE_OUTLINE — replace with GeoJSON from /api/states/:stateId/districts/geojson
 const STATE_OUTLINE = { AL: ALDistricts, OR: ORDistricts }
 
@@ -66,7 +95,15 @@ const GEO_SAMPLES = {
     },
 }
 
-// ── Leaflet helpers ────────────────────────────────────────────────────
+/* ── Step 3: FitBounds helper ─────────────────────────────────────────── */
+/**
+ * Inner Leaflet component that fits the map viewport to the extent of the
+ * provided GeoJSON. Used to keep the full state in frame on first render.
+ *
+ * @param {object} props
+ * @param {object} props.data - GeoJSON to compute bounds from.
+ * @returns {null} Renders nothing — side-effect only.
+ */
 function FitBounds({ data }) {
     const map = useMap()
     useEffect(() => {
@@ -79,6 +116,15 @@ function FitBounds({ data }) {
     return null
 }
 
+/* ── Step 4: MapResizeHandler helper ─────────────────────────────────── */
+/**
+ * Watches the Leaflet container for ResizeObserver events and invalidates +
+ * re-fits the map so the state always fills the panel after sidebar toggles.
+ *
+ * @param {object} props
+ * @param {object} props.data - GeoJSON used for re-fitting after resize.
+ * @returns {null} Renders nothing — side-effect only.
+ */
 function MapResizeHandler({ data }) {
     const map = useMap()
     useEffect(() => {
@@ -99,11 +145,25 @@ function MapResizeHandler({ data }) {
     return null
 }
 
-// ── Main component ─────────────────────────────────────────────────────
+/* ── Step 5: Main DemographicHeatmap component ────────────────────────── */
+/**
+ * Renders the demographic density heatmap for a given state and granularity.
+ * Each geographic unit is colored according to the server-assigned bin for the
+ * currently selected race group.
+ *
+ * @param {object} props
+ * @param {string} props.stateId      - Two-letter state abbreviation.
+ * @param {string} props.granularity  - "precinct" or "census_block".
+ * @param {object} props.heatmapData  - Bin + feature data from the backend.
+ * @param {string} props.raceFilter   - Selected race key for color lookup.
+ * @returns {JSX.Element} Full-height Leaflet map or an "unavailable" fallback.
+ */
 export default function DemographicHeatmap({ stateId, granularity, heatmapData, raceFilter }) {
+    /* ── Step 5a: Resolve geometry sources ── */
     const outlineData = STATE_OUTLINE[stateId] ?? null
     const sampleData  = GEO_SAMPLES[stateId]?.[granularity] ?? null
 
+    /* ── Step 5b: Build idx → hex color map from server bin data ── */
     // Server-side binning: build idx → color for the selected race group
     const colorByIdx = {}
     if (heatmapData?.features && heatmapData?.bins) {
@@ -116,8 +176,10 @@ export default function DemographicHeatmap({ stateId, granularity, heatmapData, 
         })
     }
 
+    /* ── Step 5c: Map re-key token (forces layer remount on param change) ── */
     const mapKey = `${stateId}-${granularity}-${raceFilter}`
 
+    /* ── Step 5d: Guard — no outline data means we can't render ── */
     if (!outlineData) {
         return (
             <div className="h-full flex flex-col items-center justify-center gap-3 text-center px-6">
@@ -129,8 +191,10 @@ export default function DemographicHeatmap({ stateId, granularity, heatmapData, 
         )
     }
 
+    /* ── Step 5e: Running counter for features without an explicit idx ── */
     let counter = 0
 
+    /* ── Step 5f: Render ── */
     return (
         <MapContainer
             key={mapKey}
@@ -142,12 +206,15 @@ export default function DemographicHeatmap({ stateId, granularity, heatmapData, 
             attributionControl={false}
             style={{ height: '100%', width: '100%' }}
         >
+            {/* ── MAP UTILITIES ──────────────────────────────────────── */}
             {/* Fit to full state outline so entire state is always in frame */}
             <FitBounds data={outlineData} />
             <MapResizeHandler data={outlineData} />
 
+            {/* ── BASE TILE LAYER ────────────────────────────────────── */}
             <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
 
+            {/* ── STATE OUTLINE LAYER ────────────────────────────────── */}
             {/* State outline — teal border, near-transparent fill */}
             <GeoJSON
                 key={`outline-${stateId}`}
@@ -155,6 +222,7 @@ export default function DemographicHeatmap({ stateId, granularity, heatmapData, 
                 style={{ fillColor: '#f0fdfa', fillOpacity: 0.12, color: '#0d9488', weight: 1.5 }}
             />
 
+            {/* ── HEATMAP LAYER ──────────────────────────────────────── */}
             {/* Heatmap — color comes directly from server-assigned binId */}
             {sampleData && (
                 <GeoJSON

@@ -1,0 +1,27 @@
+index.html root lives here
+
+
+main.jsx react router lives 
+    nav bar
+    Outlet - component
+        home page
+            map 
+            card
+        state page
+
+
+State page
+
+Side bar
+    Section Panel
+        Labels
+    Local Filter Panel
+        Components = different filter components 
+
+State Overview Section
+    Distrcit Map 2024
+    CongressionalDistrict Table
+    
+Dmeographic Section
+Racial Polarizaton Section
+Ensemble Anlaysis Section
