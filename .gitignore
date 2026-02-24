@@ -9,6 +9,8 @@ seawulf_runs/OR/input/AL_enacted_baseline.json
 seawulf_runs/OR/input/OR_enacted_baseline.json
 seawulf_runs/OR/input/AL_graph.json
 seawulf_runs/OR/input/OR_graph.json
+seawulf_runs/OR/input/OR_enacted_districts_with_stats.geojson
+seawulf_runs/OR/input/OR_enacted_baseline.json
 
 .DS_Store
 **/.DS_Store

@@ -37,7 +37,7 @@ print("OR total VAP:", sum(OR_part["pop"].values()))
 print("AL nodes:", len(AL_graph.nodes), "AL VAP sum:", sum(d["VAP"] for _, d in AL_graph.nodes(data=True)))
 print("OR nodes:", len(OR_graph.nodes), "OR VAP sum:", sum(d["VAP"] for _, d in OR_graph.nodes(data=True)))
 
-def save_enacted_baseline(graph_path, out_json, num_districts):
+def save_enacted_baseline(graph_path, out_json, out_json2, num_districts):
     G = Graph.from_json(graph_path)
 
     updaters = {
@@ -78,11 +78,11 @@ def save_enacted_baseline(graph_path, out_json, num_districts):
 
     with open(out_json, "w") as f:
         json.dump(summary, f, indent=2)
+    with open(out_json2, "w") as f:
+        json.dump(summary, f, indent=2)
 
     print("Saved baseline summary:", out_json)
 
-save_enacted_baseline("AL_data/AL_graph.json", "AL_data/AL_enacted_baseline.json", num_districts=7)
-save_enacted_baseline("OR_data/OR_graph.json", "OR_data/OR_enacted_baseline.json", num_districts=6)
+save_enacted_baseline("AL_data/AL_graph.json", "AL_data/AL_enacted_baseline.json", "seawulf_runs/AL/input/AL_enacted_baseline.json", num_districts=7)
+save_enacted_baseline("OR_data/OR_graph.json", "OR_data/OR_enacted_baseline.json", "seawulf_runs/OR/input/OR_enacted_baseline.json", num_districts=6)
 
-save_enacted_baseline("AL_data/AL_graph.json", "seawulf_runs/AL/input/AL_enacted_baseline.json", num_districts=7)
-save_enacted_baseline("OR_data/OR_graph.json", "seawulf_runs/OR/input/OR_enacted_baseline.json", num_districts=6)
