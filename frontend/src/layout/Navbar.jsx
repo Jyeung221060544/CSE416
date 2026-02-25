@@ -64,7 +64,7 @@ export default function Navbar() {
             {/* ── LEFT: App title + current state badge ──────────────────── */}
             <div className="flex items-center gap-3">
                 <span className="text-brand-darkest font-semibold text-xl tracking-wide">
-                    VRA Redistricting Tool
+                    Voting Rights Act Redistricting
                 </span>
 
                 {/* State badge: only visible on /state/:stateId pages */}

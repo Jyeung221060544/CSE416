@@ -200,7 +200,7 @@ export default function EIKDEChart({ candidate, activeRaces, yMax, className }) 
                         colors={({ id }) => RACE_COLORS[id]??'#94a3b8'} lineWidth={2.5}
                         enablePoints={false} theme={NIVO_THEME}
                         layers={[ BgLayer, 'grid', ciLayer, 'axes', 'lines', 'areas', 'crosshair', 'slices' ]}
-                        axisBottom={{ tickSize:6, tickPadding:5, format:v=>`${Math.round(v*100)}%`, tickValues:[0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1], legend:'Estimated Vote Share for Candidate', legendOffset:50, legendPosition:'middle' }}
+                        axisBottom={{ tickSize:6, tickPadding:5, format:v=>`${Math.round(v*100)}%`, tickValues:[0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1], legend:'Estimated Vote Share', legendOffset:50, legendPosition:'middle' }}
                         axisLeft={{ tickSize:6, tickPadding:5, format:v=>v.toFixed(1), tickValues:5, legend:'Probability Density', legendOffset:-58, legendPosition:'middle' }}
                         gridXValues={[0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1]}
                         enableSlices="x" sliceTooltip={sliceTooltip} isInteractive

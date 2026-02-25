@@ -208,8 +208,8 @@ export default function GinglesScatterPlot({ ginglesData, raceFilter, selectedId
                             layers={[ bgLayer, 'grid', 'axes', thresholdLayer, trendlineLayer, customNodesLayer ]}
                             gridXValues={[0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1]}
                             gridYValues={[0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1]}
-                            axisBottom={{ tickSize:6, tickPadding:5, format:v=>`${Math.round(v*100)}%`, tickValues:[0,0.25,0.5,0.75,1], legend:`${raceName} Group VAP Share`, legendOffset:50, legendPosition:'middle' }}
-                            axisLeft={{ tickSize:6, tickPadding:5, format:v=>`${Math.round(v*100)}%`, tickValues:[0,0.25,0.5,0.75,1], legend:'Vote Share', legendOffset:-58, legendPosition:'middle' }}
+                            axisBottom={{ tickSize:6, tickPadding:5, format:v=>`${Math.round(v*100)}%`, tickValues:[0,0.25,0.5,0.75,1], legend:`% ${raceName} Population for Precinct`, legendOffset:50, legendPosition:'middle' }}
+                            axisLeft={{ tickSize:6, tickPadding:5, format:v=>`${Math.round(v*100)}%`, tickValues:[0,0.25,0.5,0.75,1], legend:'Vote Share per Party', legendOffset:-58, legendPosition:'middle' }}
                             isInteractive={false}
                         />
                     </div>
