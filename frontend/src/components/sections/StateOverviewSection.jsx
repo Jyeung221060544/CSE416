@@ -358,6 +358,7 @@ export default function StateOverviewSection({ data, stateId }) {
                             demographicGroups={demographicGroups}
                             raceFilter={raceFilter}
                             setRaceFilter={setRaceFilter}
+                            readOnly
                         />
                     </div>
                 </div>

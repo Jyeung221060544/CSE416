@@ -110,7 +110,7 @@ function FitBounds({ data }) {
         if (!data) return
         try {
             const b = L.geoJSON(data).getBounds()
-            if (b.isValid()) map.fitBounds(b, { padding: [8, 8] })
+            if (b.isValid()) map.fitBounds(b, { padding: [20, 20] })
         } catch (_) {}
     }, [data, map])
     return null
@@ -135,7 +135,7 @@ function MapResizeHandler({ data }) {
             if (data) {
                 try {
                     const b = L.geoJSON(data).getBounds()
-                    if (b.isValid()) map.fitBounds(b, { padding: [8, 8] })
+                    if (b.isValid()) map.fitBounds(b, { padding: [20, 20] })
                 } catch (_) {}
             }
         })
@@ -200,6 +200,7 @@ export default function DemographicHeatmap({ stateId, granularity, heatmapData, 
             key={mapKey}
             center={[32.7, -86.8]}
             zoom={6}
+            zoomSnap={0}
             zoomControl
             scrollWheelZoom={false}
             doubleClickZoom={false}

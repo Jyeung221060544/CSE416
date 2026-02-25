@@ -194,7 +194,7 @@ export default function GinglesScatterPlot({ ginglesData, raceFilter, selectedId
                     <div className="flex items-center gap-5 px-4 pt-3 pb-1 flex-shrink-0">
                         <div className="flex items-center gap-1.5"><span style={{ width:10, height:10, borderRadius:'50%', background:DEM_COLOR, display:'inline-block', flexShrink:0 }} /><span style={{ fontSize:12, fontWeight:600, color:LABEL_COLOR }}>Democratic</span></div>
                         <div className="flex items-center gap-1.5"><span style={{ width:10, height:10, borderRadius:'50%', background:REP_COLOR, display:'inline-block', flexShrink:0 }} /><span style={{ fontSize:12, fontWeight:600, color:LABEL_COLOR }}>Republican</span></div>
-                        <span className="ml-auto text-[11px] font-semibold text-slate-500 opacity-70 select-none">n = {points.length} precincts</span>
+                        <span className="ml-auto text-[11px] font-semibold text-slate-500 opacity-70 select-none">{points.length} Precincts Plotted</span>
                     </div>
                     {/* ── CHART — 'mesh' omitted; tooltip + click handled per-circle ── */}
                     <div className="flex-1 min-h-0">

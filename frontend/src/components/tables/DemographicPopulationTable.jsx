@@ -50,7 +50,7 @@ function groupKey(g) { return g.toLowerCase() }
  * @param {boolean}  [props.fillHeight]      - Expand panel to fill parent height.
  * @returns {JSX.Element|JSX.Element} Table panel, or italic "no data" text.
  */
-export default function DemographicPopulationTable({ demographicGroups, raceFilter, setRaceFilter, fillHeight = false }) {
+export default function DemographicPopulationTable({ demographicGroups, raceFilter, setRaceFilter, fillHeight = false, readOnly = false }) {
     /* ── Step 2a: Guard — no data means nothing to render ── */
     if (!demographicGroups?.length) {
         return <p className="text-brand-muted/50 text-sm italic">No demographic data available.</p>
@@ -81,15 +81,16 @@ export default function DemographicPopulationTable({ demographicGroups, raceFilt
                         return (
                             <tr
                                 key={row.group}
-                                onClick={() => setRaceFilter(key)}
+                                onClick={readOnly ? undefined : () => setRaceFilter(key)}
                                 className={[
-                                    ROW_BORDER, 'transition-colors cursor-pointer',
-                                    rowBg(i, isActive),
+                                    ROW_BORDER, 'transition-colors',
+                                    !readOnly && 'cursor-pointer',
+                                    rowBg(i, !readOnly && isActive),
                                 ].join(' ')}
                             >
                                 {/* Group name — highlighted when active */}
                                 <td className="px-4 py-3">
-                                    <span className={`font-bold text-sm ${isActive ? ACTIVE_LABEL : INACTIVE_LABEL}`}>
+                                    <span className={`font-bold text-sm ${!readOnly && isActive ? ACTIVE_LABEL : INACTIVE_LABEL}`}>
                                         {row.group}
                                     </span>
                                 </td>
@@ -101,7 +102,7 @@ export default function DemographicPopulationTable({ demographicGroups, raceFilt
 
                                 {/* VAP percentage — highlighted when active */}
                                 <td className="px-4 py-3 text-right">
-                                    <span className={`tabular-nums font-bold text-base ${isActive ? ACTIVE_LABEL : INACTIVE_LABEL}`}>
+                                    <span className={`tabular-nums font-bold text-base ${!readOnly && isActive ? ACTIVE_LABEL : INACTIVE_LABEL}`}>
                                         {row.vapPercentage != null ? `${(row.vapPercentage * 100).toFixed(1)}%` : '-'}
                                     </span>
                                 </td>

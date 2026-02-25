@@ -98,7 +98,7 @@ function getStyle(feature, districtByNumber, selectedDistrict) {
     const isSelected = distNum === selectedDistrict
 
     if (isSelected) {
-        return { fillColor: 'var(--color-brand-primary)', fillOpacity: 0.75, color: 'var(--color-brand-darkest)', weight: 3 }
+        return { fillColor: 'var(--color-brand-primary)', fillOpacity: 0.75, color: 'white', weight: 2 }
     }
     if (distData?.party === 'Democratic') {
         return { fillColor: '#3B82F6', fillOpacity: 0.30, color: '#1D4ED8', weight: 1 }
@@ -125,7 +125,7 @@ function FitBounds({ geoData }) {
         if (!geoData) return
         try {
             const bounds = L.geoJSON(geoData).getBounds()
-            if (bounds.isValid()) map.fitBounds(bounds, { padding: [4, 4] })
+            if (bounds.isValid()) map.fitBounds(bounds, { padding: [20, 20] })
         } catch (_) { /* ignore malformed features */ }
     }, [geoData, map])
     return null
@@ -153,7 +153,7 @@ function MapResizeHandler({ geoData }) {
             if (geoData) {
                 try {
                     const bounds = L.geoJSON(geoData).getBounds()
-                    if (bounds.isValid()) map.fitBounds(bounds, { padding: [4, 4] })
+                    if (bounds.isValid()) map.fitBounds(bounds, { padding: [20, 20] })
                 } catch (_) { /* ignore */ }
             }
         })
@@ -181,6 +181,7 @@ export default function DistrictMap2022({ stateId, districtSummary }) {
     const geoJsonRef           = useRef(null)
     const selectedDistrict     = useAppStore(s => s.selectedDistrict)
     const setSelectedDistrict  = useAppStore(s => s.setSelectedDistrict)
+    const hoveredLayerRef = useRef(null)
 
     /* ── Step 6b: Resolve GeoJSON for the current state ── */
     const geoData = DISTRICT_GEOJSON[stateId]
@@ -212,37 +213,60 @@ export default function DistrictMap2022({ stateId, districtSummary }) {
 
         layer.on({
             mouseover(e) {
-                // Apply hover glow effect
+                // Reset the previously hovered layer before styling the new one
+                if (hoveredLayerRef.current && hoveredLayerRef.current !== e.target) {
+                    const prev = hoveredLayerRef.current
+                    const prevEl = prev.getElement()
+                    if (prevEl) prevEl.style.filter = ''
+                        prev.setStyle(getStyle(prev.feature, districtByNumber, selectedDistrict))
+                }
+                hoveredLayerRef.current = e.target
+
                 const el = e.target.getElement()
-                if (el) el.style.filter = 'drop-shadow(0 4px 8px rgba(0,0,0,0.35))'
-                e.target.setStyle({
-                    fillColor:   'var(--color-brand-deep)',
-                    fillOpacity: 0.85,
-                    weight:      3.5,
-                    color:       'var(--color-brand-darkest)',
-                })
                 if (el) el.style.filter = 'drop-shadow(0 0 10px var(--color-brand-glow))'
+                e.target.setStyle({
+                    fillColor: 'var(--color-brand-primary)',
+                    fillOpacity: 0.85,
+                    weight: 2.5,
+                    color: '#ffffff',
+                })
                 e.target.bringToFront()
             },
+
             mouseout(e) {
-                // Restore base style (avoids stale closure by re-reading from feature)
+                if (hoveredLayerRef.current === e.target) {
+                    hoveredLayerRef.current = null
+                }
                 const el = e.target.getElement()
                 if (el) el.style.filter = ''
-                // Re-apply base style (avoids stale closure by re-reading from feature)
                 e.target.setStyle(getStyle(feature, districtByNumber, selectedDistrict))
             },
+
             click() {
-                // Toggle selection: clicking an already-selected district deselects
                 setSelectedDistrict(distNum === selectedDistrict ? null : distNum)
             },
         })
-    }, [districtByNumber, selectedDistrict, setSelectedDistrict])
+        }, [districtByNumber, selectedDistrict, setSelectedDistrict])
 
-    /* ── Step 6e: Render ── */
+    /* ── Step 6e: Apply drop-shadow filter to selected district element ── */
+    useEffect(() => {
+        if (!geoJsonRef.current) return
+        geoJsonRef.current.eachLayer(layer => {
+            const distNum = parseInt(layer.feature.properties.CD119FP, 10)
+            const el = layer.getElement()
+            if (!el) return
+            el.style.filter = distNum === selectedDistrict
+                ? 'drop-shadow(0 0 10px var(--color-brand-glow))'
+                : ''
+        })
+    }, [selectedDistrict])
+
+    /* ── Step 6f: Render ── */
     return (
         <MapContainer
             center={[39.5, -98.35]}
             zoom={4}
+            zoomSnap={0}
             zoomControl
             scrollWheelZoom={false}
             doubleClickZoom={false}

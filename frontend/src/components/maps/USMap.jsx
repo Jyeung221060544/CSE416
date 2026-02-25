@@ -90,7 +90,7 @@ function baseStyle(feature) {
         return {
             fillColor:   'var(--color-brand-primary)',
             fillOpacity: 0.65,
-            color:       'var(--color-brand-darkest)',
+            color:       '#000000',
             weight:      2.5,
             className:   'state-valid',
         }
@@ -100,24 +100,29 @@ function baseStyle(feature) {
         fillColor:   'var(--color-brand-surface)',
         fillOpacity: 0.9,
         color:       'var(--color-brand-deep)',
-        weight:      1,
+        weight:      0.75,
         className:   'state-invalid',
     }
 }
 
 /* ── Step 4: Map size invalidator helper ──────────────────────────────── */
+// Bounding box that contains all 48 contiguous US states
+const US_BOUNDS = [[24.5, -125.0], [49.4, -66.9]]
+
 /**
- * Inner Leaflet component that forces the map to recalculate its size after
- * first render. Prevents the grey-tile "map not fully rendered" artifact.
+ * Inner Leaflet component that forces the map to recalculate its size and
+ * re-fit the US bounds whenever the container is resized.
  *
  * @returns {null} Renders nothing — side-effect only.
  */
 function SizeInvalidator() {
     const map = useMap()
     useEffect(() => {
-        // Defer so the container has its final pixel dimensions
-        const t = setTimeout(() => map.invalidateSize(), 50)
-        return () => clearTimeout(t)
+        const fit = () => { map.invalidateSize(); map.fitBounds(US_BOUNDS) }
+        fit()
+        const observer = new ResizeObserver(fit)
+        observer.observe(map.getContainer())
+        return () => observer.disconnect()
     }, [map])
     return null
 }
@@ -155,8 +160,8 @@ export default function USMap({ onStateHover }) {
                 e.target.setStyle({
                     fillColor:   'var(--color-brand-deep)',
                     fillOpacity: 0.85,
-                    weight:      3.5,
-                    color:       'var(--color-brand-darkest)',
+                    weight:      2.5,
+                    color:       '#ffffff',
                 })
                 e.target.bringToFront()
                 const el = e.target.getElement()
@@ -182,7 +187,7 @@ export default function USMap({ onStateHover }) {
     /* ── Step 5c: Render ── */
     return (
         <MapContainer
-            center={[39.5, -98.35]}
+            bounds={US_BOUNDS}
             zoom={4}
             zoomControl={false}
             scrollWheelZoom={false}

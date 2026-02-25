@@ -212,7 +212,7 @@ export default function SectionPanel({ collapsed }) {
                                                 <span className={`w-2 h-2 rounded-full ${isActive ? 'bg-white' : 'bg-brand-muted'}`} />
                                             </Button>
                                         </TooltipTrigger>
-                                        <TooltipContent side="right" className="bg-brand-darkest text-brand-surface border-brand-deep">
+                                        <TooltipContent side="right" className="z-[1001] bg-brand-darkest text-brand-surface border-brand-deep">
                                             {section.label}
                                         </TooltipContent>
                                     </Tooltip>

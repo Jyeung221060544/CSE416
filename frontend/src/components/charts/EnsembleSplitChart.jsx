@@ -168,7 +168,7 @@ export default function EnsembleSplitChart({ ensembleData, enactedSplit, yMax, c
                         <span style={{ fontSize:12, fontWeight:600, color:ENACTED_COLOR }}>Enacted ({enactedLabel})</span>
                     </div>
                 )}
-                <span className="ml-auto text-[11px] font-semibold text-slate-500 opacity-70 select-none">n = {total.toLocaleString()} plans</span>
+                <span className="ml-auto text-[11px] font-semibold text-slate-500 opacity-70 select-none">{total.toLocaleString()} Plans</span>
             </div>
 
             {/* ── BAR CHART ────────────────────────────────────────────────── */}

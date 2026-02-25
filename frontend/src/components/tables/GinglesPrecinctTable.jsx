@@ -146,7 +146,7 @@ export default function GinglesPrecinctTable({ points = [], selectedId, onSelect
                                 <div className="flex justify-center">
                                     <Badge
                                         variant="outline"
-                                        className={`text-[10px] font-semibold px-1.5 py-0.5 leading-tight capitalize ${REGION_CLS[row.regionType] ?? ''}`}
+                                        className={`text-[10px] font-semibold px-1.5 py-0.5 leading-tight capitalize w-full text-center ${REGION_CLS[row.regionType] ?? ''}`}
                                     >
                                         {row.regionType ?? '—'}
                                     </Badge>
@@ -216,9 +216,8 @@ export default function GinglesPrecinctTable({ points = [], selectedId, onSelect
             {/* ── INTERACTION HINT ───────────────────────────────────── */}
             {/* ── Interaction hint ── */}
             <InfoCallout icon={MousePointerClick}>
-                Click a row or a scatter dot to cross-highlight. <strong>Dem</strong> and <strong>Rep</strong> columns show raw vote counts from the 2024 general election.
+                Click a row or a scatter dot to cross-highlight!
             </InfoCallout>
-
         </div>
     )
 }
