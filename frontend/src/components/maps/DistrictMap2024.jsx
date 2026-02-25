@@ -98,7 +98,7 @@ function getStyle(feature, districtByNumber, selectedDistrict) {
     const isSelected = distNum === selectedDistrict
 
     if (isSelected) {
-        return { fillColor: 'var(--color-brand-primary)', fillOpacity: 0.75, color: 'white', weight: 2 }
+        return { fillColor: 'var(--color-brand-primary)', fillOpacity: 0.85, color: '#ffffff', weight: 2.5 }
     }
     if (distData?.party === 'Democratic') {
         return { fillColor: '#3B82F6', fillOpacity: 0.30, color: '#1D4ED8', weight: 1 }
@@ -238,7 +238,8 @@ export default function DistrictMap2022({ stateId, districtSummary }) {
                     hoveredLayerRef.current = null
                 }
                 const el = e.target.getElement()
-                if (el) el.style.filter = ''
+                const isSelected = distNum === selectedDistrict
+                if (el) el.style.filter = isSelected ? 'drop-shadow(0 0 10px var(--color-brand-glow))' : ''
                 e.target.setStyle(getStyle(feature, districtByNumber, selectedDistrict))
             },
 
