@@ -132,11 +132,11 @@ export const REGION_CLS = {
  *  RACE_LABELS  → display strings for legends, tooltips, and table headers
  * ─────────────────────────────────────────────────────────────────────────── */
 export const RACE_COLORS = {
-    black:    '#6366f1',   // indigo-500
-    white:    '#e90eb6',   // hot pink (distinguishable from other lines at a glance)
-    hispanic: '#f59e0b',   // amber-500
-    asian:    '#10b981',   // emerald-500
-    other:    '#a855f7',   // purple-500
+    black:    '#009E73',   
+    white:    '#E69F00 ', 
+    hispanic: '#F0E442',   
+    asian:    '#CC79A7',   
+    other:    '#D55E00',  
 }
 
 export const RACE_LABELS = {

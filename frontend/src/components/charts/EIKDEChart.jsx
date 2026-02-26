@@ -171,9 +171,7 @@ export default function EIKDEChart({ candidate, activeRaces, yMax, className }) 
 
             {/* ── CANDIDATE HEADER ─────────────────────────────────────────── */}
             <div className="flex items-center gap-2 px-4 pt-3 pb-1 flex-shrink-0 border-b border-brand-muted/10">
-                <span style={{ width:10, height:10, borderRadius:'50%', background:partyColor, display:'inline-block', flexShrink:0 }} />
-                <span className="text-sm font-bold" style={{ color:partyColor }}>{candidate.candidateName}</span>
-                <span className="text-xs text-slate-400 font-medium ml-1">({candidate.party})</span>
+                <span className="text-lg font-bold" style={{ color:partyColor }}>{candidate.party}</span>
             </div>
 
             {/* ── RACE LEGEND ──────────────────────────────────────────────── */}
