@@ -1,14 +1,15 @@
 /**
  * RacialPolarizationSection.jsx — Third section on StatePage (id="racial-polarization").
  *
- * SUB-SECTIONS
- *   1. Gingles Analysis     (id="gingles-analysis")
- *      — Scatter plot of precinct minority VAP % vs Dem vote share, with trendlines.
- *      — Click a dot to highlight the corresponding row in the precinct table.
- *
- *   2. Ecological Inference (id="ecological-inference")
- *      — Two KDE charts (Democratic + Republican support by race), sharing a y-axis.
- *      — Bar chart of peak support estimates with confidence intervals.
+ * LAYOUT
+ *   ┌─────────────────────────────────────────────────────────────────────┐
+ *   │  Racial Polarization                [Gingles Analysis] [EI KDE Charts] [EI Bar Charts] │
+ *   ├─────────────────────────────────────────────────────────────────────┤
+ *   │  Full-width tab content (swaps entire section body):               │
+ *   │  · Gingles Analysis  — Scatter plot + Precinct Detail table        │
+ *   │  · EI KDE Charts     — Democratic Support KDE + Republican Support KDE │
+ *   │  · EI Bar Charts     — Peak Support Estimates bar chart            │
+ *   └─────────────────────────────────────────────────────────────────────┘
  *
  * PROPS
  *   data    {object|null} — Full state bundle; uses ginglesPrecinct and ei sub-keys.
@@ -16,51 +17,59 @@
  *
  * STATE SOURCES (Zustand)
  *   feasibleRaceFilter — Selected race for the Gingles scatter series.
- *   eiRaceFilter       — Array of races shown as KDE overlay lines in EI charts.
- *
- * NOTE
- *   Currently data is only available for Alabama (stateId === 'AL').
- *   All other states show a placeholder message.
+ *   eiRaceFilter       — Array of races shown as overlay lines in EI KDE + bar charts.
+ *   activeRPTab        — Active mini-nav tab; also drives the SectionPanel RP sub-nav
+ *                        highlight and the FilterPanel filter selection.
  */
 
 import { useState, useEffect, useMemo } from 'react'
-import SectionHeader   from '@/components/ui/section-header'
-import useAppStore     from '../../store/useAppStore'
-import GinglesScatterPlot  from '../charts/GinglesScatterPlot'
+import SectionHeader        from '@/components/ui/section-header'
+import MiniNavTabs          from '@/components/ui/mini-nav-tabs'
+import useAppStore          from '../../store/useAppStore'
+import GinglesScatterPlot   from '../charts/GinglesScatterPlot'
 import GinglesPrecinctTable from '../tables/GinglesPrecinctTable'
-import EIKDEChart      from '../charts/EIKDEChart'
-import EIBarChart      from '../charts/EIBarChart'
+import EIKDEChart           from '../charts/EIKDEChart'
+import EIBarChart           from '../charts/EIBarChart'
+
+
+/* ── Tab definitions ─────────────────────────────────────────────────────── */
+
+const RP_TABS = [
+    { id: 'gingles', label: 'Gingles Analysis' },
+    { id: 'ei-kde',  label: 'EI KDE Charts'    },
+    { id: 'ei-bar',  label: 'EI Bar Charts'    },
+]
 
 
 /**
- * RacialPolarizationSection — Gingles + Ecological Inference sub-sections.
+ * RacialPolarizationSection — Tabbed Gingles + Ecological Inference section.
  *
- * @param {{ data: object|null, stateId: string }} props
- *   data    — Full state data bundle (ginglesPrecinct, ei).
- *   stateId — Two-letter abbreviation for the current state.
+ * The mini nav bar at the top swaps the entire section body between the three
+ * sub-views. No scrolling between sub-sections; each view is self-contained.
+ *
+ * @param {{ data: object|null }} props
  * @returns {JSX.Element}
  */
-export default function RacialPolarizationSection({ data, stateId }) {
+export default function RacialPolarizationSection({ data }) {
 
-    /* ── Step 0: Zustand filter state ────────────────────────────────────── */
+    /* ── Zustand filter state ─────────────────────────────────────────────── */
     const feasibleRaceFilter = useAppStore(s => s.feasibleRaceFilter)
     const eiRaceFilter       = useAppStore(s => s.eiRaceFilter)
 
+    /* ── Tab state (global — mirrors sidebar sub-nav) ───────────────────── */
+    const activeTab    = useAppStore(s => s.activeRPTab)
+    const setActiveTab = useAppStore(s => s.setActiveRPTab)
 
-    /* ── Step 1: Derived data ────────────────────────────────────────────── */
-
-    /* Gingles data — the active race series from the precinct scatter dataset */
+    /* ── Derived data ────────────────────────────────────────────────────── */
     const ginglesPrecinct = data?.ginglesPrecinct ?? null
     const eiData          = data?.ei ?? null
     const series          = ginglesPrecinct?.feasibleSeriesByRace?.[feasibleRaceFilter] ?? null
 
-    /* selectedId — dot/row selection kept in local state (not global, only this section cares) */
+    /* Dot / row selection — local to this section, reset on race filter change */
     const [selectedId, setSelectedId] = useState(null)
-
-    /* Reset selection whenever the race filter changes so no stale dot is highlighted */
     useEffect(() => { setSelectedId(null) }, [feasibleRaceFilter])
 
-    /* Find Democratic / Republican candidate entries from the EI dataset */
+    /* Democratic / Republican candidate entries from the EI dataset */
     const demCandidate = useMemo(
         () => eiData?.candidates?.find(c => c.party === 'Democratic') ?? null,
         [eiData]
@@ -71,9 +80,8 @@ export default function RacialPolarizationSection({ data, stateId }) {
     )
 
     /*
-     * eiYMax — Shared y-axis maximum for both KDE charts so they stay on the same scale.
-     * Computed from the highest KDE density point across all selected races and both candidates.
-     * Adds 10% headroom and rounds to 1 decimal place.
+     * eiYMax — Shared y-axis ceiling for both KDE charts (same scale).
+     * Derived from the highest density across all selected races + 10% headroom.
      */
     const eiYMax = useMemo(() => {
         if (!eiData) return 10
@@ -88,32 +96,27 @@ export default function RacialPolarizationSection({ data, stateId }) {
     }, [eiData, eiRaceFilter])
 
 
-    /* ── Step 3: Render ──────────────────────────────────────────────────── */
+    /* ── Render ──────────────────────────────────────────────────────────── */
     return (
-        <section id="racial-polarization" className="border-b border-brand-muted/30">
+        <section id="racial-polarization" className="p-4 sm:p-6 lg:p-8 border-b border-brand-muted/30 min-h-[calc(100vh-3.5rem)]">
 
-            {/* ══════════════════════════════════════════════════════════════
-                SUB-SECTION 1: GINGLES ANALYSIS
-                Scatter plot + precinct data table with dot↔row sync selection.
-            ══════════════════════════════════════════════════════════════ */}
-            <div id="gingles-analysis" className="p-4 sm:p-6 lg:p-8 border-b border-brand-muted/20">
+            {/* ── SECTION HEADER + MINI NAV ──────────────────────────────── */}
+            <div className="flex items-end justify-between mb-4 gap-4">
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-brand-darkest tracking-tight shrink-0">
+                    Racial Polarization
+                </h2>
+                <MiniNavTabs
+                    tabs={RP_TABS}
+                    activeTab={activeTab}
+                    onChange={setActiveTab}
+                />
+            </div>
 
-                {/* ── SUB-SECTION HEADER ───────────────────────────────────── */}
-                <div className="flex items-center justify-between mb-6">
-                    <div>
-                        <p className="text-xs text-brand-muted/50 uppercase tracking-widest font-semibold mb-1">
-                            Racial Polarization
-                        </p>
-                        <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-brand-darkest tracking-tight">
-                            Gingles Analysis
-                        </h2>
-                    </div>
-                </div>
-
-                {/* ── SCATTER + TABLE GRID ─────────────────────────────────── */}
-                {/* Click a dot → highlights the precinct row; click row → highlights dot */}
+            {/* ── GINGLES ANALYSIS ───────────────────────────────────────── */}
+            {/* Scatter plot of precinct minority VAP % vs Dem vote share,
+                cross-linked with the precinct detail table via selectedId. */}
+            {activeTab === 'gingles' && (
                 <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 items-start">
-
                     <div className="flex flex-col gap-3">
                         <SectionHeader title="Gingles Scatter Plot" />
                         <GinglesScatterPlot
@@ -124,7 +127,6 @@ export default function RacialPolarizationSection({ data, stateId }) {
                             className="h-[480px]"
                         />
                     </div>
-
                     <div className="flex flex-col gap-3">
                         <SectionHeader title="Precinct Detail" />
                         <GinglesPrecinctTable
@@ -133,30 +135,12 @@ export default function RacialPolarizationSection({ data, stateId }) {
                             onSelectId={setSelectedId}
                         />
                     </div>
-
                 </div>
-            </div>
+            )}
 
-            {/* ══════════════════════════════════════════════════════════════
-                SUB-SECTION 2: ECOLOGICAL INFERENCE
-                Dual KDE charts (shared y-axis) + peak-support bar chart.
-            ══════════════════════════════════════════════════════════════ */}
-            <div id="ecological-inference" className="p-4 sm:p-6 lg:p-8">
-
-                {/* ── SUB-SECTION HEADER ───────────────────────────────────── */}
-                <div className="flex items-center justify-between mb-6">
-                    <div>
-                        <p className="text-xs text-brand-muted/50 uppercase tracking-widest font-semibold mb-1">
-                            Racial Polarization
-                        </p>
-                        <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-brand-darkest tracking-tight">
-                            Ecological Inference
-                        </h2>
-                    </div>
-                </div>
-
-                {/* ── KDE CHARTS ───────────────────────────────────────────── */}
-                {/* Both charts use eiYMax so their y-axes stay aligned */}
+            {/* ── EI KDE CHARTS ──────────────────────────────────────────── */}
+            {/* Dual KDE density charts sharing a y-axis for direct comparison. */}
+            {activeTab === 'ei-kde' && (
                 <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 items-start">
                     <div className="flex flex-col gap-3">
                         <SectionHeader title="Democratic Support" />
@@ -164,7 +148,7 @@ export default function RacialPolarizationSection({ data, stateId }) {
                             candidate={demCandidate}
                             activeRaces={eiRaceFilter}
                             yMax={eiYMax}
-                            className="h-[400px]"
+                            className="h-[calc(100vh-13rem)]"
                         />
                     </div>
                     <div className="flex flex-col gap-3">
@@ -173,24 +157,25 @@ export default function RacialPolarizationSection({ data, stateId }) {
                             candidate={repCandidate}
                             activeRaces={eiRaceFilter}
                             yMax={eiYMax}
-                            className="h-[400px]"
+                            className="h-[calc(100vh-13rem)]"
                         />
                     </div>
                 </div>
+            )}
 
-                {/* ── PEAK SUPPORT BAR CHART ───────────────────────────────── */}
-                {/* Shows peak KDE estimate with confidence interval error bars per race */}
-                <div className="flex flex-col gap-3 mt-6">
+            {/* ── EI BAR CHARTS ──────────────────────────────────────────── */}
+            {/* Peak support estimates with confidence intervals per racial group. */}
+            {activeTab === 'ei-bar' && (
+                <div className="flex flex-col gap-3">
                     <SectionHeader title="Peak Support Estimates" />
                     <EIBarChart
                         demCandidate={demCandidate}
                         repCandidate={repCandidate}
                         activeRaces={eiRaceFilter}
-                        className="h-[420px]"
+                        className="h-[calc(100vh-13rem)]"
                     />
                 </div>
-
-            </div>
+            )}
 
         </section>
     )

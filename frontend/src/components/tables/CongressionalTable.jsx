@@ -81,10 +81,10 @@ export default function CongressionalTable({ districtSummary }) {
     /* ── Step 2d: Render ── */
     return (
         <SurfacePanel className="overflow-x-auto border-brand-muted/25">
-          <div className="min-w-[560px]">
+          <div className="min-w-0">
 
             {/* ── COLUMN HEADER ──────────────────────────────────────── */}
-            <div className="grid grid-cols-[80px_1fr_120px_110px_100px] gap-x-3 items-center px-4 py-3 bg-brand-darkest text-brand-surface text-sm font-semibold">
+            <div className="grid grid-cols-[80px_1fr_100px_80px_90px] gap-x-3 items-center px-4 py-3 bg-brand-darkest text-brand-surface text-sm font-semibold">
                 <span>District</span>
                 <span>Representative</span>
                 <span>Party</span>
@@ -103,7 +103,7 @@ export default function CongressionalTable({ districtSummary }) {
                         key={d.districtId}
                         onClick={() => handleRowClick(d.districtNumber)}
                         className={[
-                            'grid grid-cols-[80px_1fr_120px_110px_100px] gap-x-3 items-center',
+                            'grid grid-cols-[80px_1fr_100px_80px_90px] gap-x-3 items-center',
                             'px-4 py-3 cursor-pointer select-none transition-colors',
                             ROW_BORDER,
                             rowBg(i, isActive),
