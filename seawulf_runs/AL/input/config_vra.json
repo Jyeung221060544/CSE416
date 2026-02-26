@@ -8,9 +8,11 @@
   "steps_test": 250,
   "steps_final": 5000,
   "output_dir": "output_vra",
+  "save_assignments_first_n": 10,
+  "save_assignments_every": 1000,
   "vra": {
     "enabled": true,
-    "group_key": "NH_BLACK_ANY_VAP",
+    "group_key": "NH_BLACK_ALONE_VAP",
     "auto_thresholds": [0.50, 0.45, 0.40, 0.35, 0.30],
     "min_opportunity_districts": null,
     "effectiveness": {

@@ -11,6 +11,8 @@ seawulf_runs/AL/input/AL_graph.json
 seawulf_runs/OR/input/OR_graph.json
 seawulf_runs/AL/input/AL_enacted_districts_with_stats.geojson
 seawulf_runs/OR/input/OR_enacted_districts_with_stats.geojson
+seawulf_runs/AL/input/AL_starting_assignment_enacted.json
+seawulf_runs/OR/input/OR_starting_assignment_enacted.json
 
 .DS_Store
 **/.DS_Store

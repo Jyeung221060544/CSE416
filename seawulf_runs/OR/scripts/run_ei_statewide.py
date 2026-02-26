@@ -29,20 +29,6 @@ def resolve_path(p: str, repo_root: Path) -> str:
     return str((repo_root / pp).resolve())
 
 
-@dataclass
-class EISummary:
-    group: str
-    n_precincts_used: int
-    mean_support_group: float
-    median_support_group: float
-    ci95_group: Tuple[float, float]
-    mean_support_nongroup: float
-    median_support_nongroup: float
-    ci95_nongroup: Tuple[float, float]
-    party_of_choice: str
-    confidence_score: float  # peak density (group curve)
-
-
 def ensure_dir(p: str) -> None:
     os.makedirs(p, exist_ok=True)
 
@@ -54,20 +40,29 @@ def safe_div(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     return out
 
 
-def peak_density_from_hist(samples: np.ndarray, bins: int = 60) -> float:
-    # Histogram-based density peak (simple + stable; matches “highest EI frequency” idea)
-    hist, _ = np.histogram(samples, bins=bins, range=(0.0, 1.0), density=True)
-    return float(hist.max()) if hist.size else 0.0
+HIST_BINS = 60  # keep fixed for comparability across runs
 
+def hist_density_curve(samples: np.ndarray, bins: int = HIST_BINS):
+    """
+    Returns a histogram-based density curve on [0,1]:
+      grid: bin centers
+      dens: density values (integrates to ~1)
+      peak_x, peak_y: location and height of max density
+    """
+    hist, edges = np.histogram(samples, bins=bins, range=(0.0, 1.0), density=True)
+    centers = 0.5 * (edges[:-1] + edges[1:])
+    peak_idx = int(np.argmax(hist)) if hist.size else 0
+    peak_x = float(centers[peak_idx]) if hist.size else 0.0
+    peak_y = float(hist[peak_idx]) if hist.size else 0.0
+    return centers.astype(float), hist.astype(float), peak_x, peak_y
 
-def summarize_samples(samples: np.ndarray) -> Tuple[float, float, Tuple[float, float], float]:
+def summarize_samples(samples: np.ndarray):
     mean = float(np.mean(samples))
     med = float(np.median(samples))
     lo = float(np.quantile(samples, 0.025))
     hi = float(np.quantile(samples, 0.975))
-    peak = peak_density_from_hist(samples)
-    return mean, med, (lo, hi), peak
-
+    grid, dens, peak_x, peak_y = hist_density_curve(samples, bins=HIST_BINS)
+    return mean, med, (lo, hi), grid, dens, peak_x, peak_y
 
 def plot_density_hist(
     group_samples: np.ndarray,
@@ -100,9 +95,9 @@ def run_two_by_two_ei(
 
     # Use a real model name that PyEI recognizes.
     # The PyEI demo uses king99 with lmbda around 0.1 for stability.
+    np.random.seed(seed)  # at minimum; makes some randomness reproducible
     model = TwoByTwoEI("king99", lmbda=0.1)
 
-    # In this PyEI version, fit() uses draw_samples (not draws)
     model.fit(
         group_fraction=x_group_frac,
         votes_fraction=t_dem_frac,
@@ -110,8 +105,7 @@ def run_two_by_two_ei(
         tune=tune,
         draw_samples=draws,
         chains=chains,
-        # optional but often helps sampling stability:
-        target_accept=0.9,
+        target_accept=0.95,  # slightly higher can help
     )
 
     svp = model.sampled_voting_prefs
@@ -194,8 +188,8 @@ def main():
                     help="Output directory for EI results (default: repo_root/AL_data/ei)")
 
     ap.add_argument("--state", default="AL", help="State label e.g., AL or OR")
-    ap.add_argument("--groups", nargs="+", default=["NH_BLACK_ANY_VAP", "NH_WHITE_ANY_VAP"],
-                    help="Group VAP columns e.g., NH_BLACK_ANY_VAP HVAP")
+    ap.add_argument("--groups", nargs="+", default=["NH_BLACK_ALONE_VAP", "NH_WHITE_ALONE_VAP"],
+                    help="Group VAP columns e.g., NH_BLACK_ALONE_VAP HVAP")
 
     ap.add_argument("--vap_col", default="VAP")
     ap.add_argument("--dem_col", default="votes_dem")
@@ -229,8 +223,8 @@ def main():
     if missing:
         raise SystemExit(f"Missing required columns in {precincts_path}: {missing}")
 
-    results: Dict[str, EISummary] = {}
-
+    results_json = {}
+    
     for group_col in args.groups:
         x, t, n = build_inputs(
             gdf,
@@ -255,27 +249,40 @@ def main():
             seed=args.seed,
         )
 
-        b_mean, b_med, b_ci, b_peak = summarize_samples(b_samples)
-        w_mean, w_med, w_ci, _ = summarize_samples(w_samples)
+        b_mean, b_med, b_ci, b_grid, b_dens, b_peak_x, b_peak_y = summarize_samples(b_samples)
+        w_mean, w_med, w_ci, w_grid, w_dens, w_peak_x, w_peak_y = summarize_samples(w_samples)
 
+        # Party of choice (2-party proxy, spec-aligned)
         party = "D" if b_mean >= 0.5 else "R"
+        confidence_score = float(b_peak_y)  # “highest EI frequency” proxy = peak density height
 
-        # title = f"{args.state} — EI estimated Democratic support (group={group_col})"
-        # out_png = outdir_path / f"{args.state}_EI_{group_col}.png"
-        # plot_density_hist(b_samples, w_samples, title=title, out_png=str(out_png))
+        # Store EVERYTHING per group here (including density arrays)
+        results_json[group_col] = {
+            "n_precincts_used": int(len(x)),
 
-        results[group_col] = EISummary(
-            group=group_col,
-            n_precincts_used=int(len(x)),
-            mean_support_group=b_mean,
-            median_support_group=b_med,
-            ci95_group=b_ci,
-            mean_support_nongroup=w_mean,
-            median_support_nongroup=w_med,
-            ci95_nongroup=w_ci,
-            party_of_choice=party,
-            confidence_score=b_peak,
-        )
+            "mean_support_group_D": float(b_mean),
+            "mean_support_group_R": float(1.0 - b_mean),
+            "median_support_group_D": float(b_med),
+            "ci95_group_D": [float(b_ci[0]), float(b_ci[1])],
+
+            "mean_support_nongroup_D": float(w_mean),
+            "mean_support_nongroup_R": float(1.0 - w_mean),
+            "median_support_nongroup_D": float(w_med),
+            "ci95_nongroup_D": [float(w_ci[0]), float(w_ci[1])],
+
+            "party_of_choice": party,
+            "confidence_score": confidence_score,
+
+            # GUI-ready density curves (no plotting required)
+            "density": {
+                "bins": int(HIST_BINS),
+                "grid": [float(v) for v in b_grid],         # x-axis values (bin centers)
+                "group": [float(v) for v in b_dens],        # y-axis density for group
+                "nongroup": [float(v) for v in w_dens],     # y-axis density for non-group
+                "peak_x_group": float(b_peak_x),
+                "peak_y_group": float(b_peak_y),
+            },
+        }
 
     out_json = outdir_path / f"{args.state}_ei_statewide.json"
     serializable = {
@@ -285,29 +292,16 @@ def main():
             "group_fraction_proxy": "group_VAP / VAP",
             "vote_fraction": "votes_dem / (votes_dem + votes_rep)",
             "weights": "votes_dem + votes_rep",
-            "confidence_score": "histogram density peak of group posterior (EI frequency proxy)",
+            "confidence_score": f"histogram density peak (bins={HIST_BINS}) of group posterior",
         },
-        "results": {
-            k: {
-                "n_precincts_used": v.n_precincts_used,
-                "mean_support_group": v.mean_support_group,
-                "median_support_group": v.median_support_group,
-                "ci95_group": list(v.ci95_group),
-                "mean_support_nongroup": v.mean_support_nongroup,
-                "median_support_nongroup": v.median_support_nongroup,
-                "ci95_nongroup": list(v.ci95_nongroup),
-                "party_of_choice": v.party_of_choice,
-                "confidence_score": v.confidence_score,
-            }
-            for k, v in results.items()
-        },
+        "results": results_json,
     }
 
     with open(out_json, "w") as f:
         json.dump(serializable, f, indent=2)
 
     print(f"\nWrote EI JSON: {out_json}")
-    print(f"Wrote EI plots into: {outdir_path}")
+    print(f"Wrote EI outputs into: {outdir_path}")
 
 if __name__ == "__main__":
     main()
