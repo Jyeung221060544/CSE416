@@ -86,3 +86,35 @@ def save_enacted_baseline(graph_path, out_json, out_json2, num_districts):
 save_enacted_baseline("AL_data/AL_graph.json", "AL_data/AL_enacted_baseline.json", "seawulf_runs/AL/input/AL_enacted_baseline.json", num_districts=7)
 save_enacted_baseline("OR_data/OR_graph.json", "OR_data/OR_enacted_baseline.json", "seawulf_runs/OR/input/OR_enacted_baseline.json", num_districts=6)
 
+def save_starting_assignment(graph_path, out_path, out_path2, assignment_col="enacted_cd"):
+    G = Graph.from_json(graph_path)
+
+    assignment = {}
+    missing = 0
+
+    for node, data in G.nodes(data=True):
+        d = data.get(assignment_col, None)
+        if d is None or d == "":
+            missing += 1
+            continue
+        # ensure JSON-friendly ints where possible
+        assignment[str(node)] = int(d) if str(d).isdigit() else str(d)
+
+    payload = {
+        "assignment_col": assignment_col,
+        "num_nodes": len(G.nodes),
+        "missing": missing,
+        "assignment": assignment,
+    }
+
+    with open(out_path, "w") as f:
+        json.dump(payload, f, indent=2)
+    
+    with open(out_path2, "w") as f:
+        json.dump(payload, f, indent=2)
+
+    print("Saved starting assignment:", out_path)
+    print("nodes:", payload["num_nodes"], "missing:", payload["missing"], "unique districts:", sorted(set(assignment.values())))
+
+save_starting_assignment("AL_data/AL_graph.json", "AL_data/AL_starting_assignment_enacted.json", "seawulf_runs/AL/input/AL_starting_assignment_enacted.json")
+save_starting_assignment("OR_data/OR_graph.json", "OR_data/OR_starting_assignment_enacted.json", "seawulf_runs/OR/input/OR_starting_assignment_enacted.json")

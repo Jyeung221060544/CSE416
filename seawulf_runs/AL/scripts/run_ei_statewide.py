@@ -29,20 +29,6 @@ def resolve_path(p: str, repo_root: Path) -> str:
     return str((repo_root / pp).resolve())
 
 
-@dataclass
-class EISummary:
-    group: str
-    n_precincts_used: int
-    mean_support_group: float
-    median_support_group: float
-    ci95_group: Tuple[float, float]
-    mean_support_nongroup: float
-    median_support_nongroup: float
-    ci95_nongroup: Tuple[float, float]
-    party_of_choice: str
-    confidence_score: float  # peak density (group curve)
-
-
 def ensure_dir(p: str) -> None:
     os.makedirs(p, exist_ok=True)
 
@@ -109,9 +95,9 @@ def run_two_by_two_ei(
 
     # Use a real model name that PyEI recognizes.
     # The PyEI demo uses king99 with lmbda around 0.1 for stability.
+    np.random.seed(seed)  # at minimum; makes some randomness reproducible
     model = TwoByTwoEI("king99", lmbda=0.1)
 
-    # In this PyEI version, fit() uses draw_samples (not draws)
     model.fit(
         group_fraction=x_group_frac,
         votes_fraction=t_dem_frac,
@@ -119,8 +105,7 @@ def run_two_by_two_ei(
         tune=tune,
         draw_samples=draws,
         chains=chains,
-        # optional but often helps sampling stability:
-        target_accept=0.9,
+        target_accept=0.95,  # slightly higher can help
     )
 
     svp = model.sampled_voting_prefs
@@ -203,8 +188,8 @@ def main():
                     help="Output directory for EI results (default: repo_root/AL_data/ei)")
 
     ap.add_argument("--state", default="AL", help="State label e.g., AL or OR")
-    ap.add_argument("--groups", nargs="+", default=["NH_BLACK_ANY_VAP", "NH_WHITE_ANY_VAP"],
-                    help="Group VAP columns e.g., NH_BLACK_ANY_VAP HVAP")
+    ap.add_argument("--groups", nargs="+", default=["NH_BLACK_ALONE_VAP", "NH_WHITE_ALONE_VAP"],
+                    help="Group VAP columns e.g., NH_BLACK_ALONE_VAP HVAP")
 
     ap.add_argument("--vap_col", default="VAP")
     ap.add_argument("--dem_col", default="votes_dem")

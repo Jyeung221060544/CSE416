@@ -1,13 +1,13 @@
 import json
 import os
 import sys
-from datetime import datetime, UTC
 
 from gerrychain import Graph, MarkovChain, Partition, accept
 from gerrychain.updaters import Tally, cut_edges
 from gerrychain.constraints import within_percent_of_ideal_population
 from gerrychain.proposals import recom
 from functools import partial
+from gerrychain.tree import bipartition_tree
 
 def load_config(path):
     with open(path, "r") as f:
@@ -174,7 +174,12 @@ def main():
         pop_col=pop_col,
         pop_target=ideal_pop,
         epsilon=eps,
-        node_repeats=3,
+        node_repeats=3,  # can raise (see below)
+        method=partial(
+            bipartition_tree,
+            max_attempts=2000,
+            allow_pair_reselection=True,
+        ),
     )
 
     chain = MarkovChain(
@@ -185,9 +190,8 @@ def main():
         total_steps=steps,
     )
 
-    stamp = datetime.now(UTC).strftime("%Y%m%d_%H%M%S")
-    plans_path = os.path.join(outdir, f"plans_{mode}_{stamp}.jsonl")
-    summary_path = os.path.join(outdir, f"summary_{mode}_{stamp}.json")
+    plans_path = os.path.join(outdir, f"plans_{mode}.jsonl")
+    summary_path = os.path.join(outdir, f"summary_{mode}.json")
 
     plans_written = 0
     seat_splits = {}
@@ -196,10 +200,12 @@ def main():
     eff_hist = {}
     cut_hist = {}
 
+    save_first_n = int(cfg.get("save_assignments_first_n", 10))
+    save_every = int(cfg.get("save_assignments_every", 0))
+
     with open(plans_path, "w") as fout:
         for i, part in enumerate(chain):
-            assignment = {n: int(d) if str(d).isdigit() else str(d) for n, d in part.assignment.items()}
-            rec = {"step": i, "assignment": assignment}
+            rec = {"step": i}
 
             metrics = plan_metrics(
                 part,
@@ -210,6 +216,15 @@ def main():
             )
             rec.update({k: v for k, v in metrics.items() if v is not None})
 
+            # only sometimes store the full assignment
+            store_assignment = (i < save_first_n) or (save_every and i % save_every == 0)
+            if store_assignment:
+                rec["assignment"] = {
+                    n: (int(d) if str(d).isdigit() else str(d))
+                    for n, d in part.assignment.items()
+                }
+
+            # histograms
             if metrics["dem_seats"] is not None:
                 seat_splits[str(metrics["dem_seats"])] = seat_splits.get(str(metrics["dem_seats"]), 0) + 1
 
