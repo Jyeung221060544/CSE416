@@ -98,8 +98,8 @@ export function getOutcome(dem) {
  *  The isFeasible flag comes from stateSummary.demographicGroups[].isFeasible
  *  (set on the backend based on the state's actual VAP data).
  * ─────────────────────────────────────────────────────────────────────────── */
-export const FEASIBLE_CLS     = 'bg-emerald-50 text-emerald-700 border-emerald-200 text-xs font-semibold px-2 py-0.5'
-export const NOT_FEASIBLE_CLS = 'bg-red-50 text-red-500 border-red-200 text-xs font-semibold px-2 py-0.5'
+export const FEASIBLE_CLS     = 'bg-emerald-50 text-emerald-700 border-emerald-200 text-xs font-semibold px-2 py-0.5 min-w-[6.5rem] justify-center'
+export const NOT_FEASIBLE_CLS = 'bg-red-50 text-red-500 border-red-200 text-xs font-semibold px-2 py-0.5 min-w-[6.5rem] justify-center'
 
 
 /* ── Step 4: Region type badge classes ───────────────────────────────────────
@@ -132,11 +132,11 @@ export const REGION_CLS = {
  *  RACE_LABELS  → display strings for legends, tooltips, and table headers
  * ─────────────────────────────────────────────────────────────────────────── */
 export const RACE_COLORS = {
-    black:    '#6366f1',   // indigo-500
-    white:    '#e90eb6',   // hot pink (distinguishable from other lines at a glance)
-    hispanic: '#f59e0b',   // amber-500
-    asian:    '#10b981',   // emerald-500
-    other:    '#a855f7',   // purple-500
+    black:    '#009E73',   
+    white:    '#E69F00 ', 
+    hispanic: '#F0E442',   
+    asian:    '#CC79A7',   
+    other:    '#D55E00',  
 }
 
 export const RACE_LABELS = {

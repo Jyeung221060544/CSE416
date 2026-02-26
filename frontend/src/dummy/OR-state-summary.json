@@ -28,8 +28,8 @@
   "congressionalRepresentatives": {
     "totalSeats": 6,
     "byParty": [
-      { "party": "Democratic", "seats": 4 },
-      { "party": "Republican", "seats": 2 }
+      { "party": "Democratic", "seats": 5 },
+      { "party": "Republican", "seats": 1 }
     ]
   }
 }

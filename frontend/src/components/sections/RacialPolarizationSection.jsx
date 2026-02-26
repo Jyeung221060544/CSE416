@@ -88,20 +88,6 @@ export default function RacialPolarizationSection({ data, stateId }) {
     }, [eiData, eiRaceFilter])
 
 
-    /* ── Step 2: AL-only guard ───────────────────────────────────────────── */
-    /* Show placeholder for any state that doesn't yet have polarization data */
-    if (stateId !== 'AL') {
-        return (
-            <section id="racial-polarization" className="p-4 sm:p-6 lg:p-8 border-b border-brand-muted/30">
-                <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-brand-darkest tracking-tight mb-4">
-                    Racial Polarization
-                </h2>
-                <p className="text-brand-muted/70">Racial polarization mock data is currently configured for Alabama only.</p>
-            </section>
-        )
-    }
-
-
     /* ── Step 3: Render ──────────────────────────────────────────────────── */
     return (
         <section id="racial-polarization" className="border-b border-brand-muted/30">

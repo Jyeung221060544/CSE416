@@ -80,13 +80,6 @@ export default function EnsembleAnalysisSection({ data, stateId }) {
                             Ensemble Splits
                         </h2>
                     </div>
-
-                    {/* Plan count metadata — hidden on small screens */}
-                    {stateId && splitsData && (
-                        <span className="text-xs text-brand-muted/60 font-medium tracking-wide hidden sm:block">
-                            {splitsData.totalPlans?.toLocaleString() ?? '–'} sampled plans · {splitsData.numDistricts} districts
-                        </span>
-                    )}
                 </div>
 
                 {/* ── SPLIT CHARTS ─────────────────────────────────────────── */}

@@ -33,14 +33,14 @@ export const ROW_BORDER = 'border-t border-brand-muted/15'
  *  Uses a subtle purple ring (brand-primary at 30% opacity) rather than a
  *  solid fill so the content underneath remains legible.
  * ─────────────────────────────────────────────────────────────────────────── */
-export const ACTIVE_ROW = 'bg-brand-primary/15 ring-1 ring-inset ring-brand-primary/30'
+export const ACTIVE_ROW = 'bg-brand-primary/15 ring-1 ring-inset ring-brand-primary/70'
 
 
 /* ── Step 3: Hover style for clickable rows ──────────────────────────────────
  *  Combined with altRowBg() in rowBg() below. Only applied when the row is
  *  NOT the active/selected row (active ring takes visual priority).
  * ─────────────────────────────────────────────────────────────────────────── */
-export const ROW_HOVER = 'hover:bg-brand-primary/5'
+export const ROW_HOVER = 'hover:bg-brand-primary/10'
 
 
 /* ── Step 4: Label text colors ───────────────────────────────────────────────

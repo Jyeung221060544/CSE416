@@ -4,7 +4,6 @@
   "candidates": [
     {
       "candidateId": "DEM_PRES_2024",
-      "candidateName": "Kamala Harris",
       "party": "Democratic",
       "racialGroups": [
         {
@@ -159,7 +158,6 @@
     },
     {
       "candidateId": "REP_PRES_2024",
-      "candidateName": "Donald Trump",
       "party": "Republican",
       "racialGroups": [
         {

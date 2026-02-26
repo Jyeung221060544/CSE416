@@ -2,12 +2,6 @@
   "stateId": "AL",
   "demographicGroup": "Black",
   "granularity": "precinct",
-  "binConfig": {
-    "binWidth": 10,
-    "totalBins": 9,
-    "globalMin": 0,
-    "globalMax": 100
-  },
   "regressionCurves": {
     "equation": "polynomial",
     "degree": 2,
@@ -28,71 +22,6 @@
       "r2": 0.85
     }
   },
-  "bins": [
-    {
-      "binId": 1,
-      "rangeMin": 0,
-      "rangeMax": 10,
-      "color": "#f7fbff",
-      "count": 312
-    },
-    {
-      "binId": 2,
-      "rangeMin": 10,
-      "rangeMax": 20,
-      "color": "#c6dbef",
-      "count": 198
-    },
-    {
-      "binId": 3,
-      "rangeMin": 20,
-      "rangeMax": 30,
-      "color": "#6baed6",
-      "count": 167
-    },
-    {
-      "binId": 4,
-      "rangeMin": 30,
-      "rangeMax": 40,
-      "color": "#2171b5",
-      "count": 143
-    },
-    {
-      "binId": 5,
-      "rangeMin": 40,
-      "rangeMax": 50,
-      "color": "#084594",
-      "count": 98
-    },
-    {
-      "binId": 6,
-      "rangeMin": 50,
-      "rangeMax": 60,
-      "color": "#08306b",
-      "count": 87
-    },
-    {
-      "binId": 7,
-      "rangeMin": 60,
-      "rangeMax": 70,
-      "color": "#041d42",
-      "count": 62
-    },
-    {
-      "binId": 8,
-      "rangeMin": 70,
-      "rangeMax": 80,
-      "color": "#021530",
-      "count": 41
-    },
-    {
-      "binId": 9,
-      "rangeMin": 80,
-      "rangeMax": 100,
-      "color": "#010b1e",
-      "count": 29
-    }
-  ],
   "precincts": [
     {
       "precinctId": "AL-PREC-001",

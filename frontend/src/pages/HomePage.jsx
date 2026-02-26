@@ -76,8 +76,8 @@ export default function HomePage() {
 
             {/* ── PAGE HEADER ──────────────────────────────────────────────── */}
             {/* Fixed-height header with app subtitle and page title */}
-            <div className="shrink-0 px-4 sm:px-8 lg:px-10 py-6 border-b border-brand-muted/30">
-                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-muted mb-1">
+            <div className="shrink-0 px-4 sm:px-8 lg:px-10 py-4 border-b border-brand-muted/30">
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-muted mb-0">
                     Voting Rights Act · Redistricting Analysis
                 </p>
                 <h1 className="text-2xl sm:text-3xl font-bold text-brand-darkest tracking-tight">
@@ -103,7 +103,7 @@ export default function HomePage() {
                 {/* Shows state profile details when hoveredState is set,
                     otherwise shows the empty / call-to-action state. */}
                 <div className="flex-1 min-w-0 flex flex-col min-h-[220px] lg:min-h-0">
-                    <Card className="flex-1 p-0 border-brand-muted/25 shadow-sm overflow-hidden">
+                    <Card className="flex-1 p-0 border-brand-muted/25 shadow-sm">
 
                         {hoveredState ? (
 
@@ -167,7 +167,7 @@ export default function HomePage() {
 
                                 <div>
                                     <p className="text-brand-darkest font-bold text-base">Select a State</p>
-                                    <p className="font-semibold text-brand-muted/60 text-sm mt-1.5 leading-relaxed">
+                                    <p className="font-semibold text-brand-muted/60 text-sm mt-1 leading-relaxed">
                                         Hover over a highlighted state on the map to analyze its profile.
                                     </p>
                                 </div>

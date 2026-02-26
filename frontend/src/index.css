@@ -95,11 +95,13 @@
      * Brand palette — hex (not oklch) so they can be copy-pasted into
      * SVG style props and Nivo chart config without conversion.
      * Usage: bg-brand-darkest, text-brand-surface, border-brand-deep, etc.
+     muted 232652
+     primary 595a96
      */
     --color-brand-darkest: #0D0236;   /* Sidebar bg, table headers, deepest UI */
     --color-brand-deep:    #2C2F66;   /* Borders, separators, hover states */
     --color-brand-primary: #595a96;   /* Active buttons, highlights, rings */
-    --color-brand-muted:   #232652;   /* Icon tints, inactive labels */
+    --color-brand-muted:   #595a96;   /* Icon tints, inactive labels */
     --color-brand-surface: #FBFAFF;   /* Page bg, text rendered on dark surfaces */
 
     /* Border-radius scale derived from --radius base value */
@@ -136,7 +138,7 @@
 /* ── Step 3: Light-mode (default) CSS variable values ──────────────── */
 :root {
     /* Glow for map polygon hover drop-shadow (USMap.jsx, DistrictMap2024.jsx) */
-    --color-brand-glow: rgba(89, 90, 150, 0.55);
+    --color-brand-glow: #854b8e;
 
     /* Base corner radius consumed by the radius scale above */
     --radius: 0.625rem;

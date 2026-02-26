@@ -117,7 +117,7 @@ export default function DemographicSection({ data, stateId }) {
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
 
                 {/* ── LEFT: HEATMAP COLUMN ─────────────────────────────────── */}
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-1">
                     <SectionHeader title="Demographic Heat Map" />
 
                     {/* Leaflet choropleth map — colored by minority VAP bin */}
@@ -130,17 +130,7 @@ export default function DemographicSection({ data, stateId }) {
                         />
                     </MapFrame>
 
-                    {/* Active filter indicator pills */}
-                    <div className="flex items-center gap-2 text-xs text-brand-muted/70">
-                        <span className="font-semibold text-brand-deep">Showing:</span>
-                        <span className="px-2 py-0.5 rounded-md bg-teal-500/10 text-teal-700 font-semibold capitalize">
-                            {raceFilter}
-                        </span>
-                        <span className="font-semibold text-brand-deep ml-2">Granularity:</span>
-                        <span className="px-2 py-0.5 rounded-md bg-brand-muted/15 text-brand-deep font-semibold">
-                            {granularityLabel}
-                        </span>
-                    </div>
+                   
 
                     {/* ── HEATMAP LEGEND ───────────────────────────────────── */}
                     {/* Shown when heatmapData is available; fallback message if not */}
@@ -155,7 +145,7 @@ export default function DemographicSection({ data, stateId }) {
                 </div>
 
                 {/* ── RIGHT: POPULATION TABLE COLUMN ───────────────────────── */}
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-1">
                     <SectionHeader title="Population by Group" />
 
                     <div className="flex flex-col h-[340px] sm:h-[400px] xl:h-[420px]">
@@ -169,11 +159,11 @@ export default function DemographicSection({ data, stateId }) {
 
                         {/* ── FEASIBILITY CALLOUT ──────────────────────────── */}
                         {/* Explains the "Feasible" badge in the population table */}
-                        <InfoCallout icon={Lightbulb} className="mt-auto">
+                        {/* <InfoCallout icon={Lightbulb} className="mt-auto">
                             <span className="font-semibold text-brand-deep">Opportunity district:</span> Feasible
                             indicates the group&apos;s VAP is greater than or equal to 400,000, which may support a
                             majority-minority district under the Gingles preconditions.
-                        </InfoCallout>
+                        </InfoCallout> */}
                     </div>
                 </div>
 

@@ -1,37 +1,56 @@
+/**
+ * EnsembleSplitChart.jsx — Nivo bar chart for ensemble redistricting plan splits.
+ *
+ * Displays the frequency distribution of Republican–Democratic seat splits
+ * across sampled plans in one ensemble (race-blind or VRA-constrained).
+ * Bars are colored by majority party.  A highlighted column marks the enacted plan.
+ *
+ * Key visual elements:
+ *   bgLayer      — Soft gradient background (unique gradient ID per chart instance).
+ *   enactedLayer — Amber shaded column + dashed border + "Enacted" label.
+ *   bars         — Blue (D-majority) or red (R-majority) per split outcome.
+ *
+ * PROPS
+ *   ensembleData {object|null} — One entry from splits.ensembles.
+ *   enactedSplit {object|null} — { republican, democratic } for the actual enacted plan.
+ *   yMax         {number}      — Shared y-axis ceiling for visual alignment.
+ *   chartId      {string}      — Unique id to avoid SVG gradient ID collisions.
+ *   className    {string}      — Optional height class.
+ */
+
 import { useMemo } from 'react'
 import { ResponsiveBar } from '@nivo/bar'
 import { DEM_COLOR, REP_COLOR, TIE_COLOR, ENACTED_COLOR, AXIS_COLOR, LABEL_COLOR } from '@/lib/partyColors'
 
-// ── Nivo theme ──────────────────────────────────────────────────────────────
+
+/* ── Step 0: Nivo theme ──────────────────────────────────────────────────── */
 const NIVO_THEME = {
     background: 'transparent',
     axis: {
-        ticks: {
-            line: { stroke: AXIS_COLOR, strokeWidth: 1.5 },
-            text: { fill: LABEL_COLOR, fontWeight: 600, fontSize: 12 },
-        },
-        legend: {
-            text: { fill: LABEL_COLOR, fontWeight: 700, fontSize: 13 },
-        },
-        domain: { line: { stroke: AXIS_COLOR, strokeWidth: 1.5 } },
+        ticks: { line:{ stroke:AXIS_COLOR, strokeWidth:1.5 }, text:{ fill:LABEL_COLOR, fontWeight:600, fontSize:12 } },
+        legend: { text:{ fill:LABEL_COLOR, fontWeight:700, fontSize:13 } },
+        domain: { line:{ stroke:AXIS_COLOR, strokeWidth:1.5 } },
     },
-    grid: {
-        line: { stroke: '#dce8f0', strokeWidth: 1, strokeDasharray: '3 4' },
-    },
+    grid: { line:{ stroke:'#dce8f0', strokeWidth:1, strokeDasharray:'3 4' } },
 }
 
-// ── Background layer factory (unique gradient ID per chart instance) ─────────
+
+/* ── Step 1: Background layer factory ────────────────────────────────────── */
+
+/**
+ * makeBgLayer — Returns BgLayer with a unique gradient ID to prevent collisions.
+ *
+ * Two chart instances share the same DOM, so gradient IDs must be unique.
+ *
+ * @param {string} chartId — Unique chart identifier (e.g. 'raceblind', 'vra').
+ * @returns {React.ComponentType}
+ */
 function makeBgLayer(chartId) {
     return function BgLayer({ innerWidth, innerHeight }) {
         const gradId = `splitBarBg_${chartId}`
         return (
             <g>
-                <defs>
-                    <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%"   stopColor="#eef6ff" />
-                        <stop offset="100%" stopColor="#f8fafc" />
-                    </linearGradient>
-                </defs>
+                <defs><linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#eef6ff" /><stop offset="100%" stopColor="#f8fafc" /></linearGradient></defs>
                 <rect width={innerWidth} height={innerHeight} fill={`url(#${gradId})`} rx={6} />
                 <rect width={innerWidth} height={innerHeight} fill="none" stroke="#b6cfdf" strokeWidth={1.5} rx={6} />
             </g>
@@ -39,202 +58,134 @@ function makeBgLayer(chartId) {
     }
 }
 
-// ── Enacted-plan column highlight layer ─────────────────────────────────────
+
+/* ── Step 2: Enacted column highlight factory ────────────────────────────── */
+
+/**
+ * makeEnactedLayer — Returns an EnactedLayer that highlights the enacted-plan column.
+ *
+ * Draws an amber shaded rect + dashed border + "Enacted" text label + triangle pointer.
+ *
+ * @param {string|null} enactedLabel — e.g. '5R-2D'; null if no enacted data.
+ * @returns {React.ComponentType}
+ */
 function makeEnactedLayer(enactedLabel) {
     return function EnactedLayer({ bars, innerHeight }) {
         const bar = bars.find(b => b.data.indexValue === enactedLabel)
         if (!bar) return null
-        const cx = bar.x + bar.width / 2
+        const cx = bar.x + bar.width/2
         return (
             <g>
                 {/* Amber column fill */}
-                <rect
-                    x={bar.x - 3} y={0}
-                    width={bar.width + 6} height={innerHeight}
-                    fill={ENACTED_COLOR} fillOpacity={0.10} rx={4}
-                />
+                <rect x={bar.x-3} y={0} width={bar.width+6} height={innerHeight} fill={ENACTED_COLOR} fillOpacity={0.10} rx={4} />
                 {/* Dashed border */}
-                <rect
-                    x={bar.x - 3} y={0}
-                    width={bar.width + 6} height={innerHeight}
-                    fill="none"
-                    stroke={ENACTED_COLOR} strokeWidth={2}
-                    strokeDasharray="5 4" strokeOpacity={0.75} rx={4}
-                />
-                {/* "Enacted" label above the plot area */}
-                <text
-                    x={cx} y={-10}
-                    textAnchor="middle"
-                    fontSize={10} fontWeight={700}
-                    fill={ENACTED_COLOR}
-                >
-                    Enacted
-                </text>
-                {/* Small down-pointing triangle pointer */}
-                <polygon
-                    points={`${cx - 4},${-3} ${cx + 4},${-3} ${cx},${3}`}
-                    fill={ENACTED_COLOR} fillOpacity={0.85}
-                />
+                <rect x={bar.x-3} y={0} width={bar.width+6} height={innerHeight} fill="none" stroke={ENACTED_COLOR} strokeWidth={2} strokeDasharray="5 4" strokeOpacity={0.75} rx={4} />
+                {/* Label above the plot area */}
+                <text x={cx} y={-10} textAnchor="middle" fontSize={10} fontWeight={700} fill={ENACTED_COLOR}>Enacted</text>
+                {/* Small triangle pointer */}
+                <polygon points={`${cx-4},${-3} ${cx+4},${-3} ${cx},${3}`} fill={ENACTED_COLOR} fillOpacity={0.85} />
             </g>
         )
     }
 }
 
-// ── Tooltip ─────────────────────────────────────────────────────────────────
+
+/* ── Step 3: Tooltip ─────────────────────────────────────────────────────── */
+
+/**
+ * SplitTooltip — Shows split label, plan count, and share of total plans.
+ *
+ * Border color reflects the majority party of that split outcome.
+ *
+ * @param {{ indexValue:string, value:number, data:object }} props
+ */
 function SplitTooltip({ indexValue, value, data }) {
-    const r = data.r ?? 0
-    const d = data.d ?? 0
-    const isRMaj = r > d
-    const isDMaj = d > r
-    const color  = isRMaj ? REP_COLOR : isDMaj ? DEM_COLOR : TIE_COLOR
-    const pct    = ((value / data.total) * 100).toFixed(1)
+    const r = data.r??0, d = data.d??0
+    const color = r>d ? REP_COLOR : d>r ? DEM_COLOR : TIE_COLOR
+    const pct   = ((value/data.total)*100).toFixed(1)
     return (
-        <div style={{
-            background: 'white',
-            border: `2px solid ${color}`,
-            borderRadius: 8,
-            padding: '8px 12px',
-            boxShadow: '0 4px 16px rgba(0,0,0,0.13)',
-            fontSize: 12,
-            minWidth: 170,
-            lineHeight: 1.6,
-        }}>
-            <div style={{ color, fontWeight: 700, fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 4 }}>
-                {indexValue}
-            </div>
-            <div style={{ color: '#475569' }}>
-                Plans: <strong style={{ color: LABEL_COLOR }}>{value.toLocaleString()}</strong>
-            </div>
-            <div style={{ color: '#475569' }}>
-                Share: <strong style={{ color: LABEL_COLOR }}>{pct}%</strong>
-            </div>
+        <div style={{ background:'white', border:`2px solid ${color}`, borderRadius:8, padding:'8px 12px', boxShadow:'0 4px 16px rgba(0,0,0,0.13)', fontSize:12, minWidth:170, lineHeight:1.6 }}>
+            <div style={{ color, fontWeight:700, fontSize:11, textTransform:'uppercase', letterSpacing:'0.07em', marginBottom:4 }}>{indexValue}</div>
+            <div style={{ color:'#475569' }}>Plans: <strong style={{ color:LABEL_COLOR }}>{value.toLocaleString()}</strong></div>
+            <div style={{ color:'#475569' }}>Share: <strong style={{ color:LABEL_COLOR }}>{pct}%</strong></div>
         </div>
     )
 }
 
-// ── Main component ───────────────────────────────────────────────────────────
+
+/* ── Step 4: Main component ──────────────────────────────────────────────── */
+
 /**
- * Props:
- *  ensembleData  – one entry from splits.ensembles  { ensembleType, splits }
- *  enactedSplit  – { republican, democratic }
- *  chartId       – unique string to prevent SVG gradient ID collisions
- *  className     – optional height class
+ * EnsembleSplitChart — Bar chart of plan frequency by R–D seat split outcome.
+ *
+ * @param {{ ensembleData:object|null, enactedSplit:object|null, yMax:number|undefined, chartId:string, className:string }} props
+ *   ensembleData — splits.ensembles entry with splits[]: { republican, democratic, frequency }.
+ *   enactedSplit — { republican, democratic } for the actual enacted plan.
+ *   yMax         — Shared y-axis ceiling; keeps race-blind and VRA charts aligned.
+ *   chartId      — Unique string to prevent SVG gradient ID collisions.
+ *   className    — Optional height class.
+ * @returns {JSX.Element|null}
  */
 export default function EnsembleSplitChart({ ensembleData, enactedSplit, yMax, chartId = 'default', className }) {
     if (!ensembleData) return null
 
     const { splits } = ensembleData
-    const total = splits.reduce((s, r) => s + r.frequency, 0)
+    /* Total plans (for % share in tooltip) */
+    const total = splits.reduce((s,r) => s + r.frequency, 0)
 
-    // Always include the enacted split row even if frequency === 0
+    /* ── Step 4a: Build Nivo data ────────────────────────────────────────── */
+    /*
+     * Always include the enacted split row even if frequency === 0
+     * so the enacted column highlight always renders.
+     */
     const nivoData = useMemo(() => {
         const enactedR = enactedSplit?.republican
         return splits
             .filter(s => s.frequency > 0 || s.republican === enactedR)
-            .map(s => ({
-                split: `${s.republican}R-${s.democratic}D`,
-                plans: s.frequency,
-                r:     s.republican,
-                d:     s.democratic,
-                total,
-            }))
+            .map(s => ({ split:`${s.republican}R-${s.democratic}D`, plans:s.frequency, r:s.republican, d:s.democratic, total }))
     }, [splits, enactedSplit, total])
 
-    const enactedLabel = enactedSplit
-        ? `${enactedSplit.republican}R-${enactedSplit.democratic}D`
-        : null
+    const enactedLabel = enactedSplit ? `${enactedSplit.republican}R-${enactedSplit.democratic}D` : null
 
+    /* Memoize layer functions to prevent recreation every render */
     const bgLayer      = useMemo(() => makeBgLayer(chartId), [chartId])
     const enactedLayer = useMemo(() => makeEnactedLayer(enactedLabel), [enactedLabel])
 
-    const getBarColor = bar => {
-        const r = bar.data.r ?? 0
-        const d = bar.data.d ?? 0
-        if (r > d) return REP_COLOR
-        if (d > r) return DEM_COLOR
-        return TIE_COLOR
-    }
+    /* Bar color by majority party */
+    const getBarColor = bar => { const r=bar.data.r??0, d=bar.data.d??0; return r>d?REP_COLOR:d>r?DEM_COLOR:TIE_COLOR }
 
+    /* ── Step 4b: Render ─────────────────────────────────────────────────── */
     return (
         <div className={`w-full rounded-xl border border-brand-muted/25 shadow-sm bg-white flex flex-col ${className ?? 'h-[360px]'}`}>
 
-            {/* Legend row */}
+            {/* ── LEGEND ROW ───────────────────────────────────────────────── */}
             <div className="flex flex-wrap items-center gap-4 px-4 pt-3 pb-1 flex-shrink-0">
-                <div className="flex items-center gap-1.5">
-                    <span style={{ width: 12, height: 12, borderRadius: 3, background: DEM_COLOR, display: 'inline-block', flexShrink: 0 }} />
-                    <span style={{ fontSize: 12, fontWeight: 600, color: LABEL_COLOR }}>D-Majority</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                    <span style={{ width: 12, height: 12, borderRadius: 3, background: REP_COLOR, display: 'inline-block', flexShrink: 0 }} />
-                    <span style={{ fontSize: 12, fontWeight: 600, color: LABEL_COLOR }}>R-Majority</span>
-                </div>
+                <div className="flex items-center gap-1.5"><span style={{ width:12, height:12, borderRadius:3, background:DEM_COLOR, display:'inline-block', flexShrink:0 }} /><span style={{ fontSize:12, fontWeight:600, color:LABEL_COLOR }}>D-Majority</span></div>
+                <div className="flex items-center gap-1.5"><span style={{ width:12, height:12, borderRadius:3, background:REP_COLOR, display:'inline-block', flexShrink:0 }} /><span style={{ fontSize:12, fontWeight:600, color:LABEL_COLOR }}>R-Majority</span></div>
                 {enactedLabel && (
                     <div className="flex items-center gap-1.5">
-                        <svg width="22" height="12">
-                            <rect x="0" y="1" width="22" height="10"
-                                fill={ENACTED_COLOR} fillOpacity={0.12}
-                                stroke={ENACTED_COLOR} strokeWidth={1.5} strokeDasharray="4 3" rx={2} />
-                        </svg>
-                        <span style={{ fontSize: 12, fontWeight: 600, color: ENACTED_COLOR }}>
-                            Enacted ({enactedLabel})
-                        </span>
+                        <svg width="22" height="12"><rect x="0" y="1" width="22" height="10" fill={ENACTED_COLOR} fillOpacity={0.12} stroke={ENACTED_COLOR} strokeWidth={1.5} strokeDasharray="4 3" rx={2} /></svg>
+                        <span style={{ fontSize:12, fontWeight:600, color:ENACTED_COLOR }}>Enacted ({enactedLabel})</span>
                     </div>
                 )}
-                <span className="ml-auto text-[11px] font-semibold text-slate-500 opacity-70 select-none">
-                    n = {total.toLocaleString()} plans
-                </span>
+                <span className="ml-auto text-[11px] font-semibold text-slate-500 opacity-70 select-none">{total.toLocaleString()} Plans</span>
             </div>
 
-            {/* Chart */}
+            {/* ── BAR CHART ────────────────────────────────────────────────── */}
             <div className="flex-1 min-h-0">
                 <ResponsiveBar
-                    data={nivoData}
-                    keys={['plans']}
-                    indexBy="split"
-                    margin={{ top: 28, right: 24, bottom: 64, left: 72 }}
-
-                    padding={0.28}
-                    valueScale={{ type: 'linear', min: 0, max: yMax ?? 'auto' }}
-                    indexScale={{ type: 'band', round: true }}
-
-                    colors={getBarColor}
-                    borderRadius={4}
-                    borderWidth={0}
-
+                    data={nivoData} keys={['plans']} indexBy="split"
+                    margin={{ top:28, right:24, bottom:64, left:72 }} padding={0.28}
+                    valueScale={{ type:'linear', min:0, max:yMax??'auto' }}
+                    indexScale={{ type:'band', round:true }}
+                    colors={getBarColor} borderRadius={4} borderWidth={0}
                     theme={NIVO_THEME}
-
-                    layers={[
-                        bgLayer,
-                        'grid',
-                        'axes',
-                        enactedLayer,
-                        'bars',
-                        'markers',
-                        'legends',
-                    ]}
-
-                    axisBottom={{
-                        tickSize: 6,
-                        tickPadding: 5,
-                        legend: 'Republican – Democratic Split',
-                        legendOffset: 50,
-                        legendPosition: 'middle',
-                    }}
-                    axisLeft={{
-                        tickSize: 6,
-                        tickPadding: 5,
-                        legend: 'Number of Plans',
-                        legendOffset: -58,
-                        legendPosition: 'middle',
-                        format: v => v.toLocaleString(),
-                    }}
-
-                    enableLabel={false}
-                    enableGridX={false}
-
-                    tooltip={({ indexValue, value, data }) => (
-                        <SplitTooltip indexValue={indexValue} value={value} data={data} />
-                    )}
+                    /* enactedLayer drawn before bars so bars sit on top of the highlight */
+                    layers={[ bgLayer, 'grid', 'axes', enactedLayer, 'bars', 'markers', 'legends' ]}
+                    axisBottom={{ tickSize:6, tickPadding:5, legend:'Republican – Democratic Split', legendOffset:50, legendPosition:'middle' }}
+                    axisLeft={{ tickSize:6, tickPadding:5, legend:'Number of Plans', legendOffset:-58, legendPosition:'middle', format:v=>v.toLocaleString() }}
+                    enableLabel={false} enableGridX={false}
+                    tooltip={({ indexValue, value, data }) => <SplitTooltip indexValue={indexValue} value={value} data={data} />}
                     isInteractive
                 />
             </div>
