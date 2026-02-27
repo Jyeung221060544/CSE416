@@ -24,7 +24,7 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import SectionHeader        from '@/components/ui/section-header'
-import MiniNavTabs          from '@/components/ui/mini-nav-tabs'
+import BrowserTabs          from '@/components/ui/browser-tabs'
 import useAppStore          from '../../store/useAppStore'
 import GinglesScatterPlot   from '../charts/GinglesScatterPlot'
 import GinglesPrecinctTable from '../tables/GinglesPrecinctTable'
@@ -98,84 +98,90 @@ export default function RacialPolarizationSection({ data }) {
 
     /* ── Render ──────────────────────────────────────────────────────────── */
     return (
-        <section id="racial-polarization" className="p-4 sm:p-6 lg:p-8 border-b border-brand-muted/30 min-h-[calc(100vh-3.5rem)]">
+        <section id="racial-polarization" className="p-2 sm:p-3 lg:p-4 border-b border-brand-muted/30 h-[calc(100vh-3.5rem)] flex flex-col overflow-hidden">
 
-            {/* ── SECTION HEADER + MINI NAV ──────────────────────────────── */}
-            <div className="flex items-end justify-between mb-4 gap-4">
-                <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-brand-darkest tracking-tight shrink-0">
-                    Racial Polarization
-                </h2>
-                <MiniNavTabs
-                    tabs={RP_TABS}
-                    activeTab={activeTab}
-                    onChange={setActiveTab}
-                />
-            </div>
+            {/* ── SECTION TITLE ──────────────────────────────────────────── */}
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-brand-darkest tracking-tight mb-3 shrink-0">
+                Racial Polarization
+            </h2>
 
-            {/* ── GINGLES ANALYSIS ───────────────────────────────────────── */}
-            {/* Scatter plot of precinct minority VAP % vs Dem vote share,
-                cross-linked with the precinct detail table via selectedId. */}
-            {activeTab === 'gingles' && (
-                <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 items-start">
-                    <div className="flex flex-col gap-3">
-                        <SectionHeader title="Gingles Scatter Plot" />
-                        <GinglesScatterPlot
-                            ginglesData={ginglesPrecinct}
-                            raceFilter={feasibleRaceFilter}
-                            selectedId={selectedId}
-                            onDotClick={setSelectedId}
-                            className="h-[480px]"
-                        />
+            {/* ── BROWSER TABS + CONTENT PANEL ───────────────────────────── */}
+            {/* flex-1 min-h-0: fills remaining vertical space after the h2.  */}
+            {/* panelClassName flex-1 min-h-0: panel grows to fill tab frame. */}
+            <BrowserTabs
+                tabs={RP_TABS}
+                activeTab={activeTab}
+                onChange={setActiveTab}
+                className="flex flex-col flex-1 min-h-0"
+                panelClassName="flex-1 min-h-0 overflow-hidden p-5"
+            >
+
+                {/* ── GINGLES ANALYSIS ───────────────────────────────────── */}
+                {/* h-full grid: both columns stretch to panel height.         */}
+                {/* Scatter plot fills its column; table scrolls internally.  */}
+                {activeTab === 'gingles' && (
+                    <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 h-full">
+                        <div className="flex flex-col gap-3 min-h-0">
+                            <SectionHeader title="Gingles Scatter Plot" />
+                            <GinglesScatterPlot
+                                ginglesData={ginglesPrecinct}
+                                raceFilter={feasibleRaceFilter}
+                                selectedId={selectedId}
+                                onDotClick={setSelectedId}
+                                className="flex-1 min-h-0"
+                            />
+                        </div>
+                        <div className="flex flex-col gap-3 min-h-0">
+                            <SectionHeader title="Precinct Detail" />
+                            <div className="flex-1 min-h-0">
+                                <GinglesPrecinctTable
+                                    points={series?.points ?? []}
+                                    selectedId={selectedId}
+                                    onSelectId={setSelectedId}
+                                />
+                            </div>
+                        </div>
                     </div>
-                    <div className="flex flex-col gap-3">
-                        <SectionHeader title="Precinct Detail" />
-                        <GinglesPrecinctTable
-                            points={series?.points ?? []}
-                            selectedId={selectedId}
-                            onSelectId={setSelectedId}
-                        />
-                    </div>
-                </div>
-            )}
+                )}
 
-            {/* ── EI KDE CHARTS ──────────────────────────────────────────── */}
-            {/* Dual KDE density charts sharing a y-axis for direct comparison. */}
-            {activeTab === 'ei-kde' && (
-                <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 items-start">
-                    <div className="flex flex-col gap-3">
-                        <SectionHeader title="Democratic Support" />
-                        <EIKDEChart
-                            candidate={demCandidate}
+                {/* ── EI KDE CHARTS ──────────────────────────────────────── */}
+                {activeTab === 'ei-kde' && (
+                    <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 h-full">
+                        <div className="flex flex-col gap-3 min-h-0">
+                            <SectionHeader title="Democratic Support" />
+                            <EIKDEChart
+                                candidate={demCandidate}
+                                activeRaces={eiRaceFilter}
+                                yMax={eiYMax}
+                                className="flex-1 min-h-0"
+                            />
+                        </div>
+                        <div className="flex flex-col gap-3 min-h-0">
+                            <SectionHeader title="Republican Support" />
+                            <EIKDEChart
+                                candidate={repCandidate}
+                                activeRaces={eiRaceFilter}
+                                yMax={eiYMax}
+                                className="flex-1 min-h-0"
+                            />
+                        </div>
+                    </div>
+                )}
+
+                {/* ── EI BAR CHARTS ──────────────────────────────────────── */}
+                {activeTab === 'ei-bar' && (
+                    <div className="flex flex-col gap-3 h-full">
+                        <SectionHeader title="Peak Support Estimates" />
+                        <EIBarChart
+                            demCandidate={demCandidate}
+                            repCandidate={repCandidate}
                             activeRaces={eiRaceFilter}
-                            yMax={eiYMax}
-                            className="h-[calc(100vh-13rem)]"
+                            className="flex-1 min-h-0"
                         />
                     </div>
-                    <div className="flex flex-col gap-3">
-                        <SectionHeader title="Republican Support" />
-                        <EIKDEChart
-                            candidate={repCandidate}
-                            activeRaces={eiRaceFilter}
-                            yMax={eiYMax}
-                            className="h-[calc(100vh-13rem)]"
-                        />
-                    </div>
-                </div>
-            )}
+                )}
 
-            {/* ── EI BAR CHARTS ──────────────────────────────────────────── */}
-            {/* Peak support estimates with confidence intervals per racial group. */}
-            {activeTab === 'ei-bar' && (
-                <div className="flex flex-col gap-3">
-                    <SectionHeader title="Peak Support Estimates" />
-                    <EIBarChart
-                        demCandidate={demCandidate}
-                        repCandidate={repCandidate}
-                        activeRaces={eiRaceFilter}
-                        className="h-[calc(100vh-13rem)]"
-                    />
-                </div>
-            )}
+            </BrowserTabs>
 
         </section>
     )

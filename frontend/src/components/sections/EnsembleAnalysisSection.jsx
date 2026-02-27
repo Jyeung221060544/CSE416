@@ -34,7 +34,7 @@
 
 import { useMemo } from 'react'
 import SectionHeader      from '@/components/ui/section-header'
-import MiniNavTabs        from '@/components/ui/mini-nav-tabs'
+import BrowserTabs        from '@/components/ui/browser-tabs'
 import EnsembleSplitChart from '../charts/EnsembleSplitChart'
 import BoxWhiskerChart    from '../charts/BoxWhiskerChart'
 import useAppStore        from '../../store/useAppStore'
@@ -115,97 +115,93 @@ export default function EnsembleAnalysisSection({ data }) {
 
     /* ── Render ──────────────────────────────────────────────────────────── */
     return (
-        <section id="ensemble-analysis" className="p-4 sm:p-6 lg:p-8 border-b border-brand-muted/30 min-h-[calc(100vh-3.5rem)]">
+        <section id="ensemble-analysis" className="p-2 sm:p-3 lg:p-4 border-b border-brand-muted/30 h-[calc(100vh-3.5rem)] flex flex-col overflow-hidden">
 
-            {/* ── SECTION HEADER + MINI NAV ──────────────────────────────── */}
-            <div className="flex items-end justify-between mb-4 gap-4">
-                <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-brand-darkest tracking-tight shrink-0">
-                    Ensemble Analysis
-                </h2>
-                <MiniNavTabs
-                    tabs={EA_TABS}
-                    activeTab={activeTab}
-                    onChange={setActiveTab}
-                />
-            </div>
+            {/* ── SECTION TITLE ──────────────────────────────────────────── */}
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-brand-darkest tracking-tight mb-3 shrink-0">
+                Ensemble Analysis
+            </h2>
 
-            {/* ── ENSEMBLE SPLITS ────────────────────────────────────────── */}
-            {/* Race-blind and VRA-constrained bar charts sharing a y-axis. */}
-            {activeTab === 'ensemble-splits' && (
-                splitsData ? (
-                    <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 items-start">
-                        <div className="flex flex-col gap-3">
-                            <SectionHeader title="Race-Blind" />
-                            <EnsembleSplitChart
-                                ensembleData={raceBlind}
-                                enactedSplit={enactedSplit}
-                                yMax={splitYMax}
-                                chartId="raceblind"
-                                className="h-[calc(100vh-13rem)]"
-                            />
+            {/* ── BROWSER TABS + CONTENT PANEL ───────────────────────────── */}
+            <BrowserTabs
+                tabs={EA_TABS}
+                activeTab={activeTab}
+                onChange={setActiveTab}
+                className="flex flex-col flex-1 min-h-0"
+                panelClassName="flex-1 min-h-0 overflow-hidden p-5"
+            >
+
+                {/* ── ENSEMBLE SPLITS ────────────────────────────────────── */}
+                {activeTab === 'ensemble-splits' && (
+                    splitsData ? (
+                        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 h-full">
+                            <div className="flex flex-col gap-3 min-h-0">
+                                <SectionHeader title="Race-Blind" />
+                                <EnsembleSplitChart
+                                    ensembleData={raceBlind}
+                                    enactedSplit={enactedSplit}
+                                    yMax={splitYMax}
+                                    chartId="raceblind"
+                                    className="flex-1 min-h-0"
+                                />
+                            </div>
+                            <div className="flex flex-col gap-3 min-h-0">
+                                <SectionHeader title="VRA-Constrained" />
+                                <EnsembleSplitChart
+                                    ensembleData={vraConstr}
+                                    enactedSplit={enactedSplit}
+                                    yMax={splitYMax}
+                                    chartId="vra"
+                                    className="flex-1 min-h-0"
+                                />
+                            </div>
                         </div>
-                        <div className="flex flex-col gap-3">
-                            <SectionHeader title="VRA-Constrained" />
-                            <EnsembleSplitChart
-                                ensembleData={vraConstr}
-                                enactedSplit={enactedSplit}
-                                yMax={splitYMax}
-                                chartId="vra"
-                                className="h-[calc(100vh-13rem)]"
-                            />
+                    ) : (
+                        <div className="rounded-xl border border-dashed border-brand-muted/30 bg-white/40 p-10 flex items-center justify-center min-h-[240px]">
+                            <p className="text-brand-muted/50 text-sm italic">
+                                Ensemble splits analysis not available for this state.
+                            </p>
                         </div>
-                    </div>
-                ) : (
-                    <div className="rounded-xl border border-dashed border-brand-muted/30 bg-brand-surface/20 p-10 flex items-center justify-center min-h-[240px]">
-                        <p className="text-brand-muted/50 text-sm italic">
-                            Ensemble splits analysis not available for this state.
-                        </p>
-                    </div>
-                )
-            )}
+                    )
+                )}
 
-            {/* ── BOX & WHISKER ──────────────────────────────────────────── */}
-            {/* Two side-by-side charts (Race-Blind + VRA-Constrained) for   */}
-            {/* the race selected via FeasibleRaceFilter in the sidebar.      */}
-            {activeTab === 'box-whisker' && (
-                bwData ? (
-                    <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 items-start">
-
-                        {/* Race-Blind */}
-                        <div className="flex flex-col gap-3">
-                            <SectionHeader title="Race-Blind" />
-                            <BoxWhiskerChart
-                                districts={bwRaceBlind?.groupDistricts?.[feasibleRaceFilter] ?? []}
-                                enactedDistricts={bwData.enactedPlan?.groupDistricts?.[feasibleRaceFilter] ?? null}
-                                raceName={raceName}
-                                chartId="bw-raceblind"
-                                sharedYMax={bwSharedYMax}
-                                className="h-[calc(100vh-13rem)]"
-                            />
+                {/* ── BOX & WHISKER ──────────────────────────────────────── */}
+                {activeTab === 'box-whisker' && (
+                    bwData ? (
+                        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 h-full">
+                            <div className="flex flex-col gap-3 min-h-0">
+                                <SectionHeader title="Race-Blind" />
+                                <BoxWhiskerChart
+                                    districts={bwRaceBlind?.groupDistricts?.[feasibleRaceFilter] ?? []}
+                                    enactedDistricts={bwData.enactedPlan?.groupDistricts?.[feasibleRaceFilter] ?? null}
+                                    raceName={raceName}
+                                    chartId="bw-raceblind"
+                                    sharedYMax={bwSharedYMax}
+                                    className="flex-1 min-h-0"
+                                />
+                            </div>
+                            <div className="flex flex-col gap-3 min-h-0">
+                                <SectionHeader title="VRA-Constrained" />
+                                <BoxWhiskerChart
+                                    districts={bwVraConstr?.groupDistricts?.[feasibleRaceFilter] ?? []}
+                                    enactedDistricts={bwData.enactedPlan?.groupDistricts?.[feasibleRaceFilter] ?? null}
+                                    raceName={raceName}
+                                    chartId="bw-vra"
+                                    sharedYMax={bwSharedYMax}
+                                    className="flex-1 min-h-0"
+                                />
+                            </div>
                         </div>
-
-                        {/* VRA-Constrained */}
-                        <div className="flex flex-col gap-3">
-                            <SectionHeader title="VRA-Constrained" />
-                            <BoxWhiskerChart
-                                districts={bwVraConstr?.groupDistricts?.[feasibleRaceFilter] ?? []}
-                                enactedDistricts={bwData.enactedPlan?.groupDistricts?.[feasibleRaceFilter] ?? null}
-                                raceName={raceName}
-                                chartId="bw-vra"
-                                sharedYMax={bwSharedYMax}
-                                className="h-[calc(100vh-13rem)]"
-                            />
+                    ) : (
+                        <div className="rounded-xl border border-dashed border-brand-muted/30 bg-white/40 p-10 flex items-center justify-center min-h-[240px]">
+                            <p className="text-brand-muted/50 text-sm italic">
+                                Box &amp; whisker analysis not available for this state.
+                            </p>
                         </div>
+                    )
+                )}
 
-                    </div>
-                ) : (
-                    <div className="rounded-xl border border-dashed border-brand-muted/30 bg-brand-surface/20 p-10 flex items-center justify-center min-h-[240px]">
-                        <p className="text-brand-muted/50 text-sm italic">
-                            Box &amp; whisker analysis not available for this state.
-                        </p>
-                    </div>
-                )
-            )}
+            </BrowserTabs>
 
         </section>
     )

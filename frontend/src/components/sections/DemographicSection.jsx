@@ -100,24 +100,24 @@ export default function DemographicSection({ data, stateId }) {
 
     /* ── Step 4: Render ──────────────────────────────────────────────────── */
     return (
-        <section id="demographic" className="p-4 sm:p-6 lg:p-8 border-b border-brand-muted/30 min-h-[calc(100vh-3.5rem)]">
+        <section id="demographic" className="p-2 sm:p-3 lg:p-4 border-b border-brand-muted/30 h-[calc(100vh-3.5rem)] flex flex-col overflow-hidden">
 
             {/* ── SECTION HEADER ───────────────────────────────────────────── */}
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-6 shrink-0">
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-brand-darkest tracking-tight">
                     Demographic Analysis
                 </h2>
             </div>
 
             {/* ── TWO-COLUMN GRID ──────────────────────────────────────────── */}
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            <div className="flex-1 min-h-0 grid grid-cols-1 xl:grid-cols-2 gap-6">
 
                 {/* ── LEFT: HEATMAP COLUMN ─────────────────────────────────── */}
-                <div className="flex flex-col gap-1">
+                <div className="flex flex-col gap-1 min-h-0">
                     <SectionHeader title="Demographic Heat Map" />
 
                     {/* Leaflet choropleth map — colored by minority VAP bin */}
-                    <MapFrame className="h-[340px] sm:h-[400px] xl:h-[420px]">
+                    <MapFrame className="flex-1 min-h-0">
                         <DemographicHeatmap
                             stateId={stateId}
                             granularity={granularityFilter}
@@ -141,10 +141,10 @@ export default function DemographicSection({ data, stateId }) {
                 </div>
 
                 {/* ── RIGHT: POPULATION TABLE COLUMN ───────────────────────── */}
-                <div className="flex flex-col gap-1">
+                <div className="flex flex-col gap-1 min-h-0">
                     <SectionHeader title="Population by Group" />
 
-                    <div className="flex flex-col h-[340px] sm:h-[400px] xl:h-[420px]">
+                    <div className="flex flex-col flex-1 min-h-0">
 
                         {/* Table with click-to-filter behavior (updates raceFilter) */}
                         <DemographicPopulationTable

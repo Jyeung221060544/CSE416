@@ -17,18 +17,19 @@
  *   or null to deselect.
  *
  * STATE SOURCES
- * - page / setPage : Local React state managing the current table page.
+ * - page / setPage    : Local React state managing the current table page.
+ * - rowsHeight        : ResizeObserver-measured pixel height of the rows container.
  *
  * LAYOUT
- * - <SurfacePanel> with fixed 404 px height and overflow-y scroll on rows.
+ * - <SurfacePanel> that fills its parent (flex-1 min-h-0).
  * - Sticky column header: Precinct | Pop | Region | Minority | Income | Dem | Rep.
- * - Scrollable data rows with per-row selection highlight.
+ * - Scrollable data rows; row count is derived dynamically from container height.
  * - Pagination footer with prev/next chevrons and "n of N" counter.
  * - <InfoCallout> tip about cross-highlight interaction below the panel.
  */
 
 /* ── Step 0: React hooks and icon imports ─────────────────────────────── */
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { ChevronLeft, ChevronRight, MousePointerClick } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import SurfacePanel from '@/components/ui/surface-panel'
@@ -36,8 +37,9 @@ import InfoCallout from '@/components/ui/info-callout'
 import { REGION_CLS, DEM_TEXT, REP_TEXT, DEM_HEADER_TEXT, REP_HEADER_TEXT } from '@/lib/partyColors'
 import { ROW_BORDER, ACTIVE_LABEL, INACTIVE_LABEL, rowBg } from '@/lib/tableStyles'
 
-/* ── Step 1: Pagination constant and column layout ───────────────────── */
-const PAGE_SIZE = 8
+/* ── Step 1: Row height constant and column layout ───────────────────── */
+// Matches the rendered row: py-2.5 (10px × 2) + text-xs line-height (16px) ≈ 40px
+const ROW_HEIGHT = 40
 
 // Shared column definition — keeps header + rows in sync
 const COLS = 'grid-cols-[1fr_50px_60px_62px_52px_50px_50px]'
@@ -72,40 +74,57 @@ function fmtIncome(n) { return n == null ? '—' : '$' + (n / 1000).toFixed(0) +
  */
 export default function GinglesPrecinctTable({ points = [], selectedId, onSelectId }) {
     /* ── Step 3a: Filter to only enriched points with population data ── */
-    const rows = points.filter(p => p.totalPop != null) // only enriched points (black + white)
+    const rows = points.filter(p => p.totalPop != null)
 
-    /* ── Step 3b: Pagination state ── */
-    // ── Auto-jump to page of selectedId ──────────────────────────────────────
+    /* ── Step 3b: Measure the rows container to derive page size ── */
+    const rowsRef = useRef(null)
+    const [rowsHeight, setRowsHeight] = useState(0)
+
+    useEffect(() => {
+        if (!rowsRef.current) return
+        const ro = new ResizeObserver(([entry]) => setRowsHeight(entry.contentRect.height))
+        ro.observe(rowsRef.current)
+        return () => ro.disconnect()
+    }, [])
+
+    /* ── Step 3c: Dynamic page size — floor(available px / row px) ── */
+    const pageSize   = Math.max(1, Math.floor(rowsHeight / ROW_HEIGHT))
+    const totalPages = Math.max(1, Math.ceil(rows.length / pageSize))
+
+    /* ── Step 3d: Pagination state ── */
     const [page, setPage] = useState(0)
-    const totalPages = Math.max(1, Math.ceil(rows.length / PAGE_SIZE))
 
-    /* ── Step 3c: Auto-jump to the page containing the selected row ── */
+    // Clamp page index when pageSize changes and totalPages shrinks
+    useEffect(() => {
+        setPage(p => Math.min(p, totalPages - 1))
+    }, [totalPages])
+
+    /* ── Step 3e: Auto-jump to the page containing the selected row ── */
     useEffect(() => {
         if (!selectedId) return
         const idx = rows.findIndex(p => p.id === selectedId)
-        if (idx >= 0) setPage(Math.floor(idx / PAGE_SIZE))
-    }, [selectedId]) // eslint-disable-line react-hooks/exhaustive-deps
+        if (idx >= 0) setPage(Math.floor(idx / pageSize))
+    }, [selectedId, pageSize]) // eslint-disable-line react-hooks/exhaustive-deps
 
-    /* ── Step 3d: Slice to current page ── */
-    const pageRows = rows.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE)
+    /* ── Step 3f: Slice to current page ── */
+    const pageRows = rows.slice(page * pageSize, page * pageSize + pageSize)
 
-    /* ── Step 3e: Empty state guard ── */
+    /* ── Step 3g: Empty state guard ── */
     if (!rows.length) {
         return (
-            <SurfacePanel className="h-[404px] border-brand-muted/25 bg-white flex items-center justify-center">
+            <SurfacePanel className="flex-1 min-h-0 border-brand-muted/25 bg-white flex items-center justify-center">
                 <p className="text-brand-muted/60 text-sm italic">No precinct detail data available.</p>
             </SurfacePanel>
         )
     }
 
-    /* ── Step 3f: Render ── */
+    /* ── Step 3h: Render ── */
     return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 h-full">
 
-            <SurfacePanel className="h-[404px] border-brand-muted/25 flex flex-col overflow-hidden">
+            <SurfacePanel className="flex-1 min-h-0 border-brand-muted/25 flex flex-col overflow-hidden">
 
                 {/* ── COLUMN HEADER ──────────────────────────────────── */}
-                {/* ── Sticky column header ── */}
                 <div className={`shrink-0 ${COLS} grid items-center px-3 py-2.5 bg-brand-darkest text-brand-surface text-xs font-semibold`}>
                     <span>Precinct</span>
                     <span className="text-center">Pop</span>
@@ -117,8 +136,7 @@ export default function GinglesPrecinctTable({ points = [], selectedId, onSelect
                 </div>
 
                 {/* ── DATA ROWS ──────────────────────────────────────── */}
-                {/* ── Data rows ── */}
-                <div className="flex-1 overflow-y-auto min-h-0">
+                <div ref={rowsRef} className="flex-1 overflow-y-auto min-h-0">
                     {pageRows.map((row, i) => {
                         const isSelected = row.id === selectedId
                         return (
@@ -177,11 +195,10 @@ export default function GinglesPrecinctTable({ points = [], selectedId, onSelect
                 </div>
 
                 {/* ── PAGINATION FOOTER ──────────────────────────────── */}
-                {/* ── Pagination footer ── */}
                 <div className="shrink-0 border-t border-brand-muted/20 bg-brand-primary/[0.03] px-3 py-2 flex items-center justify-between gap-2">
                     {/* Row range indicator */}
                     <span className="text-[11px] text-brand-muted/70">
-                        {page * PAGE_SIZE + 1}–{Math.min(page * PAGE_SIZE + PAGE_SIZE, rows.length)} of {rows.length} precincts
+                        {page * pageSize + 1}–{Math.min(page * pageSize + pageSize, rows.length)} of {rows.length} precincts
                         {selectedId ? ' · 1 selected' : ''}
                     </span>
 
@@ -214,7 +231,6 @@ export default function GinglesPrecinctTable({ points = [], selectedId, onSelect
             </SurfacePanel>
 
             {/* ── INTERACTION HINT ───────────────────────────────────── */}
-            {/* ── Interaction hint ── */}
             <InfoCallout icon={MousePointerClick}>
                 Click a row or a scatter dot to cross-highlight!
             </InfoCallout>
