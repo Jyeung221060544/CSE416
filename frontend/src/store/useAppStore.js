@@ -41,13 +41,28 @@ const useAppStore = create((set) => ({
     selectedState: null,
 
     // Which main section is currently in view in StatePage's scroll container.
-    // Set by useActiveSection on scroll; drives sidebar nav highlight + FilterPanel.
+    // Set by useActiveSection on scroll; drives the sidebar nav highlight and FilterPanel.
     activeSection: 'state-overview',
 
-    // Which sub-section is in view for sections that have them
-    // (racial-polarization: 'gingles-analysis'|'ecological-inference',
-    //  ensemble-analysis:   'ensemble-splits'|'box-whisker').
-    activeSubSection: 'gingles-analysis',
+    // Legacy scroll-based sub-section tracker (no longer actively used).
+    // All section sub-navigation is now tab-based (activeSOTab, activeRPTab, activeEATab).
+    activeSubSection: 'ensemble-splits',
+
+    // Active mini-nav tab for State Overview (tab-based, not scroll-based).
+    // One of: 'state-stats' | 'congressional' | 'ensemble-demo'.
+    // Set by StateOverviewSection pills and SectionPanel SO sub-nav clicks.
+    activeSOTab: 'state-stats',
+
+    // Active mini-nav tab for Racial Polarization (tab-based, not scroll-based).
+    // One of: 'gingles' | 'ei-kde' | 'ei-bar'.
+    // Set by RacialPolarizationSection pills and SectionPanel RP sub-nav clicks.
+    // Also drives the correct filter in FilterPanel (FeasibleRaceFilter vs EIRaceFilter).
+    activeRPTab: 'gingles',
+
+    // Active mini-nav tab for Ensemble Analysis (tab-based, not scroll-based).
+    // One of: 'ensemble-splits' | 'box-whisker'.
+    // Set by EnsembleAnalysisSection pills and SectionPanel EA sub-nav clicks.
+    activeEATab: 'ensemble-splits',
 
 
     /* ── Step 2: Filter state ────────────────────────────────────────────── */
@@ -93,8 +108,17 @@ const useAppStore = create((set) => ({
     /** @param {string} section  One of the SECTION_IDS in SectionPanel / useActiveSection. */
     setActiveSection: (section)  => set({ activeSection: section }),
 
-    /** @param {string} sub  Sub-section id ('gingles-analysis', 'ecological-inference', etc.). */
+    /** @param {string} sub  Sub-section id ('ensemble-splits', 'box-whisker', etc.). */
     setActiveSubSection: (sub)   => set({ activeSubSection: sub }),
+
+    /** @param {string} tab  One of the OVERVIEW_TABS ids in StateOverviewSection. */
+    setActiveSOTab: (tab)        => set({ activeSOTab: tab }),
+
+    /** @param {string} tab  One of the RP_TABS ids in RacialPolarizationSection. */
+    setActiveRPTab: (tab)        => set({ activeRPTab: tab }),
+
+    /** @param {string} tab  One of the EA_TABS ids in EnsembleAnalysisSection. */
+    setActiveEATab: (tab)        => set({ activeEATab: tab }),
 
     /** @param {string} race  Lowercase race key: 'white'|'black'|'hispanic'|'asian'|'other'. */
     setRaceFilter: (race)        => set({ raceFilter: race }),

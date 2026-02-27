@@ -2,21 +2,23 @@
  * FilterPanel.jsx — Context-sensitive filter controls shown in the Sidebar.
  *
  * WHICH FILTERS ARE SHOWN
- *   The rendered filter set changes based on the currently active section and
- *   sub-section (read from Zustand).  Each branch maps to:
+ *   The rendered filter set changes based on the active section and, for
+ *   Racial Polarization, the active mini-nav tab (read from Zustand).
  *
- *   state-overview           → no filters (placeholder message)
- *   demographic              → GranularityFilter + RaceFilter
+ *   state-overview                        → no filters (placeholder message)
+ *   demographic                           → GranularityFilter + RaceFilter
  *   racial-polarization
- *     gingles-analysis       → FeasibleRaceFilter
- *     ecological-inference   → EIRaceFilter
+ *     activeRPTab === 'gingles'           → FeasibleRaceFilter
+ *     activeRPTab === 'ei-kde'            → EIRaceFilter
+ *     activeRPTab === 'ei-bar'            → EIRaceFilter
  *   ensemble-analysis
- *     ensemble-splits        → no filters (placeholder message)
- *     box-whisker            → FeasibleRaceFilter
+ *     activeEATab === 'ensemble-splits'   → no filters (placeholder message)
+ *     activeEATab === 'box-whisker'       → FeasibleRaceFilter
  *
  * STATE SOURCES
- *   activeSection    — from Zustand; updated by SectionPanel clicks and scroll.
- *   activeSubSection — from Zustand; updated when a sub-tab is selected.
+ *   activeSection — from Zustand; set by SectionPanel clicks and scroll.
+ *   activeRPTab   — from Zustand; set by RP mini-nav pills and RP sidebar sub-nav.
+ *   activeEATab   — from Zustand; set by EA mini-nav pills and EA sidebar sub-nav.
  *
  * PLACEMENT
  *   Rendered inside Sidebar's ScrollArea, below the SectionPanel.
@@ -39,9 +41,10 @@ import ResetFiltersButton from '../components/filters/ResetFiltersButton'
  */
 export default function FilterPanel() {
 
-    /* ── Step 0: Read active section from Zustand ────────────────────────── */
-    const activeSection    = useAppStore((state) => state.activeSection)
-    const activeSubSection = useAppStore((state) => state.activeSubSection)
+    /* ── Step 0: Read active section + tab state from Zustand ───────────── */
+    const activeSection = useAppStore((state) => state.activeSection)
+    const activeRPTab   = useAppStore((state) => state.activeRPTab)
+    const activeEATab   = useAppStore((state) => state.activeEATab)
 
 
     /* ── Step 1: Render ──────────────────────────────────────────────────── */
@@ -67,25 +70,25 @@ export default function FilterPanel() {
 
             {/* ── RACIAL POLARIZATION ──────────────────────────────────────── */}
 
-            {/* Gingles sub-tab: FeasibleRaceFilter picks the scatter plot's active race series */}
-            {activeSection === 'racial-polarization' && activeSubSection === 'gingles-analysis' && (
+            {/* Gingles tab: FeasibleRaceFilter picks the scatter plot's active race series */}
+            {activeSection === 'racial-polarization' && activeRPTab === 'gingles' && (
                 <FeasibleRaceFilter />
             )}
 
-            {/* EI sub-tab: EIRaceFilter is a multi-select for the KDE overlay lines */}
-            {activeSection === 'racial-polarization' && activeSubSection === 'ecological-inference' && (
+            {/* EI KDE / EI Bar tabs: EIRaceFilter is a multi-select for the overlay lines */}
+            {activeSection === 'racial-polarization' && (activeRPTab === 'ei-kde' || activeRPTab === 'ei-bar') && (
                 <EIRaceFilter />
             )}
 
             {/* ── ENSEMBLE ANALYSIS ────────────────────────────────────────── */}
 
-            {/* Ensemble Splits sub-tab: no additional filters */}
-            {activeSection === 'ensemble-analysis' && activeSubSection !== 'box-whisker' && (
+            {/* Ensemble Splits tab: no user-controllable filters */}
+            {activeSection === 'ensemble-analysis' && activeEATab === 'ensemble-splits' && (
                 <span className="text-xs px-1 text-white/90 italic">No filters available</span>
             )}
 
-            {/* Box & Whisker sub-tab: FeasibleRaceFilter selects the racial group for the plot */}
-            {activeSection === 'ensemble-analysis' && activeSubSection === 'box-whisker' && (
+            {/* Box & Whisker tab: FeasibleRaceFilter picks which minority group to plot */}
+            {activeSection === 'ensemble-analysis' && activeEATab === 'box-whisker' && (
                 <FeasibleRaceFilter />
             )}
 

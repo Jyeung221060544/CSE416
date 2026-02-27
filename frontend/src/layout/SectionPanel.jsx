@@ -2,9 +2,17 @@
  * SectionPanel.jsx — Sidebar navigation panel for jumping between page sections.
  *
  * SECTION STRUCTURE
- *   SECTIONS          — top-level sections rendered as nav buttons (always visible).
- *   RP_SUBSECTIONS    — sub-tabs shown inside the Racial Polarization button when active.
- *   EA_SUBSECTIONS    — sub-tabs shown inside the Ensemble Analysis button when active.
+ *   SECTIONS        — top-level sections rendered as nav buttons (always visible).
+ *   SO_SUBSECTIONS  — tab items shown under State Overview when it is active.
+ *   RP_SUBSECTIONS  — tab items shown under Racial Polarization when it is active.
+ *   EA_SUBSECTIONS  — scroll sub-sections shown under Ensemble Analysis when active.
+ *
+ * SUB-NAV BEHAVIOR
+ *   State Overview sub-items  → call setActiveSOTab() + scroll to section.
+ *   Racial Polarization items → call setActiveRPTab() + scroll to section.
+ *   Ensemble Analysis items   → scroll to the sub-section DOM element (scroll-based).
+ *   The active highlight for SO/RP reflects the current tab store value so the
+ *   sidebar always mirrors the mini-nav pills in the page sections.
  *
  * COLLAPSED STATE
  *   When collapsed=true (passed from Sidebar), buttons shrink to icon-only dots
@@ -34,9 +42,12 @@ import { lockScroll } from '../utils/scrollLock'
 
 /* ── Step 0: Section + sub-section data ──────────────────────────────────────
  *
- * SECTIONS is the ordered list rendered as nav buttons.
- * RP_SUBSECTIONS / EA_SUBSECTIONS appear as collapsible tabs beneath their
- * parent button when that section is active.
+ * SECTIONS        — ordered list of top-level nav buttons.
+ * SO_SUBSECTIONS  — tab ids match OVERVIEW_TABS in StateOverviewSection; clicking
+ *                   one calls setActiveSOTab() rather than scrolling to a DOM id.
+ * RP_SUBSECTIONS  — tab ids match RP_TABS in RacialPolarizationSection; clicking
+ *                   one calls setActiveRPTab() rather than scrolling to a DOM id.
+ * EA_SUBSECTIONS  — DOM ids used for scroll-based navigation inside the section.
  * ─────────────────────────────────────────────────────────────────────────── */
 const SECTIONS = [
     { id: 'state-overview',      label: 'State Overview' },
@@ -45,9 +56,16 @@ const SECTIONS = [
     { id: 'ensemble-analysis',   label: 'Ensemble Analysis' },
 ]
 
+const SO_SUBSECTIONS = [
+    { id: 'state-stats',   label: 'State Summary'          },
+    { id: 'congressional', label: 'Congressional Districts' },
+    { id: 'ensemble-demo', label: 'Ensemble & Demographic'  },
+]
+
 const RP_SUBSECTIONS = [
-    { id: 'gingles-analysis',     label: 'Gingles Analysis' },
-    { id: 'ecological-inference', label: 'Ecological Inference' },
+    { id: 'gingles', label: 'Gingles Analysis'        },
+    { id: 'ei-kde',  label: 'Ecological Inference KDE' },
+    { id: 'ei-bar',  label: 'Ecological Inference Bar' },
 ]
 
 const EA_SUBSECTIONS = [
@@ -68,12 +86,15 @@ export default function SectionPanel({ collapsed }) {
 
     /* ── Step 1: Global state + local accordion state ────────────────────── */
 
-    // activeSection / activeSubSection — from Zustand; updated on scroll or click
-    // setActiveSection / setActiveSubSection — Zustand actions; called on click
-    const { activeSection, setActiveSection, activeSubSection, setActiveSubSection } = useAppStore()
+    // activeSection  — updated by scroll detection and nav clicks.
+    // activeSOTab / activeRPTab / activeEATab — updated by sub-nav clicks and section pills.
+    const { activeSection, setActiveSection,
+            activeSOTab, setActiveSOTab,
+            activeRPTab, setActiveRPTab,
+            activeEATab, setActiveEATab } = useAppStore()
 
-    // subOpen    — controls whether RP sub-nav is expanded (local UI state only)
-    // subOpenEA  — controls whether EA sub-nav is expanded (local UI state only)
+    // subOpen{SO,RP,EA} — controls whether each sub-nav accordion is open (local UI only)
+    const [subOpenSO, setSubOpenSO] = useState(true)
     const [subOpen,   setSubOpen]   = useState(true)
     const [subOpenEA, setSubOpenEA] = useState(true)
 
@@ -97,21 +118,46 @@ export default function SectionPanel({ collapsed }) {
     }
 
     /**
-     * scrollToSubSection — Smooth-scrolls to a sub-section inside a parent section.
-     *
-     * Sets both activeSubSection (e.g. 'gingles-analysis') and activeSection
-     * (the parent, e.g. 'racial-polarization') so the sidebar highlight stays
-     * consistent with the scrolled position.
-     *
-     * @param {string} id        DOM id of the sub-section element to scroll to.
-     * @param {string} parentId  DOM id of the parent section (used to keep the parent active).
+     * activateSOTab — Activates a State Overview tab and scrolls to the section.
+     * Called when the user clicks a sub-item in the SO sub-nav.
      */
-    const scrollToSubSection = (id, parentId) => {
-        lockScroll()
-        setActiveSubSection(id)
-        setActiveSection(parentId)
-        const el = document.getElementById(id)
-        if (el) el.scrollIntoView({ behavior: 'smooth' })
+    const activateSOTab = (tabId) => {
+        setActiveSOTab(tabId)
+        scrollToSection('state-overview')
+    }
+
+    /**
+     * activateRPTab — Activates a Racial Polarization tab and scrolls to the section.
+     * Called when the user clicks a sub-item in the RP sub-nav.
+     */
+    const activateRPTab = (tabId) => {
+        setActiveRPTab(tabId)
+        scrollToSection('racial-polarization')
+    }
+
+    /**
+     * activateEATab — Activates an Ensemble Analysis tab and scrolls to the section.
+     * Called when the user clicks a sub-item in the EA sub-nav.
+     */
+    const activateEATab = (tabId) => {
+        setActiveEATab(tabId)
+        scrollToSection('ensemble-analysis')
+    }
+
+    /**
+     * handleSOClick — Click handler for the State Overview nav button.
+     *
+     * Two behaviors:
+     *   • Already active  → toggle SO sub-nav accordion open/closed.
+     *   • Not active      → expand sub-nav and scroll to the section.
+     */
+    const handleSOClick = () => {
+        if (activeSection === 'state-overview') {
+            setSubOpenSO(o => !o)
+        } else {
+            setSubOpenSO(true)
+            scrollToSection('state-overview')
+        }
     }
 
     /**
@@ -173,19 +219,24 @@ export default function SectionPanel({ collapsed }) {
 
                     /* Per-section derived flags */
                     const isActive  = activeSection === section.id
+                    const isSO      = section.id === 'state-overview'
                     const isRP      = section.id === 'racial-polarization'
                     const isEA      = section.id === 'ensemble-analysis'
-                    const hasSubNav = isRP || isEA
+                    const hasSubNav = isSO || isRP || isEA
 
                     /* Route click to the correct handler */
-                    const handleClick = isRP ? handleRPClick
+                    const handleClick = isSO ? handleSOClick
+                                      : isRP ? handleRPClick
                                       : isEA ? handleEAClick
                                       : () => scrollToSection(section.id)
 
-                    /* Which sub-nav state / items belong to this section */
-                    const subNavOpen  = isRP ? subOpen : subOpenEA
-                    const subsections = isRP ? RP_SUBSECTIONS : EA_SUBSECTIONS
-                    const parentId    = isRP ? 'racial-polarization' : 'ensemble-analysis'
+                    /* Which sub-nav state / items / active id / select handler belong to this section */
+                    const subNavOpen     = isSO ? subOpenSO : isRP ? subOpen : subOpenEA
+                    const subsections    = isSO ? SO_SUBSECTIONS : isRP ? RP_SUBSECTIONS : EA_SUBSECTIONS
+                    const subNavActiveId = isSO ? activeSOTab : isRP ? activeRPTab : activeEATab
+                    const subNavOnSelect = isSO ? activateSOTab
+                                        : isRP ? activateRPTab
+                                        : activateEATab
 
                     return (
                         <div key={section.id}>
@@ -251,8 +302,8 @@ export default function SectionPanel({ collapsed }) {
                             {hasSubNav && isActive && subNavOpen && (
                                 <SubSectionNav
                                     subsections={subsections}
-                                    activeId={activeSubSection}
-                                    onSelect={(id) => scrollToSubSection(id, parentId)}
+                                    activeId={subNavActiveId}
+                                    onSelect={subNavOnSelect}
                                     collapsed={collapsed}
                                 />
                             )}

@@ -135,8 +135,8 @@ export const RACE_COLORS = {
     black:    '#009E73',   
     white:    '#E69F00 ', 
     hispanic: '#F0E442',   
-    asian:    '#CC79A7',   
-    other:    '#D55E00',  
+    asian:    '#ec4899 ',   
+    other:    '#9c00d5',  
 }
 
 export const RACE_LABELS = {

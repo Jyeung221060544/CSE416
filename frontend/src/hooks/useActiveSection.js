@@ -1,9 +1,13 @@
 /**
- * useActiveSection.js — Tracks which page section is currently in view.
+ * useActiveSection.js — Tracks which top-level page section is currently in view.
  *
  * Attaches a scroll listener to the main content container (passed in via
- * scrollRef from StatePage) and updates the Zustand store whenever the
- * visible section or sub-section changes.
+ * scrollRef from StatePage) and updates activeSection in the Zustand store
+ * whenever the visible section changes.
+ *
+ * NOTE: All section sub-navigation (State Overview, Racial Polarization,
+ * Ensemble Analysis) is now tab-based and managed via activeSOTab / activeRPTab /
+ * activeEATab in the store. This hook only tracks the top-level section.
  *
  * SCROLL LOCK INTEGRATION
  * When the user clicks a sidebar nav item, SectionPanel calls lockScroll()
@@ -24,12 +28,11 @@ import useAppStore from '../store/useAppStore'
 import { isScrollLocked } from '../utils/scrollLock'
 
 
-/* ── Step 0: Static section / sub-section ID lists ───────────────────────────
+/* ── Step 0: Top-level section ID list ───────────────────────────────────────
  *
- *  SECTION_IDS     — ordered top-to-bottom, matching the id="" attributes on
- *                    each <section> element in StatePage.
- *  SUB_SECTIONS    — maps a parent section id to its ordered sub-section ids.
- *                    Only sections that have sub-sections are listed.
+ *  SECTION_IDS — ordered top-to-bottom, matching the id="" attributes on
+ *                each <section> element in StatePage.
+ *  All sub-navigation is tab-based (no DOM sub-section ids to detect).
  * ─────────────────────────────────────────────────────────────────────────── */
 const SECTION_IDS = [
     'state-overview',
@@ -37,11 +40,6 @@ const SECTION_IDS = [
     'racial-polarization',
     'ensemble-analysis',
 ]
-
-const SUB_SECTIONS = {
-    'racial-polarization': ['gingles-analysis', 'ecological-inference'],
-    'ensemble-analysis':   ['ensemble-splits',  'box-whisker'],
-}
 
 
 /**
@@ -52,16 +50,14 @@ const SUB_SECTIONS = {
  *        The scroll listener is attached to this element (not window).
  *
  * SIDE EFFECTS
- *   Calls setActiveSection(id) whenever the main active section changes.
- *   Calls setActiveSubSection(id) whenever a sub-section becomes active.
- *   Both write to the Zustand store, which updates the sidebar nav highlight
+ *   Calls setActiveSection(id) whenever the active top-level section changes.
+ *   Writes to the Zustand store, which updates the sidebar nav highlight
  *   and the FilterPanel (which shows context-sensitive filters per section).
  */
 export default function useActiveSection(scrollRef) {
 
-    /* ── Step 1: Subscribe to the Zustand setters (not values — no re-renders) */
-    const setActiveSection    = useAppStore((state) => state.setActiveSection)
-    const setActiveSubSection = useAppStore((state) => state.setActiveSubSection)
+    /* ── Step 1: Subscribe to the Zustand setter (not value — no re-renders) */
+    const setActiveSection = useAppStore((state) => state.setActiveSection)
 
     // Track previous scroll position to determine direction
     const lastScrollTop = useRef(0)
@@ -89,7 +85,7 @@ export default function useActiveSection(scrollRef) {
              */
             const triggerY = scrollTop + clientHeight * (goingUp ? 0.5 : 0.3)
 
-            /* ── Step 6: Main section detection ──────────────────────────────
+            /* ── Step 6: Section detection ────────────────────────────────────
              *  Walk the ordered list; the last section whose top edge is at or
              *  above triggerY becomes the active one.
              */
@@ -99,26 +95,12 @@ export default function useActiveSection(scrollRef) {
                 if (el && el.offsetTop <= triggerY) activeId = id
             }
             setActiveSection(activeId)
-
-            /* ── Step 7: Sub-section detection ───────────────────────────────
-             *  Only runs when the active section has sub-sections.
-             *  Same "last element whose top is at/above triggerY" logic.
-             */
-            const subs = SUB_SECTIONS[activeId]
-            if (subs?.length) {
-                let activeSubId = subs[0]
-                for (const subId of subs) {
-                    const el = document.getElementById(subId)
-                    if (el && el.offsetTop <= triggerY) activeSubId = subId
-                }
-                setActiveSubSection(activeSubId)
-            }
         }
 
-        // Step 8: Add listener (passive = browser can optimize scroll performance)
+        // Step 7: Add listener (passive = browser can optimize scroll performance)
         container.addEventListener('scroll', handleScroll, { passive: true })
 
-        // Step 9: Cleanup — remove listener when component unmounts or deps change
+        // Step 8: Cleanup — remove listener when component unmounts or deps change
         return () => container.removeEventListener('scroll', handleScroll)
-    }, [scrollRef, setActiveSection, setActiveSubSection])
+    }, [scrollRef, setActiveSection])
 }

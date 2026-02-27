@@ -25,8 +25,6 @@
 import SectionHeader from '@/components/ui/section-header'
 import SurfacePanel  from '@/components/ui/surface-panel'
 import MapFrame      from '@/components/ui/map-frame'
-import InfoCallout   from '@/components/ui/info-callout'
-import { Lightbulb } from 'lucide-react'
 import useAppStore          from '../../store/useAppStore'
 import DemographicHeatmap   from '../maps/DemographicHeatmap'
 import DemographicPopulationTable from '../tables/DemographicPopulationTable'
@@ -98,13 +96,11 @@ export default function DemographicSection({ data, stateId }) {
         ? (data?.heatmapCensus ?? null)
         : (data?.heatmapPrecinct ?? null)
 
-    /* Human-readable label for the active granularity */
-    const granularityLabel = granularityFilter === 'census_block' ? 'Census Block' : 'Precinct'
 
 
     /* ── Step 4: Render ──────────────────────────────────────────────────── */
     return (
-        <section id="demographic" className="p-4 sm:p-6 lg:p-8 border-b border-brand-muted/30">
+        <section id="demographic" className="p-4 sm:p-6 lg:p-8 border-b border-brand-muted/30 min-h-[calc(100vh-3.5rem)]">
 
             {/* ── SECTION HEADER ───────────────────────────────────────────── */}
             <div className="flex items-center justify-between mb-6">
