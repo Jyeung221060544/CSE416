@@ -152,6 +152,19 @@ def save_enacted_baseline(graph_path, out_json, out_json2, num_districts):
 
     print("Saved baseline summary:", out_json)
 
+# ── Step 7: Generate and save baselines for AL and OR ────────────────────
+save_enacted_baseline(
+    "AL_data/AL_graph.json",
+    "AL_data/AL_enacted_baseline.json",
+    "seawulf_runs/AL/input/AL_enacted_baseline.json",
+    num_districts=7,
+)
+save_enacted_baseline(
+    "OR_data/OR_graph.json",
+    "OR_data/OR_enacted_baseline.json",
+    "seawulf_runs/OR/input/OR_enacted_baseline.json",
+    num_districts=6,
+)
 
 def save_starting_assignment(graph_path, out_path, out_path2, assignment_col="enacted_cd"):
     G = Graph.from_json(graph_path)
