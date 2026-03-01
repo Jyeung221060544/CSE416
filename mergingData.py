@@ -378,6 +378,13 @@ def build_precinct_geojson_with_vap(
         "NH_WHITE_ALONE_VAP", "NH_BLACK_ALONE_VAP", "NH_ASIAN_ALONE_VAP",
         "OTHER_VAP",
 
+        # data
+        "region_type",
+        "AVG_HH_INC",
+        "HH_MEDIAN_INC",
+        "HH_MEAN_INC",
+        "HH_TOTAL",
+
         # geometry
         "geometry",
     ]
@@ -385,7 +392,7 @@ def build_precinct_geojson_with_vap(
     prec_clean = prec2[keep_cols_out].copy()
 
     # Step G-1: Ensure ints for numeric fields
-    id_like = {"state", precinct_id_col, "official_boundary", "geometry"}
+    id_like = {"state", precinct_id_col, "official_boundary", "region_type", "geometry"}
     for c in prec_clean.columns:
         if c not in id_like:
             prec_clean[c] = pd.to_numeric(prec_clean[c], errors="coerce").fillna(0).astype(int)

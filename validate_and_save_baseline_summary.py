@@ -115,6 +115,7 @@ def save_enacted_baseline(graph_path, out_json, out_json2, num_districts):
 
     districts = {}
     dem_seats = 0
+    
 
     # Step 6c: Compute per-district stats
     for d, nodes in part.parts.items():
@@ -134,6 +135,8 @@ def save_enacted_baseline(graph_path, out_json, out_json2, num_districts):
             "winner": winner,
             "dem_share": dem / (dem + rep) if (dem + rep) > 0 else None,
         }
+    
+    split = f"{num_districts - dem_seats}R-{dem_seats}D"
 
     # Step 6d: Assemble state-level summary
     summary = {
@@ -141,6 +144,7 @@ def save_enacted_baseline(graph_path, out_json, out_json2, num_districts):
         "total_population": sum(part["pop"].values()),
         "dem_seats": dem_seats,
         "rep_seats": num_districts - dem_seats,
+        "split": split,
         "districts": districts,
     }
 
