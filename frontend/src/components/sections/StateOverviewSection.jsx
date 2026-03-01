@@ -35,7 +35,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import SectionHeader           from '@/components/ui/section-header'
 import MapFrame                from '@/components/ui/map-frame'
 import InfoCallout             from '@/components/ui/info-callout'
-import MiniNavTabs             from '@/components/ui/mini-nav-tabs'
 import { PARTY_BADGE, DEM_TEXT, REP_TEXT } from '@/lib/partyColors'
 import useAppStore                  from '../../store/useAppStore'
 import DistrictMap2024              from '../maps/DistrictMap2024'
@@ -50,9 +49,9 @@ import DemographicPopulationTable   from '../tables/DemographicPopulationTable'
  * ─────────────────────────────────────────────────────────────────────────── */
 
 const OVERVIEW_TABS = [
-    { id: 'state-stats',   label: 'State Summary'                 },
-    { id: 'congressional', label: 'Congressional District Summary' },
-    { id: 'ensemble-demo', label: 'Ensemble & Demographic Summary' },
+    { id: 'state-stats',   label: 'State Stats'                 },
+    { id: 'congressional', label: 'District Stats' },
+    { id: 'ensemble-demo', label: 'Ensemble/Pop Stats' },
 ]
 
 
@@ -230,15 +229,21 @@ export default function StateOverviewSection({ data, stateId }) {
 
     /* ── Step 5: Render ──────────────────────────────────────────────────── */
     return (
-        <section id="state-overview" className="p-4 sm:p-6 lg:p-8 border-b border-brand-muted/30 min-h-[calc(100vh-3.5rem)]">
+        <section id="state-overview" className="p-2 sm:p-3 lg:p-4 border-b border-brand-muted/30 h-[calc(100vh-3.5rem)] flex flex-col overflow-hidden">
 
             {/* ── SECTION HEADER ───────────────────────────────────────────── */}
-            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-brand-darkest tracking-tight mb-3">State Overview</h2>
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-brand-darkest tracking-tight mb-3 shrink-0">State Overview</h2>
 
-            {/* ── MAP LEGEND + MINI NAV ────────────────────────────────────── */}
-            {/* Legend items on the left, pills right-aligned — same visual row. */}
-            <div className="flex items-center justify-between mb-3 gap-4">
-                <div className="flex items-center gap-4 text-sm text-brand-muted/70">
+            {/* ── UNIFIED 4-CELL GRID ───────────────────────────────────────── */}
+            {/* Row 1: [map legend]  [tab bar / back button]                     */}
+            {/* Row 2: [map]         [lavender panel content]                    */}
+            {/* gap-y-0 keeps the tab shelf (row 1 right) flush against the      */}
+            {/* panel top (row 2 right) — the browser-tab trick still works.     */}
+            {/* CSS order swaps tab bar / map on mobile so map follows legend.   */}
+            <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-5 lg:grid-rows-[auto_1fr]">
+
+                {/* ── [Row 1, Col 1] MAP LEGEND ─────────────────────────────── */}
+                <div className="order-1 flex items-center gap-4 text-sm text-brand-muted/70 pb-2">
                     <span className="flex items-center gap-1.5">
                         <span className="w-3 h-3 rounded-sm bg-blue-400/60 border border-blue-600 shrink-0" /> Democratic
                     </span>
@@ -249,60 +254,101 @@ export default function StateOverviewSection({ data, stateId }) {
                         <span className="w-3 h-3 rounded-sm bg-brand-primary/60 border border-brand-surface shrink-0" /> Selected
                     </span>
                 </div>
-                <MiniNavTabs
-                    tabs={OVERVIEW_TABS}
-                    activeTab={activeTab}
-                    onChange={setActiveTab}
-                />
-            </div>
 
-            {/* ── MAP | TABBED RIGHT PANEL ──────────────────────────────────── */}
-            {/* Left: interactive district choropleth (unchanged).
-                Right: fixed-height tabbed panel — pills nav + swappable content.
-                Both columns share the same explicit height so they align. */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                {/* ── [Row 1, Col 2] TAB BAR ────────────────────────────────── */}
+                {/* On mobile: order-3 keeps it between map (order-2) and         */}
+                {/* panel (order-4) so it always sits directly above the panel.   */}
+                {selectedDistrict ? (
+                    /* Back button replaces tabs; shelf border is preserved */
+                    <div
+                        className="order-3 lg:order-2 flex items-end pb-1"
+                        style={{ borderBottom: '2px solid rgba(89,90,150,0.55)' }}
+                    >
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setSelectedDistrict(null)}
+                            className="mb-0.5 flex items-center gap-1.5 text-brand-deep hover:text-brand-darkest"
+                        >
+                            <ArrowLeft className="w-4 h-4" />
+                            Return to {OVERVIEW_TABS.find(t => t.id === activeTab)?.label}
+                        </Button>
+                    </div>
+                ) : (
+                    /* Browser-tab shelf: active tab pierces it via marginBottom:-2px */
+                    <div
+                        className="order-3 lg:order-2"
+                        style={{ display: 'flex', alignItems: 'flex-end', gap: '3px', borderBottom: '2px solid rgba(89,90,150,0.55)', paddingLeft: '2px' }}
+                    >
+                        {OVERVIEW_TABS.map(tab => {
+                            const isActive = tab.id === activeTab
+                            return (
+                                <button
+                                    key={tab.id}
+                                    onClick={() => setActiveTab(tab.id)}
+                                    style={{
+                                        borderRadius: '8px 8px 0 0',
+                                        padding: isActive ? '8px 22px 9px' : '6px 20px 7px',
+                                        border: `2px solid ${isActive ? 'rgba(89,90,150,0.55)' : '#8f87c0'}`,
+                                        borderBottom: isActive ? '2px solid #f4f1ff' : '2px solid #8f87c0',
+                                        background: isActive ? '#f4f1ff' : '#ddd7f5',
+                                        color: isActive ? '#2e2a6e' : '#6b64a0',
+                                        marginBottom: isActive ? '-2px' : '0',
+                                        position: 'relative',
+                                        zIndex: isActive ? 2 : 1,
+                                        fontSize: 12,
+                                        fontWeight: 700,
+                                        letterSpacing: '0.02em',
+                                        whiteSpace: 'nowrap',
+                                        cursor: 'pointer',
+                                        transition: 'background 120ms, color 120ms',
+                                        boxShadow: isActive ? '0 -3px 8px rgba(89,90,150,0.15)' : 'none',
+                                    }}
+                                    onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = '#ece7ff' }}
+                                    onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = '#ddd7f5' }}
+                                >
+                                    {tab.label}
+                                </button>
+                            )
+                        })}
+                    </div>
+                )}
 
-                {/* ── DISTRICT MAP ─────────────────────────────────────────── */}
-                <MapFrame className="h-[340px] sm:h-[420px] lg:h-[520px]">
+                {/* ── [Row 2, Col 1] DISTRICT MAP ───────────────────────────── */}
+                <MapFrame className="h-[340px] sm:h-[420px] lg:h-full order-2 lg:order-3">
                     <DistrictMap2024 stateId={stateId} districtSummary={districtData} />
                 </MapFrame>
 
-                {/* ── RIGHT PANEL ──────────────────────────────────────────── */}
-                {/* Fixed height matches the map. overflow-hidden clips excess
-                    content cleanly — no scrollbars anywhere in this panel. */}
-                <div className="flex flex-col h-[340px] sm:h-[420px] lg:h-[520px] overflow-hidden">
-
+                {/* ── [Row 2, Col 2] CONTENT PANEL ──────────────────────────── */}
+                {/* borderTop:none — the shelf line above is the visual top edge. */}
+                <div
+                    className="order-4 h-[340px] sm:h-[420px] lg:h-full overflow-hidden"
+                    style={{
+                        background: '#f4f1ff',
+                        border: '2px solid rgba(89,90,150,0.55)',
+                        borderTop: 'none',
+                        borderRadius: '0 0 12px 12px',
+                        position: 'relative',
+                        zIndex: 1,
+                        boxShadow: '0 4px 16px rgba(89,90,150,0.10)',
+                    }}
+                >
                     {selectedDistrict ? (
 
-                        /* ── DISTRICT DETAIL MODE ──────────────────────────── */
-                        /* Back button reflects the currently active tab label. */
-                        <div className="flex flex-col h-full gap-3">
-                            <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => setSelectedDistrict(null)}
-                                className="self-start flex items-center gap-1.5 text-brand-deep hover:text-brand-darkest shrink-0"
-                            >
-                                <ArrowLeft className="w-4 h-4" />
-                                Return to {OVERVIEW_TABS.find(t => t.id === activeTab)?.label}
-                            </Button>
-                            <div className="flex-1 min-h-0">
-                                <DistrictDetailCard district={selectedDistrictData} />
-                            </div>
+                        /* ── DISTRICT DETAIL ───────────────────────────────── */
+                        <div className="h-full p-3">
+                            <DistrictDetailCard district={selectedDistrictData} />
                         </div>
 
                     ) : (
 
-                        /* ── TABBED PANEL MODE ─────────────────────────────── */
-                        /* Pills live in the section header above; full panel
-                           height is given entirely to tab content. */
-                        <div className="h-full overflow-hidden">
+                        /* ── TAB CONTENT ───────────────────────────────────── */
+                        <div className="h-full">
 
-                            {/* ── STATE SUMMARY ───────────────────────────── */}
+                            {/* State Summary */}
                             {activeTab === 'state-stats' && (
-                                <div className="flex flex-col gap-4 h-full overflow-hidden">
+                                <div className="flex flex-col gap-4 h-full overflow-hidden px-4 pt-3 pb-2">
 
-                                    {/* 2×2 quick-glance stat tiles */}
                                     <div className="grid grid-cols-2 gap-3 shrink-0">
                                         <StatCard label="Total Population"  value={stateData?.totalPopulation?.toLocaleString()} />
                                         <StatCard label="Voting Age Pop."   value={stateData?.votingAgePopulation?.toLocaleString()} />
@@ -310,7 +356,6 @@ export default function StateOverviewSection({ data, stateId }) {
                                         <StatCard label="Controlling Party" value={stateData?.redistrictingControl?.controllingParty} />
                                     </div>
 
-                                    {/* Voter share distribution */}
                                     {demVote != null && repVote != null && (
                                         <div className="shrink-0">
                                             <SectionHeader title={`${voteYear ?? ''} Voter Distribution`} />
@@ -338,7 +383,6 @@ export default function StateOverviewSection({ data, stateId }) {
                                         </div>
                                     )}
 
-                                    {/* Congressional seat breakdown */}
                                     <div className="shrink-0">
                                         <SectionHeader title={`${districtData?.electionYear ?? ''} Seat Distribution`} />
                                         <div className="flex flex-col gap-2">
@@ -364,24 +408,23 @@ export default function StateOverviewSection({ data, stateId }) {
                                         </div>
                                     </div>
 
-                                    {/* Interaction hint */}
                                     <InfoCallout icon={MousePointerClick} className="mt-auto shrink-0">
                                         Click a district on the map or switch to District Summary to select one and view its details here.
                                     </InfoCallout>
                                 </div>
                             )}
 
-                            {/* ── DISTRICT SUMMARY ────────────────────────── */}
+                            {/* Congressional Districts */}
                             {activeTab === 'congressional' && (
-                                <div className="h-full overflow-hidden">
+                                <div className="h-full overflow-hidden px-3 pt-2">
                                     <SectionHeader title={`${districtData?.electionYear ?? 'Enacted'} Congressional Districts`} />
                                     <CongressionalTable districtSummary={districtData} />
                                 </div>
                             )}
 
-                            {/* ── ENSEMBLE & DEMOGRAPHIC ──────────────────── */}
+                            {/* Ensemble & Demographic */}
                             {activeTab === 'ensemble-demo' && (
-                                <div className="flex flex-col gap-3 overflow-hidden">
+                                <div className="flex flex-col gap-3 overflow-hidden px-3 pt-2 pb-2">
                                     <div>
                                         <SectionHeader title="Ensemble Summary" />
                                         <EnsembleSummaryTable ensembleSummary={ensembleData} />
@@ -400,8 +443,8 @@ export default function StateOverviewSection({ data, stateId }) {
 
                         </div>
                     )}
-
                 </div>
+
             </div>
 
         </section>
