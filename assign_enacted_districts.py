@@ -81,6 +81,18 @@ def assign_enacted_districts(
     )
 
     precincts.rename(columns={district_id_col: enacted_col}, inplace=True)
+
+    # Normalize enacted_cd to integer (safe conversion)
+    precincts[enacted_col] = (
+        precincts[enacted_col]
+        .astype(str)
+        .str.replace(r"\.0$", "", regex=True)  # in case "1.0"
+    )
+    precincts[enacted_col] = gpd.pd.to_numeric(precincts[enacted_col], errors="coerce")
+
+    # Diagnostics
+    print("Missing enacted_cd:", int(precincts[enacted_col].isna().sum()))
+
     print("Missing enacted_cd:", int(precincts[enacted_col].isna().sum()))
     print("Min enacted_cd:", precincts[enacted_col].min())
     print("Max enacted_cd:", precincts[enacted_col].max())
