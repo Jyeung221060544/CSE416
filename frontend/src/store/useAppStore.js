@@ -89,6 +89,11 @@ const useAppStore = create((set) => ({
     // Multi-select; always contains at least one item (enforced in toggleEiRaceFilter).
     eiRaceFilter: ['black'],
 
+    // Demographic groups for the currently-loaded state, populated by useStateData.
+    // Each entry: { group: string, vap: number, vapPercentage: number, isFeasible: boolean }.
+    // FeasibleRaceFilter derives its option list by filtering this array on isFeasible.
+    demographicGroups: [],
+
 
     /* ── Step 3: UI state ────────────────────────────────────────────────── */
 
@@ -125,6 +130,9 @@ const useAppStore = create((set) => ({
 
     /** @param {string} race  Same values as raceFilter, but limited to feasible groups. */
     setFeasibleRaceFilter: (race) => set({ feasibleRaceFilter: race }),
+
+    /** @param {Array<{group:string,vap:number,vapPercentage:number,isFeasible:boolean}>} groups  Groups from stateSummary. */
+    setDemographicGroups: (groups) => set({ demographicGroups: groups }),
 
     /** @param {string} g  'precinct' or 'census_block'. */
     setGranularityFilter: (g)    => set({ granularityFilter: g }),

@@ -58,6 +58,7 @@
 /* ── Step 0: React + map library imports ──────────────────────────────── */
 import { useRef, useEffect } from 'react'
 import { MapContainer, TileLayer, GeoJSON, useMap } from 'react-leaflet'
+import L from 'leaflet'
 import { useNavigate } from 'react-router-dom'
 import useAppStore from '../../store/useAppStore'
 
@@ -105,25 +106,39 @@ function baseStyle(feature) {
     }
 }
 
-/* ── Step 4: Map size invalidator helper ──────────────────────────────── */
-// Bounding box that contains all 48 contiguous US states
-const US_BOUNDS = [[24.5, -125.0], [49.4, -66.9]]
+/* ── Step 4: FitBounds + MapResizeHandler helpers ─────────────────────── */
 
-/**
- * Inner Leaflet component that forces the map to recalculate its size and
- * re-fit the US bounds whenever the container is resized.
- *
- * @returns {null} Renders nothing — side-effect only.
- */
-function SizeInvalidator() {
+/** Fits the map to the exact GeoJSON extent on mount. */
+function FitBounds({ geoData }) {
     const map = useMap()
     useEffect(() => {
-        const fit = () => { map.invalidateSize(); map.fitBounds(US_BOUNDS) }
-        fit()
-        const observer = new ResizeObserver(fit)
-        observer.observe(map.getContainer())
+        if (!geoData) return
+        try {
+            const bounds = L.geoJSON(geoData).getBounds()
+            if (bounds.isValid()) map.fitBounds(bounds, { padding: [30, 30] })
+        } catch (_) { /* ignore malformed features */ }
+    }, [geoData, map])
+    return null
+}
+
+/** Re-fits + invalidates whenever the container resizes. */
+function MapResizeHandler({ geoData }) {
+    const map = useMap()
+    useEffect(() => {
+        const container = map.getContainer()
+        if (!container) return
+        const observer = new ResizeObserver(() => {
+            map.invalidateSize({ animate: false })
+            if (geoData) {
+                try {
+                    const bounds = L.geoJSON(geoData).getBounds()
+                    if (bounds.isValid()) map.fitBounds(bounds, { padding: [30, 30] })
+                } catch (_) { /* ignore */ }
+            }
+        })
+        observer.observe(container)
         return () => observer.disconnect()
-    }, [map])
+    }, [map, geoData])
     return null
 }
 
@@ -187,8 +202,9 @@ export default function USMap({ onStateHover }) {
     /* ── Step 5c: Render ── */
     return (
         <MapContainer
-            bounds={US_BOUNDS}
+            center={[39.5, -98.35]}
             zoom={4}
+            zoomSnap={0}
             zoomControl={false}
             scrollWheelZoom={false}
             doubleClickZoom={false}
@@ -198,7 +214,8 @@ export default function USMap({ onStateHover }) {
             style={{ height: '100%', width: '100%', background: '#EBF4F6' }}
         >
             {/* ── MAP UTILITIES ──────────────────────────────────────── */}
-            <SizeInvalidator />
+            <FitBounds geoData={usGeoJson} />
+            <MapResizeHandler geoData={usGeoJson} />
 
             {/* ── BASE TILE LAYER ────────────────────────────────────── */}
             <TileLayer

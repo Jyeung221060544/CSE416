@@ -151,14 +151,19 @@ function MapResizeHandler({ data }) {
  * Each geographic unit is colored according to the server-assigned bin for the
  * currently selected race group.
  *
- * @param {object} props
- * @param {string} props.stateId      - Two-letter state abbreviation.
- * @param {string} props.granularity  - "precinct" or "census_block".
- * @param {object} props.heatmapData  - Bin + feature data from the backend.
- * @param {string} props.raceFilter   - Selected race key for color lookup.
+ * @param {object}        props
+ * @param {string}        props.stateId      - Two-letter state abbreviation.
+ * @param {string}        props.granularity  - "precinct" or "census_block".
+ * @param {object}        props.heatmapData  - Bin + feature data from the backend.
+ * @param {string}        props.raceFilter   - Selected race key for color lookup.
+ * @param {{ center: [number,number], zoom: number }|null} props.mapView
+ *                                           - Initial map center + zoom from stateSummary.
+ *                                             FitBounds overrides this after mount, so this
+ *                                             only affects the brief first-render position.
+ *                                             Falls back to the US center if null.
  * @returns {JSX.Element} Full-height Leaflet map or an "unavailable" fallback.
  */
-export default function DemographicHeatmap({ stateId, granularity, heatmapData, raceFilter }) {
+export default function DemographicHeatmap({ stateId, granularity, heatmapData, raceFilter, mapView }) {
     /* ── Step 5a: Resolve geometry sources ── */
     const outlineData = STATE_OUTLINE[stateId] ?? null
     const sampleData  = GEO_SAMPLES[stateId]?.[granularity] ?? null
@@ -198,8 +203,8 @@ export default function DemographicHeatmap({ stateId, granularity, heatmapData, 
     return (
         <MapContainer
             key={mapKey}
-            center={[32.7, -86.8]}
-            zoom={6}
+            center={mapView?.center ?? [39.5, -98.35]}
+            zoom={mapView?.zoom ?? 5}
             zoomSnap={0}
             zoomControl
             scrollWheelZoom={false}

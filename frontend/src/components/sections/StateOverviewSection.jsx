@@ -232,7 +232,12 @@ export default function StateOverviewSection({ data, stateId }) {
         <section id="state-overview" className="p-2 sm:p-3 lg:p-4 border-b border-brand-muted/30 h-[calc(100vh-3.5rem)] flex flex-col overflow-hidden">
 
             {/* ── SECTION HEADER ───────────────────────────────────────────── */}
-            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-brand-darkest tracking-tight mb-3 shrink-0">State Overview</h2>
+            <div className="flex items-baseline justify-between mb-3 shrink-0">
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-brand-darkest tracking-tight">
+                    {stateData?.stateName && <span className="text-brand-primary">{stateData.stateName} — </span>}State Overview
+                </h2>
+                <span className="hidden sm:inline-flex items-center gap-1.5 text-sm italic font-medium text-brand-primary bg-brand-primary/10 border border-brand-primary/20 px-3 py-0.5 rounded-full">&ldquo;Who are we looking at?&rdquo;</span>
+            </div>
 
             {/* ── UNIFIED 4-CELL GRID ───────────────────────────────────────── */}
             {/* Row 1: [map legend]  [tab bar / back button]                     */}

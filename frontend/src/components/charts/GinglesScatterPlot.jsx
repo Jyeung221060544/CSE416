@@ -163,9 +163,9 @@ export default function GinglesScatterPlot({ ginglesData, raceFilter, selectedId
                 return (
                     <circle
                         key={node.id} cx={node.x} cy={node.y}
-                        r={isSel ? 9 : 5.5}
-                        fill={fill} fillOpacity={isSel ? 0.90 : 0.30}
-                        stroke={dark} strokeWidth={isSel ? 2.5 : 1.2} strokeOpacity={isSel ? 1 : 0.50}
+                        r={isSel ? 8 : 2.5}
+                        fill={fill} fillOpacity={isSel ? 0.92 : 0.45}
+                        stroke={dark} strokeWidth={isSel ? 2.5 : 0.7} strokeOpacity={isSel ? 1 : 0.60}
                         style={{ cursor:'pointer', transition:'r 0.15s, fill-opacity 0.15s' }}
                         onMouseEnter={(e) => { if(!containerRef.current) return; const r=containerRef.current.getBoundingClientRect(); setTooltip({ node, left:e.clientX-r.left+14, top:e.clientY-r.top-60 }) }}
                         onMouseMove={(e)  => { if(!containerRef.current) return; const r=containerRef.current.getBoundingClientRect(); setTooltip(prev=>prev?{...prev, left:e.clientX-r.left+14, top:e.clientY-r.top-60}:null) }}

@@ -103,10 +103,11 @@ export default function DemographicSection({ data, stateId }) {
         <section id="demographic" className="p-2 sm:p-3 lg:p-4 border-b border-brand-muted/30 h-[calc(100vh-3.5rem)] flex flex-col overflow-hidden">
 
             {/* ── SECTION HEADER ───────────────────────────────────────────── */}
-            <div className="flex items-center justify-between mb-6 shrink-0">
+            <div className="flex items-baseline justify-between mb-6 shrink-0">
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-brand-darkest tracking-tight">
-                    Demographic Analysis
+                    {s?.stateName && <span className="text-brand-primary">{s.stateName} — </span>}Demographic Analysis
                 </h2>
+                <span className="hidden sm:inline-flex items-center gap-1.5 text-sm italic font-medium text-brand-primary bg-brand-primary/10 border border-brand-primary/20 px-3 py-0.5 rounded-full">&ldquo;What does the minority landscape look like?&rdquo;</span>
             </div>
 
             {/* ── TWO-COLUMN GRID ──────────────────────────────────────────── */}
@@ -123,6 +124,7 @@ export default function DemographicSection({ data, stateId }) {
                             granularity={granularityFilter}
                             heatmapData={heatmapData}
                             raceFilter={raceFilter}
+                            mapView={s?.mapView}
                         />
                     </MapFrame>
 
