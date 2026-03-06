@@ -174,9 +174,10 @@ def main():
         pop_col=pop_col,
         pop_target=ideal_pop,
         epsilon=eps,
-        node_repeats=50,
+        node_repeats=3,
         method=partial(
             bipartition_tree,
+            max_attempts=5000,
             allow_pair_reselection=True,
         ),
     )
