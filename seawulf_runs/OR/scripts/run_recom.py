@@ -177,7 +177,6 @@ def main():
         node_repeats=50,
         method=partial(
             bipartition_tree,
-            max_attempts=2000,
             allow_pair_reselection=True,
         ),
     )
