@@ -1,307 +1,96 @@
-import argparse
 import json
-import os
-from dataclasses import dataclass
-from typing import Dict, List, Tuple
+from pathlib import Path
 
-import numpy as np
 import geopandas as gpd
-import matplotlib.pyplot as plt
-
-# PyEI
+import numpy as np
 from pyei import TwoByTwoEI
 from pathlib import Path
 
-SCRIPT_DIR = Path(__file__).resolve().parent
-REPO_ROOT = SCRIPT_DIR.parents[2]  # scripts -> AL -> seawulf_runs -> REPO_ROOT
+ROOT = Path(__file__).resolve().parents[3]  # CSE416-Project
+INFILE = ROOT / "OR_data" / "OR_precincts_full.geojson"
+OUTFILE = ROOT / "OR_data" / "ei_OR_other_2x2.json" # Change to ei_OR_black_2x2.json, ei_OR_latino_2x2.json, ei_OR_white_2x2.json, ei_OR_asian_2x2.json, ei_OR_other_2x2.json
 
-DEFAULT_PRECINCTS = REPO_ROOT / "AL_data" / "AL_precincts_full.geojson"
-DEFAULT_OUTDIR = REPO_ROOT / "AL_data" / "ei"
-
-def resolve_path(p: str, repo_root: Path) -> str:
-    """
-    If p is absolute, keep it.
-    If p is relative, interpret it relative to repo_root (NOT cwd).
-    """
-    pp = Path(p)
-    if pp.is_absolute():
-        return str(pp)
-    return str((repo_root / pp).resolve())
-
-
-def ensure_dir(p: str) -> None:
-    os.makedirs(p, exist_ok=True)
-
-
-def safe_div(a: np.ndarray, b: np.ndarray) -> np.ndarray:
-    out = np.zeros_like(a, dtype=float)
-    mask = b > 0
-    out[mask] = a[mask] / b[mask]
-    return out
-
-
-HIST_BINS = 60  # keep fixed for comparability across runs
-
-def hist_density_curve(samples: np.ndarray, bins: int = HIST_BINS):
-    """
-    Returns a histogram-based density curve on [0,1]:
-      grid: bin centers
-      dens: density values (integrates to ~1)
-      peak_x, peak_y: location and height of max density
-    """
-    hist, edges = np.histogram(samples, bins=bins, range=(0.0, 1.0), density=True)
-    centers = 0.5 * (edges[:-1] + edges[1:])
-    peak_idx = int(np.argmax(hist)) if hist.size else 0
-    peak_x = float(centers[peak_idx]) if hist.size else 0.0
-    peak_y = float(hist[peak_idx]) if hist.size else 0.0
-    return centers.astype(float), hist.astype(float), peak_x, peak_y
-
-def summarize_samples(samples: np.ndarray):
-    mean = float(np.mean(samples))
-    med = float(np.median(samples))
-    lo = float(np.quantile(samples, 0.025))
-    hi = float(np.quantile(samples, 0.975))
-    grid, dens, peak_x, peak_y = hist_density_curve(samples, bins=HIST_BINS)
-    return mean, med, (lo, hi), grid, dens, peak_x, peak_y
-
-def plot_density_hist(
-    group_samples: np.ndarray,
-    nongroup_samples: np.ndarray,
-    title: str,
-    out_png: str,
-    bins: int = 60,
-) -> None:
-    plt.figure(figsize=(10, 5))
-    plt.hist(group_samples, bins=bins, range=(0, 1), density=True, alpha=0.5, label="group")
-    plt.hist(nongroup_samples, bins=bins, range=(0, 1), density=True, alpha=0.5, label="non_group")
-    plt.title(title)
-    plt.xlabel("Estimated Democratic vote share")
-    plt.ylabel("Density (EI frequency)")
-    plt.legend()
-    plt.tight_layout()
-    plt.savefig(out_png, dpi=150)
-    plt.close()
-
-
-def run_two_by_two_ei(
-    x_group_frac: np.ndarray,
-    t_dem_frac: np.ndarray,
-    n_turnout: np.ndarray,
-    draws: int = 2000,
-    tune: int = 1000,
-    chains: int = 2,
-    seed: int = 0,
-) -> Tuple[np.ndarray, np.ndarray]:
-
-    # Use a real model name that PyEI recognizes.
-    # The PyEI demo uses king99 with lmbda around 0.1 for stability.
-    np.random.seed(seed)  # at minimum; makes some randomness reproducible
-    model = TwoByTwoEI("king99", lmbda=0.1)
-
-    model.fit(
-        group_fraction=x_group_frac,
-        votes_fraction=t_dem_frac,
-        precinct_pops=n_turnout,
-        tune=tune,
-        draw_samples=draws,
-        chains=chains,
-        target_accept=0.95,  # slightly higher can help
-    )
-
-    svp = model.sampled_voting_prefs
-
-    # Case 1: dict-like: {"b": ..., "w": ...}
-    if isinstance(svp, dict):
-        beta_b = np.asarray(svp["b"]).ravel()
-        beta_w = np.asarray(svp["w"]).ravel()
-        return beta_b, beta_w
-
-    # Case 2: list/tuple-like: [b_samples, w_samples]
-    if isinstance(svp, (list, tuple)):
-        # Sometimes it might be [ {"b":..., "w":...} ]
-        if len(svp) == 1 and isinstance(svp[0], dict) and "b" in svp[0] and "w" in svp[0]:
-            beta_b = np.asarray(svp[0]["b"]).ravel()
-            beta_w = np.asarray(svp[0]["w"]).ravel()
-            return beta_b, beta_w
-
-        # Common: [b, w]
-        if len(svp) >= 2:
-            beta_b = np.asarray(svp[0]).ravel()
-            beta_w = np.asarray(svp[1]).ravel()
-            return beta_b, beta_w
-
-    # Case 3: fall back to idata/posterior if available (newer-ish patterns)
-    if hasattr(model, "idata") and model.idata is not None:
-        post = model.idata.posterior
-        # try common variable names
-        for b_name, w_name in [("b", "w"), ("beta_b", "beta_w")]:
-            if b_name in post and w_name in post:
-                beta_b = np.asarray(post[b_name]).ravel()
-                beta_w = np.asarray(post[w_name]).ravel()
-                return beta_b, beta_w
-
-    raise TypeError(
-        "Could not extract voting preference samples from model.sampled_voting_prefs "
-        f"(type={type(svp)}). Available attrs: "
-        f"{[a for a in dir(model) if 'sample' in a or 'idata' in a or 'trace' in a]}"
-    )
-
-
-def build_inputs(
-    gdf: gpd.GeoDataFrame,
-    group_col: str,
-    vap_col: str,
-    dem_col: str,
-    rep_col: str,
-    turnout_col: str = None,
-) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
-    # group fraction proxy: group VAP / total VAP
-    vap = gdf[vap_col].to_numpy(dtype=float)
-    group_vap = gdf[group_col].to_numpy(dtype=float)
-    x = safe_div(group_vap, vap)
-
-    dem = gdf[dem_col].to_numpy(dtype=float)
-    rep = gdf[rep_col].to_numpy(dtype=float)
-    total_votes = dem + rep
-    t = safe_div(dem, total_votes)
-
-    # weights: use votes as “observed participants”
-    n = total_votes if turnout_col is None else gdf[turnout_col].to_numpy(dtype=float)
-
-    # filter invalid rows
-    mask = (
-        np.isfinite(x) & np.isfinite(t) & np.isfinite(n) &
-        (x >= 0) & (x <= 1) &
-        (t >= 0) & (t <= 1) &
-        (n > 0)
-    )
-    return x[mask], t[mask], n[mask]
-
+GROUP_COL = "OTHER_VAP"   # Run for "NH_BLACK_ALONE_VAP", "LATINO_VAP", and "NH_WHITE_ALONE_VAP", "NH_ASIAN_ALONE_VAP", "OTHER_VAP"
+TOTAL_COL = "VAP"                 # total population base (your project uses VAP consistently)
+DEM_COL = "votes_dem"
+REP_COL = "votes_rep"
+GROUP = "Other"      # Change to Black_NH, Latino, White_NH, Asian_NH, Other
 
 def main():
-    ap = argparse.ArgumentParser()
+    gdf = gpd.read_file(INFILE)
 
-    # defaults in code (no need to pass paths)
-    ap.add_argument("--precincts", default=str(DEFAULT_PRECINCTS),
-                    help="Path to precincts_full.geojson (default: repo_root/AL_data/AL_precincts_full.geojson)")
-    ap.add_argument("--outdir", default=str(DEFAULT_OUTDIR),
-                    help="Output directory for EI results (default: repo_root/AL_data/ei)")
+    # Keep only rows with sensible totals
+    total = gdf[TOTAL_COL].to_numpy(dtype=float)
+    group = gdf[GROUP_COL].to_numpy(dtype=float)
+    dem = gdf[DEM_COL].to_numpy(dtype=float)
+    rep = gdf[REP_COL].to_numpy(dtype=float)
+    tot_votes = dem + rep
 
-    ap.add_argument("--state", default="AL", help="State label e.g., AL or OR")
-    ap.add_argument("--groups", nargs="+", default=["NH_BLACK_ALONE_VAP", "NH_WHITE_ALONE_VAP"],
-                    help="Group VAP columns e.g., NH_BLACK_ALONE_VAP HVAP")
+    mask = (total > 0) & (tot_votes > 0) & (group >= 0) & (group <= total)
+    gdf = gdf.loc[mask].copy()
 
-    ap.add_argument("--vap_col", default="VAP")
-    ap.add_argument("--dem_col", default="votes_dem")
-    ap.add_argument("--rep_col", default="votes_rep")
+    total = gdf[TOTAL_COL].to_numpy(dtype=float)
+    group = gdf[GROUP_COL].to_numpy(dtype=float)
+    dem = gdf[DEM_COL].to_numpy(dtype=float)
+    rep = gdf[REP_COL].to_numpy(dtype=float)
+    tot_votes = dem + rep
 
-    ap.add_argument("--draws", type=int, default=2000)
-    ap.add_argument("--tune", type=int, default=1000)
-    ap.add_argument("--chains", type=int, default=2)
-    ap.add_argument("--seed", type=int, default=0)
+    # Fractions required by TwoByTwoEI
+    x = (group / total).clip(0, 1)          # fraction of group in precinct
+    y = (dem / tot_votes).clip(0, 1)        # Dem two-party vote share in precinct
 
-    args = ap.parse_args()
+    # Fit EI
+    model = TwoByTwoEI(model_name="king99_pareto_modification", pareto_scale=8)
+    model.fit(
+        group_fraction=x,
+        votes_fraction=y,
+        precinct_pops=tot_votes.astype(int),
+        demographic_group_name=GROUP,
+        candidate_name="Dem"
+    )
 
-    # normalize to absolute paths
-    precincts_path = Path(args.precincts).expanduser()
-    if not precincts_path.is_absolute():
-        precincts_path = (REPO_ROOT / precincts_path).resolve()
+    print("sim_trace type:", type(model.sim_trace))
+    post = model.sim_trace.posterior if hasattr(model.sim_trace, "posterior") else model.sim_trace
+    print("posterior vars:", list(getattr(post, "data_vars", post.keys())))
 
-    outdir_path = Path(args.outdir).expanduser()
-    if not outdir_path.is_absolute():
-        outdir_path = (REPO_ROOT / outdir_path).resolve()
+    # --- Extract posterior draws (this pyei version stores them in sim_trace) ---
+    if not hasattr(model, "sim_trace") or model.sim_trace is None:
+        raise AttributeError("TwoByTwoEI has no sim_trace; can't extract posterior draws.")
 
-    outdir_path.mkdir(parents=True, exist_ok=True)
+    tr = model.sim_trace  # typically an ArviZ InferenceData or xarray Dataset
 
-    if not precincts_path.exists():
-        raise SystemExit(f"Precincts file not found: {precincts_path}")
+    # Handle both InferenceData (.posterior) and Dataset-like objects
+    post = tr.posterior if hasattr(tr, "posterior") else tr
 
-    gdf = gpd.read_file(str(precincts_path))
+    # In this pyei version, voting prefs are named b_1 (group) and b_2 (non-group)
+    beta = np.asarray(post["b_1"]).reshape(-1)       # P(Dem | Black_NH)
+    beta_comp = np.asarray(post["b_2"]).reshape(-1)  # P(Dem | non-Black_NH)
 
-    needed = [args.vap_col, args.dem_col, args.rep_col] + args.groups
-    missing = [c for c in needed if c not in gdf.columns]
-    if missing:
-        raise SystemExit(f"Missing required columns in {precincts_path}: {missing}")
-
-    results_json = {}
-    
-    for group_col in args.groups:
-        x, t, n = build_inputs(
-            gdf,
-            group_col=group_col,
-            vap_col=args.vap_col,
-            dem_col=args.dem_col,
-            rep_col=args.rep_col,
-        )
-
-        if len(x) < 50:
-            print(f"[WARN] {args.state} {group_col}: only {len(x)} usable precincts after filtering; skipping.")
-            continue
-
-        print(f"[EI] {args.state} {group_col}: running TwoByTwoEI on {len(x)} precincts...")
-        b_samples, w_samples = run_two_by_two_ei(
-            x_group_frac=x,
-            t_dem_frac=t,
-            n_turnout=n,
-            draws=args.draws,
-            tune=args.tune,
-            chains=args.chains,
-            seed=args.seed,
-        )
-
-        b_mean, b_med, b_ci, b_grid, b_dens, b_peak_x, b_peak_y = summarize_samples(b_samples)
-        w_mean, w_med, w_ci, w_grid, w_dens, w_peak_x, w_peak_y = summarize_samples(w_samples)
-
-        # Party of choice (2-party proxy, spec-aligned)
-        party = "D" if b_mean >= 0.5 else "R"
-        confidence_score = float(b_peak_y)  # “highest EI frequency” proxy = peak density height
-
-        # Store EVERYTHING per group here (including density arrays)
-        results_json[group_col] = {
-            "n_precincts_used": int(len(x)),
-
-            "mean_support_group_D": float(b_mean),
-            "mean_support_group_R": float(1.0 - b_mean),
-            "median_support_group_D": float(b_med),
-            "ci95_group_D": [float(b_ci[0]), float(b_ci[1])],
-
-            "mean_support_nongroup_D": float(w_mean),
-            "mean_support_nongroup_R": float(1.0 - w_mean),
-            "median_support_nongroup_D": float(w_med),
-            "ci95_nongroup_D": [float(w_ci[0]), float(w_ci[1])],
-
-            "party_of_choice": party,
-            "confidence_score": confidence_score,
-
-            # GUI-ready density curves (no plotting required)
-            "density": {
-                "bins": int(HIST_BINS),
-                "grid": [float(v) for v in b_grid],         # x-axis values (bin centers)
-                "group": [float(v) for v in b_dens],        # y-axis density for group
-                "nongroup": [float(v) for v in w_dens],     # y-axis density for non-group
-                "peak_x_group": float(b_peak_x),
-                "peak_y_group": float(b_peak_y),
-            },
+    def summ(a):
+        return {
+            "mean": float(np.mean(a)),
+            "median": float(np.median(a)),
+            "ci95": [float(np.quantile(a, 0.025)), float(np.quantile(a, 0.975))],
         }
 
-    out_json = outdir_path / f"{args.state}_ei_statewide.json"
-    serializable = {
-        "state": args.state,
-        "election": "2024_pres_proxy_dem_vs_rep",
-        "notes": {
-            "group_fraction_proxy": "group_VAP / VAP",
-            "vote_fraction": "votes_dem / (votes_dem + votes_rep)",
-            "weights": "votes_dem + votes_rep",
-            "confidence_score": f"histogram density peak (bins={HIST_BINS}) of group posterior",
+    out = {
+        "state": "OR",
+        "race_group": GROUP,
+        "population_base": TOTAL_COL,
+        "votes_base": "two_party_dem_share",
+        "n_precincts_used": int(len(gdf)),
+        "beta_P_dem_given_group": summ(beta),
+        "beta_comp_P_dem_given_non_group": summ(beta_comp),
+        # store a small sample for plotting/debug (not huge files)
+        "posterior_sample_preview": {
+            "beta": beta[:2000].tolist(),
+            "beta_comp": beta_comp[:2000].tolist(),
         },
-        "results": results_json,
     }
 
-    with open(out_json, "w") as f:
-        json.dump(serializable, f, indent=2)
-
-    print(f"\nWrote EI JSON: {out_json}")
-    print(f"Wrote EI outputs into: {outdir_path}")
+    OUTFILE.parent.mkdir(parents=True, exist_ok=True)
+    OUTFILE.write_text(json.dumps(out, indent=2))
+    print(f"Wrote {OUTFILE} with n={out['n_precincts_used']} precincts")
 
 if __name__ == "__main__":
     main()
