@@ -7,7 +7,6 @@ from gerrychain.updaters import Tally, cut_edges
 from gerrychain.constraints import within_percent_of_ideal_population
 from gerrychain.proposals import recom
 from functools import partial
-from gerrychain.tree import bipartition_tree
 
 def load_config(path):
     with open(path, "r") as f:
@@ -175,11 +174,6 @@ def main():
         pop_target=ideal_pop,
         epsilon=eps,
         node_repeats=3,
-        method=partial(
-            bipartition_tree,
-            max_attempts=5000,
-            allow_pair_reselection=True,
-        ),
     )
 
     chain = MarkovChain(
