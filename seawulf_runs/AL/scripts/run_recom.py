@@ -183,8 +183,11 @@ def main():
         initial_state=initial,
         total_steps=steps,
     )
+
     plans_path = os.path.join(outdir, f"plans_{mode}.jsonl")
     summary_path = os.path.join(outdir, f"summary_{mode}.json")
+    box_path = os.path.join(outdir, f"boxwhisker_raw_{mode}.jsonl")
+    box_written = 0
 
     plans_written = 0
     seat_splits = {}
@@ -196,7 +199,7 @@ def main():
     save_first_n = int(cfg.get("save_assignments_first_n", 10))
     save_every = int(cfg.get("save_assignments_every", 0))
 
-    with open(plans_path, "w") as fout:
+    with open(plans_path, "w") as fout, open(box_path, "w") as fbox:
         for i, part in enumerate(chain):
             rec = {"step": i}
 
@@ -233,6 +236,24 @@ def main():
                 k = str(metrics["cut_edges"])
                 cut_hist[k] = cut_hist.get(k, 0) + 1
 
+            # ---- box/whisker raw data (per-plan district minority %) ----
+            district_pcts = None
+            district_pcts_sorted = None
+
+            if vra_enabled and group_key is not None:
+                # district ids may not be 1..K; keep consistent ordering by sorting keys
+                dists = sorted(part.parts.keys(), key=lambda x: int(x) if str(x).isdigit() else str(x))
+                district_pcts = [district_minority_pct(part, d, group_key) for d in dists]
+                district_pcts_sorted = sorted(district_pcts)  # rank-based (needed for boxplots)
+            if district_pcts_sorted is not None:
+                fbox.write(json.dumps({
+                    "step": i,
+                    "group_key": group_key,
+                    "threshold": chosen_thr,
+                    "district_pcts_sorted": district_pcts_sorted
+                }) + "\n")
+                box_written += 1
+
             fout.write(json.dumps(rec) + "\n")
             plans_written += 1
 
@@ -254,6 +275,8 @@ def main():
         },
         "cut_edges_hist": cut_hist,
     }
+    summary["boxwhisker_raw_file"] = box_path
+    summary["boxwhisker_plans_written"] = box_written
 
     with open(summary_path, "w") as f:
         json.dump(summary, f, indent=2)
