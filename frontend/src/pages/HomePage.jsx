@@ -50,7 +50,7 @@ import { useState } from 'react'
 import { MapPin, BarChart2, MousePointerClick } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import USMap from '../components/maps/USMap'
 
 //CONNECT HERE: splashData — replace with fetch('/api/states') in a useEffect, store result in useState
@@ -74,107 +74,87 @@ export default function HomePage() {
     return (
         <div className="flex flex-col h-full bg-brand-surface overflow-hidden">
 
-            {/* ── PAGE HEADER ──────────────────────────────────────────────── */}
-            {/* Fixed-height header with app subtitle and page title */}
-            <div className="shrink-0 px-4 sm:px-8 lg:px-10 py-4 border-b border-brand-muted/30">
-                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-muted mb-0">
-                    Voting Rights Act · Redistricting Analysis
-                </p>
-                <h1 className="text-2xl sm:text-3xl font-bold text-brand-darkest tracking-tight">
-                    Redistricting Explorer
-                </h1>
-                <p className="text-brand-muted/70 text-sm mt-1">
-                    Analyze the Impact of the Voting Rights Act on Minorities
-                </p>
-            </div>
-
-            {/* ── MAP + INFO CARD ──────────────────────────────────────────── */}
-            {/* flex-row on large screens; stacked column on small screens */}
-            <div className="flex flex-col lg:flex-row flex-1 gap-5 p-4 sm:p-6 lg:p-8 min-h-0">
+{/* ── MAP + INFO CARD ──────────────────────────────────────────── */}
+            <div className="flex flex-col lg:flex-row flex-1 gap-4 p-3 sm:p-4 lg:p-5 min-h-0">
 
                 {/* ── MAP PANEL ────────────────────────────────────────────── */}
-                {/* USMap fires onStateHover(stateObj) when the user hovers a state.
-                    Highlighted states are determined by the splashData list. */}
-                <div className="rounded-xl overflow-hidden border border-brand-muted/25 shadow-sm h-[280px] sm:h-[360px] lg:h-auto lg:flex-[0_0_65%]">
+                <div className="rounded-xl overflow-hidden border border-brand-muted/25 shadow-sm h-[340px] sm:h-[440px] lg:h-auto lg:flex-[0_0_70%]">
                     <USMap onStateHover={setHoveredState} />
                 </div>
 
                 {/* ── INFO CARD ────────────────────────────────────────────── */}
-                {/* Shows state profile details when hoveredState is set,
-                    otherwise shows the empty / call-to-action state. */}
                 <div className="flex-1 min-w-0 flex flex-col min-h-[220px] lg:min-h-0">
                     <Card className="flex-1 p-0 border-brand-muted/25 shadow-sm">
 
                         {hoveredState ? (
 
                             /* ── HOVERED STATE PROFILE ───────────────────── */
-                            <>
-                                <CardHeader className="pb-3 pt-6 px-6">
-                                    <div className="flex items-center gap-2 mb-2">
+                            <CardContent className="h-full flex flex-col items-center justify-center gap-6 text-center px-8">
+                                <div className="flex flex-col items-center gap-1">
+                                    <div className="flex items-center gap-2">
                                         <MapPin className="w-4 h-4 text-brand-muted" />
-                                        <span className="text-brand-muted text-xs uppercase tracking-[0.18em] font-semibold">
+                                        <span className="text-brand-muted text-[10px] uppercase tracking-[0.18em] font-semibold">
                                             State Profile
                                         </span>
                                     </div>
-                                    <CardTitle className="text-brand-darkest text-2xl font-bold tracking-tight">
+                                    <p className="text-brand-darkest text-3xl font-bold tracking-tight">
                                         {hoveredState.stateName}
-                                    </CardTitle>
-                                </CardHeader>
+                                    </p>
+                                </div>
 
-                                <Separator className="mx-6 bg-brand-muted/20" />
+                                <Separator className="bg-brand-muted/20 w-16" />
 
-                                <CardContent className="pt-5 px-6 flex flex-col gap-5">
+                                <div className="w-full flex flex-col gap-4">
                                     {/* Congressional district count */}
                                     <div className="flex items-center justify-between">
-                                        <span className="text-brand-muted font-medium text-sm">Congressional Districts</span>
-                                        <span className="text-brand-darkest font-bold text-xl tabular-nums">
+                                        <span className="text-brand-muted font-medium text-base">Congressional Districts</span>
+                                        <span className="text-brand-darkest font-bold text-2xl tabular-nums">
                                             {hoveredState.numDistricts}
                                         </span>
                                     </div>
 
                                     {/* VRA preclearance status badge */}
                                     <div className="flex items-center justify-between">
-                                        <span className="text-brand-muted font-medium text-sm">VRA Preclearance</span>
+                                        <span className="text-brand-muted font-medium text-base">VRA Preclearance</span>
                                         {hoveredState.isPreclearance ? (
-                                            <Badge className="bg-brand-primary/10 text-brand-primary border-brand-primary/30 text-xs font-semibold">
+                                            <Badge className="bg-brand-primary/10 text-brand-primary border-brand-primary/30 text-sm font-semibold px-3 py-1">
                                                 Required
                                             </Badge>
                                         ) : (
-                                            <Badge variant="outline" className="text-brand-muted border-brand-muted/40 text-xs">
+                                            <Badge variant="outline" className="text-brand-muted border-brand-muted/40 text-sm px-3 py-1">
                                                 Not Required
                                             </Badge>
                                         )}
                                     </div>
+                                </div>
 
-                                    <Separator className="bg-brand-muted/20" />
+                                <Separator className="bg-brand-muted/20 w-full" />
 
-                                    {/* Click prompt */}
-                                    <div className="flex items-center justify-center gap-2 text-brand-muted/50">
-                                        <MousePointerClick className="w-3.5 h-3.5" />
-                                        <span className="text-xs">Click the state to begin analysis</span>
-                                    </div>
-                                </CardContent>
-                            </>
+                                {/* Click prompt */}
+                                <div className="flex items-center justify-center gap-2 text-brand-muted/50">
+                                    <MousePointerClick className="w-4 h-4" />
+                                    <span className="text-sm">Click the state to begin analysis</span>
+                                </div>
+                            </CardContent>
 
                         ) : (
 
                             /* ── EMPTY STATE (no hover) ──────────────────── */
-                            /* Shows the available-states badge list until a state is hovered */
-                            <CardContent className="flex-1 flex flex-col items-center justify-center gap-5 text-center px-8 py-8">
-                                <div className="w-14 h-14 rounded-full bg-brand-muted/10 flex items-center justify-center ring-1 ring-brand-muted/20">
-                                    <BarChart2 className="w-6 h-6 text-brand-muted/40" />
+                            <CardContent className="h-full flex flex-col items-center justify-center gap-6 text-center px-8">
+                                <div className="w-16 h-16 rounded-full bg-brand-muted/10 flex items-center justify-center ring-1 ring-brand-muted/20">
+                                    <BarChart2 className="w-8 h-8 text-brand-muted/40" />
                                 </div>
 
                                 <div>
-                                    <p className="text-brand-darkest font-bold text-base">Select a State</p>
-                                    <p className="font-semibold text-brand-muted/60 text-sm mt-1 leading-relaxed">
-                                        Hover over a highlighted state on the map to analyze its profile.
+                                    <p className="text-brand-darkest font-bold text-lg">Select a State</p>
+                                    <p className="font-semibold text-brand-muted/60 text-sm mt-2 leading-relaxed">
+                                        Hover a highlighted state on the map to see its profile.
                                     </p>
                                 </div>
 
-                                <Separator className="bg-brand-muted/20 w-12" />
+                                <Separator className="bg-brand-muted/20 w-16" />
 
-                                {/* Available-states badge list — sourced from splashData (replace with API) */}
+                                {/* Available-states badge list */}
                                 <div className="flex flex-col items-center gap-2">
                                     <span className="font-semibold text-brand-muted text-[10px] uppercase tracking-widest">
                                         Available for Analysis
@@ -184,7 +164,7 @@ export default function HomePage() {
                                             <Badge
                                                 key={s.stateId}
                                                 variant="outline"
-                                                className="text-brand-deep border-brand-muted/40 bg-brand-muted/5 text-xs"
+                                                className="text-brand-deep border-brand-muted/40 bg-brand-muted/5 text-sm px-3 py-1"
                                             >
                                                 {s.stateName}
                                             </Badge>

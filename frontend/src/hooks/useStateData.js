@@ -145,12 +145,34 @@ export default function useStateData() {
 
     /* ── Step 2: Read :stateId from the React Router URL params ─────────── */
     const { stateId } = useParams()
-    const setSelectedState = useAppStore(s => s.setSelectedState)
+    const setSelectedState    = useAppStore(s => s.setSelectedState)
+    const setDemographicGroups = useAppStore(s => s.setDemographicGroups)
+    const setFeasibleRaceFilter = useAppStore(s => s.setFeasibleRaceFilter)
 
-    /* ── Step 3: Sync the URL param into Zustand so the Navbar badge updates */
+    /* ── Step 3: Sync state-derived values into Zustand on state change ─────
+     *
+     *  · setSelectedState    — drives the Navbar badge.
+     *  · setDemographicGroups — populates FeasibleRaceFilter dynamically so it
+     *                           shows only groups with isFeasible === true for
+     *                           the current state (varies by state population).
+     *  · setFeasibleRaceFilter — auto-selects the first feasible group so the
+     *                            Gingles scatter always has a valid active series
+     *                            after a state switch.
+     *
+     *  //CONNECT HERE: when replacing DUMMY with a real fetch(), call these same
+     *  three setters inside the fetch().then() callback with data from the API.
+     * ─────────────────────────────────────────────────────────────────────── */
     useEffect(() => {
-        if (stateId) setSelectedState(stateId)
-    }, [stateId, setSelectedState])
+        if (!stateId) return
+        setSelectedState(stateId)
+
+        const groups = DUMMY[stateId]?.stateSummary?.demographicGroups ?? []
+        setDemographicGroups(groups)
+
+        // Auto-select the first feasible group for this state (e.g. 'black' for AL).
+        const firstFeasible = groups.find(g => g.isFeasible)
+        if (firstFeasible) setFeasibleRaceFilter(firstFeasible.group.toLowerCase())
+    }, [stateId, setSelectedState, setDemographicGroups, setFeasibleRaceFilter])
 
     /* ── Step 4: Resolve the data bundle from the dummy lookup ──────────────
      *  //CONNECT HERE: replace DUMMY[stateId] with fetched API data

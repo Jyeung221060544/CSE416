@@ -70,6 +70,8 @@ export default function EnsembleAnalysisSection({ data }) {
     /* ── Race filter for box & whisker (shared with Gingles via Zustand) ── */
     const feasibleRaceFilter = useAppStore(s => s.feasibleRaceFilter)
 
+    const stateName    = data?.stateSummary?.stateName ?? null
+
     /* ── Derived data — Ensemble Splits ──────────────────────────────────── */
     const splitsData   = data?.splits ?? null
     const enactedSplit = splitsData?.enactedPlanSplit ?? null
@@ -118,9 +120,12 @@ export default function EnsembleAnalysisSection({ data }) {
         <section id="ensemble-analysis" className="p-2 sm:p-3 lg:p-4 border-b border-brand-muted/30 h-[calc(100vh-3.5rem)] flex flex-col overflow-hidden">
 
             {/* ── SECTION TITLE ──────────────────────────────────────────── */}
-            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-brand-darkest tracking-tight mb-3 shrink-0">
-                Ensemble Analysis
-            </h2>
+            <div className="flex items-baseline justify-between mb-3 shrink-0">
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-brand-darkest tracking-tight">
+                    {stateName && <span className="text-brand-primary">{stateName} — </span>}Ensemble Analysis
+                </h2>
+                <span className="hidden sm:inline-flex items-center gap-1.5 text-sm italic font-medium text-brand-primary bg-brand-primary/10 border border-brand-primary/20 px-3 py-0.5 rounded-full">&ldquo;Is the enacted map unusual?&rdquo;</span>
+            </div>
 
             {/* ── BROWSER TABS + CONTENT PANEL ───────────────────────────── */}
             <BrowserTabs
