@@ -1,45 +1,26 @@
 # scripts/gingles_regression.py
 """
-gingles_regression.py
-=====================
+Build non-linear regression curves for Gingles 2/3 plots.
 
-Builds non-linear regression curves for Gingles 2/3 plots (Prepro-8).
+Runs all configured state/group jobs in one execution.
 
-Input:
-  A precinct table JSON produced by your gingles.py script, e.g.
-    AL_data/AL_gingles_Black_precinct_table.json
-    AL_data/AL_gingles_White_precinct_table.json
-    OR_data/OR_gingles_Latino_precinct_table.json
-    OR_data/OR_gingles_White_precinct_table.json
+Input examples:
+  AL_data/AL_gingles_Black_precinct_table.json
+  AL_data/AL_gingles_White_precinct_table.json
+  OR_data/OR_gingles_Latino_precinct_table.json
+  OR_data/OR_gingles_White_precinct_table.json
 
-Output:
-  A regression JSON with:
-    - chosen model name
-    - RMSE on a simple holdout split
-    - x_grid (0..1)
-    - dem_curve(x), rep_curve(x) = 1 - dem_curve(x)
-
-Models tried:
-  - polynomial degrees 1..4 (linear/quadratic/cubic/quartic) via numpy polyfit
-  - logistic curve (4-parameter) if SciPy is available (optional)
-
-Usage examples:
-  python3 scripts/gingles_regression.py AL Black
-  python3 scripts/gingles_regression.py AL White
-  python3 scripts/gingles_regression.py OR Latino
-  python3 scripts/gingles_regression.py OR White
-
-Notes:
-  - Uses x = group_pct, y = dem_share from your precinct table rows.
-  - Ensures predictions are clipped to [0,1].
-  - Keeps it self-contained: numpy only required; SciPy optional.
+Output examples:
+  AL_data/AL_gingles_regression_Black.json
+  AL_data/AL_gingles_regression_White.json
+  OR_data/OR_gingles_regression_Latino.json
+  OR_data/OR_gingles_regression_White.json
 """
 
 from __future__ import annotations
 
 import json
 import math
-import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable, Dict, List, Optional, Tuple
@@ -47,7 +28,15 @@ from typing import Callable, Dict, List, Optional, Tuple
 import numpy as np
 
 
-ROOT = Path(__file__).resolve().parents[3]  # CSE416-Project repo root
+ROOT = Path(__file__).resolve().parent  # CSE416-Project repo root
+
+# Configure every regression job here.
+JOBS = [
+    {"state": "AL", "group": "Black"},
+    {"state": "AL", "group": "White"},
+    {"state": "OR", "group": "Latino"},
+    {"state": "OR", "group": "White"},
+]
 
 
 # ----------------------------- Utilities -----------------------------
@@ -87,7 +76,6 @@ def _load_precinct_table(path: Path) -> Tuple[str, str, np.ndarray, np.ndarray]:
     if not rows:
         raise ValueError(f"No rows found in precinct table: {path}")
 
-    # Pull x/y from each row; ignore bad rows
     xs: List[float] = []
     ys: List[float] = []
     for r in rows:
@@ -123,7 +111,6 @@ class CandidateModel:
 def _fit_poly(
     x_tr: np.ndarray, y_tr: np.ndarray, x_te: np.ndarray, y_te: np.ndarray, degree: int
 ) -> CandidateModel:
-    # Fit polynomial in least squares sense
     coeffs = np.polyfit(x_tr, y_tr, deg=degree)
     p = np.poly1d(coeffs)
 
@@ -143,9 +130,8 @@ def _try_fit_logistic(
     x_tr: np.ndarray, y_tr: np.ndarray, x_te: np.ndarray, y_te: np.ndarray
 ) -> Optional[CandidateModel]:
     """
-    Optional: 4-parameter logistic curve:
+    Optional 4-parameter logistic curve:
       y = d + (a - d) / (1 + exp(-b(x - c)))
-    Uses SciPy if available. If not, returns None.
     """
     try:
         from scipy.optimize import curve_fit  # type: ignore
@@ -155,17 +141,14 @@ def _try_fit_logistic(
     def logistic(xx, a, b, c, d):
         return d + (a - d) / (1.0 + np.exp(-b * (xx - c)))
 
-    # Initialize params: keep within [0,1]
     a0 = float(np.clip(np.max(y_tr), 0, 1))
     d0 = float(np.clip(np.min(y_tr), 0, 1))
     b0 = 5.0
     c0 = 0.5
-
-    # Bounds keep outputs stable
     bounds = ([0.0, -50.0, 0.0, 0.0], [1.0, 50.0, 1.0, 1.0])
 
     try:
-        popt, _pcov = curve_fit(
+        popt, _ = curve_fit(
             logistic,
             x_tr,
             y_tr,
@@ -194,19 +177,16 @@ def _try_fit_logistic(
 
 
 def choose_best_model(x: np.ndarray, y: np.ndarray, seed: int = 42) -> CandidateModel:
-    # Split once for model selection (simple + repeatable)
     x_tr, x_te, y_tr, y_te = _train_test_split(x, y, test_frac=0.2, seed=seed)
 
     models: List[CandidateModel] = []
 
-    # Polynomials 1..4
     for deg in [1, 2, 3, 4]:
         try:
             models.append(_fit_poly(x_tr, y_tr, x_te, y_te, deg))
         except Exception:
             pass
 
-    # Optional logistic
     mlog = _try_fit_logistic(x_tr, y_tr, x_te, y_te)
     if mlog is not None:
         models.append(mlog)
@@ -219,14 +199,8 @@ def choose_best_model(x: np.ndarray, y: np.ndarray, seed: int = 42) -> Candidate
 
 
 def resolve_paths(state: str, group: str) -> Tuple[Path, Path]:
-    """
-    Maps (state, group) -> input precinct table and output regression file.
-    """
     state = state.upper().strip()
-    group_norm = group.strip().title()  # "black" -> "Black", "latino" -> "Latino"
-
-    if state not in {"AL", "OR"}:
-        raise ValueError("state must be AL or OR")
+    group_norm = group.strip().title()
 
     base = ROOT / f"{state}_data"
     infile = base / f"{state}_gingles_{group_norm}_precinct_table.json"
@@ -242,17 +216,16 @@ def build_output(
     model: CandidateModel,
     grid_n: int = 201,
 ) -> Dict:
-    # grid from 0..1
     x_grid = np.linspace(0.0, 1.0, grid_n)
     dem_curve = model.predict(x_grid)
     rep_curve = _clip01(1.0 - dem_curve)
 
-    out = {
+    return {
         "state": state,
         "group": group,
         "x_label": "group_pct",
         "y_label_dem": "dem_share",
-        "models_tried": None,  # keep output small; if you want, store more
+        "models_tried": None,
         "chosen_model": model.name,
         "rmse": float(model.rmse),
         "meta": model.meta,
@@ -261,35 +234,35 @@ def build_output(
         "dem_curve": [float(v) for v in dem_curve],
         "rep_curve": [float(v) for v in rep_curve],
     }
-    return out
 
 
-def main() -> None:
-    if len(sys.argv) < 3:
-        print("Usage: python3 scripts/gingles_regression.py <AL|OR> <Black|White|Latino>")
-        sys.exit(1)
-
-    state = sys.argv[1].upper().strip()
-    group = sys.argv[2].strip().title()
-
+def run_job(state: str, group: str) -> None:
     infile, outfile = resolve_paths(state, group)
 
     if not infile.exists():
-        raise FileNotFoundError(f"Missing input precinct table: {infile}")
+        print(f"Skipping missing input: {infile}")
+        return
 
     st, grp, x, y = _load_precinct_table(infile)
-
-    # Choose best non-linear regression model
     best = choose_best_model(x, y, seed=42)
-
-    # Build output JSON
     payload = build_output(st, grp, x, y, best, grid_n=201)
 
     outfile.parent.mkdir(parents=True, exist_ok=True)
     outfile.write_text(json.dumps(payload, indent=2))
+
     print(f"Loaded: {infile} (n={len(x)})")
     print(f"Chosen: {best.name}  RMSE={best.rmse:.4f}")
     print(f"Wrote:  {outfile}")
+    print("-" * 60)
+
+
+def main() -> None:
+    for job in JOBS:
+        try:
+            run_job(job["state"], job["group"])
+        except Exception as e:
+            print(f"Failed for {job['state']} {job['group']}: {e}")
+            print("-" * 60)
 
 
 if __name__ == "__main__":

@@ -4,93 +4,117 @@ from pathlib import Path
 import geopandas as gpd
 import numpy as np
 from pyei import TwoByTwoEI
-from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]  # CSE416-Project
 INFILE = ROOT / "AL_data" / "AL_precincts_full.geojson"
-OUTFILE = ROOT / "AL_data" / "ei_AL_other_2x2.json" # Change to ei_AL_black_2x2.json, ei_AL_latino_2x2.json, ei_AL_white_2x2.json, ei_AL_asian_2x2.json, ei_AL_other_2x2.json
+OUTDIR = ROOT / "AL_data"
 
-GROUP_COL = "OTHER_VAP"   # Run for "NH_BLACK_ALONE_VAP", "LATINO_VAP", and "NH_WHITE_ALONE_VAP", "NH_ASIAN_ALONE_VAP", "OTHER_VAP"
-TOTAL_COL = "VAP"                 # total population base (your project uses VAP consistently)
+TOTAL_COL = "VAP"       # total population base
 DEM_COL = "votes_dem"
 REP_COL = "votes_rep"
-GROUP = "Other"      # Change to Black_NH, Latino, White_NH, Asian_NH, Other
 
-def main():
-    gdf = gpd.read_file(INFILE)
+GROUP_CONFIGS = [
+    {"col": "NH_BLACK_ALONE_VAP", "name": "Black_NH", "outfile": "ei_AL_black_2x2.json"},
+    {"col": "LATINO_VAP", "name": "Latino", "outfile": "ei_AL_latino_2x2.json"},
+    {"col": "NH_WHITE_ALONE_VAP", "name": "White_NH", "outfile": "ei_AL_white_2x2.json"},
+    {"col": "NH_ASIAN_ALONE_VAP", "name": "Asian_NH", "outfile": "ei_AL_asian_2x2.json"},
+    {"col": "OTHER_VAP", "name": "Other", "outfile": "ei_AL_other_2x2.json"},
+]
 
-    # Keep only rows with sensible totals
+
+def summ(a):
+    return {
+        "mean": float(np.mean(a)),
+        "median": float(np.median(a)),
+        "ci95": [
+            float(np.quantile(a, 0.025)),
+            float(np.quantile(a, 0.975)),
+        ],
+    }
+
+
+def run_ei_for_group(gdf, group_col, group_name, outfile):
     total = gdf[TOTAL_COL].to_numpy(dtype=float)
-    group = gdf[GROUP_COL].to_numpy(dtype=float)
+    group = gdf[group_col].to_numpy(dtype=float)
     dem = gdf[DEM_COL].to_numpy(dtype=float)
     rep = gdf[REP_COL].to_numpy(dtype=float)
     tot_votes = dem + rep
 
+    # Keep only rows with sensible totals
     mask = (total > 0) & (tot_votes > 0) & (group >= 0) & (group <= total)
-    gdf = gdf.loc[mask].copy()
+    gdf_use = gdf.loc[mask].copy()
 
-    total = gdf[TOTAL_COL].to_numpy(dtype=float)
-    group = gdf[GROUP_COL].to_numpy(dtype=float)
-    dem = gdf[DEM_COL].to_numpy(dtype=float)
-    rep = gdf[REP_COL].to_numpy(dtype=float)
+    total = gdf_use[TOTAL_COL].to_numpy(dtype=float)
+    group = gdf_use[group_col].to_numpy(dtype=float)
+    dem = gdf_use[DEM_COL].to_numpy(dtype=float)
+    rep = gdf_use[REP_COL].to_numpy(dtype=float)
     tot_votes = dem + rep
 
     # Fractions required by TwoByTwoEI
-    x = (group / total).clip(0, 1)          # fraction of group in precinct
-    y = (dem / tot_votes).clip(0, 1)        # Dem two-party vote share in precinct
+    x = (group / total).clip(0, 1)      # fraction of group in precinct
+    y = (dem / tot_votes).clip(0, 1)    # Dem two-party vote share in precinct
 
     # Fit EI
-    model = TwoByTwoEI(model_name="king99_pareto_modification", pareto_scale=8)
+    model = TwoByTwoEI(
+        model_name="king99_pareto_modification",
+        pareto_scale=8
+    )
     model.fit(
         group_fraction=x,
         votes_fraction=y,
         precinct_pops=tot_votes.astype(int),
-        demographic_group_name=GROUP,
-        candidate_name="Dem"
+        demographic_group_name=group_name,
+        candidate_name="Dem",
     )
 
-    print("sim_trace type:", type(model.sim_trace))
-    post = model.sim_trace.posterior if hasattr(model.sim_trace, "posterior") else model.sim_trace
-    print("posterior vars:", list(getattr(post, "data_vars", post.keys())))
-
-    # --- Extract posterior draws (this pyei version stores them in sim_trace) ---
     if not hasattr(model, "sim_trace") or model.sim_trace is None:
-        raise AttributeError("TwoByTwoEI has no sim_trace; can't extract posterior draws.")
+        raise AttributeError(f"TwoByTwoEI has no sim_trace for {group_name}; can't extract posterior draws.")
 
-    tr = model.sim_trace  # typically an ArviZ InferenceData or xarray Dataset
-
-    # Handle both InferenceData (.posterior) and Dataset-like objects
+    tr = model.sim_trace
     post = tr.posterior if hasattr(tr, "posterior") else tr
 
-    # In this pyei version, voting prefs are named b_1 (group) and b_2 (non-group)
-    beta = np.asarray(post["b_1"]).reshape(-1)       # P(Dem | GROUP)
-    beta_comp = np.asarray(post["b_2"]).reshape(-1)  # P(Dem | non-GROUP)
-
-    def summ(a):
-        return {
-            "mean": float(np.mean(a)),
-            "median": float(np.median(a)),
-            "ci95": [float(np.quantile(a, 0.025)), float(np.quantile(a, 0.975))],
-        }
+    # In this pyei version:
+    # b_1 = P(Dem | GROUP)
+    # b_2 = P(Dem | non-GROUP)
+    beta = np.asarray(post["b_1"]).reshape(-1)
+    beta_comp = np.asarray(post["b_2"]).reshape(-1)
 
     out = {
         "state": "AL",
-        "race_group": GROUP,
+        "race_group": group_name,
+        "group_column": group_col,
         "population_base": TOTAL_COL,
         "votes_base": "two_party_dem_share",
-        "n_precincts_used": int(len(gdf)),
+        "n_precincts_used": int(len(gdf_use)),
         "beta_P_dem_given_group": summ(beta),
         "beta_comp_P_dem_given_non_group": summ(beta_comp),
-        # store a small sample for plotting/debug (not huge files)
         "posterior_sample_preview": {
             "beta": beta[:2000].tolist(),
             "beta_comp": beta_comp[:2000].tolist(),
         },
     }
 
-    OUTFILE.parent.mkdir(parents=True, exist_ok=True)
-    OUTFILE.write_text(json.dumps(out, indent=2))
-    print(f"Wrote {OUTFILE} with n={out['n_precincts_used']} precincts")
+    outfile_path = OUTDIR / outfile
+    outfile_path.parent.mkdir(parents=True, exist_ok=True)
+    outfile_path.write_text(json.dumps(out, indent=2))
+
+    print(f"Wrote {outfile_path} with n={out['n_precincts_used']} precincts")
+
+
+def main():
+    gdf = gpd.read_file(INFILE)
+
+    for cfg in GROUP_CONFIGS:
+        print(f"Running EI for {cfg['name']} ({cfg['col']})...")
+        run_ei_for_group(
+            gdf=gdf,
+            group_col=cfg["col"],
+            group_name=cfg["name"],
+            outfile=cfg["outfile"],
+        )
+
+    print("Done. Generated all 2x2 EI output files.")
+
 
 if __name__ == "__main__":
     main()
