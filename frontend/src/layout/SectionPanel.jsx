@@ -93,10 +93,8 @@ export default function SectionPanel({ collapsed }) {
             activeRPTab, setActiveRPTab,
             activeEATab, setActiveEATab } = useAppStore()
 
-    // subOpen{SO,RP,EA} — controls whether each sub-nav accordion is open (local UI only)
-    const [subOpenSO, setSubOpenSO] = useState(true)
-    const [subOpen,   setSubOpen]   = useState(true)
-    const [subOpenEA, setSubOpenEA] = useState(true)
+    // hoveredSection — id of the section whose subsections are currently visible (null = none)
+    const [hoveredSection, setHoveredSection] = useState(null)
 
 
     /* ── Step 2: Navigation helpers ──────────────────────────────────────── */
@@ -144,53 +142,9 @@ export default function SectionPanel({ collapsed }) {
         scrollToSection('ensemble-analysis')
     }
 
-    /**
-     * handleSOClick — Click handler for the State Overview nav button.
-     *
-     * Two behaviors:
-     *   • Already active  → toggle SO sub-nav accordion open/closed.
-     *   • Not active      → expand sub-nav and scroll to the section.
-     */
-    const handleSOClick = () => {
-        if (activeSection === 'state-overview') {
-            setSubOpenSO(o => !o)
-        } else {
-            setSubOpenSO(true)
-            scrollToSection('state-overview')
-        }
-    }
-
-    /**
-     * handleRPClick — Click handler for the Racial Polarization nav button.
-     *
-     * Two behaviors:
-     *   • Already active  → toggle RP sub-nav accordion open/closed.
-     *   • Not active      → expand sub-nav and scroll to the section.
-     */
-    const handleRPClick = () => {
-        if (activeSection === 'racial-polarization') {
-            setSubOpen(o => !o)
-        } else {
-            setSubOpen(true)
-            scrollToSection('racial-polarization')
-        }
-    }
-
-    /**
-     * handleEAClick — Click handler for the Ensemble Analysis nav button.
-     *
-     * Two behaviors:
-     *   • Already active  → toggle EA sub-nav accordion open/closed.
-     *   • Not active      → expand sub-nav and scroll to the section.
-     */
-    const handleEAClick = () => {
-        if (activeSection === 'ensemble-analysis') {
-            setSubOpenEA(o => !o)
-        } else {
-            setSubOpenEA(true)
-            scrollToSection('ensemble-analysis')
-        }
-    }
+    const handleSOClick = () => scrollToSection('state-overview')
+    const handleRPClick = () => scrollToSection('racial-polarization')
+    const handleEAClick = () => scrollToSection('ensemble-analysis')
 
 
     /* ── Step 3: Render ──────────────────────────────────────────────────── */
@@ -231,7 +185,7 @@ export default function SectionPanel({ collapsed }) {
                                       : () => scrollToSection(section.id)
 
                     /* Which sub-nav state / items / active id / select handler belong to this section */
-                    const subNavOpen     = isSO ? subOpenSO : isRP ? subOpen : subOpenEA
+                    const subNavOpen     = hoveredSection === section.id
                     const subsections    = isSO ? SO_SUBSECTIONS : isRP ? RP_SUBSECTIONS : EA_SUBSECTIONS
                     const subNavActiveId = isSO ? activeSOTab : isRP ? activeRPTab : activeEATab
                     const subNavOnSelect = isSO ? activateSOTab
@@ -239,7 +193,11 @@ export default function SectionPanel({ collapsed }) {
                                         : activateEATab
 
                     return (
-                        <div key={section.id}>
+                        <div
+                            key={section.id}
+                            onMouseEnter={() => hasSubNav && !collapsed && setHoveredSection(section.id)}
+                            onMouseLeave={() => hasSubNav && setHoveredSection(null)}
+                        >
 
                             {/* ── COLLAPSED MODE: dot button + tooltip ─────── */}
                             {collapsed ? (
@@ -289,7 +247,7 @@ export default function SectionPanel({ collapsed }) {
 
                                     {/* Chevron for sections that have sub-sections */}
                                     {hasSubNav && !collapsed && (
-                                        subNavOpen && isActive
+                                        subNavOpen
                                             ? <ChevronDown className="w-3.5 h-3.5 opacity-70 shrink-0" />
                                             : <ChevronRight className="w-3.5 h-3.5 opacity-70 shrink-0" />
                                     )}
@@ -297,9 +255,9 @@ export default function SectionPanel({ collapsed }) {
                             )}
 
                             {/* ── SUB-SECTION TABS ─────────────────────────── */}
-                            {/* Only rendered when this section is active and sub-nav is open.
+                            {/* Rendered when hovering over this section's group (button + tabs).
                                 SubSectionNav renders the Gingles/EI or Splits/BoxWhisker tabs. */}
-                            {hasSubNav && isActive && subNavOpen && (
+                            {hasSubNav && subNavOpen && (
                                 <SubSectionNav
                                     subsections={subsections}
                                     activeId={subNavActiveId}

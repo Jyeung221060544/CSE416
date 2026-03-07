@@ -47,8 +47,8 @@ const NIVO_THEME = {
  * @returns {React.ComponentType}
  */
 function makeSliceTooltip(candidate) {
-    const partyColor = candidate?.party === 'Democratic' ? DEM_COLOR : REP_COLOR
-    const partyName  = candidate?.party ?? ''
+    const partyColor     = candidate?.party === 'Democratic' ? DEM_COLOR : REP_COLOR
+    const candidateName  = candidate?.candidateName ?? candidate?.party ?? ''
     const peakMap    = {}
     candidate?.racialGroups?.forEach(g => { peakMap[g.group.toLowerCase()] = g.peakSupportEstimate })
 
@@ -57,7 +57,7 @@ function makeSliceTooltip(candidate) {
         const pts = [...slice.points].sort((a,b) => b.data.y - a.data.y)
         return (
             <div style={{ background:'white', border:`2px solid ${partyColor}`, borderRadius:8, padding:'8px 12px', boxShadow:'0 4px 16px rgba(0,0,0,0.13)', fontSize:12, minWidth:200, lineHeight:1.6 }}>
-                <div style={{ color:partyColor, fontWeight:700, fontSize:11, textTransform:'uppercase', letterSpacing:'0.07em', marginBottom:3 }}>{partyName}</div>
+                <div style={{ color:partyColor, fontWeight:700, fontSize:11, textTransform:'uppercase', letterSpacing:'0.07em', marginBottom:3 }}>{candidateName}</div>
                 <div style={{ color:'#475569', marginBottom:5 }}>Vote share: <strong style={{ color:LABEL_COLOR }}>{(x*100).toFixed(1)}%</strong></div>
                 {pts.map(pt => {
                     const sid    = pt.seriesId ?? pt.serieId
@@ -171,7 +171,7 @@ export default function EIKDEChart({ candidate, activeRaces, yMax, className }) 
 
             {/* ── CANDIDATE HEADER ─────────────────────────────────────────── */}
             <div className="flex items-center gap-2 px-4 pt-3 pb-1 flex-shrink-0 border-b border-brand-muted/10">
-                <span className="text-lg font-bold" style={{ color:partyColor }}>{candidate.party}</span>
+                <span className="text-lg font-bold" style={{ color:partyColor }}>{candidate.candidateName ?? candidate.party}</span>
             </div>
 
             {/* ── RACE LEGEND ──────────────────────────────────────────────── */}

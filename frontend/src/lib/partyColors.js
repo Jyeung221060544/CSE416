@@ -32,9 +32,11 @@ export const DEM_COLOR     = '#3b82f6'   // blue-500    (Dem primary)
 export const DEM_DARK      = '#1d4ed8'   // blue-700    (Dem trendline / darker accent)
 export const REP_COLOR     = '#ef4444'   // red-500     (Rep primary)
 export const REP_DARK      = '#b91c1c'   // red-700     (Rep trendline / darker accent)
-export const TIE_COLOR     = '#a855f7'   // purple-500  (tied seat bar)
-export const ENACTED_COLOR = '#595a96'   // brand-primary (enacted plan marker)
-export const THRESH_COLOR  = '#94a3b8'   // slate-400   (neutral threshold lines)
+export const TIE_COLOR          = '#a855f7'   // purple-500  (tied seat bar)
+export const ENACTED_COLOR      = '#595a96'   // brand-primary (enacted plan marker)
+export const THRESH_COLOR       = '#94a3b8'   // slate-400   (neutral threshold lines)
+export const COMPARE_RB_COLOR   = '#31e2a1'   // green-700   (Race-Blind bars in compare view)
+export const COMPARE_VRA_COLOR  = '#ea8e24'   // purple-700  (VRA-Constrained bars in compare view)
 
 
 /* ── Step 1: Party Tailwind badge and text classes ───────────────────────────

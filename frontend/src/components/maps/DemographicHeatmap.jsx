@@ -163,7 +163,7 @@ function MapResizeHandler({ data }) {
  *                                             Falls back to the US center if null.
  * @returns {JSX.Element} Full-height Leaflet map or an "unavailable" fallback.
  */
-export default function DemographicHeatmap({ stateId, granularity, heatmapData, raceFilter, mapView }) {
+export default function DemographicHeatmap({ stateId, granularity, heatmapData, raceFilter, mapView, showDistrictOverlay, districtPartyMap }) {
     /* ── Step 5a: Resolve geometry sources ── */
     const outlineData = STATE_OUTLINE[stateId] ?? null
     const sampleData  = GEO_SAMPLES[stateId]?.[granularity] ?? null
@@ -242,6 +242,23 @@ export default function DemographicHeatmap({ stateId, granularity, heatmapData, 
                             color:       '#134e4a',
                             weight:      0.5,
                         }
+                    }}
+                />
+            )}
+
+            {/* ── DISTRICT BOUNDARY OVERLAY ───────────────────────────── */}
+            {/* Borders only (no fill) colored red/blue by party majority */}
+            {showDistrictOverlay && outlineData && (
+                <GeoJSON
+                    key={`district-overlay-${stateId}-${showDistrictOverlay}`}
+                    data={outlineData}
+                    style={feature => {
+                        const districtNum = parseInt(feature?.properties?.CD119FP ?? '0', 10)
+                        const party = districtPartyMap?.[districtNum]
+                        const color = party === 'Democratic' ? '#3b82f6'
+                                    : party === 'Republican' ? '#ef4444'
+                                    : '#94a3b8'
+                        return { fillOpacity: 0, color, weight: 2.5, opacity: 0.9 }
                     }}
                 />
             )}

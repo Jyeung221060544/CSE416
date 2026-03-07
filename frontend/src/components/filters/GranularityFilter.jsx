@@ -25,14 +25,15 @@ const GRANULARITY_OPTIONS = [
 
 
 /**
- * GranularityFilter — Single-select radio group for heatmap spatial granularity.
+ * GranularityFilter — Single-select radio group for heatmap spatial granularity
+ * with an inline district boundary overlay toggle below the radio options.
  *
  * @returns {JSX.Element}
  */
 export default function GranularityFilter() {
 
     /* ── Step 1: Read filter state from Zustand ──────────────────────────── */
-    const { granularityFilter, setGranularityFilter } = useFilters()
+    const { granularityFilter, setGranularityFilter, showDistrictOverlay, setShowDistrictOverlay } = useFilters()
 
 
     /* ── Step 2: Render ──────────────────────────────────────────────────── */
@@ -52,6 +53,15 @@ export default function GranularityFilter() {
                     <span className="text-sm text-brand-surface">{opt.label}</span>
                 </label>
             ))}
+            <label className="flex items-center gap-2 px-1 py-1 cursor-pointer select-none">
+                <input
+                    type="checkbox"
+                    checked={showDistrictOverlay}
+                    onChange={e => setShowDistrictOverlay(e.target.checked)}
+                    className="appearance-none w-4 h-4 rounded border border-brand-primary checked:bg-brand-primary checked:border-brand-primary transition-colors shrink-0"
+                />
+                <span className="text-sm text-brand-surface">Show District Borders</span>
+            </label>
         </CollapsibleGroup>
     )
 }

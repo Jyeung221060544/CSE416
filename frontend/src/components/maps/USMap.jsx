@@ -230,6 +230,7 @@ export default function USMap({ onStateHover }) {
                 style={baseStyle}
                 onEachFeature={onEachFeature}
             />
+
         </MapContainer>
     )
 }

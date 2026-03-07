@@ -30,7 +30,9 @@ import useAppStore from '../store/useAppStore'
 import RaceFilter         from '../components/filters/RaceFilter'
 import FeasibleRaceFilter from '../components/filters/FeasibleRaceFilter'
 import EIRaceFilter       from '../components/filters/EIRaceFilter'
-import GranularityFilter  from '../components/filters/GranularityFilter'
+import GranularityFilter      from '../components/filters/GranularityFilter'
+
+import CompareFilter       from '../components/filters/CompareFilter'
 import ResetFiltersButton from '../components/filters/ResetFiltersButton'
 
 
@@ -82,14 +84,18 @@ export default function FilterPanel() {
 
             {/* ── ENSEMBLE ANALYSIS ────────────────────────────────────────── */}
 
-            {/* Ensemble Splits tab: no user-controllable filters */}
+            {/* Ensemble Splits tab: compare toggle only */}
             {activeSection === 'ensemble-analysis' && activeEATab === 'ensemble-splits' && (
-                <span className="text-xs px-1 text-white/90 italic">No filters available</span>
+                <CompareFilter />
             )}
 
-            {/* Box & Whisker tab: FeasibleRaceFilter picks which minority group to plot */}
+            {/* Box & Whisker tab: compare toggle + race selector */}
             {activeSection === 'ensemble-analysis' && activeEATab === 'box-whisker' && (
-                <FeasibleRaceFilter />
+                <div className="flex flex-col gap-3">
+                    <CompareFilter />
+                    <Separator className="bg-brand-deep" />
+                    <FeasibleRaceFilter />
+                </div>
             )}
 
             {/* ── RESET BUTTON ─────────────────────────────────────────────── */}
