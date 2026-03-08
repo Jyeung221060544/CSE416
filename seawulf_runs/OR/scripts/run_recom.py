@@ -18,7 +18,7 @@ def ensure_dir(p):
 
 def district_effectiveness_record(part, dist, group_key, thr, party):
     pop = part["population"][dist]
-    minority = part[f"min_{group_key}"][dist]
+    minority = part["min_{}".format(group_key)][dist]
     pct = 0.0 if pop <= 0 else float(minority) / float(pop)
 
     dem = part["dem"][dist] if "dem" in part.updaters else None
@@ -209,9 +209,9 @@ def main():
         analysis_party = chosen_party if eff_enabled else None
 
         if mode == "test":
-            msg = f"[VRA] group={group_key} thr={chosen_thr} opp_K={target_k_opp}"
+            msg = "[VRA] group={} thr={} opp_K={}".format(group_key, chosen_thr, target_k_opp)
             if eff_enabled:
-                msg += f" eff_party={chosen_party} eff_K={target_k_eff}"
+                msg += " eff_party={} eff_K={}".format(chosen_party, target_k_eff)
             print(msg)
 
     # ---------------- chain ----------------
@@ -238,10 +238,10 @@ def main():
         total_steps=steps,
     )
 
-    plans_path = os.path.join(outdir, f"plans_{mode}.jsonl")
-    summary_path = os.path.join(outdir, f"summary_{mode}.json")
-    box_path = os.path.join(outdir, f"boxwhisker_raw_{mode}.jsonl")
-    district_eff_path = os.path.join(outdir, f"district_effectiveness_{mode}.jsonl")
+    plans_path = os.path.join(outdir, "plans_{}.jsonl".format(mode))
+    summary_path = os.path.join(outdir, "summary_{}.json".format(mode))
+    box_path = os.path.join(outdir, "boxwhisker_raw_{}.jsonl".format(mode))
+    district_eff_path = os.path.join(outdir, "district_effectiveness_{}.jsonl".format(mode))
     district_eff_written = 0
     box_written = 0
     plans_written = 0

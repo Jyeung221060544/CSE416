@@ -74,8 +74,8 @@ def main():
     tmp_root = original_outdir / "_parallel_tmp"
     ensure_dir(tmp_root)
 
-    print(f"[parallel] mode={mode} total_steps={total_steps} workers={workers}")
-    print(f"[parallel] chunks={chunks}")
+    print("[parallel] mode={} total_steps={} workers={}".format(mode, total_steps, workers))
+    print("[parallel] chunks={}".format(chunks))
 
     worker_cfg_paths = []
     worker_outdirs = []
@@ -84,7 +84,7 @@ def main():
     # Launch one subprocess per worker.
     for i, chunk_steps in enumerate(chunks):
         worker_cfg = copy.deepcopy(base_cfg)
-        worker_outdir = tmp_root / f"worker_{i}"
+        worker_outdir = tmp_root / "worker_{}".format(i)
         ensure_dir(worker_outdir)
 
         if mode == "test":
@@ -95,14 +95,14 @@ def main():
         # IMPORTANT: each worker writes to its own subdirectory.
         worker_cfg["output_dir"] = str(worker_outdir)
 
-        worker_cfg_path = tmp_root / f"config_worker_{i}.json"
+        worker_cfg_path = tmp_root / "config_worker_{}.json".format(i)
         write_json(worker_cfg_path, worker_cfg)
 
         worker_cfg_paths.append(worker_cfg_path)
         worker_outdirs.append(worker_outdir)
 
         cmd = [sys.executable, str(run_recom_py), str(worker_cfg_path), mode]
-        print(f"[parallel] launching worker {i}: {cmd}")
+        print("[parallel] launching worker {}: {}".format(i, cmd))
         p = subprocess.Popen(cmd, cwd=str(state_root))
         processes.append((i, p))
 
@@ -110,7 +110,7 @@ def main():
     failed = False
     for i, p in processes:
         rc = p.wait()
-        print(f"[parallel] worker {i} exit code: {rc}")
+        print("[parallel] worker {} exit code: {}".format(i, rc))
         if rc != 0:
             failed = True
 
@@ -120,15 +120,15 @@ def main():
 
     # Final merged output paths.
     ensure_dir(original_outdir)
-    merged_plans = original_outdir / f"plans_{mode}.jsonl"
-    merged_box = original_outdir / f"boxwhisker_raw_{mode}.jsonl"
-    merged_eff = original_outdir / f"district_effectiveness_{mode}.jsonl"
-    merged_summary = original_outdir / f"summary_{mode}.json"
+    merged_plans = original_outdir / "plans_{}.jsonl".format(mode)
+    merged_box = original_outdir / "boxwhisker_raw_{}.jsonl".format(mode)
+    merged_eff = original_outdir / "district_effectiveness_{}.jsonl".format(mode)
+    merged_summary = original_outdir / "summary_{}.json".format(mode)
 
     # Concatenate JSONL outputs.
-    plan_files = [w / f"plans_{mode}.jsonl" for w in worker_outdirs]
-    box_files = [w / f"boxwhisker_raw_{mode}.jsonl" for w in worker_outdirs]
-    eff_files = [w / f"district_effectiveness_{mode}.jsonl" for w in worker_outdirs]
+    plan_files = [w / "plans_{}.jsonl".format(mode) for w in worker_outdirs]
+    box_files = [w / "boxwhisker_raw_{}.jsonl".format(mode) for w in worker_outdirs]
+    eff_files = [w / "district_effectiveness_{}.jsonl".format(mode) for w in worker_outdirs]
 
     plans_written = concat_jsonl(plan_files, merged_plans)
     box_written = concat_jsonl(box_files, merged_box)
@@ -144,7 +144,7 @@ def main():
     worker_summaries = []
 
     for w in worker_outdirs:
-        s_path = w / f"summary_{mode}.json"
+        s_path = w / "summary_{}.json".format(mode)
         if not s_path.exists():
             continue
         s = load_json(s_path)
@@ -194,15 +194,15 @@ def main():
 
     write_json(merged_summary, merged)
 
-    print(f"[parallel] Wrote merged plans: {merged_plans}")
-    print(f"[parallel] Wrote merged box/whisker raw: {merged_box}")
-    print(f"[parallel] Wrote merged district effectiveness: {merged_eff}")
-    print(f"[parallel] Wrote merged summary: {merged_summary}")
+    print("[parallel] Wrote merged plans: {}".format(merged_plans))
+    print("[parallel] Wrote merged box/whisker raw: {}".format(merged_box))
+    print("[parallel] Wrote merged district effectiveness: {}".format(merged_eff))
+    print("[parallel] Wrote merged summary: {}".format(merged_summary))
 
     # Optional cleanup toggle.
     if os.environ.get("KEEP_PARALLEL_TMP", "1") == "0":
         shutil.rmtree(tmp_root, ignore_errors=True)
-        print(f"[parallel] Removed temp directory: {tmp_root}")
+        print("[parallel] Removed temp directory: {}".format(tmp_root))
 
 
 if __name__ == "__main__":
