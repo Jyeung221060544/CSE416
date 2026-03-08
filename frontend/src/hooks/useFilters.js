@@ -67,13 +67,23 @@ export default function useFilters() {
     // Global reset (ResetFiltersButton)
     const resetFilters = useAppStore((state) => state.resetFilters)
 
+    // District boundary overlay toggle (DistrictOverlayFilter)
+    const showDistrictOverlay    = useAppStore((state) => state.showDistrictOverlay)
+    const setShowDistrictOverlay = useAppStore((state) => state.setShowDistrictOverlay)
+
+    // Ensemble Analysis compare mode toggle (CompareFilter)
+    const eaCompareMode    = useAppStore((state) => state.eaCompareMode)
+    const setEaCompareMode = useAppStore((state) => state.setEaCompareMode)
+
     /* ── Step 1: Return bundled object for destructuring at call site ───── */
     return {
-        raceFilter,         setRaceFilter,
-        feasibleRaceFilter, setFeasibleRaceFilter,
-        granularityFilter,  setGranularityFilter,
-        ensembleFilter,     setEnsembleFilter,
-        eiRaceFilter,       toggleEiRaceFilter,
+        raceFilter,            setRaceFilter,
+        feasibleRaceFilter,    setFeasibleRaceFilter,
+        granularityFilter,     setGranularityFilter,
+        ensembleFilter,        setEnsembleFilter,
+        eiRaceFilter,          toggleEiRaceFilter,
+        showDistrictOverlay,   setShowDistrictOverlay,
+        eaCompareMode,         setEaCompareMode,
         resetFilters,
     }
 }

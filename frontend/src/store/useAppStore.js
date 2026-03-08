@@ -94,6 +94,13 @@ const useAppStore = create((set) => ({
     // FeasibleRaceFilter derives its option list by filtering this array on isFeasible.
     demographicGroups: [],
 
+    // Whether to draw district boundary outlines (red/blue by party) over the heatmap.
+    showDistrictOverlay: false,
+
+    // Whether the Ensemble Analysis section shows the compare chart instead of side-by-side.
+    // Resets to false on tab switch (handled in EnsembleAnalysisSection useEffect).
+    eaCompareMode: false,
+
 
     /* ── Step 3: UI state ────────────────────────────────────────────────── */
 
@@ -133,6 +140,12 @@ const useAppStore = create((set) => ({
 
     /** @param {Array<{group:string,vap:number,vapPercentage:number,isFeasible:boolean}>} groups  Groups from stateSummary. */
     setDemographicGroups: (groups) => set({ demographicGroups: groups }),
+
+    /** @param {boolean} val  Show/hide district boundary overlay on the heatmap. */
+    setShowDistrictOverlay: (val) => set({ showDistrictOverlay: val }),
+
+    /** @param {boolean} val  Toggle compare view in Ensemble Analysis. */
+    setEaCompareMode: (val) => set({ eaCompareMode: val }),
 
     /** @param {string} g  'precinct' or 'census_block'. */
     setGranularityFilter: (g)    => set({ granularityFilter: g }),
@@ -180,12 +193,14 @@ const useAppStore = create((set) => ({
      * because those are driven by the URL, not by user filter choices.
      */
     resetFilters: () => set({
-        raceFilter:         'black',
-        feasibleRaceFilter: 'black',
-        granularityFilter:  'precinct',
-        ensembleFilter:     'race_blind',
-        eiRaceFilter:       ['black'],
-        selectedDistrict:   null,
+        raceFilter:           'black',
+        feasibleRaceFilter:   'black',
+        granularityFilter:    'precinct',
+        ensembleFilter:       'race_blind',
+        eiRaceFilter:         ['black'],
+        selectedDistrict:     null,
+        showDistrictOverlay:  false,
+        eaCompareMode:        false,
     }),
 
 }))

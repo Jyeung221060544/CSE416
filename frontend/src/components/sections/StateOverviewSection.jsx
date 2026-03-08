@@ -263,8 +263,8 @@ export default function StateOverviewSection({ data, stateId }) {
                 {/* ── [Row 1, Col 2] TAB BAR ────────────────────────────────── */}
                 {/* On mobile: order-3 keeps it between map (order-2) and         */}
                 {/* panel (order-4) so it always sits directly above the panel.   */}
-                {selectedDistrict ? (
-                    /* Back button replaces tabs; shelf border is preserved */
+                {(selectedDistrict && activeTab !== 'congressional') ? (
+                    /* Back button — only shown when detail card is visible */
                     <div
                         className="order-3 lg:order-2 flex items-end pb-1"
                         style={{ borderBottom: '2px solid rgba(89,90,150,0.55)' }}
@@ -280,43 +280,43 @@ export default function StateOverviewSection({ data, stateId }) {
                         </Button>
                     </div>
                 ) : (
-                    /* Browser-tab shelf: active tab pierces it via marginBottom:-2px */
-                    <div
-                        className="order-3 lg:order-2"
-                        style={{ display: 'flex', alignItems: 'flex-end', gap: '3px', borderBottom: '2px solid rgba(89,90,150,0.55)', paddingLeft: '2px' }}
-                    >
-                        {OVERVIEW_TABS.map(tab => {
-                            const isActive = tab.id === activeTab
-                            return (
-                                <button
-                                    key={tab.id}
-                                    onClick={() => setActiveTab(tab.id)}
-                                    style={{
-                                        borderRadius: '8px 8px 0 0',
-                                        padding: isActive ? '8px 22px 9px' : '6px 20px 7px',
-                                        border: `2px solid ${isActive ? 'rgba(89,90,150,0.55)' : '#8f87c0'}`,
-                                        borderBottom: isActive ? '2px solid #f4f1ff' : '2px solid #8f87c0',
-                                        background: isActive ? '#f4f1ff' : '#ddd7f5',
-                                        color: isActive ? '#2e2a6e' : '#6b64a0',
-                                        marginBottom: isActive ? '-2px' : '0',
-                                        position: 'relative',
-                                        zIndex: isActive ? 2 : 1,
-                                        fontSize: 12,
-                                        fontWeight: 700,
-                                        letterSpacing: '0.02em',
-                                        whiteSpace: 'nowrap',
-                                        cursor: 'pointer',
-                                        transition: 'background 120ms, color 120ms',
-                                        boxShadow: isActive ? '0 -3px 8px rgba(89,90,150,0.15)' : 'none',
-                                    }}
-                                    onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = '#ece7ff' }}
-                                    onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = '#ddd7f5' }}
-                                >
-                                    {tab.label}
-                                </button>
-                            )
-                        })}
-                    </div>
+                /* Browser-tab shelf: active tab pierces it via marginBottom:-2px */
+                <div
+                    className="order-3 lg:order-2"
+                    style={{ display: 'flex', alignItems: 'flex-end', gap: '3px', borderBottom: '2px solid rgba(89,90,150,0.55)', paddingLeft: '2px' }}
+                >
+                    {OVERVIEW_TABS.map(tab => {
+                        const isActive = tab.id === activeTab
+                        return (
+                            <button
+                                key={tab.id}
+                                onClick={() => { setActiveTab(tab.id); if (tab.id !== 'congressional') setSelectedDistrict(null) }}
+                                style={{
+                                    borderRadius: '8px 8px 0 0',
+                                    padding: isActive ? '8px 22px 9px' : '6px 20px 7px',
+                                    border: `2px solid ${isActive ? 'rgba(89,90,150,0.55)' : '#8f87c0'}`,
+                                    borderBottom: isActive ? '2px solid #f4f1ff' : '2px solid #8f87c0',
+                                    background: isActive ? '#f4f1ff' : '#ddd7f5',
+                                    color: isActive ? '#2e2a6e' : '#6b64a0',
+                                    marginBottom: isActive ? '-2px' : '0',
+                                    position: 'relative',
+                                    zIndex: isActive ? 2 : 1,
+                                    fontSize: 12,
+                                    fontWeight: 700,
+                                    letterSpacing: '0.02em',
+                                    whiteSpace: 'nowrap',
+                                    cursor: 'pointer',
+                                    transition: 'background 120ms, color 120ms',
+                                    boxShadow: isActive ? '0 -3px 8px rgba(89,90,150,0.15)' : 'none',
+                                }}
+                                onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = '#ece7ff' }}
+                                onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = '#ddd7f5' }}
+                            >
+                                {tab.label}
+                            </button>
+                        )
+                    })}
+                </div>
                 )}
 
                 {/* ── [Row 2, Col 1] DISTRICT MAP ───────────────────────────── */}
@@ -338,16 +338,13 @@ export default function StateOverviewSection({ data, stateId }) {
                         boxShadow: '0 4px 16px rgba(89,90,150,0.10)',
                     }}
                 >
-                    {selectedDistrict ? (
-
-                        /* ── DISTRICT DETAIL ───────────────────────────────── */
+                    {(selectedDistrict && activeTab !== 'congressional') ? (
+                        /* ── DISTRICT DETAIL ─────────────────────────────────── */
                         <div className="h-full p-3">
                             <DistrictDetailCard district={selectedDistrictData} />
                         </div>
-
                     ) : (
-
-                        /* ── TAB CONTENT ───────────────────────────────────── */
+                        /* ── TAB CONTENT ──────────────────────────────────────── */
                         <div className="h-full">
 
                             {/* State Summary */}
@@ -414,7 +411,7 @@ export default function StateOverviewSection({ data, stateId }) {
                                     </div>
 
                                     <InfoCallout icon={MousePointerClick} className="mt-auto shrink-0">
-                                        Click a district on the map or switch to District Summary to select one and view its details here.
+                                        Click a district on the map or in the District Stats tab to highlight it.
                                     </InfoCallout>
                                 </div>
                             )}
@@ -449,6 +446,7 @@ export default function StateOverviewSection({ data, stateId }) {
                         </div>
                     )}
                 </div>
+
 
             </div>
 

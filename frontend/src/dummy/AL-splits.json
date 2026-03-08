@@ -3,8 +3,8 @@
   "numDistricts": 7,
   "totalPlans": 5000,
   "unionSplitRange": {
-    "minRepublican": 0,
-    "maxRepublican": 7
+    "minRepublican": 1,
+    "maxRepublican": 6
   },
   "ensembles": [
     {

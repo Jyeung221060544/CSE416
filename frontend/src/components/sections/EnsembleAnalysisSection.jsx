@@ -32,13 +32,15 @@
  *   feasibleRaceFilter — Selected race for box & whisker (FeasibleRaceFilter in sidebar).
  */
 
-import { useMemo } from 'react'
-import SectionHeader      from '@/components/ui/section-header'
-import BrowserTabs        from '@/components/ui/browser-tabs'
-import EnsembleSplitChart from '../charts/EnsembleSplitChart'
-import BoxWhiskerChart    from '../charts/BoxWhiskerChart'
-import useAppStore        from '../../store/useAppStore'
-import { RACE_LABELS }    from '@/lib/partyColors'
+import { useMemo, useEffect } from 'react'
+import SectionHeader             from '@/components/ui/section-header'
+import BrowserTabs               from '@/components/ui/browser-tabs'
+import EnsembleSplitChart        from '../charts/EnsembleSplitChart'
+import EnsembleSplitCompareChart from '../charts/EnsembleSplitCompareChart'
+import BoxWhiskerChart           from '../charts/BoxWhiskerChart'
+import BoxWhiskerCompareChart    from '../charts/BoxWhiskerCompareChart'
+import useAppStore               from '../../store/useAppStore'
+import { RACE_LABELS } from '@/lib/partyColors'
 
 
 /* ── Tab definitions ─────────────────────────────────────────────────────────
@@ -67,6 +69,11 @@ export default function EnsembleAnalysisSection({ data }) {
     const activeTab    = useAppStore(s => s.activeEATab)
     const setActiveTab = useAppStore(s => s.setActiveEATab)
 
+    /* ── Compare mode (global — shared via Zustand, resets on tab switch) ── */
+    const eaCompareMode    = useAppStore(s => s.eaCompareMode)
+    const setEaCompareMode = useAppStore(s => s.setEaCompareMode)
+    useEffect(() => { setEaCompareMode(false) }, [activeTab, setEaCompareMode])
+
     /* ── Race filter for box & whisker (shared with Gingles via Zustand) ── */
     const feasibleRaceFilter = useAppStore(s => s.feasibleRaceFilter)
 
@@ -90,6 +97,32 @@ export default function EnsembleAnalysisSection({ data }) {
         if (!allFreqs.length) return undefined
         return Math.ceil(Math.max(...allFreqs) * 1.1 / 100) * 100
     }, [raceBlind, vraConstr])
+
+    /*
+     * compareNivoData — Pre-merged rows for EnsembleSplitCompareChart.
+     * Computed here (same source as the individual charts) so the compare
+     * chart is a pure renderer.  Each row carries both frequencies + totals.
+     * `?? 0` guards against missing r/d on extreme splits (0R-7D, 7R-0D).
+     */
+    const compareNivoData = useMemo(() => {
+        if (!raceBlind || !vraConstr) return []
+        const rbTotal  = raceBlind.splits.reduce((s, r) => s + r.frequency, 0)
+        const vraTotal = vraConstr.splits.reduce((s, r) => s + r.frequency, 0)
+        const enactedR = enactedSplit?.republican ?? null
+        const map = {}
+        const register = splits => splits.forEach(s => {
+            const key = `${s.republican}R-${s.democratic}D`
+            if (!map[key]) map[key] = { split: key, r: s.republican ?? 0, d: s.democratic ?? 0, raceBlind: 0, vra: 0 }
+        })
+        register(raceBlind.splits)
+        register(vraConstr.splits)
+        raceBlind.splits.forEach(s  => { map[`${s.republican}R-${s.democratic}D`].raceBlind = s.frequency })
+        vraConstr.splits.forEach(s  => { map[`${s.republican}R-${s.democratic}D`].vra       = s.frequency })
+        return Object.values(map)
+            .filter(row => row.raceBlind > 0 || row.vra > 0 || row.r === enactedR)
+            .sort((a, b) => a.r - b.r)
+            .map(row => ({ ...row, rbTotal, vraTotal }))
+    }, [raceBlind, vraConstr, enactedSplit])
 
 
     /* ── Derived data — Box & Whisker ────────────────────────────────────── */
@@ -124,7 +157,10 @@ export default function EnsembleAnalysisSection({ data }) {
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-brand-darkest tracking-tight">
                     {stateName && <span className="text-brand-primary">{stateName} — </span>}Ensemble Analysis
                 </h2>
-                <span className="hidden sm:inline-flex items-center gap-1.5 text-sm italic font-medium text-brand-primary bg-brand-primary/10 border border-brand-primary/20 px-3 py-0.5 rounded-full">&ldquo;Is the enacted map unusual?&rdquo;</span>
+                <div className="hidden sm:flex flex-col items-end gap-1.5">
+                    <span className="inline-flex items-center gap-1.5 text-sm italic font-medium text-brand-primary bg-brand-primary/10 border border-brand-primary/20 px-3 py-0.5 rounded-full">&ldquo;What is the impact of gutting the VRA on minority political representation?&rdquo;</span>
+                    <span className="inline-flex items-center gap-1.5 text-sm italic font-medium text-brand-primary bg-brand-primary/10 border border-brand-primary/20 px-3 py-0.5 rounded-full">&ldquo;Is the enacted plan fair?&rdquo;</span>
+                </div>
             </div>
 
             {/* ── BROWSER TABS + CONTENT PANEL ───────────────────────────── */}
@@ -139,28 +175,42 @@ export default function EnsembleAnalysisSection({ data }) {
                 {/* ── ENSEMBLE SPLITS ────────────────────────────────────── */}
                 {activeTab === 'ensemble-splits' && (
                     splitsData ? (
-                        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 h-full">
-                            <div className="flex flex-col gap-3 min-h-0">
-                                <SectionHeader title="Race-Blind" />
-                                <EnsembleSplitChart
-                                    ensembleData={raceBlind}
+                        eaCompareMode ? (
+                            /* ── COMPARE VIEW ─────────────────────────────── */
+                            <div className="flex flex-col gap-3 h-full">
+                                <SectionHeader title="Race-Blind vs VRA-Constrained" className="shrink-0" />
+                                <EnsembleSplitCompareChart
+                                    data={compareNivoData}
                                     enactedSplit={enactedSplit}
                                     yMax={splitYMax}
-                                    chartId="raceblind"
                                     className="flex-1 min-h-0"
                                 />
                             </div>
-                            <div className="flex flex-col gap-3 min-h-0">
-                                <SectionHeader title="VRA-Constrained" />
-                                <EnsembleSplitChart
-                                    ensembleData={vraConstr}
-                                    enactedSplit={enactedSplit}
-                                    yMax={splitYMax}
-                                    chartId="vra"
-                                    className="flex-1 min-h-0"
-                                />
+                        ) : (
+                            /* ── SIDE-BY-SIDE VIEW ─────────────────────────── */
+                            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 h-full">
+                                <div className="flex flex-col gap-3 min-h-0">
+                                    <SectionHeader title="Race-Blind" />
+                                    <EnsembleSplitChart
+                                        ensembleData={raceBlind}
+                                        enactedSplit={enactedSplit}
+                                        yMax={splitYMax}
+                                        chartId="raceblind"
+                                        className="flex-1 min-h-0"
+                                    />
+                                </div>
+                                <div className="flex flex-col gap-3 min-h-0">
+                                    <SectionHeader title="VRA-Constrained" />
+                                    <EnsembleSplitChart
+                                        ensembleData={vraConstr}
+                                        enactedSplit={enactedSplit}
+                                        yMax={splitYMax}
+                                        chartId="vra"
+                                        className="flex-1 min-h-0"
+                                    />
+                                </div>
                             </div>
-                        </div>
+                        )
                     ) : (
                         <div className="rounded-xl border border-dashed border-brand-muted/30 bg-white/40 p-10 flex items-center justify-center min-h-[240px]">
                             <p className="text-brand-muted/50 text-sm italic">
@@ -173,30 +223,46 @@ export default function EnsembleAnalysisSection({ data }) {
                 {/* ── BOX & WHISKER ──────────────────────────────────────── */}
                 {activeTab === 'box-whisker' && (
                     bwData ? (
-                        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 h-full">
-                            <div className="flex flex-col gap-3 min-h-0">
-                                <SectionHeader title="Race-Blind" />
-                                <BoxWhiskerChart
-                                    districts={bwRaceBlind?.groupDistricts?.[feasibleRaceFilter] ?? []}
+                        eaCompareMode ? (
+                            /* ── COMPARE VIEW ─────────────────────────────── */
+                            <div className="flex flex-col gap-3 h-full">
+                                <SectionHeader title="Race-Blind vs VRA-Constrained" className="shrink-0" />
+                                <BoxWhiskerCompareChart
+                                    rbDistricts={bwRaceBlind?.groupDistricts?.[feasibleRaceFilter] ?? []}
+                                    vraDistricts={bwVraConstr?.groupDistricts?.[feasibleRaceFilter] ?? []}
                                     enactedDistricts={bwData.enactedPlan?.groupDistricts?.[feasibleRaceFilter] ?? null}
                                     raceName={raceName}
-                                    chartId="bw-raceblind"
                                     sharedYMax={bwSharedYMax}
                                     className="flex-1 min-h-0"
                                 />
                             </div>
-                            <div className="flex flex-col gap-3 min-h-0">
-                                <SectionHeader title="VRA-Constrained" />
-                                <BoxWhiskerChart
-                                    districts={bwVraConstr?.groupDistricts?.[feasibleRaceFilter] ?? []}
-                                    enactedDistricts={bwData.enactedPlan?.groupDistricts?.[feasibleRaceFilter] ?? null}
-                                    raceName={raceName}
-                                    chartId="bw-vra"
-                                    sharedYMax={bwSharedYMax}
-                                    className="flex-1 min-h-0"
-                                />
+                        ) : (
+                            /* ── SIDE-BY-SIDE VIEW ─────────────────────────── */
+                            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 h-full">
+                                <div className="flex flex-col gap-3 min-h-0">
+                                    <SectionHeader title="Race-Blind" />
+                                    <BoxWhiskerChart
+                                        districts={bwRaceBlind?.groupDistricts?.[feasibleRaceFilter] ?? []}
+                                        enactedDistricts={bwData.enactedPlan?.groupDistricts?.[feasibleRaceFilter] ?? null}
+                                        raceName={raceName}
+                                        chartId="bw-raceblind"
+                                        sharedYMax={bwSharedYMax}
+                                        className="flex-1 min-h-0"
+                                    />
+                                </div>
+                                <div className="flex flex-col gap-3 min-h-0">
+                                    <SectionHeader title="VRA-Constrained" />
+                                    <BoxWhiskerChart
+                                        districts={bwVraConstr?.groupDistricts?.[feasibleRaceFilter] ?? []}
+                                        enactedDistricts={bwData.enactedPlan?.groupDistricts?.[feasibleRaceFilter] ?? null}
+                                        raceName={raceName}
+                                        chartId="bw-vra"
+                                        sharedYMax={bwSharedYMax}
+                                        className="flex-1 min-h-0"
+                                    />
+                                </div>
                             </div>
-                        </div>
+                        )
                     ) : (
                         <div className="rounded-xl border border-dashed border-brand-muted/30 bg-white/40 p-10 flex items-center justify-center min-h-[240px]">
                             <p className="text-brand-muted/50 text-sm italic">

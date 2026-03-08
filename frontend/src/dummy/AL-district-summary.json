@@ -9,7 +9,7 @@
       "representative": "Barry Moore",
       "party": "Republican",
       "racialGroup": "White",
-      "voteMarginPercentage": 0.566,
+      "voteMarginPercentage": 0.568,
       "voteMarginDirection": "R"
     },
     {
@@ -18,7 +18,7 @@
       "representative": "Shomari Figures",
       "party": "Democratic",
       "racialGroup": "Black",
-      "voteMarginPercentage": 0.082,
+      "voteMarginPercentage": 0.090,
       "voteMarginDirection": "D"
     },
     {
@@ -54,7 +54,7 @@
       "representative": "Gary Palmer",
       "party": "Republican",
       "racialGroup": "White",
-      "voteMarginPercentage": 0.538,
+      "voteMarginPercentage": 0.408,
       "voteMarginDirection": "R"
     },
     {
@@ -63,7 +63,7 @@
       "representative": "Terri Sewell",
       "party": "Democratic",
       "racialGroup": "Black",
-      "voteMarginPercentage": 0.272,
+      "voteMarginPercentage": 0.274,
       "voteMarginDirection": "D"
     }
   ]

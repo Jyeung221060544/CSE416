@@ -99,6 +99,7 @@ export default function HomePage() {
                                     </div>
                                     <p className="text-brand-darkest text-3xl font-bold tracking-tight">
                                         {hoveredState.stateName}
+                                        <span className="ml-2 text-brand-muted text-lg font-normal">({hoveredState.stateId})</span>
                                     </p>
                                 </div>
 
@@ -167,6 +168,7 @@ export default function HomePage() {
                                                 className="text-brand-deep border-brand-muted/40 bg-brand-muted/5 text-sm px-3 py-1"
                                             >
                                                 {s.stateName}
+                                                <span className="ml-1.5 text-brand-muted/60 text-xs font-normal">({s.stateId})</span>
                                             </Badge>
                                         ))}
                                     </div>

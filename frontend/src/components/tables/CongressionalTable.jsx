@@ -111,7 +111,7 @@ export default function CongressionalTable({ districtSummary }) {
                     >
                         {/* District number */}
                         <span className={`font-bold text-sm ${isActive ? ACTIVE_LABEL : INACTIVE_LABEL}`}>
-                            District {d.districtNumber}
+                            {d.districtNumber}
                         </span>
 
                         {/* Representative name */}

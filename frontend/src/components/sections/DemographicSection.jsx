@@ -82,9 +82,10 @@ function HeatmapLegend({ bins }) {
 export default function DemographicSection({ data, stateId }) {
 
     /* ── Step 2: Zustand filter state ────────────────────────────────────── */
-    const raceFilter        = useAppStore(s => s.raceFilter)
-    const setRaceFilter     = useAppStore(s => s.setRaceFilter)
-    const granularityFilter = useAppStore(s => s.granularityFilter)
+    const raceFilter            = useAppStore(s => s.raceFilter)
+    const setRaceFilter         = useAppStore(s => s.setRaceFilter)
+    const granularityFilter     = useAppStore(s => s.granularityFilter)
+    const showDistrictOverlay   = useAppStore(s => s.showDistrictOverlay)
 
 
     /* ── Step 3: Derived data ────────────────────────────────────────────── */
@@ -95,6 +96,12 @@ export default function DemographicSection({ data, stateId }) {
     const heatmapData = granularityFilter === 'census_block'
         ? (data?.heatmapCensus ?? null)
         : (data?.heatmapPrecinct ?? null)
+
+    /* Build districtNumber → party lookup for the overlay layer */
+    const districtPartyMap = {}
+    ;(data?.districtSummary?.districts ?? []).forEach(d => {
+        districtPartyMap[d.districtNumber] = d.party
+    })
 
 
 
@@ -125,6 +132,8 @@ export default function DemographicSection({ data, stateId }) {
                             heatmapData={heatmapData}
                             raceFilter={raceFilter}
                             mapView={s?.mapView}
+                            showDistrictOverlay={showDistrictOverlay}
+                            districtPartyMap={districtPartyMap}
                         />
                     </MapFrame>
 
