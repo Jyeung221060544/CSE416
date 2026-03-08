@@ -148,7 +148,7 @@ def main():
         rep_seats = len(part.parts) - dem_seats
         return dem_seats, rep_seats
 
-    def plan_metrics(part, *, group_key=None, thr=None, party=None):
+    def plan_metrics(part, group_key=None, thr=None, party=None):
         dem_seats, rep_seats = seat_count(part)
         cut = len(part["cut_edges"]) if "cut_edges" in part.updaters else None
 
