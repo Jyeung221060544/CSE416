@@ -56,8 +56,24 @@ def main():
     chosen_thr = None
     chosen_party = None
 
+    # Separate analysis/logging group for boxwhisker + minority metrics
+    analysis_group_key = group_key if vra_enabled else cfg.get("boxwhisker_group_key")
+    analysis_threshold = None
+    analysis_party = None
+
     if vra_enabled:
-        updaters[f"min_{group_key}"] = Tally(group_key, alias=f"min_{group_key}")
+        analysis_threshold = None  # will be set from VRA threshold selection below
+        analysis_party = None      # will be set below
+    else:
+        analysis_threshold = cfg.get("boxwhisker_threshold")
+        analysis_party = cfg.get("boxwhisker_party_of_choice")
+
+    # Add tally for the analysis group whenever present
+    if analysis_group_key is not None:
+        updaters["min_{}".format(analysis_group_key)] = Tally(
+            analysis_group_key,
+            alias="min_{}".format(analysis_group_key)
+        )
 
     initial = Partition(G, assignment=assignment_col, updaters=updaters)
 
@@ -68,7 +84,7 @@ def main():
         pop = part["population"][dist]
         if pop <= 0:
             return 0.0
-        m = part[f"min_{group_key}"][dist]
+        m = part["min_{}".format(group_key)][dist]
         return float(m) / float(pop)
 
     def opp_count(part, thr, group_key):
@@ -103,7 +119,7 @@ def main():
         rep_seats = len(part.parts) - dem_seats
         return dem_seats, rep_seats
 
-    def plan_metrics(part, *, vra_enabled, group_key=None, thr=None, party=None):
+    def plan_metrics(part, *, group_key=None, thr=None, party=None):
         dem_seats, rep_seats = seat_count(part)
         cut = len(part["cut_edges"]) if "cut_edges" in part.updaters else None
 
@@ -113,7 +129,7 @@ def main():
             "cut_edges": cut,
         }
 
-        if vra_enabled and group_key is not None and thr is not None:
+        if group_key is not None and thr is not None:
             metrics["opp_districts"] = opp_count(part, thr, group_key)
             if party is not None:
                 metrics["eff_districts"] = effective_count(part, thr, group_key, party)
@@ -159,6 +175,9 @@ def main():
                 return effective_count(part, chosen_thr, group_key, chosen_party) >= int(target_k_eff)
 
             constraints.append(vra_eff_constraint)
+
+        analysis_threshold = chosen_thr
+        analysis_party = chosen_party if eff_enabled else None
 
         if mode == "test":
             msg = f"[VRA] group={group_key} thr={chosen_thr} opp_K={target_k_opp}"
@@ -211,10 +230,9 @@ def main():
 
             metrics = plan_metrics(
                 part,
-                vra_enabled=vra_enabled,
-                group_key=group_key if vra_enabled else None,
-                thr=chosen_thr if vra_enabled else None,
-                party=chosen_party if vra_enabled else None,
+                group_key=analysis_group_key,
+                thr=analysis_threshold,
+                party=analysis_party,
             )
             rec.update({k: v for k, v in metrics.items() if v is not None})
 
@@ -246,19 +264,19 @@ def main():
             district_pcts = None
             district_pcts_sorted = None
 
-            if vra_enabled and group_key is not None:
-                # district ids may not be 1..K; keep consistent ordering by sorting keys
+            if analysis_group_key is not None:
                 dists = sorted(part.parts.keys(), key=lambda x: int(x) if str(x).isdigit() else str(x))
-                district_pcts = [district_minority_pct(part, d, group_key) for d in dists]
-                district_pcts_sorted = sorted(district_pcts)  # rank-based (needed for boxplots)
+                district_pcts = [district_minority_pct(part, d, analysis_group_key) for d in dists]
+                district_pcts_sorted = sorted(district_pcts)
+
             if district_pcts_sorted is not None:
                 fbox.write(json.dumps({
                     "step": i,
-                    "group_key": group_key,
-                    "threshold": chosen_thr,
+                    "group_key": analysis_group_key,
+                    "threshold": analysis_threshold,
+                    "party_of_choice": analysis_party,
                     "district_pcts_sorted": district_pcts_sorted
                 }) + "\n")
-                box_written += 1
 
             fout.write(json.dumps(rec) + "\n")
             plans_written += 1
@@ -278,6 +296,11 @@ def main():
             "party_of_choice": chosen_party,
             "opp_hist": opp_hist,
             "eff_hist": eff_hist,
+        },
+        "analysis": {
+            "group_key": analysis_group_key,
+            "threshold": analysis_threshold,
+            "party_of_choice": analysis_party,
         },
         "cut_edges_hist": cut_hist,
     }
