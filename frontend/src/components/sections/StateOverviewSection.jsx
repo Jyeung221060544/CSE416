@@ -36,11 +36,11 @@ import SectionHeader           from '@/components/ui/section-header'
 import MapFrame                from '@/components/ui/map-frame'
 import InfoCallout             from '@/components/ui/info-callout'
 import { PARTY_BADGE, DEM_TEXT, REP_TEXT } from '@/lib/partyColors'
-import useAppStore                  from '../../store/useAppStore'
-import DistrictMap2024              from '../maps/DistrictMap2024'
-import CongressionalTable           from '../tables/CongressionalTable'
-import EnsembleSummaryTable         from '../tables/EnsembleSummaryTable'
-import DemographicPopulationTable   from '../tables/DemographicPopulationTable'
+import useAppStore                from '@/store/useAppStore'
+import DistrictMap2024            from '@/components/maps/DistrictMap2024'
+import CongressionalTable         from '@/components/tables/CongressionalTable'
+import EnsembleSummaryTable       from '@/components/tables/EnsembleSummaryTable'
+import DemographicPopulationTable from '@/components/tables/DemographicPopulationTable'
 
 
 /* ── Tab definitions ─────────────────────────────────────────────────────────
@@ -195,19 +195,19 @@ function DistrictDetailCard({ district }) {
  */
 export default function StateOverviewSection({ data, stateId }) {
 
-    /* ── Step 2: Zustand state ────────────────────────────────────────────── */
+    /* ── Zustand state ───────────────────────────────────────────────────── */
     const selectedDistrict    = useAppStore(s => s.selectedDistrict)
     const setSelectedDistrict = useAppStore(s => s.setSelectedDistrict)
     const raceFilter          = useAppStore(s => s.raceFilter)
     const setRaceFilter       = useAppStore(s => s.setRaceFilter)
 
 
-    /* ── Step 3: Tab state (global — mirrors sidebar sub-nav) ───────────── */
+    /* ── Tab state (global — mirrors sidebar sub-nav) ───────────────────── */
     const activeTab    = useAppStore(s => s.activeSOTab)
     const setActiveTab = useAppStore(s => s.setActiveSOTab)
 
 
-    /* ── Step 4: Derived data slices from the state bundle ───────────────── */
+    /* ── Derived data ────────────────────────────────────────────────────── */
     const stateData         = data?.stateSummary
     const districtData      = data?.districtSummary
     const ensembleData      = data?.ensembleSummary
@@ -227,7 +227,7 @@ export default function StateOverviewSection({ data, stateId }) {
     const selectedDistrictData = districtData?.districts?.find(d => d.districtNumber === selectedDistrict) ?? null
 
 
-    /* ── Step 5: Render ──────────────────────────────────────────────────── */
+    /* ── Render ──────────────────────────────────────────────────────────── */
     return (
         <section id="state-overview" className="p-2 sm:p-3 lg:p-4 border-b border-brand-muted/30 h-[calc(100vh-3.5rem)] flex flex-col overflow-hidden">
 

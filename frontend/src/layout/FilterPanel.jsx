@@ -11,6 +11,7 @@
  *     activeRPTab === 'gingles'           → FeasibleRaceFilter
  *     activeRPTab === 'ei-kde'            → EIRaceFilter
  *     activeRPTab === 'ei-bar'            → EIRaceFilter
+ *     activeRPTab === 'vs-ss'            → no filters (placeholder message)
  *   ensemble-analysis
  *     activeEATab === 'ensemble-splits'   → no filters (placeholder message)
  *     activeEATab === 'box-whisker'       → FeasibleRaceFilter
@@ -33,6 +34,7 @@ import EIRaceFilter       from '../components/filters/EIRaceFilter'
 import GranularityFilter      from '../components/filters/GranularityFilter'
 
 import CompareFilter       from '../components/filters/CompareFilter'
+import Select2RaceFilter  from '../components/filters/Select2RaceFilter'
 import ResetFiltersButton from '../components/filters/ResetFiltersButton'
 
 
@@ -77,9 +79,23 @@ export default function FilterPanel() {
                 <FeasibleRaceFilter />
             )}
 
-            {/* EI KDE / EI Bar tabs: EIRaceFilter is a multi-select for the overlay lines */}
-            {activeSection === 'racial-polarization' && (activeRPTab === 'ei-kde' || activeRPTab === 'ei-bar') && (
+            {/* EI KDE tab: EIRaceFilter only */}
+            {activeSection === 'racial-polarization' && activeRPTab === 'ei-kde' && (
                 <EIRaceFilter />
+            )}
+
+            {/* EI Bar + Polarization tab: EIRaceFilter (for bar) + Select2RaceFilter (for KDE) */}
+            {activeSection === 'racial-polarization' && activeRPTab === 'ei-bar' && (
+                <div className="flex flex-col gap-3">
+                    <EIRaceFilter />
+                    <Separator className="bg-brand-deep" />
+                    <Select2RaceFilter />
+                </div>
+            )}
+
+            {/* Vote/Seat Share tab: no user-controllable filters */}
+            {activeSection === 'racial-polarization' && activeRPTab === 'vs-ss' && (
+                <span className="text-xs px-1 text-white/90 italic">No local filters available</span>
             )}
 
             {/* ── ENSEMBLE ANALYSIS ────────────────────────────────────────── */}

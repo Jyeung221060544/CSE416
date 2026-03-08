@@ -25,20 +25,13 @@
 import { useState, useEffect, useMemo } from 'react'
 import SectionHeader        from '@/components/ui/section-header'
 import BrowserTabs          from '@/components/ui/browser-tabs'
-import useAppStore          from '../../store/useAppStore'
-import GinglesScatterPlot   from '../charts/GinglesScatterPlot'
-import GinglesPrecinctTable from '../tables/GinglesPrecinctTable'
-import EIKDEChart           from '../charts/EIKDEChart'
-import EIBarChart           from '../charts/EIBarChart'
-
-
-/* ── Tab definitions ─────────────────────────────────────────────────────── */
-
-const RP_TABS = [
-    { id: 'gingles', label: 'Gingles Analysis' },
-    { id: 'ei-kde',  label: 'EI KDE Charts'    },
-    { id: 'ei-bar',  label: 'EI Bar Charts'    },
-]
+import useAppStore          from '@/store/useAppStore'
+import GinglesScatterPlot   from '@/components/charts/GinglesScatterPlot'
+import GinglesPrecinctTable from '@/components/tables/GinglesPrecinctTable'
+import EIKDEChart           from '@/components/charts/EIKDEChart'
+import EIBarChart           from '@/components/charts/EIBarChart'
+import EIKDECompareChart    from '@/components/charts/EIKDECompareChart'
+import VoteSeatShareChart   from '@/components/charts/VoteSeatShareChart'
 
 
 /**
@@ -52,23 +45,51 @@ const RP_TABS = [
  */
 export default function RacialPolarizationSection({ data }) {
 
-    /* ── Zustand filter state ─────────────────────────────────────────────── */
+    /* ── Zustand state ───────────────────────────────────────────────────── */
     const feasibleRaceFilter = useAppStore(s => s.feasibleRaceFilter)
     const eiRaceFilter       = useAppStore(s => s.eiRaceFilter)
+    const eiKdeCompareRaces  = useAppStore(s => s.eiKdeCompareRaces)
+    const activeTab          = useAppStore(s => s.activeRPTab)
+    const setActiveTab       = useAppStore(s => s.setActiveRPTab)
 
-    /* ── Tab state (global — mirrors sidebar sub-nav) ───────────────────── */
-    const activeTab    = useAppStore(s => s.activeRPTab)
-    const setActiveTab = useAppStore(s => s.setActiveRPTab)
+    /* ── Local state ─────────────────────────────────────────────────────── */
+    /* Dot / row selection — local to this section, reset on race filter change */
+    const [selectedId, setSelectedId] = useState(null)
+    useEffect(() => { setSelectedId(null) }, [feasibleRaceFilter])
 
     /* ── Derived data ────────────────────────────────────────────────────── */
     const stateName       = data?.stateSummary?.stateName ?? null
     const ginglesPrecinct = data?.ginglesPrecinct ?? null
     const eiData          = data?.ei ?? null
+    const eiCompareData   = data?.eiCompare ?? null
+    const voteSeatData    = data?.voteSeatShare ?? null
     const series          = ginglesPrecinct?.feasibleSeriesByRace?.[feasibleRaceFilter] ?? null
 
-    /* Dot / row selection — local to this section, reset on race filter change */
-    const [selectedId, setSelectedId] = useState(null)
-    useEffect(() => { setSelectedId(null) }, [feasibleRaceFilter])
+    /* Look up the matching race pair for the current eiKdeCompareRaces selection.
+     * Pairs are stored alphabetically; sort both sides before comparing. */
+    const eiComparePair = useMemo(() => {
+        if (!eiCompareData?.racePairs) return null
+        const sorted = [...eiKdeCompareRaces].sort()
+        return eiCompareData.racePairs.find(
+            p => [...p.races].sort().join('|') === sorted.join('|')
+        ) ?? null
+    }, [eiCompareData, eiKdeCompareRaces])
+
+    /* Disable VS-SS tab when racially polarized voting is not detected */
+    const isRaciallyPolarized = voteSeatData?.raciallyPolarized === true
+
+    /* Dynamic tab list — VS-SS tab is disabled for non-polarized states */
+    const RP_TABS = useMemo(() => [
+        { id: 'gingles', label: 'Gingles Analysis'       },
+        { id: 'ei-kde',  label: 'EI KDE Charts'          },
+        { id: 'ei-bar',  label: 'EI Bar & Polarization'  },
+        {
+            id:            'vs-ss',
+            label:         'Vote / Seat Share',
+            disabled:      !isRaciallyPolarized,
+            disabledTitle: 'Gingles 2/3 not satisfied — racially polarized voting not detected in this state',
+        },
+    ], [isRaciallyPolarized])
 
     /* Democratic / Republican candidate entries from the EI dataset */
     const demCandidate = useMemo(
@@ -172,14 +193,36 @@ export default function RacialPolarizationSection({ data }) {
                     </div>
                 )}
 
-                {/* ── EI BAR CHARTS ──────────────────────────────────────── */}
+                {/* ── EI BAR + POLARIZATION KDE ──────────────────────────── */}
                 {activeTab === 'ei-bar' && (
+                    <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 h-full">
+                        <div className="flex flex-col gap-3 min-h-0">
+                            <SectionHeader title="Peak Support Estimates" />
+                            <EIBarChart
+                                demCandidate={demCandidate}
+                                repCandidate={repCandidate}
+                                activeRaces={eiRaceFilter}
+                                className="flex-1 min-h-0"
+                            />
+                        </div>
+                        <div className="flex flex-col gap-3 min-h-0">
+                            <SectionHeader title="Polarization KDE" />
+                            <EIKDECompareChart
+                                pairData={eiComparePair}
+                                races={eiKdeCompareRaces}
+                                threshold={eiCompareData?.differenceThreshold ?? 0.4}
+                                className="flex-1 min-h-0"
+                            />
+                        </div>
+                    </div>
+                )}
+
+                {/* ── VOTE / SEAT SHARE ───────────────────────────────────── */}
+                {activeTab === 'vs-ss' && (
                     <div className="flex flex-col gap-3 h-full">
-                        <SectionHeader title="Peak Support Estimates" />
-                        <EIBarChart
-                            demCandidate={demCandidate}
-                            repCandidate={repCandidate}
-                            activeRaces={eiRaceFilter}
+                        <SectionHeader title="Vote Share vs. Seat Share Curve" />
+                        <VoteSeatShareChart
+                            voteSeatData={voteSeatData}
                             className="flex-1 min-h-0"
                         />
                     </div>

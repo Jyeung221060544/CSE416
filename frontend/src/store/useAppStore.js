@@ -89,6 +89,10 @@ const useAppStore = create((set) => ({
     // Multi-select; always contains at least one item (enforced in toggleEiRaceFilter).
     eiRaceFilter: ['black'],
 
+    // Exactly 2 race keys selected for the EI Polarization KDE comparison tab.
+    // Derived options list comes from demographicGroups (all groups, not just feasible).
+    eiKdeCompareRaces: ['black', 'white'],
+
     // Demographic groups for the currently-loaded state, populated by useStateData.
     // Each entry: { group: string, vap: number, vapPercentage: number, isFeasible: boolean }.
     // FeasibleRaceFilter derives its option list by filtering this array on isFeasible.
@@ -156,6 +160,14 @@ const useAppStore = create((set) => ({
     /** @param {string} ensemble  'race_blind' or 'vra'. */
     setEnsembleFilter: (ensemble) => set({ ensembleFilter: ensemble }),
 
+    /**
+     * setEiKdeCompareRaces — Sets the exactly-2 race selection for the polarization KDE tab.
+     * Caller is responsible for enforcing the 2-item constraint (Select2RaceFilter handles this).
+     *
+     * @param {string[]} races  Array of exactly 2 lowercase race keys.
+     */
+    setEiKdeCompareRaces: (races) => set({ eiKdeCompareRaces: races }),
+
 
     /* ── Step 5: EI multi-select race toggle ─────────────────────────────── */
 
@@ -192,15 +204,24 @@ const useAppStore = create((set) => ({
      * Does NOT reset navigation state (selectedState, activeSection, etc.)
      * because those are driven by the URL, not by user filter choices.
      */
-    resetFilters: () => set({
-        raceFilter:           'black',
-        feasibleRaceFilter:   'black',
-        granularityFilter:    'precinct',
-        ensembleFilter:       'race_blind',
-        eiRaceFilter:         ['black'],
-        selectedDistrict:     null,
-        showDistrictOverlay:  false,
-        eaCompareMode:        false,
+    resetFilters: () => set((state) => {
+        const groups = state.demographicGroups
+        const preferredFeasible =
+            groups.find(g => g.group.toLowerCase() === 'black'    && g.isFeasible)?.group.toLowerCase() ??
+            groups.find(g => g.group.toLowerCase() === 'hispanic' && g.isFeasible)?.group.toLowerCase() ??
+            groups.find(g => g.isFeasible)?.group.toLowerCase() ??
+            'black'
+        return {
+            raceFilter:           'black',
+            feasibleRaceFilter:   preferredFeasible,
+            granularityFilter:    'precinct',
+            ensembleFilter:       'race_blind',
+            eiRaceFilter:         ['black'],
+            eiKdeCompareRaces:    ['black', 'white'],
+            selectedDistrict:     null,
+            showDistrictOverlay:  false,
+            eaCompareMode:        false,
+        }
     }),
 
 }))

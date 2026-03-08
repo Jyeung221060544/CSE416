@@ -25,9 +25,9 @@
 import SectionHeader from '@/components/ui/section-header'
 import SurfacePanel  from '@/components/ui/surface-panel'
 import MapFrame      from '@/components/ui/map-frame'
-import useAppStore          from '../../store/useAppStore'
-import DemographicHeatmap   from '../maps/DemographicHeatmap'
-import DemographicPopulationTable from '../tables/DemographicPopulationTable'
+import useAppStore                from '@/store/useAppStore'
+import DemographicHeatmap         from '@/components/maps/DemographicHeatmap'
+import DemographicPopulationTable from '@/components/tables/DemographicPopulationTable'
 
 
 /* ── Step 0: Sub-components ──────────────────────────────────────────────── */
@@ -81,14 +81,14 @@ function HeatmapLegend({ bins }) {
  */
 export default function DemographicSection({ data, stateId }) {
 
-    /* ── Step 2: Zustand filter state ────────────────────────────────────── */
+    /* ── Zustand state ───────────────────────────────────────────────────── */
     const raceFilter            = useAppStore(s => s.raceFilter)
     const setRaceFilter         = useAppStore(s => s.setRaceFilter)
     const granularityFilter     = useAppStore(s => s.granularityFilter)
     const showDistrictOverlay   = useAppStore(s => s.showDistrictOverlay)
 
 
-    /* ── Step 3: Derived data ────────────────────────────────────────────── */
+    /* ── Derived data ────────────────────────────────────────────────────── */
     const s               = data?.stateSummary
     const demographicGroups = s?.demographicGroups ?? []
 
@@ -105,7 +105,7 @@ export default function DemographicSection({ data, stateId }) {
 
 
 
-    /* ── Step 4: Render ──────────────────────────────────────────────────── */
+    /* ── Render ──────────────────────────────────────────────────────────── */
     return (
         <section id="demographic" className="p-2 sm:p-3 lg:p-4 border-b border-brand-muted/30 h-[calc(100vh-3.5rem)] flex flex-col overflow-hidden">
 

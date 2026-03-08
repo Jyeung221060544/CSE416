@@ -35,11 +35,11 @@
 import { useMemo, useEffect } from 'react'
 import SectionHeader             from '@/components/ui/section-header'
 import BrowserTabs               from '@/components/ui/browser-tabs'
-import EnsembleSplitChart        from '../charts/EnsembleSplitChart'
-import EnsembleSplitCompareChart from '../charts/EnsembleSplitCompareChart'
-import BoxWhiskerChart           from '../charts/BoxWhiskerChart'
-import BoxWhiskerCompareChart    from '../charts/BoxWhiskerCompareChart'
-import useAppStore               from '../../store/useAppStore'
+import EnsembleSplitChart        from '@/components/charts/EnsembleSplitChart'
+import EnsembleSplitCompareChart from '@/components/charts/EnsembleSplitCompareChart'
+import BoxWhiskerChart           from '@/components/charts/BoxWhiskerChart'
+import BoxWhiskerCompareChart    from '@/components/charts/BoxWhiskerCompareChart'
+import useAppStore               from '@/store/useAppStore'
 import { RACE_LABELS } from '@/lib/partyColors'
 
 
@@ -65,21 +65,20 @@ const EA_TABS = [
  */
 export default function EnsembleAnalysisSection({ data }) {
 
-    /* ── Tab state (global — mirrors sidebar sub-nav) ───────────────────── */
-    const activeTab    = useAppStore(s => s.activeEATab)
-    const setActiveTab = useAppStore(s => s.setActiveEATab)
-
-    /* ── Compare mode (global — shared via Zustand, resets on tab switch) ── */
-    const eaCompareMode    = useAppStore(s => s.eaCompareMode)
-    const setEaCompareMode = useAppStore(s => s.setEaCompareMode)
-    useEffect(() => { setEaCompareMode(false) }, [activeTab, setEaCompareMode])
-
-    /* ── Race filter for box & whisker (shared with Gingles via Zustand) ── */
+    /* ── Zustand state ───────────────────────────────────────────────────── */
+    const activeTab          = useAppStore(s => s.activeEATab)
+    const setActiveTab       = useAppStore(s => s.setActiveEATab)
+    const eaCompareMode      = useAppStore(s => s.eaCompareMode)
+    const setEaCompareMode   = useAppStore(s => s.setEaCompareMode)
     const feasibleRaceFilter = useAppStore(s => s.feasibleRaceFilter)
 
+    /* ── Tab state ────────────────────────────────────────────────────────── */
+    useEffect(() => { setEaCompareMode(false) }, [activeTab, setEaCompareMode])
+
+    /* ── Derived data ────────────────────────────────────────────────────── */
     const stateName    = data?.stateSummary?.stateName ?? null
 
-    /* ── Derived data — Ensemble Splits ──────────────────────────────────── */
+    /* Ensemble Splits */
     const splitsData   = data?.splits ?? null
     const enactedSplit = splitsData?.enactedPlanSplit ?? null
 
@@ -125,7 +124,7 @@ export default function EnsembleAnalysisSection({ data }) {
     }, [raceBlind, vraConstr, enactedSplit])
 
 
-    /* ── Derived data — Box & Whisker ────────────────────────────────────── */
+    /* Box & Whisker */
     const bwData      = data?.boxWhisker ?? null
     const bwRaceBlind = bwData?.ensembles?.find(e => e.ensembleType === 'race-blind')     ?? null
     const bwVraConstr = bwData?.ensembles?.find(e => e.ensembleType === 'vra-constrained') ?? null

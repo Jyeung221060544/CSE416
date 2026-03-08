@@ -29,13 +29,13 @@
  */
 
 import { useRef } from 'react'
-import Sidebar                  from '../layout/Sidebar'
-import StateOverviewSection     from '../components/sections/StateOverviewSection'
-import DemographicSection       from '../components/sections/DemographicSection'
-import RacialPolarizationSection from '../components/sections/RacialPolarizationSection'
-import EnsembleAnalysisSection  from '../components/sections/EnsembleAnalysisSection'
-import useActiveSection         from '../hooks/useActiveSection'
-import useStateData             from '../hooks/useStateData'
+import Sidebar                   from '@/layout/Sidebar'
+import StateOverviewSection      from '@/components/sections/StateOverviewSection'
+import DemographicSection        from '@/components/sections/DemographicSection'
+import RacialPolarizationSection from '@/components/sections/RacialPolarizationSection'
+import EnsembleAnalysisSection   from '@/components/sections/EnsembleAnalysisSection'
+import useActiveSection          from '@/hooks/useActiveSection'
+import useStateData              from '@/hooks/useStateData'
 
 
 /**
@@ -83,11 +83,11 @@ export default function StatePage() {
 
                     {/* ── RACIAL POLARIZATION ──────────────────────────────── */}
                     {/* Sub-sections: Gingles Analysis + Ecological Inference */}
-                    <RacialPolarizationSection data={data} stateId={stateId} />
+                    <RacialPolarizationSection data={data} />
 
                     {/* ── ENSEMBLE ANALYSIS ────────────────────────────────── */}
                     {/* Sub-sections: Ensemble Splits + Box & Whisker */}
-                    <EnsembleAnalysisSection data={data} stateId={stateId} />
+                    <EnsembleAnalysisSection data={data} />
 
                 </div>
             </div>

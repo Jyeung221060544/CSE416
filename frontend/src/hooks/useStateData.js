@@ -6,7 +6,7 @@
  * ========================================================================
  *
  * CURRENT IMPLEMENTATION
- *   Imports 10 dummy JSON files for AL and 3 for OR from src/dummy/.
+ *   Imports 11 dummy JSON files for AL from src/dummy/.
  *   Bundles them into a static DUMMY lookup object keyed by stateId.
  *   Returns the matching bundle synchronously (no loading/error states).
  *
@@ -19,6 +19,7 @@
  * {
  *   stateSummary:    { stateId, stateName, totalPopulation, votingAgePopulation,
  *                      numDistricts, idealDistrictPopulation, isPreclearance,
+ *                      mapView:                      { center: [lat, lng], zoom },
  *                      voterDistribution:            { electionYear, democraticVoteShare, republicanVoteShare },
  *                      demographicGroups:            [{ group, vap, vapPercentage, isFeasible }],
  *                      redistrictingControl:         { controllingParty },
@@ -33,7 +34,12 @@
  *                      enactedPlanSplit: { republican, democratic },
  *                      ensembles: [{ ensembleId, ensembleType,
  *                                    splits: [{ republican, democratic, frequency }] }] },
- *   boxWhisker:      { ... } or null,
+ *   boxWhisker:      { stateId, numDistricts, totalPlans,
+ *                      feasibleGroups: string[],
+ *                      ensembles: [{ ensembleId, ensembleType,
+ *                                    groupDistricts: { [race]: [{ index, min, q1, median, mean, q3, max }] } }],
+ *                      enactedPlan: { planId, planType,
+ *                                    groupDistricts: { [race]: [{ index, districtId, groupVapPercentage }] } } },
  *   ginglesPrecinct: { stateId,
  *                      feasibleSeriesByRace: { [race]: {
  *                        points: [{ id, name, x, y, totalPop, minorityPop,
@@ -47,11 +53,25 @@
  *                                     racialGroups: [{ group, peakSupportEstimate,
  *                                                      confidenceIntervalLow, confidenceIntervalHigh,
  *                                                      kdePoints: [{ x, y }] }] }] },
+ *   eiCompare:       { stateId, electionYear, differenceThreshold,
+ *                      racePairs: [{ races: [race1, race2], label,
+ *                                    candidates: [{ candidateId, candidateName, party,
+ *                                                   peakDifference, probDifferenceGT,
+ *                                                   kdePoints: [{ x, y }] }] }] },
  *   heatmapPrecinct: { stateId, granularity,
  *                      bins:     [{ binId, rangeMin, rangeMax, color }],
  *                      features: [{ idx, black, white, hispanic, asian, other }] },
- *   heatmapCensus:   { stateId, granularity, bins: [...], features: [...] }
+ *   heatmapCensus:   { stateId, granularity, bins: [...], features: [...] },
+ *   voteSeatShare:   { stateId, electionYear, raciallyPolarized, totalDistricts, partisanBias,
+ *                      curves: [{ party, points: [{ voteShare, seatShare }] }],
+ *                      enactedPlan: { democraticVoteShare, democraticSeatShare, label } }
  * }
+ *
+ * NOTE ON ensembleId FORMAT
+ *   IDs follow the pattern <STATE>_<TYPE>, e.g. "AL_RACEBLIND", "AL_VRA".
+ *   The ensembleId is consistent across ensembleSummary, splits, and boxWhisker.
+ *   The ensembleType field ("race-blind" | "vra-constrained") is what components
+ *   use to match entries — ensembleId is a stable cross-reference key for the API.
  *
  * INTEGRATION STEPS
  *   1. Delete all dummy JSON imports and the DUMMY object below.
@@ -68,7 +88,7 @@
 
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import useAppStore from '../store/useAppStore'
+import useAppStore from '@/store/useAppStore'
 
 
 /* ── Step 0: Dummy data imports (DELETE when backend is ready) ───────────────
@@ -81,21 +101,17 @@ import ALDistrictSummary from '../dummy/AL-district-summary.json'
 import ALEnsembleSummary from '../dummy/AL-ensemble-summary.json'
 import ALSplits          from '../dummy/AL-splits.json'
 import ALBoxWhisker      from '../dummy/AL-boxwhisker.json'
-import ALGinglesCensus   from '../dummy/AL-Gingles-census.json'
 import ALGinglesPrecinct from '../dummy/AL-Gingles-precinct.json'
 import ALEI              from '../dummy/AL-EI.json'
+import ALEICompare       from '../dummy/AL-EI-compare.json'
 import ALHeatmapPrecinct from '../dummy/AL-heatmap-precinct.json'
 import ALHeatmapCensus   from '../dummy/AL-heatmap-census.json'
-
-import ORStateSummary    from '../dummy/OR-state-summary.json'
-import ORDistrictSummary from '../dummy/OR-district-summary.json'
-import OREnrobleSummary  from '../dummy/OR-ensemble-summary.json'
+import ALVoteSeatShare   from '../dummy/AL-vote-seat-share.json'
 
 
 /* ── Step 1: Static DUMMY lookup — stateId → full data bundle ────────────────
  *
- *  Keys match the :stateId URL param ('AL', 'OR', …).
- *  OR fields not yet generated are null; section components handle null gracefully.
+ *  Keys match the :stateId URL param ('AL', …).
  *
  *  //CONNECT HERE: replace this whole object with useState(null) populated
  *  by a fetch inside the useEffect below.
@@ -107,23 +123,12 @@ const DUMMY = {
         ensembleSummary: ALEnsembleSummary,
         splits:          ALSplits,
         boxWhisker:      ALBoxWhisker,
-        ginglesCensus:   ALGinglesCensus,
         ginglesPrecinct: ALGinglesPrecinct,
         ei:              ALEI,
+        eiCompare:       ALEICompare,
         heatmapPrecinct: ALHeatmapPrecinct,
         heatmapCensus:   ALHeatmapCensus,
-    },
-    OR: {
-        stateSummary:    ORStateSummary,
-        districtSummary: ORDistrictSummary,
-        ensembleSummary: OREnrobleSummary,
-        splits:          null,
-        boxWhisker:      null,
-        ginglesCensus:   null,
-        ginglesPrecinct: null,
-        ei:              null,
-        heatmapPrecinct: null,
-        heatmapCensus:   null,
+        voteSeatShare:   ALVoteSeatShare,
     },
 }
 
@@ -169,9 +174,12 @@ export default function useStateData() {
         const groups = DUMMY[stateId]?.stateSummary?.demographicGroups ?? []
         setDemographicGroups(groups)
 
-        // Auto-select the first feasible group for this state (e.g. 'black' for AL).
-        const firstFeasible = groups.find(g => g.isFeasible)
-        if (firstFeasible) setFeasibleRaceFilter(firstFeasible.group.toLowerCase())
+        // Auto-select the preferred feasible group: black → hispanic → first feasible.
+        const preferredFeasible =
+            groups.find(g => g.group.toLowerCase() === 'black'    && g.isFeasible) ??
+            groups.find(g => g.group.toLowerCase() === 'hispanic' && g.isFeasible) ??
+            groups.find(g => g.isFeasible)
+        if (preferredFeasible) setFeasibleRaceFilter(preferredFeasible.group.toLowerCase())
     }, [stateId, setSelectedState, setDemographicGroups, setFeasibleRaceFilter])
 
     /* ── Step 4: Resolve the data bundle from the dummy lookup ──────────────

@@ -65,7 +65,8 @@ const SO_SUBSECTIONS = [
 const RP_SUBSECTIONS = [
     { id: 'gingles', label: 'Gingles Analysis'        },
     { id: 'ei-kde',  label: 'Ecological Inference KDE' },
-    { id: 'ei-bar',  label: 'Ecological Inference Bar' },
+    { id: 'ei-bar',  label: 'EI Bar & Polarization'    },
+    { id: 'vs-ss',   label: 'Vote / Seat Share'        },
 ]
 
 const EA_SUBSECTIONS = [
