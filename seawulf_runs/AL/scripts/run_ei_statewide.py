@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[3]  # CSE416-Project
 INFILE = ROOT / "AL_data" / "AL_precincts_full.geojson"
 OUTDIR = ROOT / "AL_data"
 
-TOTAL_COL = "VAP"       # total population base
+TOTAL_COL = "VAP"
 DEM_COL = "votes_dem"
 REP_COL = "votes_rep"
 
@@ -33,7 +33,7 @@ def summ(a):
     }
 
 
-def run_ei_for_group(gdf, group_col, group_name, outfile):
+def run_ei_for_group(gdf, group_col, group_name):
     total = gdf[TOTAL_COL].to_numpy(dtype=float)
     group = gdf[group_col].to_numpy(dtype=float)
     dem = gdf[DEM_COL].to_numpy(dtype=float)
@@ -54,7 +54,6 @@ def run_ei_for_group(gdf, group_col, group_name, outfile):
     x = (group / total).clip(0, 1)      # fraction of group in precinct
     y = (dem / tot_votes).clip(0, 1)    # Dem two-party vote share in precinct
 
-    # Fit EI
     model = TwoByTwoEI(
         model_name="king99_pareto_modification",
         pareto_scale=8
@@ -79,7 +78,7 @@ def run_ei_for_group(gdf, group_col, group_name, outfile):
     beta = np.asarray(post["b_1"]).reshape(-1)
     beta_comp = np.asarray(post["b_2"]).reshape(-1)
 
-    out = {
+    return {
         "state": "AL",
         "race_group": group_name,
         "group_column": group_col,
@@ -94,24 +93,38 @@ def run_ei_for_group(gdf, group_col, group_name, outfile):
         },
     }
 
-    outfile_path = OUTDIR / outfile
-    outfile_path.parent.mkdir(parents=True, exist_ok=True)
-    outfile_path.write_text(json.dumps(out, indent=2))
-
-    print(f"Wrote {outfile_path} with n={out['n_precincts_used']} precincts")
-
 
 def main():
     gdf = gpd.read_file(INFILE)
+    OUTDIR.mkdir(parents=True, exist_ok=True)
+
+    results_summary = []
 
     for cfg in GROUP_CONFIGS:
         print(f"Running EI for {cfg['name']} ({cfg['col']})...")
-        run_ei_for_group(
+
+        out = run_ei_for_group(
             gdf=gdf,
             group_col=cfg["col"],
             group_name=cfg["name"],
-            outfile=cfg["outfile"],
         )
+
+        outfile_path = OUTDIR / cfg["outfile"]
+        outfile_path.write_text(json.dumps(out, indent=2))
+        print(f"Wrote {outfile_path} with n={out['n_precincts_used']} precincts")
+
+        results_summary.append({
+            "race_group": cfg["name"],
+            "group_column": cfg["col"],
+            "outfile": str(outfile_path),
+            "n_precincts_used": out["n_precincts_used"],
+            "mean_P_dem_given_group": out["beta_P_dem_given_group"]["mean"],
+            "mean_P_dem_given_non_group": out["beta_comp_P_dem_given_non_group"]["mean"],
+        })
+
+    summary_file = OUTDIR / "ei_AL_2x2_summary.json"
+    summary_file.write_text(json.dumps(results_summary, indent=2))
+    print(f"\nWrote summary file: {summary_file}")
 
     print("Done. Generated all 2x2 EI output files.")
 
