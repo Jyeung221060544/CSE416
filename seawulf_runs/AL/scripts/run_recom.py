@@ -7,6 +7,7 @@ from gerrychain.updaters import Tally, cut_edges
 from gerrychain.constraints import within_percent_of_ideal_population
 from gerrychain.proposals import recom
 from functools import partial
+from gerrychain.tree import bipartition_tree
 
 def load_config(path):
     with open(path, "r") as f:
@@ -14,6 +15,35 @@ def load_config(path):
 
 def ensure_dir(p):
     os.makedirs(p, exist_ok=True)
+
+def district_effectiveness_record(part, dist, group_key, thr, party):
+    pop = part["population"][dist]
+    minority = part["min_{}".format(group_key)][dist]
+    pct = 0.0 if pop <= 0 else float(minority) / float(pop)
+
+    dem = part["dem"][dist] if "dem" in part.updaters else None
+    rep = part["rep"][dist] if "rep" in part.updaters else None
+
+    winner = None
+    if dem is not None and rep is not None:
+        winner = "D" if dem > rep else "R"
+
+    effective = (pct >= thr) and (winner == party if party is not None else True)
+
+    return {
+        "district": int(dist) if str(dist).isdigit() else str(dist),
+        "group_key": group_key,
+        "minority_population": minority,
+        "total_population": pop,
+        "minority_pct": pct,
+        "threshold": thr,
+        "party_of_choice": party,
+        "dem_votes": dem,
+        "rep_votes": rep,
+        "winner": winner,
+        "effectiveness_score": 1 if effective else 0,
+        "is_effective": effective,
+    }
 
 def main():
     if len(sys.argv) < 3:
@@ -55,8 +85,24 @@ def main():
     chosen_thr = None
     chosen_party = None
 
+    # Separate analysis/logging group for boxwhisker + minority metrics
+    analysis_group_key = group_key if vra_enabled else cfg.get("boxwhisker_group_key")
+    analysis_threshold = None
+    analysis_party = None
+
     if vra_enabled:
-        updaters[f"min_{group_key}"] = Tally(group_key, alias=f"min_{group_key}")
+        analysis_threshold = None  # will be set from VRA threshold selection below
+        analysis_party = None      # will be set below
+    else:
+        analysis_threshold = cfg.get("boxwhisker_threshold")
+        analysis_party = cfg.get("boxwhisker_party_of_choice")
+
+    # Add tally for the analysis group whenever present
+    if analysis_group_key is not None:
+        updaters["min_{}".format(analysis_group_key)] = Tally(
+            analysis_group_key,
+            alias="min_{}".format(analysis_group_key)
+        )
 
     initial = Partition(G, assignment=assignment_col, updaters=updaters)
 
@@ -67,7 +113,7 @@ def main():
         pop = part["population"][dist]
         if pop <= 0:
             return 0.0
-        m = part[f"min_{group_key}"][dist]
+        m = part["min_{}".format(group_key)][dist]
         return float(m) / float(pop)
 
     def opp_count(part, thr, group_key):
@@ -102,7 +148,7 @@ def main():
         rep_seats = len(part.parts) - dem_seats
         return dem_seats, rep_seats
 
-    def plan_metrics(part, *, vra_enabled, group_key=None, thr=None, party=None):
+    def plan_metrics(part, group_key=None, thr=None, party=None):
         dem_seats, rep_seats = seat_count(part)
         cut = len(part["cut_edges"]) if "cut_edges" in part.updaters else None
 
@@ -112,7 +158,7 @@ def main():
             "cut_edges": cut,
         }
 
-        if vra_enabled and group_key is not None and thr is not None:
+        if group_key is not None and thr is not None:
             metrics["opp_districts"] = opp_count(part, thr, group_key)
             if party is not None:
                 metrics["eff_districts"] = effective_count(part, thr, group_key, party)
@@ -159,10 +205,13 @@ def main():
 
             constraints.append(vra_eff_constraint)
 
+        analysis_threshold = chosen_thr
+        analysis_party = chosen_party if eff_enabled else None
+
         if mode == "test":
-            msg = f"[VRA] group={group_key} thr={chosen_thr} opp_K={target_k_opp}"
+            msg = "[VRA] group={} thr={} opp_K={}".format(group_key, chosen_thr, target_k_opp)
             if eff_enabled:
-                msg += f" eff_party={chosen_party} eff_K={target_k_eff}"
+                msg += " eff_party={} eff_K={}".format(chosen_party, target_k_eff)
             print(msg)
 
     # ---------------- chain ----------------
@@ -174,6 +223,11 @@ def main():
         pop_target=ideal_pop,
         epsilon=eps,
         node_repeats=3,
+        method=partial(
+            bipartition_tree,
+            max_attempts=5000,
+            allow_pair_reselection=True,
+        ),
     )
 
     chain = MarkovChain(
@@ -184,11 +238,12 @@ def main():
         total_steps=steps,
     )
 
-    plans_path = os.path.join(outdir, f"plans_{mode}.jsonl")
-    summary_path = os.path.join(outdir, f"summary_{mode}.json")
-    box_path = os.path.join(outdir, f"boxwhisker_raw_{mode}.jsonl")
+    plans_path = os.path.join(outdir, "plans_{}.jsonl".format(mode))
+    summary_path = os.path.join(outdir, "summary_{}.json".format(mode))
+    box_path = os.path.join(outdir, "boxwhisker_raw_{}.jsonl".format(mode))
+    district_eff_path = os.path.join(outdir, "district_effectiveness_{}.jsonl".format(mode))
+    district_eff_written = 0
     box_written = 0
-
     plans_written = 0
     seat_splits = {}
 
@@ -199,16 +254,17 @@ def main():
     save_first_n = int(cfg.get("save_assignments_first_n", 10))
     save_every = int(cfg.get("save_assignments_every", 0))
 
-    with open(plans_path, "w") as fout, open(box_path, "w") as fbox:
+    with open(plans_path, "w") as fout, \
+     open(box_path, "w") as fbox, \
+     open(district_eff_path, "w") as feff:
         for i, part in enumerate(chain):
             rec = {"step": i}
 
             metrics = plan_metrics(
                 part,
-                vra_enabled=vra_enabled,
-                group_key=group_key if vra_enabled else None,
-                thr=chosen_thr if vra_enabled else None,
-                party=chosen_party if vra_enabled else None,
+                group_key=analysis_group_key,
+                thr=analysis_threshold,
+                party=analysis_party,
             )
             rec.update({k: v for k, v in metrics.items() if v is not None})
 
@@ -240,19 +296,35 @@ def main():
             district_pcts = None
             district_pcts_sorted = None
 
-            if vra_enabled and group_key is not None:
-                # district ids may not be 1..K; keep consistent ordering by sorting keys
+            if analysis_group_key is not None:
                 dists = sorted(part.parts.keys(), key=lambda x: int(x) if str(x).isdigit() else str(x))
-                district_pcts = [district_minority_pct(part, d, group_key) for d in dists]
-                district_pcts_sorted = sorted(district_pcts)  # rank-based (needed for boxplots)
+                district_pcts = [district_minority_pct(part, d, analysis_group_key) for d in dists]
+                district_pcts_sorted = sorted(district_pcts)
+
             if district_pcts_sorted is not None:
                 fbox.write(json.dumps({
                     "step": i,
-                    "group_key": group_key,
-                    "threshold": chosen_thr,
+                    "group_key": analysis_group_key,
+                    "threshold": analysis_threshold,
+                    "party_of_choice": analysis_party,
                     "district_pcts_sorted": district_pcts_sorted
                 }) + "\n")
                 box_written += 1
+
+                        # ---- per-district effectiveness records ----
+            if analysis_group_key is not None and analysis_threshold is not None:
+                dists = sorted(part.parts.keys(), key=lambda x: int(x) if str(x).isdigit() else str(x))
+                for d in dists:
+                    eff_rec = district_effectiveness_record(
+                        part,
+                        d,
+                        analysis_group_key,
+                        analysis_threshold,
+                        analysis_party,
+                    )
+                    eff_rec["step"] = i
+                    feff.write(json.dumps(eff_rec) + "\n")
+                    district_eff_written += 1
 
             fout.write(json.dumps(rec) + "\n")
             plans_written += 1
@@ -273,10 +345,17 @@ def main():
             "opp_hist": opp_hist,
             "eff_hist": eff_hist,
         },
+        "analysis": {
+            "group_key": analysis_group_key,
+            "threshold": analysis_threshold,
+            "party_of_choice": analysis_party,
+        },
         "cut_edges_hist": cut_hist,
     }
     summary["boxwhisker_raw_file"] = box_path
     summary["boxwhisker_plans_written"] = box_written
+    summary["district_effectiveness_file"] = district_eff_path
+    summary["district_effectiveness_rows_written"] = district_eff_written
 
     with open(summary_path, "w") as f:
         json.dump(summary, f, indent=2)

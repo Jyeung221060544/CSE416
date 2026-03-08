@@ -28,15 +28,33 @@ JOBS = [
     {
         "state": "AL",
         "ensemble": "raceblind",
-        "plans": ROOT / "cse416_seawulf_results" / "AL_output_raceblind" / "plans_final.jsonl",
-        "out": ROOT / "AL_data" / "AL_boxwhisker_raceblind.json",
+        "group_key": "NH_BLACK_ALONE_VAP",
+        "raw": ROOT / "cse416_seawulf_results" / "AL_output_raceblind" / "boxwhisker_raw_final.jsonl",
+        "precincts": ROOT / "AL_data" / "AL_precincts_full.geojson",
+        "out": ROOT / "AL_data" / "AL_boxwhisker_raceblind_black.json",
     },
     {
         "state": "OR",
         "ensemble": "raceblind",
-        "plans": ROOT / "cse416_seawulf_results" / "OR_output_raceblind" / "plans_final.jsonl",
-        "out": ROOT / "OR_data" / "OR_boxwhisker_raceblind.json",
+        "group_key": "LATINO_VAP",
+        "raw": ROOT / "cse416_seawulf_results" / "OR_output_raceblind" / "boxwhisker_raw_final.jsonl",
+        "precincts": ROOT / "OR_data" / "OR_precincts_full.geojson",
+        "out": ROOT / "OR_data" / "OR_boxwhisker_raceblind_latino.json",
     },
+
+    # Optional legacy race-blind seat/cut-edge summaries:
+    # {
+    #     "state": "AL",
+    #     "ensemble": "raceblind",
+    #     "plans": ROOT / "cse416_seawulf_results" / "AL_output_raceblind" / "plans_final.jsonl",
+    #     "out": ROOT / "AL_data" / "AL_boxwhisker_raceblind.json",
+    # },
+    # {
+    #     "state": "OR",
+    #     "ensemble": "raceblind",
+    #     "plans": ROOT / "cse416_seawulf_results" / "OR_output_raceblind" / "plans_final.jsonl",
+    #     "out": ROOT / "OR_data" / "OR_boxwhisker_raceblind.json",
+    # },
 ]
 
 
@@ -156,7 +174,7 @@ def compute_raceblind_boxwhisker(plans_path: Path):
     }
 
 
-def run_vra_job(job):
+def run_minority_boxwhisker_job(job):
     raw_path = Path(job["raw"])
     precinct_path = Path(job["precincts"])
     out_path = Path(job["out"])
@@ -176,7 +194,7 @@ def run_vra_job(job):
     sample = plans[0]
     payload = {
         "state": job["state"],
-        "ensemble": "vra",
+        "ensemble": job["ensemble"],
         "group_key": group_key,
         "threshold": sample.get("threshold"),
         "num_plans": len(plans),
@@ -205,7 +223,7 @@ def run_raceblind_job(job):
 
     payload = {
         "state": job["state"],
-        "ensemble": "raceblind",
+        "ensemble": job["ensemble"],
         "metrics": stats,
     }
 
@@ -220,15 +238,15 @@ def run_raceblind_job(job):
 def main():
     for job in JOBS:
         try:
-            if job["ensemble"] == "vra":
-                run_vra_job(job)
-            elif job["ensemble"] == "raceblind":
+            if "raw" in job and "group_key" in job:
+                run_minority_boxwhisker_job(job)
+            elif "plans" in job:
                 run_raceblind_job(job)
             else:
-                print(f"Skipping unknown ensemble type: {job['ensemble']}")
+                print(f"Skipping job with unknown format: {job}")
                 print("-" * 60)
         except Exception as e:
-            print(f"Failed for {job['state']} {job['ensemble']}: {e}")
+            print(f"Failed for {job.get('state', 'UNKNOWN')} {job.get('ensemble', 'UNKNOWN')}: {e}")
             print("-" * 60)
 
 
