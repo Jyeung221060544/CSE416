@@ -7,6 +7,7 @@ from gerrychain.updaters import Tally, cut_edges
 from gerrychain.constraints import within_percent_of_ideal_population
 from gerrychain.proposals import recom
 from functools import partial
+from gerrychain.tree import bipartition_tree
 
 def load_config(path):
     with open(path, "r") as f:
@@ -163,7 +164,7 @@ def main():
                 metrics["eff_districts"] = effective_count(part, thr, group_key, party)
 
         return metrics
-    
+
     # ---------------- VRA constraints (if enabled) ----------------
     if vra_enabled:
         thresholds = vra_cfg.get("auto_thresholds", [0.50, 0.45, 0.40, 0.35, 0.30])
@@ -222,6 +223,11 @@ def main():
         pop_target=ideal_pop,
         epsilon=eps,
         node_repeats=3,
+        method=partial(
+            bipartition_tree,
+            max_attempts=5000,
+            allow_pair_reselection=True,
+        ),
     )
 
     chain = MarkovChain(
@@ -338,6 +344,11 @@ def main():
             "party_of_choice": chosen_party,
             "opp_hist": opp_hist,
             "eff_hist": eff_hist,
+        },
+        "analysis": {
+            "group_key": analysis_group_key,
+            "threshold": analysis_threshold,
+            "party_of_choice": analysis_party,
         },
         "cut_edges_hist": cut_hist,
     }
