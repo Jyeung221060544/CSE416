@@ -16,6 +16,35 @@ def load_config(path):
 def ensure_dir(p):
     os.makedirs(p, exist_ok=True)
 
+def district_effectiveness_record(part, dist, group_key, thr, party):
+    pop = part["population"][dist]
+    minority = part[f"min_{group_key}"][dist]
+    pct = 0.0 if pop <= 0 else float(minority) / float(pop)
+
+    dem = part["dem"][dist] if "dem" in part.updaters else None
+    rep = part["rep"][dist] if "rep" in part.updaters else None
+
+    winner = None
+    if dem is not None and rep is not None:
+        winner = "D" if dem > rep else "R"
+
+    effective = (pct >= thr) and (winner == party if party is not None else True)
+
+    return {
+        "district": int(dist) if str(dist).isdigit() else str(dist),
+        "group_key": group_key,
+        "minority_population": minority,
+        "total_population": pop,
+        "minority_pct": pct,
+        "threshold": thr,
+        "party_of_choice": party,
+        "dem_votes": dem,
+        "rep_votes": rep,
+        "winner": winner,
+        "effectiveness_score": 1 if effective else 0,
+        "is_effective": effective,
+    }
+
 def main():
     if len(sys.argv) < 3:
         print("Usage: python run_recom.py <config.json> <mode:test|final>")
@@ -212,8 +241,9 @@ def main():
     plans_path = os.path.join(outdir, f"plans_{mode}.jsonl")
     summary_path = os.path.join(outdir, f"summary_{mode}.json")
     box_path = os.path.join(outdir, f"boxwhisker_raw_{mode}.jsonl")
+    district_eff_path = os.path.join(outdir, f"district_effectiveness_{mode}.jsonl")
+    district_eff_written = 0
     box_written = 0
-
     plans_written = 0
     seat_splits = {}
 
@@ -224,7 +254,9 @@ def main():
     save_first_n = int(cfg.get("save_assignments_first_n", 10))
     save_every = int(cfg.get("save_assignments_every", 0))
 
-    with open(plans_path, "w") as fout, open(box_path, "w") as fbox:
+    with open(plans_path, "w") as fout, \
+     open(box_path, "w") as fbox, \
+     open(district_eff_path, "w") as feff:
         for i, part in enumerate(chain):
             rec = {"step": i}
 
@@ -277,6 +309,22 @@ def main():
                     "party_of_choice": analysis_party,
                     "district_pcts_sorted": district_pcts_sorted
                 }) + "\n")
+                box_written += 1
+
+                        # ---- per-district effectiveness records ----
+            if analysis_group_key is not None and analysis_threshold is not None:
+                dists = sorted(part.parts.keys(), key=lambda x: int(x) if str(x).isdigit() else str(x))
+                for d in dists:
+                    eff_rec = district_effectiveness_record(
+                        part,
+                        d,
+                        analysis_group_key,
+                        analysis_threshold,
+                        analysis_party,
+                    )
+                    eff_rec["step"] = i
+                    feff.write(json.dumps(eff_rec) + "\n")
+                    district_eff_written += 1
 
             fout.write(json.dumps(rec) + "\n")
             plans_written += 1
@@ -306,6 +354,8 @@ def main():
     }
     summary["boxwhisker_raw_file"] = box_path
     summary["boxwhisker_plans_written"] = box_written
+    summary["district_effectiveness_file"] = district_eff_path
+    summary["district_effectiveness_rows_written"] = district_eff_written
 
     with open(summary_path, "w") as f:
         json.dump(summary, f, indent=2)
