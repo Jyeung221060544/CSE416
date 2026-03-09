@@ -83,11 +83,11 @@ export default function StatePage() {
 
                     {/* ── RACIAL POLARIZATION ──────────────────────────────── */}
                     {/* Sub-sections: Gingles Analysis + Ecological Inference */}
-                    <RacialPolarizationSection data={data} />
+                    <RacialPolarizationSection data={data} stateId={stateId} />
 
                     {/* ── ENSEMBLE ANALYSIS ────────────────────────────────── */}
                     {/* Sub-sections: Ensemble Splits + Box & Whisker */}
-                    <EnsembleAnalysisSection data={data} />
+                    <EnsembleAnalysisSection data={data} stateId={stateId} />
 
                 </div>
             </div>

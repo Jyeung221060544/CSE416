@@ -288,7 +288,7 @@ export default function DistrictMap2022({ stateId, districtSummary }) {
             {/* ── DISTRICT CHOROPLETH LAYER ──────────────────────────── */}
             {/* Re-keyed on selectedDistrict so Leaflet re-applies styles on highlight */}
             <GeoJSON
-                key={`${stateId}-${selectedDistrict ?? 'none'}`}
+                key={`${stateId}-${selectedDistrict ?? 'none'}-${districtSummary?.districts?.length ?? 0}`}
                 ref={geoJsonRef}
                 data={geoData}
                 style={(feature) => getStyle(feature, districtByNumber, selectedDistrict)}

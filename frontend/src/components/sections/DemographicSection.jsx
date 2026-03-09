@@ -1,50 +1,23 @@
 /**
  * DemographicSection.jsx — Second section on StatePage (id="demographic").
  *
- * LAYOUT
- *   ┌────────────────────────────────┬────────────────────────────────┐
- *   │  DemographicHeatmap            │  DemographicPopulationTable    │
- *   │  (Leaflet choropleth map)      │  (race group VAP breakdown)    │
- *   ├────────────────────────────────┤                                │
- *   │  Active filter pills           │                                │
- *   ├────────────────────────────────┤                                │
- *   │  HeatmapLegend (color bins)    │  Opportunity district callout  │
- *   └────────────────────────────────┴────────────────────────────────┘
- *
- * PROPS
- *   data    {object|null} — Full state bundle from useStateData; uses heatmapPrecinct
- *                           and heatmapCensus sub-keys.
- *   stateId {string}      — Two-letter state abbreviation (e.g. 'AL').
- *
- * STATE SOURCES (Zustand)
- *   raceFilter        — Selected racial group for heatmap layer and table highlight.
- *   setRaceFilter     — Setter for raceFilter.
- *   granularityFilter — 'precinct' or 'census_block'; switches the heatmap dataset.
+ * Fetches heatmap data from: GET /api/states/:stateId/heatmap?granularity=&race=
+ * Re-fetches whenever stateId, granularityFilter, or raceFilter changes.
+ * Server returns one race at a time: { bins, features:[{idx, binId}] }
  */
 
+import { useEffect, useState } from 'react'
 import SectionHeader from '@/components/ui/section-header'
 import SurfacePanel  from '@/components/ui/surface-panel'
 import MapFrame      from '@/components/ui/map-frame'
 import useAppStore                from '@/store/useAppStore'
 import DemographicHeatmap         from '@/components/maps/DemographicHeatmap'
 import DemographicPopulationTable from '@/components/tables/DemographicPopulationTable'
+import { fetchHeatmap } from '../../api'
 
 
-/* ── Step 0: Sub-components ──────────────────────────────────────────────── */
-
-/**
- * HeatmapLegend — Color-coded bin key for the DemographicHeatmap.
- *
- * Reads the bins array from the active heatmap dataset and renders a swatch
- * grid showing the % minority VAP range each color represents.
- *
- * @param {{ bins: Array<{ binId: string, rangeMin: number, rangeMax: number, color: string }>|null }} props
- *   bins — Bin definitions from heatmapData.bins.  Returns null if the array is empty.
- * @returns {JSX.Element|null}
- */
 function HeatmapLegend({ bins }) {
     if (!bins?.length) return null
-
     return (
         <SurfacePanel className="p-3 border-brand-muted/20 bg-white">
             <p className="text-[10px] font-bold uppercase tracking-widest text-brand-deep mb-2">
@@ -53,7 +26,6 @@ function HeatmapLegend({ bins }) {
             <div className="grid grid-cols-5 gap-x-3 gap-y-2">
                 {bins.map(bin => (
                     <div key={bin.binId} className="flex items-center gap-1.5">
-                        {/* Color swatch — background set from bin.color (hex string) */}
                         <span
                             className="w-4 h-4 rounded-sm border border-black/15 shrink-0"
                             style={{ backgroundColor: bin.color }}
@@ -69,47 +41,37 @@ function HeatmapLegend({ bins }) {
 }
 
 
-/* ── Step 1: Main exported section component ─────────────────────────────── */
-
-/**
- * DemographicSection — Heatmap + population table for the selected state.
- *
- * @param {{ data: object|null, stateId: string }} props
- *   data    — Full state data bundle; reads heatmapCensus / heatmapPrecinct.
- *   stateId — Two-letter abbreviation for the current state (e.g. 'AL').
- * @returns {JSX.Element}
- */
 export default function DemographicSection({ data, stateId }) {
 
-    /* ── Zustand state ───────────────────────────────────────────────────── */
-    const raceFilter            = useAppStore(s => s.raceFilter)
-    const setRaceFilter         = useAppStore(s => s.setRaceFilter)
-    const granularityFilter     = useAppStore(s => s.granularityFilter)
-    const showDistrictOverlay   = useAppStore(s => s.showDistrictOverlay)
+    const raceFilter          = useAppStore(s => s.raceFilter)
+    const setRaceFilter       = useAppStore(s => s.setRaceFilter)
+    const granularityFilter   = useAppStore(s => s.granularityFilter)
+    const showDistrictOverlay = useAppStore(s => s.showDistrictOverlay)
 
+    /* ── Fetch heatmap on demand ─────────────────────────────────────────── */
+    const [heatmapData, setHeatmapData] = useState(null)
 
-    /* ── Derived data ────────────────────────────────────────────────────── */
+    useEffect(() => {
+        if (!stateId || !raceFilter) return
+        setHeatmapData(null)
+        fetchHeatmap(stateId, granularityFilter, raceFilter)
+            .then(setHeatmapData)
+            .catch(err => console.error('[Demographic] fetchHeatmap error:', err))
+    }, [stateId, granularityFilter, raceFilter])
+
+    /* ── Derived data from overview ──────────────────────────────────────── */
     const s               = data?.stateSummary
     const demographicGroups = s?.demographicGroups ?? []
 
-    /* Select the correct heatmap dataset based on the granularity filter toggle */
-    const heatmapData = granularityFilter === 'census_block'
-        ? (data?.heatmapCensus ?? null)
-        : (data?.heatmapPrecinct ?? null)
-
-    /* Build districtNumber → party lookup for the overlay layer */
     const districtPartyMap = {}
     ;(data?.districtSummary?.districts ?? []).forEach(d => {
         districtPartyMap[d.districtNumber] = d.party
     })
 
-
-
     /* ── Render ──────────────────────────────────────────────────────────── */
     return (
         <section id="demographic" className="p-2 sm:p-3 lg:p-4 border-b border-brand-muted/30 h-[calc(100vh-3.5rem)] flex flex-col overflow-hidden">
 
-            {/* ── SECTION HEADER ───────────────────────────────────────────── */}
             <div className="flex items-baseline justify-between mb-6 shrink-0">
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-brand-darkest tracking-tight">
                     {s?.stateName && <span className="text-brand-primary">{s.stateName} — </span>}Demographic Analysis
@@ -117,14 +79,10 @@ export default function DemographicSection({ data, stateId }) {
                 <span className="hidden sm:inline-flex items-center gap-1.5 text-sm italic font-medium text-brand-primary bg-brand-primary/10 border border-brand-primary/20 px-3 py-0.5 rounded-full">&ldquo;What does the minority landscape look like?&rdquo;</span>
             </div>
 
-            {/* ── TWO-COLUMN GRID ──────────────────────────────────────────── */}
             <div className="flex-1 min-h-0 grid grid-cols-1 xl:grid-cols-2 gap-6">
 
-                {/* ── LEFT: HEATMAP COLUMN ─────────────────────────────────── */}
                 <div className="flex flex-col gap-1 min-h-0">
                     <SectionHeader title="Demographic Heat Map" />
-
-                    {/* Leaflet choropleth map — colored by minority VAP bin */}
                     <MapFrame className="flex-1 min-h-0">
                         <DemographicHeatmap
                             stateId={stateId}
@@ -136,41 +94,24 @@ export default function DemographicSection({ data, stateId }) {
                             districtPartyMap={districtPartyMap}
                         />
                     </MapFrame>
-
-                   
-
-                    {/* ── HEATMAP LEGEND ───────────────────────────────────── */}
-                    {/* Shown when heatmapData is available; fallback message if not */}
                     {heatmapData
                         ? <HeatmapLegend bins={heatmapData.bins} />
                         : stateId && (
                             <p className="text-xs text-brand-muted/60 italic">
-                                Heatmap data not yet available for this state.
+                                {raceFilter ? 'Loading heatmap…' : 'Heatmap data not yet available for this state.'}
                             </p>
                         )
                     }
                 </div>
 
-                {/* ── RIGHT: POPULATION TABLE COLUMN ───────────────────────── */}
                 <div className="flex flex-col gap-1 min-h-0">
                     <SectionHeader title="Population by Group" />
-
                     <div className="flex flex-col flex-1 min-h-0">
-
-                        {/* Table with click-to-filter behavior (updates raceFilter) */}
                         <DemographicPopulationTable
                             demographicGroups={demographicGroups}
                             raceFilter={raceFilter}
                             setRaceFilter={setRaceFilter}
                         />
-
-                        {/* ── FEASIBILITY CALLOUT ──────────────────────────── */}
-                        {/* Explains the "Feasible" badge in the population table */}
-                        {/* <InfoCallout icon={Lightbulb} className="mt-auto">
-                            <span className="font-semibold text-brand-deep">Opportunity district:</span> Feasible
-                            indicates the group&apos;s VAP is greater than or equal to 400,000, which may support a
-                            majority-minority district under the Gingles preconditions.
-                        </InfoCallout> */}
                     </div>
                 </div>
 

@@ -56,35 +56,27 @@
  */
 
 /* ── Step 0: React + map library imports ──────────────────────────────── */
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useMemo, useCallback } from 'react'
 import { MapContainer, TileLayer, GeoJSON, useMap } from 'react-leaflet'
 import L from 'leaflet'
 import { useNavigate } from 'react-router-dom'
 import useAppStore from '../../store/useAppStore'
 
-/* ── Step 1: Data sources (dummy — replace with API) ──────────────────── */
-//CONNECT HERE: splashData import — replace with fetched states from GET /api/states,
-// then rebuild stateByName from the response array instead of the JSON import
-import splashData from '../../dummy/splash-states.json'
+/* ── Step 1: Static GeoJSON boundary shapes (never changes) ───────────── */
+// states prop comes from HomePage via GET /api/states — no dummy import needed
 import usGeoJson from '../../assets/US-48-States.geojson'
 
-/* ── Step 2: State lookup table ───────────────────────────────────────── */
-// Lookup: stateName → splash-states object
-//CONNECT HERE: stateByName — rebuild this from the API response array
-const stateByName = Object.fromEntries(
-    splashData.states.map(s => [s.stateName, s])
-)
-
-/* ── Step 3: Base style function ──────────────────────────────────────── */
+/* ── Step 2: Base style function (accepts lookup as parameter) ─────────── */
 /**
  * Returns a Leaflet path style object for a GeoJSON feature.
  * States with `hasData` receive the brand primary color;
  * all others receive the muted surface color.
  *
- * @param {object} feature - GeoJSON feature with a `properties.name` field.
+ * @param {object} feature     - GeoJSON feature with a `properties.name` field.
+ * @param {object} stateByName - Lookup: stateName → state object from API.
  * @returns {object} Leaflet path options (fillColor, color, weight, etc.).
  */
-function baseStyle(feature) {
+function baseStyle(feature, stateByName) {
     const data = stateByName[feature.properties.name]
 
     if (data?.hasData) {
@@ -151,11 +143,24 @@ function MapResizeHandler({ geoData }) {
  *                                        (or null on mouseout).
  * @returns {JSX.Element} A full-height Leaflet MapContainer.
  */
-export default function USMap({ onStateHover }) {
+export default function USMap({ states = [], onStateHover }) {
     /* ── Step 5a: Refs, router, global state ── */
     const geoJsonRef = useRef(null)
     const navigate   = useNavigate()
     const setSelectedState = useAppStore(s => s.setSelectedState)
+
+    /* ── Step 5a-i: Build lookup from API-fetched states ─────────────────── */
+    // Rebuild whenever states array changes (i.e. after the API response arrives).
+    const stateByName = useMemo(
+        () => Object.fromEntries(states.map(s => [s.stateName, s])),
+        [states]
+    )
+
+    /* ── Step 5a-ii: Stable style callback — updates when stateByName changes */
+    const style = useCallback(
+        (feature) => baseStyle(feature, stateByName),
+        [stateByName]
+    )
 
     /* ── Step 5b: Per-feature event binding ── */
     /**
@@ -165,7 +170,7 @@ export default function USMap({ onStateHover }) {
      * @param {object} feature - GeoJSON feature.
      * @param {object} layer   - Leaflet layer for the feature.
      */
-    function onEachFeature(feature, layer) {
+    const onEachFeature = useCallback(function onEachFeature(feature, layer) {
         const data = stateByName[feature.properties.name]
         if (!data?.hasData) return
 
@@ -197,7 +202,7 @@ export default function USMap({ onStateHover }) {
                 navigate(`/state/${data.stateId}`)
             },
         })
-    }
+    }, [stateByName, onStateHover, navigate, setSelectedState])
 
     /* ── Step 5c: Render ── */
     return (
@@ -225,9 +230,10 @@ export default function USMap({ onStateHover }) {
 
             {/* ── STATE CHOROPLETH LAYER ─────────────────────────────── */}
             <GeoJSON
+                key={states.length}
                 ref={geoJsonRef}
                 data={usGeoJson}
-                style={baseStyle}
+                style={style}
                 onEachFeature={onEachFeature}
             />
 

@@ -6,7 +6,6 @@
   "numDistricts": 7,
   "idealDistrictPopulation": 717754,
   "isPreclearance": true,
-  "mapView": { "center": [32.7, -86.8], "zoom": 6 },
 
   "voterDistribution": {
     "electionYear": 2024,

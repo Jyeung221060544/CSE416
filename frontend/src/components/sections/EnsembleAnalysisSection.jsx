@@ -32,7 +32,7 @@
  *   feasibleRaceFilter — Selected race for box & whisker (FeasibleRaceFilter in sidebar).
  */
 
-import { useMemo, useEffect } from 'react'
+import { useMemo, useEffect, useState } from 'react'
 import SectionHeader             from '@/components/ui/section-header'
 import BrowserTabs               from '@/components/ui/browser-tabs'
 import EnsembleSplitChart        from '@/components/charts/EnsembleSplitChart'
@@ -41,6 +41,7 @@ import BoxWhiskerChart           from '@/components/charts/BoxWhiskerChart'
 import BoxWhiskerCompareChart    from '@/components/charts/BoxWhiskerCompareChart'
 import useAppStore               from '@/store/useAppStore'
 import { RACE_LABELS } from '@/lib/partyColors'
+import { fetchEnsemble } from '../../api'
 
 
 /* ── Tab definitions ─────────────────────────────────────────────────────────
@@ -63,7 +64,7 @@ const EA_TABS = [
  * @param {{ data: object|null }} props
  * @returns {JSX.Element}
  */
-export default function EnsembleAnalysisSection({ data }) {
+export default function EnsembleAnalysisSection({ data, stateId }) {
 
     /* ── Zustand state ───────────────────────────────────────────────────── */
     const activeTab          = useAppStore(s => s.activeEATab)
@@ -75,11 +76,21 @@ export default function EnsembleAnalysisSection({ data }) {
     /* ── Tab state ────────────────────────────────────────────────────────── */
     useEffect(() => { setEaCompareMode(false) }, [activeTab, setEaCompareMode])
 
+    /* ── Fetch ensemble on stateId mount ─────────────────────────────────── */
+    const [ensembleBundle, setEnsembleBundle] = useState(null)
+    useEffect(() => {
+        if (!stateId) return
+        setEnsembleBundle(null)
+        fetchEnsemble(stateId)
+            .then(setEnsembleBundle)
+            .catch(err => console.error('[Ensemble] fetchEnsemble error:', err))
+    }, [stateId])
+
     /* ── Derived data ────────────────────────────────────────────────────── */
     const stateName    = data?.stateSummary?.stateName ?? null
 
     /* Ensemble Splits */
-    const splitsData   = data?.splits ?? null
+    const splitsData   = ensembleBundle?.splits ?? null
     const enactedSplit = splitsData?.enactedPlanSplit ?? null
 
     const raceBlind = splitsData?.ensembles?.find(e => e.ensembleType === 'race-blind')     ?? null
@@ -125,7 +136,7 @@ export default function EnsembleAnalysisSection({ data }) {
 
 
     /* Box & Whisker */
-    const bwData      = data?.boxWhisker ?? null
+    const bwData      = ensembleBundle?.boxWhisker ?? null
     const bwRaceBlind = bwData?.ensembles?.find(e => e.ensembleType === 'race-blind')     ?? null
     const bwVraConstr = bwData?.ensembles?.find(e => e.ensembleType === 'vra-constrained') ?? null
 
