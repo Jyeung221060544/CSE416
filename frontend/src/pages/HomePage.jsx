@@ -46,15 +46,13 @@
  * ========================================================================
  */
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { MapPin, BarChart2, MousePointerClick } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Card, CardContent } from '@/components/ui/card'
 import USMap from '../components/maps/USMap'
-
-//CONNECT HERE: splashData — replace with fetch('/api/states') in a useEffect, store result in useState
-import splashData from '../dummy/splash-states.json'
+import { fetchStates } from '../api'
 
 
 /**
@@ -64,7 +62,15 @@ import splashData from '../dummy/splash-states.json'
  */
 export default function HomePage() {
 
-    /* ── Step 0: Local hover state ────────────────────────────────────────── */
+    /* ── Step 0: Fetch states list from backend on mount ─────────────────── */
+    const [states, setStates] = useState([])
+    useEffect(() => {
+        fetchStates()
+            .then(data => setStates(data.states))
+            .catch(err => console.error('[HomePage] fetchStates error:', err))
+    }, [])
+
+    /* ── Step 1: Local hover state ────────────────────────────────────────── */
     /* hoveredState — set by USMap via onStateHover; null when no state is hovered.
      * Shape: { stateId, stateName, numDistricts, isPreclearance, ... } */
     const [hoveredState, setHoveredState] = useState(null)
@@ -79,7 +85,7 @@ export default function HomePage() {
 
                 {/* ── MAP PANEL ────────────────────────────────────────────── */}
                 <div className="rounded-xl overflow-hidden border border-brand-muted/25 shadow-sm h-[340px] sm:h-[440px] lg:h-auto lg:flex-[0_0_70%]">
-                    <USMap onStateHover={setHoveredState} />
+                    <USMap states={states} onStateHover={setHoveredState} />
                 </div>
 
                 {/* ── INFO CARD ────────────────────────────────────────────── */}
@@ -161,7 +167,7 @@ export default function HomePage() {
                                         Available for Analysis
                                     </span>
                                     <div className="flex gap-2 flex-wrap justify-center">
-                                        {splashData.states.map(s => (
+                                        {states.map(s => (
                                             <Badge
                                                 key={s.stateId}
                                                 variant="outline"

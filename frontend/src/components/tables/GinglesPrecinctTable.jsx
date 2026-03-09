@@ -85,7 +85,7 @@ export default function GinglesPrecinctTable({ points = [], selectedId, onSelect
         const ro = new ResizeObserver(([entry]) => setRowsHeight(entry.contentRect.height))
         ro.observe(rowsRef.current)
         return () => ro.disconnect()
-    }, [])
+    }, [rows.length]) // re-attach when rows become available after async fetch
 
     /* ── Step 3c: Dynamic page size — floor(available px / row px) ── */
     const pageSize   = Math.max(1, Math.floor(rowsHeight / ROW_HEIGHT))

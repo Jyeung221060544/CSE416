@@ -8,7 +8,7 @@
   },
   "ensembles": [
     {
-      "ensembleId": "AL_RACEBLIND_001",
+      "ensembleId": "AL_RACEBLIND",
       "ensembleType": "race-blind",
       "splits": [
         { "republican": 0, "democratic": 7, "frequency": 0    },
@@ -22,7 +22,7 @@
       ]
     },
     {
-      "ensembleId": "AL_VRA_001",
+      "ensembleId": "AL_VRA",
       "ensembleType": "vra-constrained",
       "splits": [
         { "republican": 0, "democratic": 7, "frequency": 0   },

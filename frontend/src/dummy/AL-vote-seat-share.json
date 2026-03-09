@@ -1,0 +1,69 @@
+{
+  "stateId": "AL",
+  "electionYear": 2024,
+  "raciallyPolarized": false,
+  "totalDistricts": 7,
+  "partisanBias": -0.153,
+  "notes": "At 50% Democratic vote share, Democrats win ~34.7% of seats (partisan bias ≈ -15.3%). Democrats need ~57% of votes to win 50% of seats. Alabama exhibits a significant Republican partisan advantage.",
+  "curves": [
+    {
+      "party": "Democratic",
+      "points": [
+        { "voteShare": 0.00, "seatShare": 0.006 },
+        { "voteShare": 0.05, "seatShare": 0.009 },
+        { "voteShare": 0.10, "seatShare": 0.014 },
+        { "voteShare": 0.15, "seatShare": 0.022 },
+        { "voteShare": 0.20, "seatShare": 0.035 },
+        { "voteShare": 0.25, "seatShare": 0.053 },
+        { "voteShare": 0.30, "seatShare": 0.081 },
+        { "voteShare": 0.35, "seatShare": 0.121 },
+        { "voteShare": 0.40, "seatShare": 0.178 },
+        { "voteShare": 0.45, "seatShare": 0.254 },
+        { "voteShare": 0.50, "seatShare": 0.347 },
+        { "voteShare": 0.55, "seatShare": 0.454 },
+        { "voteShare": 0.57, "seatShare": 0.500 },
+        { "voteShare": 0.60, "seatShare": 0.567 },
+        { "voteShare": 0.65, "seatShare": 0.672 },
+        { "voteShare": 0.70, "seatShare": 0.763 },
+        { "voteShare": 0.75, "seatShare": 0.835 },
+        { "voteShare": 0.80, "seatShare": 0.888 },
+        { "voteShare": 0.85, "seatShare": 0.925 },
+        { "voteShare": 0.90, "seatShare": 0.951 },
+        { "voteShare": 0.95, "seatShare": 0.968 },
+        { "voteShare": 1.00, "seatShare": 0.980 }
+      ]
+    },
+    {
+      "party": "Republican",
+      "points": [
+        { "voteShare": 0.00, "seatShare": 0.020 },
+        { "voteShare": 0.05, "seatShare": 0.032 },
+        { "voteShare": 0.10, "seatShare": 0.049 },
+        { "voteShare": 0.15, "seatShare": 0.075 },
+        { "voteShare": 0.20, "seatShare": 0.112 },
+        { "voteShare": 0.25, "seatShare": 0.165 },
+        { "voteShare": 0.30, "seatShare": 0.237 },
+        { "voteShare": 0.35, "seatShare": 0.328 },
+        { "voteShare": 0.40, "seatShare": 0.433 },
+        { "voteShare": 0.43, "seatShare": 0.500 },
+        { "voteShare": 0.45, "seatShare": 0.546 },
+        { "voteShare": 0.50, "seatShare": 0.653 },
+        { "voteShare": 0.55, "seatShare": 0.746 },
+        { "voteShare": 0.60, "seatShare": 0.822 },
+        { "voteShare": 0.65, "seatShare": 0.879 },
+        { "voteShare": 0.70, "seatShare": 0.919 },
+        { "voteShare": 0.75, "seatShare": 0.947 },
+        { "voteShare": 0.80, "seatShare": 0.965 },
+        { "voteShare": 0.85, "seatShare": 0.978 },
+        { "voteShare": 0.90, "seatShare": 0.986 },
+        { "voteShare": 0.95, "seatShare": 0.991 },
+        { "voteShare": 1.00, "seatShare": 0.994 }
+      ]
+    }
+  ],
+  "enactedPlan": {
+    "democraticVoteShare": 0.365,
+    "democraticSeatShare": 0.143,
+    "label": "Enacted 2024"
+  }
+}

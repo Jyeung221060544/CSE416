@@ -70,7 +70,7 @@
  */
 
 /* ── Step 0: React + map library imports ──────────────────────────────── */
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { MapContainer, GeoJSON, TileLayer, useMap } from 'react-leaflet'
 import L from 'leaflet'
 
@@ -110,7 +110,7 @@ function FitBounds({ data }) {
         if (!data) return
         try {
             const b = L.geoJSON(data).getBounds()
-            if (b.isValid()) map.fitBounds(b, { padding: [20, 20] })
+            if (b.isValid()) map.fitBounds(b, { padding: [60, 60] })
         } catch (_) {}
     }, [data, map])
     return null
@@ -135,7 +135,7 @@ function MapResizeHandler({ data }) {
             if (data) {
                 try {
                     const b = L.geoJSON(data).getBounds()
-                    if (b.isValid()) map.fitBounds(b, { padding: [20, 20] })
+                    if (b.isValid()) map.fitBounds(b, { padding: [60, 60] })
                 } catch (_) {}
             }
         })
@@ -169,17 +169,34 @@ export default function DemographicHeatmap({ stateId, granularity, heatmapData, 
     const sampleData  = GEO_SAMPLES[stateId]?.[granularity] ?? null
 
     /* ── Step 5b: Build idx → hex color map from server bin data ── */
-    // Server-side binning: build idx → color for the selected race group
+    // Server returns per-race features: { idx, binId } — no race key lookup needed.
     const colorByIdx = {}
     if (heatmapData?.features && heatmapData?.bins) {
         const binColor = {}
         heatmapData.bins.forEach(b => { binColor[b.binId] = b.color })
-        const race = raceFilter ?? 'black'
         heatmapData.features.forEach(f => {
-            const binId = f[race] ?? 1
-            colorByIdx[f.idx] = binColor[binId] ?? '#f0fdfa'
+            colorByIdx[f.idx] = binColor[f.binId] ?? '#f0fdfa'
         })
     }
+
+    /* ── Step 5b-ii: Imperatively re-style heatmap when data arrives ────────
+     * We do NOT change the GeoJSON key when heatmapData loads. Remounting the
+     * heatmap layer after the district overlay would push the heatmap on top.
+     * Instead we call layer.setStyle() on every feature via the ref. ──────── */
+    const heatmapLayerRef = useRef(null)
+    useEffect(() => {
+        if (!heatmapLayerRef.current || !heatmapData) return
+        let counter = 0
+        heatmapLayerRef.current.eachLayer(layer => {
+            const idx = layer.feature?.properties?.idx ?? counter++
+            layer.setStyle({
+                fillColor:   colorByIdx[idx] ?? '#f0fdfa',
+                fillOpacity: 0.82,
+                color:       '#134e4a',
+                weight:      0.5,
+            })
+        })
+    }, [heatmapData]) // eslint-disable-line react-hooks/exhaustive-deps
 
     /* ── Step 5c: Map re-key token (forces layer remount on param change) ── */
     const mapKey = `${stateId}-${granularity}-${raceFilter}`
@@ -213,7 +230,8 @@ export default function DemographicHeatmap({ stateId, granularity, heatmapData, 
             style={{ height: '100%', width: '100%' }}
         >
             {/* ── MAP UTILITIES ──────────────────────────────────────── */}
-            {/* Fit to full state outline so entire state is always in frame */}
+            {/* Always fit to the district outline which covers the full state extent.
+                sampleData may cover only a sub-region (e.g. census_block sample = NW AL only). */}
             <FitBounds data={outlineData} />
             <MapResizeHandler data={outlineData} />
 
@@ -233,6 +251,7 @@ export default function DemographicHeatmap({ stateId, granularity, heatmapData, 
             {sampleData && (
                 <GeoJSON
                     key={`heat-${mapKey}`}
+                    ref={heatmapLayerRef}
                     data={sampleData}
                     style={feature => {
                         const idx = feature?.properties?.idx ?? counter++

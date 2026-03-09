@@ -29,13 +29,13 @@
  */
 
 import { useRef } from 'react'
-import Sidebar                  from '../layout/Sidebar'
-import StateOverviewSection     from '../components/sections/StateOverviewSection'
-import DemographicSection       from '../components/sections/DemographicSection'
-import RacialPolarizationSection from '../components/sections/RacialPolarizationSection'
-import EnsembleAnalysisSection  from '../components/sections/EnsembleAnalysisSection'
-import useActiveSection         from '../hooks/useActiveSection'
-import useStateData             from '../hooks/useStateData'
+import Sidebar                   from '@/layout/Sidebar'
+import StateOverviewSection      from '@/components/sections/StateOverviewSection'
+import DemographicSection        from '@/components/sections/DemographicSection'
+import RacialPolarizationSection from '@/components/sections/RacialPolarizationSection'
+import EnsembleAnalysisSection   from '@/components/sections/EnsembleAnalysisSection'
+import useActiveSection          from '@/hooks/useActiveSection'
+import useStateData              from '@/hooks/useStateData'
 
 
 /**

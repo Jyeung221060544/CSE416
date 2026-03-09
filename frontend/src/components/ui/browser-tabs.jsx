@@ -74,11 +74,13 @@ export default function BrowserTabs({
                 }}
             >
                 {tabs.map(tab => {
-                    const isActive = tab.id === activeTab
+                    const isActive   = tab.id === activeTab
+                    const isDisabled = tab.disabled ?? false
                     return (
                         <button
                             key={tab.id}
-                            onClick={() => onChange(tab.id)}
+                            onClick={() => !isDisabled && onChange(tab.id)}
+                            title={isDisabled ? (tab.disabledTitle ?? 'Not available') : undefined}
                             style={{
                                 /* Shape */
                                 borderRadius: '8px 8px 0 0',
@@ -104,19 +106,22 @@ export default function BrowserTabs({
                                 fontWeight: 700,
                                 letterSpacing: '0.02em',
                                 whiteSpace: 'nowrap',
-                                cursor: 'pointer',
+                                cursor: isDisabled ? 'not-allowed' : 'pointer',
                                 transition: 'background 120ms, color 120ms, box-shadow 120ms',
 
                                 /* Subtle shadow lift on active tab */
                                 boxShadow: isActive
                                     ? '0 -3px 8px rgba(89,90,150,0.15)'
                                     : 'none',
+
+                                /* Disabled visual treatment */
+                                opacity: isDisabled ? 0.42 : 1,
                             }}
                             onMouseEnter={e => {
-                                if (!isActive) e.currentTarget.style.background = HOVER_BG
+                                if (!isActive && !isDisabled) e.currentTarget.style.background = HOVER_BG
                             }}
                             onMouseLeave={e => {
-                                if (!isActive) e.currentTarget.style.background = INACTIVE_BG
+                                if (!isActive && !isDisabled) e.currentTarget.style.background = INACTIVE_BG
                             }}
                         >
                             {tab.label}
