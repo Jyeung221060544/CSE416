@@ -61,19 +61,16 @@ function ZeroLine({ xScale, innerHeight }) {
 }
 
 
-/* ── Step 3: Slice tooltip ───────────────────────────────────────────────── */
-function makeSliceTooltip(candidateName, race1Label, race2Label) {
+/* ── Slice tooltip ───────────────────────────────────────────────────────── */
+function makeSliceTooltip(r0Label, r1Label) {
     return function CompareSliceTooltip({ slice }) {
         const x  = slice.points[0]?.data.x
         const pt = slice.points[0]
         if (x == null || !pt) return null
         return (
             <div style={{ background: 'white', border: `2px solid ${DEM_COLOR}`, borderRadius: 8, padding: '8px 12px', boxShadow: '0 4px 16px rgba(0,0,0,0.10)', fontSize: 12, lineHeight: 1.6 }}>
-                <div style={{ color: DEM_COLOR, fontWeight: 700, fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 3 }}>
-                    {candidateName}
-                </div>
                 <div style={{ color: '#475569', marginBottom: 2 }}>
-                    {race1Label} − {race2Label}: <strong style={{ color: LABEL_COLOR }}>{x >= 0 ? '+' : ''}{(x * 100).toFixed(1)}%</strong>
+                    {r0Label} | {r1Label}: <strong style={{ color: LABEL_COLOR }}>{(x * 100).toFixed(1)}%</strong>
                 </div>
                 <div style={{ color: '#475569' }}>
                     Density: <strong style={{ color: LABEL_COLOR }}>{Number(pt.data.y).toFixed(2)}</strong>
@@ -81,6 +78,22 @@ function makeSliceTooltip(candidateName, race1Label, race2Label) {
             </div>
         )
     }
+}
+
+
+/* ── KDE fold — convert signed [-1,1] difference to absolute [0,1] ────────── */
+function foldKdePoints(kdePoints) {
+    if (!kdePoints?.length) return []
+    function interp(x) {
+        for (let i = 0; i < kdePoints.length - 1; i++) {
+            const p0 = kdePoints[i], p1 = kdePoints[i + 1]
+            if (p0.x <= x && x <= p1.x)
+                return p0.y + (p1.y - p0.y) * (x - p0.x) / (p1.x - p0.x)
+        }
+        return 0
+    }
+    const xs = Array.from(new Set(kdePoints.map(p => Math.abs(p.x)))).sort((a, b) => a - b)
+    return xs.map(x => ({ x, y: interp(x) + interp(-x) }))
 }
 
 
@@ -92,39 +105,33 @@ function makeSliceTooltip(candidateName, race1Label, race2Label) {
  * peakX >= 0 → shade x > threshold (race0 is more Dem-favoring)
  * peakX <  0 → shade x < -threshold (race1 is more Dem-favoring, curve peaks left)
  */
-function makeThresholdLayer(kdePoints, threshold, peakX) {
-    const forward  = peakX >= 0
-    const lo       = forward ? threshold : -1
-    const hi       = forward ? 1 : -threshold
-    const threshX  = forward ? threshold : -threshold
-
-    /* Trapezoidal integration over [lo, hi] */
+/* kdePoints are the already-folded [0,1] points */
+function makeThresholdLayer(kdePoints, threshold) {
+    /* Trapezoidal integration over [threshold, 1] */
     let probGT = 0
     for (let i = 0; i < kdePoints.length - 1; i++) {
         const p0 = kdePoints[i], p1 = kdePoints[i + 1]
-        const sLo = Math.max(p0.x, lo), sHi = Math.min(p1.x, hi)
+        const sLo = Math.max(p0.x, threshold), sHi = Math.min(p1.x, 1)
         if (sHi <= sLo) continue
         const span = p1.x - p0.x
-        const y0   = p0.y + (p1.y - p0.y) * (sLo - p0.x) / span
-        const y1   = p0.y + (p1.y - p0.y) * (sHi - p0.x) / span
+        const y0 = p0.y + (p1.y - p0.y) * (sLo - p0.x) / span
+        const y1 = p0.y + (p1.y - p0.y) * (sHi - p0.x) / span
         probGT += (sHi - sLo) * (y0 + y1) / 2
     }
 
-    /* Collect polygon points for the shaded area */
+    /* Polygon points for the shaded tail */
     const shadePts = []
     for (let i = 0; i < kdePoints.length - 1; i++) {
         const p0 = kdePoints[i], p1 = kdePoints[i + 1]
         const span = p1.x - p0.x
-        if (p0.x < lo && p1.x > lo)
-            shadePts.push({ x: lo, y: p0.y + (p1.y - p0.y) * (lo - p0.x) / span })
-        if (p0.x >= lo && p0.x <= hi) shadePts.push(p0)
-        if (p0.x < hi && p1.x > hi)
-            shadePts.push({ x: hi, y: p0.y + (p1.y - p0.y) * (hi - p0.x) / span })
+        if (p0.x < threshold && p1.x > threshold)
+            shadePts.push({ x: threshold, y: p0.y + (p1.y - p0.y) * (threshold - p0.x) / span })
+        if (p0.x >= threshold) shadePts.push(p0)
     }
     const last = kdePoints[kdePoints.length - 1]
-    if (last.x >= lo && last.x <= hi) shadePts.push(last)
+    if (last.x >= threshold) shadePts.push(last)
 
-    const label = `Prob(diff > ${Math.round(threshold * 100)}%) = ${(probGT * 100).toFixed(1)}%`
+    const label = `Prob(|diff| > ${Math.round(threshold * 100)}%) = ${(probGT * 100).toFixed(1)}%`
 
     return function ThresholdLayer({ xScale, yScale }) {
         if (shadePts.length < 2) return null
@@ -135,17 +142,15 @@ function makeThresholdLayer(kdePoints, threshold, peakX) {
             `L ${xScale(shadePts[shadePts.length - 1].x)} ${baseY}`,
             'Z',
         ].join(' ')
-        const annotX = xScale((threshX + (forward ? 1 : -1)) / 2)
-        const annotY = baseY * 0.22
         return (
             <g>
                 <path d={pathD} fill="rgba(59,130,246,0.18)" />
                 <line
-                    x1={xScale(threshX)} y1={0}
-                    x2={xScale(threshX)} y2={baseY}
+                    x1={xScale(threshold)} y1={0}
+                    x2={xScale(threshold)} y2={baseY}
                     stroke="#64748b" strokeWidth={1.5} strokeDasharray="4 3"
                 />
-                <text x={annotX} y={annotY} textAnchor="middle" fontSize={11} fontWeight={700} fill="#1e3a5f">
+                <text x={xScale((threshold + 1) / 2)} y={baseY * 0.22} textAnchor="middle" fontSize={11} fontWeight={700} fill="#1e3a5f">
                     {label}
                 </text>
             </g>
@@ -166,8 +171,6 @@ export default function EIKDECompareChart({ pairData, races, threshold = 0.4, cl
         )
     }
 
-    const [race1, race2] = races
-
     /* ── No data for pair ───────────────────────────────────────────────── */
     if (!pairData) {
         return (
@@ -177,66 +180,51 @@ export default function EIKDECompareChart({ pairData, races, threshold = 0.4, cl
         )
     }
 
-    /* ── Democratic candidate only ──────────────────────────────────────── */
     const demCandidate = useMemo(
         () => pairData.candidates.find(c => c.party === 'Democratic') ?? null,
         [pairData]
     )
 
-    const nivoData = useMemo(() => {
-        if (!demCandidate) return []
-        return [{ id: 'dem', data: demCandidate.kdePoints.map(p => ({ x: p.x, y: p.y })) }]
-    }, [demCandidate])
+    /* Fold signed [-1,1] KDE to absolute [0,1] — polarization magnitude only */
+    const foldedPts = useMemo(
+        () => foldKdePoints(demCandidate?.kdePoints ?? []),
+        [demCandidate]
+    )
+
+    const nivoData = useMemo(
+        () => [{ id: 'kde', data: foldedPts.map(p => ({ x: p.x, y: p.y })) }],
+        [foldedPts]
+    )
 
     const yMax = useMemo(() => {
-        if (!demCandidate) return 4
-        let max = 0
-        demCandidate.kdePoints.forEach(p => { if (p.y > max) max = p.y })
-        return Math.ceil(max * 1.15 * 10) / 10
-    }, [demCandidate])
+        const max = foldedPts.reduce((m, p) => p.y > m ? p.y : m, 0)
+        return max ? Math.ceil(max * 1.15 * 10) / 10 : 4
+    }, [foldedPts])
 
     const sliceTooltip = useMemo(
         () => makeSliceTooltip(
-            demCandidate?.candidateName ?? 'Democratic',
-            RACE_LABELS[race1] ?? race1,
-            RACE_LABELS[race2] ?? race2,
+            RACE_LABELS[pairData.races[0]] ?? pairData.races[0],
+            RACE_LABELS[pairData.races[1]] ?? pairData.races[1],
         ),
-        [demCandidate, race1, race2]
+        [pairData]
     )
 
     if (!demCandidate) return null
 
-    /* kdePoints x = pairData.races[0] − pairData.races[1] (JSON ordering, not selection order).
-     * Find the peak x from kdePoints directly — positive peak means races[0] is more Dem-favoring. */
-    const jsonR0Label = RACE_LABELS[pairData.races[0]] ?? pairData.races[0]
-    const jsonR1Label = RACE_LABELS[pairData.races[1]] ?? pairData.races[1]
-    const peakX = demCandidate.kdePoints.reduce(
-        (best, pt) => pt.y > best.y ? pt : best,
-        demCandidate.kdePoints[0]
-    )?.x ?? 0
-    const [demLabel, lessDemLabel] = peakX >= 0
-        ? [jsonR0Label, jsonR1Label]
-        : [jsonR1Label, jsonR0Label]
-
-    const thresholdLayer = makeThresholdLayer(demCandidate.kdePoints, threshold, peakX)
+    const r0Label = RACE_LABELS[pairData.races[0]] ?? pairData.races[0]
+    const r1Label = RACE_LABELS[pairData.races[1]] ?? pairData.races[1]
+    const thresholdLayer = makeThresholdLayer(foldedPts, threshold)
 
     /* ── Render ─────────────────────────────────────────────────────────── */
     return (
         <div className={`w-full rounded-xl border border-brand-muted/25 shadow-sm bg-white flex flex-col ${className ?? 'h-[380px]'}`}>
-
-            {/* ── CANDIDATE HEADER ─────────────────────────────────────── */}
-            <div className="flex items-center gap-2 px-4 pt-3 pb-1 flex-shrink-0 border-b border-brand-muted/10">
-                <span className="text-lg font-bold" style={{ color: DEM_COLOR }}>
-                    {demCandidate.candidateName ?? 'Democratic'}
-                </span>
-            </div>
 
             {/* ── CHART ────────────────────────────────────────────────── */}
             <div className="flex-1 min-h-0">
                 <ResponsiveLine
                     data={nivoData}
                     margin={{ top: 16, right: 28, bottom: 64, left: 68 }}
-                    xScale={{ type: 'linear', min: -1, max: 1 }}
+                    xScale={{ type: 'linear', min: 0, max: 1 }}
                     yScale={{ type: 'linear', min: 0, max: yMax, stacked: false }}
                     curve="monotoneX"
                     enableArea
@@ -245,12 +233,12 @@ export default function EIKDECompareChart({ pairData, races, threshold = 0.4, cl
                     lineWidth={2.5}
                     enablePoints={false}
                     theme={NIVO_THEME}
-                    layers={[BgLayer, 'grid', ZeroLine, 'axes', 'areas', thresholdLayer, 'lines', 'crosshair', 'slices']}
+                    layers={[BgLayer, 'grid', 'axes', 'areas', thresholdLayer, 'lines', 'crosshair', 'slices']}
                     axisBottom={{
                         tickSize: 5, tickPadding: 5,
-                        format: v => `${v >= 0 ? '+' : ''}${Math.round(v * 100)}%`,
-                        tickValues: [-1, -0.75, -0.5, -0.25, 0, 0.25, 0.5, 0.75, 1],
-                        legend: `Dem Support  (${demLabel} \u2212 ${lessDemLabel})`,
+                        format: v => `${Math.round(v * 100)}%`,
+                        tickValues: [0, 0.25, 0.5, 0.75, 1],
+                        legend: `|${r0Label} \u2212 ${r1Label}|  Dem Support Difference`,
                         legendOffset: 50, legendPosition: 'middle',
                     }}
                     axisLeft={{
