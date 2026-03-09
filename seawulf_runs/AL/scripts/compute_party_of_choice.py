@@ -6,9 +6,7 @@ ROOT = Path(__file__).resolve().parents[3]
 
 FILES = {
     "Black": ROOT / "AL_data" / "ei_AL_black_2x2.json",
-    "Latino": ROOT / "AL_data" / "ei_AL_latino_2x2.json",
     "White": ROOT / "AL_data" / "ei_AL_white_2x2.json",
-    "Asian": ROOT / "AL_data" / "ei_AL_asian_2x2.json",
     "Other": ROOT / "AL_data" / "ei_AL_other_2x2.json"
 }
 

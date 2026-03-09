@@ -26,22 +26,6 @@ GROUP_SPECS = [
         "outfile": OUTDIR / "AL_gingles_White_precinct_table.json",
     },
 
-    # Optional extras if you want them later:
-    # {
-    #     "group_name": "Latino",
-    #     "group_col": "LATINO_VAP",
-    #     "outfile": OUTDIR / "AL_gingles_Latino_precinct_table.json",
-    # },
-    # {
-    #     "group_name": "Asian",
-    #     "group_col": "NH_ASIAN_ALONE_VAP",
-    #     "outfile": OUTDIR / "AL_gingles_Asian_precinct_table.json",
-    # },
-    # {
-    #     "group_name": "Other",
-    #     "group_col": "OTHER_VAP",
-    #     "outfile": OUTDIR / "AL_gingles_Other_precinct_table.json",
-    # },
 ]
 
 

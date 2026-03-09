@@ -5,10 +5,8 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[3]
 
 FILES = {
-    "Black": ROOT / "OR_data" / "ei_OR_black_2x2.json",
     "Latino": ROOT / "OR_data" / "ei_OR_latino_2x2.json",
     "White": ROOT / "OR_data" / "ei_OR_white_2x2.json",
-    "Asian": ROOT / "OR_data" / "ei_OR_asian_2x2.json",
     "Other": ROOT / "OR_data" / "ei_OR_other_2x2.json"
 }
 

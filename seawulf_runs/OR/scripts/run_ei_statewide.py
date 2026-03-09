@@ -14,10 +14,8 @@ DEM_COL = "votes_dem"
 REP_COL = "votes_rep"
 
 GROUP_SPECS = [
-    {"col": "NH_BLACK_ALONE_VAP", "name": "Black_NH", "outfile": "ei_OR_black_2x2.json"},
     {"col": "LATINO_VAP", "name": "Latino", "outfile": "ei_OR_latino_2x2.json"},
     {"col": "NH_WHITE_ALONE_VAP", "name": "White_NH", "outfile": "ei_OR_white_2x2.json"},
-    {"col": "NH_ASIAN_ALONE_VAP", "name": "Asian_NH", "outfile": "ei_OR_asian_2x2.json"},
     {"col": "OTHER_VAP", "name": "Other", "outfile": "ei_OR_other_2x2.json"},
 ]
 

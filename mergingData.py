@@ -5,6 +5,18 @@ Builds enriched precinct GeoJSON files by joining Census block-level VAP
 (Voting Age Population) data, RUCA region classifications, and ACS S1901
 household income data onto precinct polygons.
 
+This version collapses race differently by state:
+
+AL feasible groups:
+  - WHITE_VAP  = NH White alone VAP
+  - BLACK_VAP  = NH Black alone VAP
+  - OTHER_VAP  = everyone else
+
+OR feasible groups:
+  - LATINO_VAP = Hispanic/Latino VAP
+  - WHITE_VAP  = NH White alone VAP
+  - OTHER_VAP  = everyone else
+
 Pipeline (executed in __main__ block)
 --------------------------------------
 1. build_precinct_geojson_with_vap  — Joins Census P.L. 94-171 block VAP CSV
@@ -111,6 +123,52 @@ def _print_vap_balance(prefix: str, blocks_df: gpd.GeoDataFrame, prec_df: gpd.Ge
         print(f"{prefix} Difference (prec - blocks): {p - b}")
 
 
+def _apply_feasible_race_collapse(prec_df: gpd.GeoDataFrame, state_code: str) -> gpd.GeoDataFrame:
+    """
+    Collapse race fields to feasible sets WITHOUT renaming columns,
+    so downstream configs remain compatible.
+
+    AL:
+        keep NH_WHITE_ALONE_VAP
+        keep NH_BLACK_ALONE_VAP
+        OTHER_VAP = VAP - white - black
+
+    OR:
+        keep LATINO_VAP
+        keep NH_WHITE_ALONE_VAP
+        OTHER_VAP = VAP - latino - white
+    """
+
+    out = prec_df.copy()
+    state_code = state_code.upper()
+
+    for c in ["VAP", "LATINO_VAP", "NH_WHITE_ALONE_VAP", "NH_BLACK_ALONE_VAP"]:
+        if c not in out.columns:
+            out[c] = 0
+        out[c] = pd.to_numeric(out[c], errors="coerce").fillna(0).astype(int)
+
+    if state_code == "AL":
+        # collapse everything except white + black
+        out["OTHER_VAP"] = (
+            out["VAP"]
+            - out["NH_WHITE_ALONE_VAP"]
+            - out["NH_BLACK_ALONE_VAP"]
+        ).clip(lower=0).astype(int)
+
+    elif state_code == "OR":
+        # collapse everything except latino + white
+        out["OTHER_VAP"] = (
+            out["VAP"]
+            - out["LATINO_VAP"]
+            - out["NH_WHITE_ALONE_VAP"]
+        ).clip(lower=0).astype(int)
+
+    else:
+        raise ValueError(f"Unsupported state_code {state_code}")
+
+    return out
+
+
 # ── Main: Build precinct geojson with VAP groups ──────────────────────────
 
 def build_precinct_geojson_with_vap(
@@ -119,6 +177,7 @@ def build_precinct_geojson_with_vap(
     precincts_geojson_path: str,
     output_geojson_path: str,
     *,
+    state_code: str,
     # column names
     blocks_geoid_col: str = "GEOID20",  # in blocks shapefile
     precinct_id_col: str = "GEOID",     # in precinct file
@@ -131,14 +190,27 @@ def build_precinct_geojson_with_vap(
     Read block-level VAP CSV + block geometries, merge VAP into blocks,
     assign blocks to precincts using representative_point spatial join (with
     within + dedupe + nearest fallback), aggregate to precincts, merge into
-    precinct GeoDataFrame, standardize columns, and write output GeoJSON.
+    precinct GeoDataFrame, collapse race columns by state, and write output
+    GeoJSON.
 
-    Demographic groups computed:
+    Base demographic groups computed from P4:
       - LATINO_VAP          = Hispanic/Latino VAP (any race) = HVAP (P4_002N)
       - NH_WHITE_ALONE_VAP  = Not Hispanic, White alone
       - NH_BLACK_ALONE_VAP  = Not Hispanic, Black alone
       - NH_ASIAN_ALONE_VAP  = Not Hispanic, Asian alone
-      - OTHER_VAP           = remaining NHVAP after subtracting the above
+
+    Final state-specific output:
+      AL:
+        - VAP
+        - WHITE_VAP
+        - BLACK_VAP
+        - OTHER_VAP
+
+      OR:
+        - VAP
+        - LATINO_VAP
+        - WHITE_VAP
+        - OTHER_VAP
 
     Parameters
     ----------
@@ -148,6 +220,8 @@ def build_precinct_geojson_with_vap(
     precincts_geojson_path : Path to the input precinct GeoJSON (must already
                              have enacted_cd from assign_enacted_districts.py).
     output_geojson_path    : Destination path for the enriched precinct GeoJSON.
+    state_code             : Two-letter state code ("AL" or "OR") controlling
+                             feasible-race collapse.
     blocks_geoid_col       : Column name of the block GEOID in the shapefile.
     precinct_id_col        : Column name of the precinct identifier.
     target_crs             : EPSG code for the projected CRS used during joins.
@@ -162,7 +236,7 @@ def build_precinct_geojson_with_vap(
     # ── Step A: Read block VAP CSV ────────────────────────────────────────
     pop = pd.read_csv(vap_csv_path, skiprows=[1], dtype=str)
 
-    # Step A-1: Build 15-digit block GEOID from GEO_ID (e.g. "1000000US010010201001000")
+    # Step A-1: Build 15-digit block GEOID from GEO_ID
     pop["GEOID_BLOCK"] = (
         pop["GEO_ID"]
         .astype(str)
@@ -185,17 +259,7 @@ def build_precinct_geojson_with_vap(
         Find the P4_* column ID matching:
           'Not Hispanic or Latino: <race_phrase> alone'
         Excludes combination/multi-race lines by requiring ' alone' in the label.
-
-        Parameters
-        ----------
-        race_phrase : str  Race phrase to search for (e.g. "White").
-
-        Returns
-        -------
-        str or None
-            Column ID (e.g. "P4_007N"), or None if not found.
         """
-        # fairly permissive, but still anchored on NH section and "... <race> alone"
         pat = re.compile(rf"\bNot Hispanic or Latino\b.*\b{re.escape(race_phrase)}\s+alone\b", re.IGNORECASE)
         for cid, lab in label_map.items():
             if not cid.startswith("P4_"):
@@ -232,14 +296,11 @@ def build_precinct_geojson_with_vap(
             num_cols.append(c)
     vap[num_cols] = vap[num_cols].apply(_to_int_series)
 
-    # Step A-7: Compute requested demographic groups at block level
+    # Step A-7: Compute base demographic groups at block level
     vap["LATINO_VAP"] = vap["P4_002N"] if "P4_002N" in vap.columns else 0
     vap["NH_WHITE_ALONE_VAP"] = _col_or_zero(vap, NH_WHITE_ALONE_COL)
     vap["NH_BLACK_ALONE_VAP"] = _col_or_zero(vap, NH_BLACK_ALONE_COL)
     vap["NH_ASIAN_ALONE_VAP"] = _col_or_zero(vap, NH_ASIAN_ALONE_COL)
-
-    nhvap = vap["P4_003N"] if "P4_003N" in vap.columns else 0
-    vap["OTHER_VAP"] = (nhvap - vap["NH_WHITE_ALONE_VAP"] - vap["NH_BLACK_ALONE_VAP"] - vap["NH_ASIAN_ALONE_VAP"]).clip(lower=0)
 
     # Step A-8: Aggregation columns to carry through to blocks/precincts
     agg_cols = [
@@ -250,7 +311,6 @@ def build_precinct_geojson_with_vap(
         "NH_WHITE_ALONE_VAP",
         "NH_BLACK_ALONE_VAP",
         "NH_ASIAN_ALONE_VAP",
-        "OTHER_VAP",
     ]
     agg_cols = [c for c in agg_cols if c in vap.columns]
 
@@ -274,18 +334,16 @@ def build_precinct_geojson_with_vap(
     if verbose:
         print("Blocks in shapefile:", len(blocks2))
         print("Rows in VAP table:", len(vap))
-        # more meaningful than "==0" in many states (water blocks):
-        missing_merge = int(blocks2[agg_cols[0]].isna().sum()) if agg_cols else 0
-        print("Blocks missing merged VAP rows:", missing_merge)
+        print("Blocks missing merged VAP rows:", int(blocks2["GEOID_BLOCK"].isna().sum()))
 
     # ── Step D: Load precincts ────────────────────────────────────────────
     prec = gpd.read_file(precincts_geojson_path)
 
-    # ── Step E: Block -> Precinct assignment (FIXED) ──────────────────────
+    # ── Step E: Block -> Precinct assignment ──────────────────────────────
     blocks_proj = blocks2.to_crs(target_crs)
     prec_proj = prec.to_crs(target_crs)
 
-    # Step E-1: Attempt to clean geometries (helps with invalid polygons)
+    # Step E-1: Attempt to clean geometries
     blocks_proj["geometry"] = blocks_proj["geometry"].buffer(0)
     prec_proj["geometry"] = prec_proj["geometry"].buffer(0)
 
@@ -301,10 +359,10 @@ def build_precinct_geojson_with_vap(
         predicate="within",
     )
 
-    # Step E-4: Eliminate double counting: ensure 1 precinct per block
+    # Step E-4: Eliminate double counting
     joined = joined.sort_values(["GEOID_BLOCK", precinct_id_col]).drop_duplicates(subset=["GEOID_BLOCK"])
 
-    # Step E-5: Fallback for unmatched blocks: nearest precinct
+    # Step E-5: Fallback for unmatched blocks
     unmatched_idx = joined[joined[precinct_id_col].isna()].index
 
     if len(unmatched_idx):
@@ -317,8 +375,6 @@ def build_precinct_geojson_with_vap(
             distance_col="__dist",
         )
 
-        # sjoin_nearest can return >1 row per input index when there are distance ties.
-        # Keep one match per input row (index) and align back to unmatched_idx ordering.
         nearest = nearest[~nearest.index.duplicated(keep="first")]
         nearest = nearest.reindex(unmatched_idx)
         joined.loc[unmatched_idx, precinct_id_col] = nearest[precinct_id_col].to_numpy()
@@ -350,21 +406,15 @@ def build_precinct_geojson_with_vap(
     if "P4_001N" in prec2.columns:
         prec2["VAP"] = prec2["P4_001N"]
     if "P4_002N" in prec2.columns:
-        prec2["HVAP"] = prec2["P4_002N"]       # keep original HVAP
-        prec2["LATINO_VAP"] = prec2["P4_002N"] # requested Latino
+        prec2["HVAP"] = prec2["P4_002N"]
+        prec2["LATINO_VAP"] = prec2["P4_002N"]
     if "P4_003N" in prec2.columns:
         prec2["NHVAP"] = prec2["P4_003N"]
 
-    # Step F-3: Ensure OTHER_VAP is consistent with precinct-level values too
-    if all(c in prec2.columns for c in ["NHVAP", "NH_WHITE_ALONE_VAP", "NH_BLACK_ALONE_VAP", "NH_ASIAN_ALONE_VAP"]):
-        prec2["OTHER_VAP"] = (
-            prec2["NHVAP"]
-            - prec2["NH_WHITE_ALONE_VAP"]
-            - prec2["NH_BLACK_ALONE_VAP"]
-            - prec2["NH_ASIAN_ALONE_VAP"]
-        ).clip(lower=0).astype(int)
+    # Step F-3: Collapse to feasible race groups by state
+    prec2 = _apply_feasible_race_collapse(prec2, state_code=state_code)
 
-    # ── Step G: Create minimal precinct dataframe (preserve geometry) ──────
+    # ── Step G: Create minimal precinct dataframe (preserve geometry) ─────
     keep_cols_out = [
         # identifiers
         "state", precinct_id_col, "official_boundary", "enacted_cd",
@@ -373,9 +423,10 @@ def build_precinct_geojson_with_vap(
         "votes_dem", "votes_rep", "votes_total", "pct_dem_lead",
 
         # demographics
-        "VAP", "HVAP", "NHVAP",
-        "LATINO_VAP",
-        "NH_WHITE_ALONE_VAP", "NH_BLACK_ALONE_VAP", "NH_ASIAN_ALONE_VAP",
+        "VAP",
+        "NH_WHITE_ALONE_VAP",
+        "NH_BLACK_ALONE_VAP",     # AL only
+        "LATINO_VAP",    # OR only
         "OTHER_VAP",
 
         # data
@@ -402,23 +453,18 @@ def build_precinct_geojson_with_vap(
         print("Cleaned columns:", len(prec_clean.columns))
         print("Cleaned column list:", list(prec_clean.columns))
 
-        if all(c in prec_clean.columns for c in ["VAP", "LATINO_VAP", "NHVAP"]):
+        if state_code.upper() == "AL" and all(c in prec_clean.columns for c in ["VAP", "WHITE_VAP", "BLACK_VAP", "OTHER_VAP"]):
             print(
-                "Check VAP == LATINO_VAP + NHVAP (sum):",
+                "Check AL VAP == WHITE + BLACK + OTHER (sum):",
                 int(prec_clean["VAP"].sum()),
-                int((prec_clean["LATINO_VAP"] + prec_clean["NHVAP"]).sum()),
+                int((prec_clean["WHITE_VAP"] + prec_clean["BLACK_VAP"] + prec_clean["OTHER_VAP"]).sum()),
             )
-        if all(c in prec_clean.columns for c in ["NHVAP", "NH_WHITE_ALONE_VAP", "NH_BLACK_ALONE_VAP", "NH_ASIAN_ALONE_VAP", "OTHER_VAP"]):
-            nh_parts = (
-                prec_clean["NH_WHITE_ALONE_VAP"]
-                + prec_clean["NH_BLACK_ALONE_VAP"]
-                + prec_clean["NH_ASIAN_ALONE_VAP"]
-                + prec_clean["OTHER_VAP"]
-            )
+
+        if state_code.upper() == "OR" and all(c in prec_clean.columns for c in ["VAP", "LATINO_VAP", "WHITE_VAP", "OTHER_VAP"]):
             print(
-                "Check NHVAP == White+Black+Asian+Other (sum):",
-                int(prec_clean["NHVAP"].sum()),
-                int(nh_parts.sum()),
+                "Check OR VAP == LATINO + WHITE + OTHER (sum):",
+                int(prec_clean["VAP"].sum()),
+                int((prec_clean["LATINO_VAP"] + prec_clean["WHITE_VAP"] + prec_clean["OTHER_VAP"]).sum()),
             )
 
     # Step G-2: Write output
@@ -440,46 +486,23 @@ def add_region_type_from_ruca(
     """
     Join USDA RUCA (Rural-Urban Commuting Area) codes onto precincts to assign
     a region_type label (urban / suburban / rural / unknown) to each precinct.
-
-    Strategy: Assign each precinct the RUCA code of the Census tract that
-    contains its representative point, then map that code to a region label.
-
-    Parameters
-    ----------
-    precincts_gdf   : gpd.GeoDataFrame  Input precinct GeoDataFrame.
-    tracts_path     : str               Path to the Census tract shapefile.
-    ruca_csv_path   : str               Path to the RUCA CSV with PrimaryRUCA column.
-    target_crs      : str               EPSG code for projected CRS used in joins.
-    tract_geoid_col : str               GEOID column name in the tract shapefile.
-    ruca_tract_col  : str               Tract FIPS column name in the RUCA CSV.
-
-    Returns
-    -------
-    gpd.GeoDataFrame
-        Copy of precincts_gdf with added columns: PrimaryRUCA,
-        PrimaryRUCADescription, region_type.
     """
-    # Step 0: Load tracts + RUCA
     tracts = gpd.read_file(tracts_path)
     ruca = pd.read_csv(ruca_csv_path, dtype=str, encoding="latin1")
 
-    # Step 1: Normalize IDs
     tracts["TRACT_ID"] = tracts[tract_geoid_col].astype(str).str.strip().str.zfill(11)
     ruca["TRACT_ID"] = ruca[ruca_tract_col].astype(str).str.strip().str.zfill(11)
 
     ruca_keep = ruca[["TRACT_ID", "PrimaryRUCA", "PrimaryRUCADescription"]].copy()
     ruca_keep["PrimaryRUCA"] = pd.to_numeric(ruca_keep["PrimaryRUCA"], errors="coerce")
 
-    # Step 2: Merge RUCA onto tracts
     tracts2 = tracts.merge(ruca_keep, on="TRACT_ID", how="left")
 
-    # Step 3: Project and clean geometries
     prec_proj = precincts_gdf.to_crs(target_crs).copy()
     tracts_proj = tracts2.to_crs(target_crs).copy()
     tracts_proj["geometry"] = tracts_proj["geometry"].buffer(0)
     prec_proj["geometry"] = prec_proj["geometry"].buffer(0)
 
-    # Step 4: Representative point is safer than centroid (holes/coast)
     prec_pts = prec_proj[["geometry"]].copy()
     prec_pts["geometry"] = prec_pts.geometry.representative_point()
 
@@ -491,18 +514,6 @@ def add_region_type_from_ruca(
     )
 
     def ruca_to_region(x):
-        """
-        Map a RUCA primary code to a region_type label.
-
-        Parameters
-        ----------
-        x : float or None  RUCA primary code.
-
-        Returns
-        -------
-        str or None
-            "urban", "suburban", "rural", "unknown", or None if NaN.
-        """
         if pd.isna(x):
             return None
         x = float(x)
@@ -514,7 +525,6 @@ def add_region_type_from_ruca(
             return "rural"
         return "unknown"
 
-    # Step 5: Attach RUCA values and map to region_type
     out = precincts_gdf.copy()
     out["PrimaryRUCA"] = joined["PrimaryRUCA"].values
     out["PrimaryRUCADescription"] = joined["PrimaryRUCADescription"].values
@@ -531,47 +541,23 @@ def add_income_from_acs_s1901(
     *,
     target_crs: str = "EPSG:5070",
     tract_geoid_col: str = "GEOID",
-    keep_mean: bool = True,   # include mean income
-    keep_moe: bool = True,    # include margins of error
-    use_nearest_fallback: bool = True,          # for centroid/within misses
-    impute_missing_income: bool = True,         # nearest non-missing tract imputation
+    keep_mean: bool = True,
+    keep_moe: bool = True,
+    use_nearest_fallback: bool = True,
+    impute_missing_income: bool = True,
 ) -> gpd.GeoDataFrame:
     """
     Add tract-level ACS S1901 income fields onto precincts using a
     representative-point-in-tract join. Precincts whose joined income is
     missing/0 are optionally filled from the nearest tract with non-missing
-    income (when impute_missing_income=True).
-
-    Parameters
-    ----------
-    precincts_gdf         : gpd.GeoDataFrame  Input precinct GeoDataFrame.
-    tracts_path           : str               Path to the Census tract shapefile.
-    income_csv_path       : str               Path to ACS S1901 income CSV.
-    target_crs            : str               EPSG code for projected CRS.
-    tract_geoid_col       : str               GEOID column in the tract shapefile.
-    keep_mean             : bool              Include mean household income column.
-    keep_moe              : bool              Include margin-of-error columns.
-    use_nearest_fallback  : bool              Fallback to nearest tract for
-                                              precincts that miss the within join.
-    impute_missing_income : bool              Fill zero/missing income from the
-                                              nearest tract with non-zero income.
-
-    Returns
-    -------
-    gpd.GeoDataFrame
-        Copy of precincts_gdf with added income columns:
-        HH_TOTAL, HH_MEDIAN_INC, HH_MEAN_INC, HH_MEDIAN_INC_MOE,
-        HH_MEAN_INC_MOE, AVG_HH_INC, INCOME_IMPUTED, INCOME_MISSING.
+    income.
     """
 
-    # Step 1: Load tract geometries
     tracts = gpd.read_file(tracts_path).copy()
     tracts["TRACT_ID"] = tracts[tract_geoid_col].astype(str).str.strip().str.zfill(11)
 
-    # Step 2: Load ACS income CSV (ACS profile exports usually have a 2-row header)
     inc_raw = pd.read_csv(income_csv_path, dtype=str, skiprows=[1])
 
-    # Step 2a: 11-digit tract GEOID from GEO_ID like "1400000US41001950100"
     inc_raw["TRACT_ID"] = (
         inc_raw["GEO_ID"]
         .astype(str)
@@ -580,7 +566,6 @@ def add_income_from_acs_s1901(
         .str.zfill(11)
     )
 
-    # Step 3: Select minimal columns
     cols = ["TRACT_ID", "S1901_C01_001E", "S1901_C01_012E"]
     if keep_mean:
         cols.append("S1901_C01_013E")
@@ -589,20 +574,7 @@ def add_income_from_acs_s1901(
     cols = [c for c in cols if c in inc_raw.columns]
     inc = inc_raw[cols].copy()
 
-    # Step 4: Clean numeric fields (keep your existing "0 if missing" behavior)
     def to_num(series: pd.Series) -> pd.Series:
-        """
-        Parse a string Series as numeric, stripping commas and replacing
-        missing sentinels ("-", "") with 0.
-
-        Parameters
-        ----------
-        series : pd.Series  String Series to parse.
-
-        Returns
-        -------
-        pd.Series  Float Series with NaN filled to 0.
-        """
         return (
             pd.to_numeric(
                 series.astype(str).str.replace(",", "", regex=False).replace({"-": None, "": None}),
@@ -618,7 +590,6 @@ def add_income_from_acs_s1901(
         if c in inc.columns:
             inc[c] = to_num(inc[c]).round(0).astype(int)
 
-    # Step 5: Rename to friendly columns
     rename = {}
     if "S1901_C01_001E" in inc.columns:
         rename["S1901_C01_001E"] = "HH_TOTAL"
@@ -632,13 +603,11 @@ def add_income_from_acs_s1901(
         rename["S1901_C01_013M"] = "HH_MEAN_INC_MOE"
     inc = inc.rename(columns=rename)
 
-    # Step 6: Merge income onto tract geometries
     tracts2 = tracts.merge(inc, on="TRACT_ID", how="left")
     for c in ["HH_TOTAL", "HH_MEDIAN_INC", "HH_MEAN_INC", "HH_MEDIAN_INC_MOE", "HH_MEAN_INC_MOE"]:
         if c in tracts2.columns:
             tracts2[c] = pd.to_numeric(tracts2[c], errors="coerce").fillna(0).astype(int)
 
-    # Step 7: Spatial join: precinct representative point -> tract polygon
     prec_proj = precincts_gdf.to_crs(target_crs).copy()
     tracts_proj = tracts2.to_crs(target_crs).copy()
     prec_proj["geometry"] = prec_proj["geometry"].buffer(0)
@@ -660,7 +629,6 @@ def add_income_from_acs_s1901(
         predicate="within",
     )
 
-    # Step 7a: Fallback for points that didn't fall within any tract polygon
     if use_nearest_fallback:
         unmatched_idx = joined[joined["TRACT_ID"].isna()].index
         if len(unmatched_idx):
@@ -671,28 +639,22 @@ def add_income_from_acs_s1901(
                 how="left",
                 distance_col="__dist",
             )
-            # tie-safe: keep 1 row per precinct index
             nearest = nearest[~nearest.index.duplicated(keep="first")].reindex(unmatched_idx)
             for c in attrs:
                 if c in nearest.columns:
                     joined.loc[unmatched_idx, c] = nearest[c].values
 
-    # Step 8: Attach back to precincts (still as ints with 0 for missing)
     out = precincts_gdf.copy()
     for c in ["HH_TOTAL", "HH_MEDIAN_INC", "HH_MEAN_INC", "HH_MEDIAN_INC_MOE", "HH_MEAN_INC_MOE"]:
         if c in joined.columns:
             out[c] = pd.to_numeric(joined[c], errors="coerce").fillna(0).astype(int)
 
-    # Step 9: Impute missing incomes from nearest tract with non-missing income
-    # Define missing as BOTH mean and median == 0 (existing cleaning convention).
     out["INCOME_IMPUTED"] = False
 
     if impute_missing_income and ("HH_MEDIAN_INC" in out.columns or "HH_MEAN_INC" in out.columns):
-        # Step 9a: precinct points again (projected)
         prec_pts2 = prec_proj[["geometry"]].copy()
         prec_pts2["geometry"] = prec_pts2.geometry.representative_point()
 
-        # Step 9b: Which precincts need income imputation?
         has_mean = "HH_MEAN_INC" in out.columns
         has_median = "HH_MEDIAN_INC" in out.columns
 
@@ -705,7 +667,6 @@ def add_income_from_acs_s1901(
 
         missing_idx = out.index[missing_mask]
         if len(missing_idx):
-            # Step 9c: Use only tracts that have SOME non-missing income
             tracts_good = tracts_proj.copy()
             good_mask = pd.Series(False, index=tracts_good.index)
             if "HH_MEAN_INC" in tracts_good.columns:
@@ -715,7 +676,6 @@ def add_income_from_acs_s1901(
             tracts_good = tracts_good.loc[good_mask]
 
             if len(tracts_good):
-                # Step 9d: Nearest join for just missing precincts
                 miss_pts = prec_pts2.loc[missing_idx].copy()
                 nearest_good = gpd.sjoin_nearest(
                     miss_pts,
@@ -723,17 +683,14 @@ def add_income_from_acs_s1901(
                     how="left",
                     distance_col="__dist",
                 )
-                # tie-safe: keep 1 per precinct
                 nearest_good = nearest_good[~nearest_good.index.duplicated(keep="first")].reindex(missing_idx)
 
-                # Step 9e: Fill income fields from nearest good tract
                 for c in ["HH_TOTAL", "HH_MEDIAN_INC", "HH_MEAN_INC", "HH_MEDIAN_INC_MOE", "HH_MEAN_INC_MOE"]:
                     if c in out.columns and c in nearest_good.columns:
                         out.loc[missing_idx, c] = pd.to_numeric(nearest_good[c], errors="coerce").fillna(0).astype(int).values
 
                 out.loc[missing_idx, "INCOME_IMPUTED"] = True
 
-    # Step 10: AVG_HH_INC (prefer mean, fallback to median)
     if "HH_MEAN_INC" in out.columns and "HH_MEDIAN_INC" in out.columns:
         out["AVG_HH_INC"] = out["HH_MEAN_INC"].where(out["HH_MEAN_INC"] > 0, out["HH_MEDIAN_INC"]).astype(int)
     elif "HH_MEAN_INC" in out.columns:
@@ -741,7 +698,6 @@ def add_income_from_acs_s1901(
     elif "HH_MEDIAN_INC" in out.columns:
         out["AVG_HH_INC"] = out["HH_MEDIAN_INC"].astype(int)
 
-    # Step 11: Optional flag to track anything still missing after imputation
     if "HH_MEAN_INC" in out.columns and "HH_MEDIAN_INC" in out.columns:
         out["INCOME_MISSING"] = (out["HH_MEAN_INC"] == 0) & (out["HH_MEDIAN_INC"] == 0)
     elif "HH_MEAN_INC" in out.columns:
@@ -758,56 +714,36 @@ def add_income_from_acs_s1901(
 
 def qa(df: gpd.GeoDataFrame, name: str):
     """
-    Print VAP balance QA for a precinct GeoDataFrame.
-
-    Parameters
-    ----------
-    df   : gpd.GeoDataFrame  Precinct GeoDataFrame to validate.
-    name : str               Label to prefix printed output.
+    Print race/VAP QA for a precinct GeoDataFrame.
     """
     print("\n==", name, "==")
     print("rows:", len(df))
 
-    for c in ["VAP", "HVAP", "NHVAP", "LATINO_VAP"]:
+    for c in ["VAP", "WHITE_VAP", "BLACK_VAP", "LATINO_VAP", "OTHER_VAP"]:
         if c in df.columns:
             print(c, "sum:", int(df[c].sum()))
 
-    if all(c in df.columns for c in ["VAP", "HVAP", "NHVAP"]):
+    if all(c in df.columns for c in ["VAP", "WHITE_VAP", "BLACK_VAP", "OTHER_VAP"]):
         print(
-            "Check VAP == HVAP + NHVAP (sum):",
+            "Check VAP == WHITE + BLACK + OTHER (sum):",
             int(df["VAP"].sum()),
-            int((df["HVAP"] + df["NHVAP"]).sum()),
+            int((df["WHITE_VAP"] + df["BLACK_VAP"] + df["OTHER_VAP"]).sum()),
         )
 
-    if all(c in df.columns for c in ["VAP", "LATINO_VAP", "NHVAP"]):
+    if all(c in df.columns for c in ["VAP", "LATINO_VAP", "WHITE_VAP", "OTHER_VAP"]):
         print(
-            "Check VAP == LATINO_VAP + NHVAP (sum):",
+            "Check VAP == LATINO + WHITE + OTHER (sum):",
             int(df["VAP"].sum()),
-            int((df["LATINO_VAP"] + df["NHVAP"]).sum()),
+            int((df["LATINO_VAP"] + df["WHITE_VAP"] + df["OTHER_VAP"]).sum()),
         )
 
     if "VAP" in df.columns:
         print("Any negative VAP?", bool((df["VAP"] < 0).any()))
 
-    for c in ["NH_WHITE_ALONE_VAP", "NH_BLACK_ALONE_VAP", "NH_ASIAN_ALONE_VAP", "OTHER_VAP"]:
-        if c in df.columns:
-            mx = int(df[c].max())
-            sm = int(df[c].sum())
-            if "NHVAP" in df.columns:
-                over = int((df[c] > df["NHVAP"]).sum())
-                print(c, "max:", mx, "sum:", sm, "over NHVAP rows:", over)
-            else:
-                print(c, "max:", mx, "sum:", sm)
-
 
 def qa_region(df: gpd.GeoDataFrame, name: str):
     """
     Print region_type QA for a precinct GeoDataFrame.
-
-    Parameters
-    ----------
-    df   : gpd.GeoDataFrame  Precinct GeoDataFrame to validate.
-    name : str               Label to prefix printed output.
     """
     print("\n==", name, "region_type QA ==")
     print("has region_type col?", "region_type" in df.columns)
@@ -821,11 +757,6 @@ def qa_region(df: gpd.GeoDataFrame, name: str):
 def qa_income(df: gpd.GeoDataFrame, name: str):
     """
     Print income QA for a precinct GeoDataFrame.
-
-    Parameters
-    ----------
-    df   : gpd.GeoDataFrame  Precinct GeoDataFrame to validate.
-    name : str               Label to prefix printed output.
     """
     print("\n==", name, "income QA ==")
     for c in ["AVG_HH_INC", "HH_MEDIAN_INC", "HH_MEAN_INC", "HH_TOTAL"]:
@@ -843,12 +774,13 @@ def qa_income(df: gpd.GeoDataFrame, name: str):
 
 # ── Script entry ──────────────────────────────────────────────────────────
 if __name__ == "__main__":
-    # Step 0: Build enriched precinct GeoJSONs with VAP for AL and OR
+    # Step 0: Build enriched precinct GeoJSONs with collapsed feasible-race VAP
     AL = build_precinct_geojson_with_vap(
         vap_csv_path="BASE_FILES/AL-VAP-population.csv",
         blocks_shp_path="BASE_FILES/AL-shapefile/tl_2025_01_tabblock20.shp",
         precincts_geojson_path="AL_data/AL-precincts-with-results-enacted.geojson",
         output_geojson_path="AL_data/AL_precincts_full.geojson",
+        state_code="AL",
         verbose=True,
     )
 
@@ -857,6 +789,7 @@ if __name__ == "__main__":
         blocks_shp_path="BASE_FILES/OR-shapefile/tl_2025_41_tabblock20.shp",
         precincts_geojson_path="OR_data/OR-precincts-with-results-enacted.geojson",
         output_geojson_path="OR_data/OR_precincts_full.geojson",
+        state_code="OR",
         verbose=True,
     )
 
