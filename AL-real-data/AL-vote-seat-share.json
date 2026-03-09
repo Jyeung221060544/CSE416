@@ -1,0 +1,97 @@
+{
+  "stateId": "AL",
+  "electionYear": 2024,
+  "raciallyPolarized": true,
+  "totalDistricts": 7,
+  "partisanBias": -0.23035714285714287,
+  "notes": "At 50% Democratic vote share, Democrats win ~0.270 of seats (partisan bias \u2248 -0.230).",
+  "curves": [
+    {
+      "party": "Democratic",
+      "points": [
+        {
+          "voteShare": 0.24572973960205505,
+          "seatShare": 0.033928571428571426
+        },
+        {
+          "voteShare": 0.27072973960205504,
+          "seatShare": 0.04642857142857142
+        },
+        {
+          "voteShare": 0.29572973960205506,
+          "seatShare": 0.06607142857142857
+        },
+        {
+          "voteShare": 0.32072973960205503,
+          "seatShare": 0.15178571428571427
+        },
+        {
+          "voteShare": 0.34572973960205505,
+          "seatShare": 0.15892857142857142
+        },
+        {
+          "voteShare": 0.3707297396020551,
+          "seatShare": 0.16785714285714284
+        },
+        {
+          "voteShare": 0.39572973960205504,
+          "seatShare": 0.175
+        },
+        {
+          "voteShare": 0.42072973960205506,
+          "seatShare": 0.1839285714285714
+        },
+        {
+          "voteShare": 0.44572973960205503,
+          "seatShare": 0.26964285714285713
+        }
+      ]
+    },
+    {
+      "party": "Republican",
+      "points": [
+        {
+          "voteShare": 0.754270260397945,
+          "seatShare": 0.9660714285714286
+        },
+        {
+          "voteShare": 0.729270260397945,
+          "seatShare": 0.9535714285714286
+        },
+        {
+          "voteShare": 0.7042702603979449,
+          "seatShare": 0.9339285714285714
+        },
+        {
+          "voteShare": 0.679270260397945,
+          "seatShare": 0.8482142857142857
+        },
+        {
+          "voteShare": 0.6542702603979449,
+          "seatShare": 0.8410714285714286
+        },
+        {
+          "voteShare": 0.629270260397945,
+          "seatShare": 0.8321428571428572
+        },
+        {
+          "voteShare": 0.604270260397945,
+          "seatShare": 0.825
+        },
+        {
+          "voteShare": 0.5792702603979449,
+          "seatShare": 0.8160714285714286
+        },
+        {
+          "voteShare": 0.554270260397945,
+          "seatShare": 0.7303571428571429
+        }
+      ]
+    }
+  ],
+  "enactedPlan": {
+    "democraticVoteShare": 0.34572973960205505,
+    "democraticSeatShare": 0.2857142857142857,
+    "label": "Enacted 2024"
+  }
+}

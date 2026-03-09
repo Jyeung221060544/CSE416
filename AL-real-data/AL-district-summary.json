@@ -1,0 +1,70 @@
+{
+  "stateId": "AL",
+  "planType": "enacted",
+  "electionYear": 2024,
+  "districts": [
+    {
+      "districtId": "AL-01",
+      "districtNumber": 1,
+      "representative": "Barry Moore",
+      "party": "Republican",
+      "racialGroup": "White",
+      "voteMarginPercentage": 0.5538616930603876,
+      "voteMarginDirection": "R"
+    },
+    {
+      "districtId": "AL-02",
+      "districtNumber": 2,
+      "representative": "Shomari Figures",
+      "party": "Democratic",
+      "racialGroup": "Black",
+      "voteMarginPercentage": 0.07817136820743768,
+      "voteMarginDirection": "D"
+    },
+    {
+      "districtId": "AL-03",
+      "districtNumber": 3,
+      "representative": "Mike Rogers",
+      "party": "Republican",
+      "racialGroup": "White",
+      "voteMarginPercentage": 0.4705243522256861,
+      "voteMarginDirection": "R"
+    },
+    {
+      "districtId": "AL-04",
+      "districtNumber": 4,
+      "representative": "Robert Aderholt",
+      "party": "Republican",
+      "racialGroup": "White",
+      "voteMarginPercentage": 0.6657865807251783,
+      "voteMarginDirection": "R"
+    },
+    {
+      "districtId": "AL-05",
+      "districtNumber": 5,
+      "representative": "Dale Strong",
+      "party": "Republican",
+      "racialGroup": "White",
+      "voteMarginPercentage": 0.29542923413843813,
+      "voteMarginDirection": "R"
+    },
+    {
+      "districtId": "AL-06",
+      "districtNumber": 6,
+      "representative": "Gary Palmer",
+      "party": "Republican",
+      "racialGroup": "White",
+      "voteMarginPercentage": 0.3965780682643428,
+      "voteMarginDirection": "R"
+    },
+    {
+      "districtId": "AL-07",
+      "districtNumber": 7,
+      "representative": "Terri Sewell",
+      "party": "Democratic",
+      "racialGroup": "Black",
+      "voteMarginPercentage": 0.23913504491007723,
+      "voteMarginDirection": "D"
+    }
+  ]
+}

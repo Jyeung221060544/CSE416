@@ -1,0 +1,107 @@
+{
+  "stateId": "AL",
+  "numDistricts": 7,
+  "totalPlans": 5000,
+  "unionSplitRange": {
+    "minRepublican": 5,
+    "maxRepublican": 7
+  },
+  "ensembles": [
+    {
+      "ensembleId": "AL_RACEBLIND",
+      "ensembleType": "race-blind",
+      "splits": [
+        {
+          "republican": 7,
+          "democratic": 0,
+          "frequency": 4142
+        },
+        {
+          "republican": 6,
+          "democratic": 1,
+          "frequency": 842
+        },
+        {
+          "republican": 5,
+          "democratic": 2,
+          "frequency": 16
+        },
+        {
+          "republican": 4,
+          "democratic": 3,
+          "frequency": 0
+        },
+        {
+          "republican": 3,
+          "democratic": 4,
+          "frequency": 0
+        },
+        {
+          "republican": 2,
+          "democratic": 5,
+          "frequency": 0
+        },
+        {
+          "republican": 1,
+          "democratic": 6,
+          "frequency": 0
+        },
+        {
+          "republican": 0,
+          "democratic": 7,
+          "frequency": 0
+        }
+      ]
+    },
+    {
+      "ensembleId": "AL_VRA",
+      "ensembleType": "vra-constrained",
+      "splits": [
+        {
+          "republican": 7,
+          "democratic": 0,
+          "frequency": 0
+        },
+        {
+          "republican": 6,
+          "democratic": 1,
+          "frequency": 4985
+        },
+        {
+          "republican": 5,
+          "democratic": 2,
+          "frequency": 15
+        },
+        {
+          "republican": 4,
+          "democratic": 3,
+          "frequency": 0
+        },
+        {
+          "republican": 3,
+          "democratic": 4,
+          "frequency": 0
+        },
+        {
+          "republican": 2,
+          "democratic": 5,
+          "frequency": 0
+        },
+        {
+          "republican": 1,
+          "democratic": 6,
+          "frequency": 0
+        },
+        {
+          "republican": 0,
+          "democratic": 7,
+          "frequency": 0
+        }
+      ]
+    }
+  ],
+  "enactedPlanSplit": {
+    "republican": 5,
+    "democratic": 2
+  }
+}

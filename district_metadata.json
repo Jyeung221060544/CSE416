@@ -1,0 +1,71 @@
+{
+  "AL": {
+    "1": {
+      "representative": "Barry Moore",
+      "party": "Republican",
+      "racialGroup": "White"
+    },
+    "2": {
+      "representative": "Shomari Figures",
+      "party": "Democratic",
+      "racialGroup": "Black"
+    },
+    "3": {
+      "representative": "Mike Rogers",
+      "party": "Republican",
+      "racialGroup": "White"
+    },
+    "4": {
+      "representative": "Robert Aderholt",
+      "party": "Republican",
+      "racialGroup": "White"
+    },
+    "5": {
+      "representative": "Dale Strong",
+      "party": "Republican",
+      "racialGroup": "White"
+    },
+    "6": {
+      "representative": "Gary Palmer",
+      "party": "Republican",
+      "racialGroup": "White"
+    },
+    "7": {
+      "representative": "Terri Sewell",
+      "party": "Democratic",
+      "racialGroup": "Black"
+    }
+  },
+  "OR": {
+    "1": {
+      "representative": "",
+      "party": "",
+      "racialGroup": ""
+    },
+    "2": {
+      "representative": "",
+      "party": "",
+      "racialGroup": ""
+    },
+    "3": {
+      "representative": "",
+      "party": "",
+      "racialGroup": ""
+    },
+    "4": {
+      "representative": "",
+      "party": "",
+      "racialGroup": ""
+    },
+    "5": {
+      "representative": "",
+      "party": "",
+      "racialGroup": ""
+    },
+    "6": {
+      "representative": "",
+      "party": "",
+      "racialGroup": ""
+    }
+  }
+}

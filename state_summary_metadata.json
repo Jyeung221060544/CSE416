@@ -1,0 +1,14 @@
+{
+  "AL": {
+    "stateName": "Alabama",
+    "totalPopulation": 5024279,
+    "isPreclearance": true,
+    "controllingParty": "Republican"
+  },
+  "OR": {
+    "stateName": "Oregon",
+    "totalPopulation": 4237256,
+    "isPreclearance": false,
+    "controllingParty": ""
+  }
+}

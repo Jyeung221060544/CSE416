@@ -1,0 +1,97 @@
+{
+  "stateId": "OR",
+  "numDistricts": 6,
+  "totalPlans": 5000,
+  "unionSplitRange": {
+    "minRepublican": 0,
+    "maxRepublican": 3
+  },
+  "ensembles": [
+    {
+      "ensembleId": "OR_RACEBLIND",
+      "ensembleType": "race-blind",
+      "splits": [
+        {
+          "republican": 6,
+          "democratic": 0,
+          "frequency": 0
+        },
+        {
+          "republican": 5,
+          "democratic": 1,
+          "frequency": 0
+        },
+        {
+          "republican": 4,
+          "democratic": 2,
+          "frequency": 0
+        },
+        {
+          "republican": 3,
+          "democratic": 3,
+          "frequency": 483
+        },
+        {
+          "republican": 2,
+          "democratic": 4,
+          "frequency": 2455
+        },
+        {
+          "republican": 1,
+          "democratic": 5,
+          "frequency": 2062
+        },
+        {
+          "republican": 0,
+          "democratic": 6,
+          "frequency": 0
+        }
+      ]
+    },
+    {
+      "ensembleId": "OR_VRA",
+      "ensembleType": "vra-constrained",
+      "splits": [
+        {
+          "republican": 6,
+          "democratic": 0,
+          "frequency": 0
+        },
+        {
+          "republican": 5,
+          "democratic": 1,
+          "frequency": 0
+        },
+        {
+          "republican": 4,
+          "democratic": 2,
+          "frequency": 0
+        },
+        {
+          "republican": 3,
+          "democratic": 3,
+          "frequency": 124
+        },
+        {
+          "republican": 2,
+          "democratic": 4,
+          "frequency": 2105
+        },
+        {
+          "republican": 1,
+          "democratic": 5,
+          "frequency": 2768
+        },
+        {
+          "republican": 0,
+          "democratic": 6,
+          "frequency": 3
+        }
+      ]
+    }
+  ],
+  "enactedPlanSplit": {
+    "republican": 1,
+    "democratic": 5
+  }
+}
