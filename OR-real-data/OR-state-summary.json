@@ -31,16 +31,10 @@
       "isFeasible": false
     },
     {
-      "group": "Asian",
-      "vap": 156707,
-      "vapPercentage": 0.04649159865806378,
-      "isFeasible": false
-    },
-    {
       "group": "Other",
-      "vap": 238264,
-      "vapPercentage": 0.07068780758144122,
-      "isFeasible": false
+      "vap": 454983,
+      "vapPercentage": 0.13498367674859343,
+      "isFeasible": true
     }
   ],
   "redistrictingControl": {

@@ -31,15 +31,9 @@
       "isFeasible": false
     },
     {
-      "group": "Asian",
-      "vap": 59997,
-      "vapPercentage": 0.01531643029680131,
-      "isFeasible": false
-    },
-    {
       "group": "Other",
-      "vap": 149037,
-      "vapPercentage": 0.03804714939320927,
+      "vap": 375890,
+      "vapPercentage": 0.09595968105513017,
       "isFeasible": false
     }
   ],

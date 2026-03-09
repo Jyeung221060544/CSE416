@@ -60,14 +60,6 @@ JOBS = [
                 "minority_col": "NH_WHITE_ALONE_VAP",
                 "regression": ROOT / "AL_data" / "AL_gingles_regression_White.json",
             },
-            "hispanic": {
-                "minority_col": "LATINO_VAP",
-                "regression": None,
-            },
-            "asian": {
-                "minority_col": "NH_ASIAN_ALONE_VAP",
-                "regression": None,
-            },
             "other": {
                 "minority_col": "OTHER_VAP",
                 "regression": None,
@@ -79,10 +71,6 @@ JOBS = [
         "state": "OR",
         "precincts": ROOT / "OR_data" / "OR_precincts_full.geojson",
         "groups": {
-            "black": {
-                "minority_col": "NH_BLACK_ALONE_VAP",
-                "regression": None,
-            },
             "white": {
                 "minority_col": "NH_WHITE_ALONE_VAP",
                 "regression": ROOT / "OR_data" / "OR_gingles_regression_White.json",
@@ -90,10 +78,6 @@ JOBS = [
             "hispanic": {
                 "minority_col": "LATINO_VAP",
                 "regression": ROOT / "OR_data" / "OR_gingles_regression_Latino.json",
-            },
-            "asian": {
-                "minority_col": "NH_ASIAN_ALONE_VAP",
-                "regression": None,
             },
             "other": {
                 "minority_col": "OTHER_VAP",

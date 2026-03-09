@@ -12,8 +12,6 @@ JOBS = [
         "inputs": {
             "Black": ROOT / "AL_data" / "ei_AL_black_2x2.json",
             "White": ROOT / "AL_data" / "ei_AL_white_2x2.json",
-            "Hispanic": ROOT / "AL_data" / "ei_AL_latino_2x2.json",
-            "Asian": ROOT / "AL_data" / "ei_AL_asian_2x2.json",
             "Other": ROOT / "AL_data" / "ei_AL_other_2x2.json",
         },
         "out": ROOT / "AL-real-data" / "AL-EI.json",
@@ -21,10 +19,8 @@ JOBS = [
     {
         "state": "OR",
         "inputs": {
-            "Black": ROOT / "OR_data" / "ei_OR_black_2x2.json",
             "White": ROOT / "OR_data" / "ei_OR_white_2x2.json",
             "Hispanic": ROOT / "OR_data" / "ei_OR_latino_2x2.json",
-            "Asian": ROOT / "OR_data" / "ei_OR_asian_2x2.json",
             "Other": ROOT / "OR_data" / "ei_OR_other_2x2.json",
         },
         "out": ROOT / "OR-real-data" / "OR-EI.json",

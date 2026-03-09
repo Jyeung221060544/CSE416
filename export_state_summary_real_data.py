@@ -26,7 +26,6 @@ GROUPS = [
     ("White", "NH_WHITE_ALONE_VAP"),
     ("Black", "NH_BLACK_ALONE_VAP"),
     ("Hispanic", "LATINO_VAP"),
-    ("Asian", "NH_ASIAN_ALONE_VAP"),
     ("Other", "OTHER_VAP"),
 ]
 
