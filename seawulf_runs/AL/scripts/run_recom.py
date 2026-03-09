@@ -85,24 +85,33 @@ def main():
     chosen_thr = None
     chosen_party = None
 
-    # Separate analysis/logging group for boxwhisker + minority metrics
-    analysis_group_key = group_key if vra_enabled else cfg.get("boxwhisker_group_key")
-    analysis_threshold = None
-    analysis_party = None
+    # ---------------- box/whisker analysis groups ----------------
+    # Supports multiple groups for frontend-ready exports.
+    boxwhisker_group_keys = cfg.get("boxwhisker_group_keys", [])
+    boxwhisker_thresholds = cfg.get("boxwhisker_thresholds", {})
+    boxwhisker_parties = cfg.get("boxwhisker_parties_of_choice", {})
 
-    if vra_enabled:
-        analysis_threshold = None  # will be set from VRA threshold selection below
-        analysis_party = None      # will be set below
-    else:
-        analysis_threshold = cfg.get("boxwhisker_threshold")
-        analysis_party = cfg.get("boxwhisker_party_of_choice")
+    # Backward compatibility: if older single-group config is present
+    if not boxwhisker_group_keys:
+        legacy_group = cfg.get("boxwhisker_group_key")
+        if legacy_group is not None:
+            boxwhisker_group_keys = [legacy_group]
+            boxwhisker_thresholds = {
+                legacy_group: cfg.get("boxwhisker_threshold")
+            }
+            boxwhisker_parties = {
+                legacy_group: cfg.get("boxwhisker_party_of_choice")
+            }
 
-    # Add tally for the analysis group whenever present
-    if analysis_group_key is not None:
-        updaters["min_{}".format(analysis_group_key)] = Tally(
-            analysis_group_key,
-            alias="min_{}".format(analysis_group_key)
-        )
+    # In VRA mode, make sure the constrained group is included too
+    if vra_enabled and group_key is not None and group_key not in boxwhisker_group_keys:
+        boxwhisker_group_keys.append(group_key)
+
+    # Add tally for every requested boxwhisker group
+    for gk in boxwhisker_group_keys:
+        updater_name = "min_{}".format(gk)
+        if updater_name not in updaters:
+            updaters[updater_name] = Tally(gk, alias=updater_name)
 
     initial = Partition(G, assignment=assignment_col, updaters=updaters)
 
@@ -205,8 +214,9 @@ def main():
 
             constraints.append(vra_eff_constraint)
 
-        analysis_threshold = chosen_thr
-        analysis_party = chosen_party if eff_enabled else None
+        # Override box/whisker metadata for the actual VRA-constrained group
+        boxwhisker_thresholds[group_key] = chosen_thr
+        boxwhisker_parties[group_key] = chosen_party if eff_enabled else boxwhisker_parties.get(group_key)
 
         if mode == "test":
             msg = "[VRA] group={} thr={} opp_K={}".format(group_key, chosen_thr, target_k_opp)
@@ -260,11 +270,26 @@ def main():
         for i, part in enumerate(chain):
             rec = {"step": i}
 
+            # Keep plan-level metrics tied to the main VRA group if enabled,
+            # otherwise use the first configured boxwhisker group if available.
+            metrics_group = None
+            metrics_thr = None
+            metrics_party = None
+
+            if vra_enabled and group_key is not None:
+                metrics_group = group_key
+                metrics_thr = chosen_thr
+                metrics_party = chosen_party
+            elif boxwhisker_group_keys:
+                metrics_group = boxwhisker_group_keys[0]
+                metrics_thr = boxwhisker_thresholds.get(metrics_group)
+                metrics_party = boxwhisker_parties.get(metrics_group)
+
             metrics = plan_metrics(
                 part,
-                group_key=analysis_group_key,
-                thr=analysis_threshold,
-                party=analysis_party,
+                group_key=metrics_group,
+                thr=metrics_thr,
+                party=metrics_party,
             )
             rec.update({k: v for k, v in metrics.items() if v is not None})
 
@@ -292,35 +317,40 @@ def main():
                 k = str(metrics["cut_edges"])
                 cut_hist[k] = cut_hist.get(k, 0) + 1
 
-            # ---- box/whisker raw data (per-plan district minority %) ----
-            district_pcts = None
-            district_pcts_sorted = None
+            
+            # ---- box/whisker raw data for every configured group ----
+            dists = sorted(part.parts.keys(), key=lambda x: int(x) if str(x).isdigit() else str(x))
 
-            if analysis_group_key is not None:
-                dists = sorted(part.parts.keys(), key=lambda x: int(x) if str(x).isdigit() else str(x))
-                district_pcts = [district_minority_pct(part, d, analysis_group_key) for d in dists]
-                district_pcts_sorted = sorted(district_pcts)
+            for bw_group in boxwhisker_group_keys:
+                district_pcts_sorted = sorted(
+                    district_minority_pct(part, d, bw_group) for d in dists
+                )
 
-            if district_pcts_sorted is not None:
                 fbox.write(json.dumps({
                     "step": i,
-                    "group_key": analysis_group_key,
-                    "threshold": analysis_threshold,
-                    "party_of_choice": analysis_party,
+                    "group_key": bw_group,
+                    "threshold": boxwhisker_thresholds.get(bw_group),
+                    "party_of_choice": boxwhisker_parties.get(bw_group),
                     "district_pcts_sorted": district_pcts_sorted
                 }) + "\n")
                 box_written += 1
 
-                        # ---- per-district effectiveness records ----
-            if analysis_group_key is not None and analysis_threshold is not None:
-                dists = sorted(part.parts.keys(), key=lambda x: int(x) if str(x).isdigit() else str(x))
+            # ---- per-district effectiveness records ----
+            # Only write rows for groups that actually have a threshold.
+            for bw_group in boxwhisker_group_keys:
+                bw_threshold = boxwhisker_thresholds.get(bw_group)
+                bw_party = boxwhisker_parties.get(bw_group)
+
+                if bw_threshold is None:
+                    continue
+
                 for d in dists:
                     eff_rec = district_effectiveness_record(
                         part,
                         d,
-                        analysis_group_key,
-                        analysis_threshold,
-                        analysis_party,
+                        bw_group,
+                        bw_threshold,
+                        bw_party,
                     )
                     eff_rec["step"] = i
                     feff.write(json.dumps(eff_rec) + "\n")
@@ -346,9 +376,9 @@ def main():
             "eff_hist": eff_hist,
         },
         "analysis": {
-            "group_key": analysis_group_key,
-            "threshold": analysis_threshold,
-            "party_of_choice": analysis_party,
+            "boxwhisker_group_keys": boxwhisker_group_keys,
+            "boxwhisker_thresholds": boxwhisker_thresholds,
+            "boxwhisker_parties_of_choice": boxwhisker_parties,
         },
         "cut_edges_hist": cut_hist,
     }

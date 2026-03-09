@@ -8,7 +8,16 @@
   "steps_test": 250,
   "steps_final": 5000,
   "output_dir": "output_raceblind",
-  "boxwhisker_group_key": "LATINO_VAP",
-  "boxwhisker_threshold": 0.15,
-  "boxwhisker_party_of_choice": "D"
+  "boxwhisker_group_keys": [
+    "LATINO_VAP",
+    "NH_WHITE_ALONE_VAP"
+  ],
+  "boxwhisker_thresholds": {
+    "LATINO_VAP": 0.15,
+    "NH_WHITE_ALONE_VAP": null
+  },
+  "boxwhisker_parties_of_choice": {
+    "LATINO_VAP": "D",
+    "NH_WHITE_ALONE_VAP": "R"
+  }
 }

@@ -10,6 +10,18 @@
   "output_dir": "output_vra",
   "save_assignments_first_n": 10,
   "save_assignments_every": 1000,
+  "boxwhisker_group_keys": [
+    "NH_BLACK_ALONE_VAP",
+    "NH_WHITE_ALONE_VAP"
+  ],
+  "boxwhisker_thresholds": {
+    "NH_BLACK_ALONE_VAP": null,
+    "NH_WHITE_ALONE_VAP": null
+  },
+  "boxwhisker_parties_of_choice": {
+    "NH_BLACK_ALONE_VAP": "D",
+    "NH_WHITE_ALONE_VAP": "R"
+  },
   "vra": {
     "enabled": true,
     "group_key": "NH_BLACK_ALONE_VAP",
