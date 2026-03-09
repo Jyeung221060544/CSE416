@@ -14,6 +14,8 @@ seawulf_runs/OR/input/OR_enacted_districts_with_stats.geojson
 seawulf_runs/AL/input/AL_starting_assignment_enacted.json
 seawulf_runs/OR/input/OR_starting_assignment_enacted.json
 cse416_seawulf_results
+AL-real-data/AL-heatmap-census.json
+OR-real-data/OR-heatmap-census.json
 
 .DS_Store
 **/.DS_Store
