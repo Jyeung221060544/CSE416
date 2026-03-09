@@ -119,11 +119,150 @@ def load_regression_trendlines(path: Path | None):
 
     return dem, rep
 
+AL_COUNTY_FIPS = {
+    "01001": "Autauga County",
+    "01003": "Baldwin County",
+    "01005": "Barbour County",
+    "01007": "Bibb County",
+    "01009": "Blount County",
+    "01011": "Bullock County",
+    "01013": "Butler County",
+    "01015": "Calhoun County",
+    "01017": "Chambers County",
+    "01019": "Cherokee County",
+    "01021": "Chilton County",
+    "01023": "Choctaw County",
+    "01025": "Clarke County",
+    "01027": "Clay County",
+    "01029": "Cleburne County",
+    "01031": "Coffee County",
+    "01033": "Colbert County",
+    "01035": "Conecuh County",
+    "01037": "Coosa County",
+    "01039": "Covington County",
+    "01041": "Crenshaw County",
+    "01043": "Cullman County",
+    "01045": "Dale County",
+    "01047": "Dallas County",
+    "01049": "DeKalb County",
+    "01051": "Elmore County",
+    "01053": "Escambia County",
+    "01055": "Etowah County",
+    "01057": "Fayette County",
+    "01059": "Franklin County",
+    "01061": "Geneva County",
+    "01063": "Greene County",
+    "01065": "Hale County",
+    "01067": "Henry County",
+    "01069": "Houston County",
+    "01071": "Jackson County",
+    "01073": "Jefferson County",
+    "01075": "Lamar County",
+    "01077": "Lauderdale County",
+    "01079": "Lawrence County",
+    "01081": "Lee County",
+    "01083": "Limestone County",
+    "01085": "Lowndes County",
+    "01087": "Macon County",
+    "01089": "Madison County",
+    "01091": "Marengo County",
+    "01093": "Marion County",
+    "01095": "Marshall County",
+    "01097": "Mobile County",
+    "01099": "Monroe County",
+    "01101": "Montgomery County",
+    "01103": "Morgan County",
+    "01105": "Perry County",
+    "01107": "Pickens County",
+    "01109": "Pike County",
+    "01111": "Randolph County",
+    "01113": "Russell County",
+    "01115": "St. Clair County",
+    "01117": "Shelby County",
+    "01119": "Sumter County",
+    "01121": "Talladega County",
+    "01123": "Tallapoosa County",
+    "01125": "Tuscaloosa County",
+    "01127": "Walker County",
+    "01129": "Washington County",
+    "01131": "Wilcox County",
+    "01133": "Winston County",
+}
+
+OR_COUNTY_FIPS = {
+    "41001": "Baker County",
+    "41003": "Benton County",
+    "41005": "Clackamas County",
+    "41007": "Clatsop County",
+    "41009": "Columbia County",
+    "41011": "Coos County",
+    "41013": "Crook County",
+    "41015": "Curry County",
+    "41017": "Deschutes County",
+    "41019": "Douglas County",
+    "41021": "Gilliam County",
+    "41023": "Grant County",
+    "41025": "Harney County",
+    "41027": "Hood River County",
+    "41029": "Jackson County",
+    "41031": "Jefferson County",
+    "41033": "Josephine County",
+    "41035": "Klamath County",
+    "41037": "Lake County",
+    "41039": "Lane County",
+    "41041": "Lincoln County",
+    "41043": "Linn County",
+    "41045": "Malheur County",
+    "41047": "Marion County",
+    "41049": "Morrow County",
+    "41051": "Multnomah County",
+    "41053": "Polk County",
+    "41055": "Sherman County",
+    "41057": "Tillamook County",
+    "41059": "Umatilla County",
+    "41061": "Union County",
+    "41063": "Wallowa County",
+    "41065": "Wasco County",
+    "41067": "Washington County",
+    "41069": "Wheeler County",
+    "41071": "Yamhill County",
+}
+
+def clean_label(text: str) -> str:
+    return " ".join(str(text).replace("_", " ").split()).strip()
+
 def choose_name(row) -> str:
     for field in ["name", "NAME", "precinct_name", "Precinct", "PRECINCT"]:
         if field in row and row[field] not in (None, ""):
-            return str(row[field])
-    return str(row["GEOID"])
+            value = clean_label(row[field])
+            if value:
+                return value
+
+    geoid = str(row["GEOID"]).strip()
+
+    if "-" in geoid:
+        left, right = geoid.split("-", 1)
+        left = left.strip()
+        right = right.strip()
+
+        # Alabama: countyFIPS-descriptive precinct label
+        if left.startswith("01") and any(ch.isalpha() for ch in right):
+            county_name = AL_COUNTY_FIPS.get(left)
+            label = clean_label(right)
+            if county_name:
+                return f"{county_name} — {label}"
+            return label
+
+        # Oregon: countyFIPS-precinct number/code
+        if left.startswith("41") and right.isdigit():
+            county_name = OR_COUNTY_FIPS.get(left, f"County {left}")
+            return f"{county_name} — Precinct {right}"
+
+        # Generic descriptive fallback
+        if any(ch.isalpha() for ch in right):
+            return clean_label(right)
+
+    return f"Precinct {geoid}"
 
 
 def build_points(gdf: gpd.GeoDataFrame, minority_col: str) -> list[dict]:
