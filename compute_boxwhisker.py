@@ -9,6 +9,10 @@ ROOT = Path(__file__).resolve().parent
 
 # Configure all jobs here so the script only needs to be run once.
 JOBS = [
+
+    # ---------------- ALABAMA ----------------
+
+    # VRA – Black
     {
         "state": "AL",
         "ensemble": "vra",
@@ -17,14 +21,18 @@ JOBS = [
         "precincts": ROOT / "AL_data" / "AL_precincts_full.geojson",
         "out": ROOT / "AL_data" / "AL_boxwhisker_vra_black.json",
     },
+
+    # VRA – White
     {
-        "state": "OR",
+        "state": "AL",
         "ensemble": "vra",
-        "group_key": "LATINO_VAP",
-        "raw": ROOT / "cse416_seawulf_results" / "OR_output_vra" / "boxwhisker_raw_final.jsonl",
-        "precincts": ROOT / "OR_data" / "OR_precincts_full.geojson",
-        "out": ROOT / "OR_data" / "OR_boxwhisker_vra_latino.json",
+        "group_key": "NH_WHITE_ALONE_VAP",
+        "raw": ROOT / "cse416_seawulf_results" / "AL_output_vra" / "boxwhisker_raw_final.jsonl",
+        "precincts": ROOT / "AL_data" / "AL_precincts_full.geojson",
+        "out": ROOT / "AL_data" / "AL_boxwhisker_vra_white.json",
     },
+
+    # Raceblind – Black
     {
         "state": "AL",
         "ensemble": "raceblind",
@@ -33,6 +41,41 @@ JOBS = [
         "precincts": ROOT / "AL_data" / "AL_precincts_full.geojson",
         "out": ROOT / "AL_data" / "AL_boxwhisker_raceblind_black.json",
     },
+
+    # Raceblind – White
+    {
+        "state": "AL",
+        "ensemble": "raceblind",
+        "group_key": "NH_WHITE_ALONE_VAP",
+        "raw": ROOT / "cse416_seawulf_results" / "AL_output_raceblind" / "boxwhisker_raw_final.jsonl",
+        "precincts": ROOT / "AL_data" / "AL_precincts_full.geojson",
+        "out": ROOT / "AL_data" / "AL_boxwhisker_raceblind_white.json",
+    },
+
+
+    # ---------------- OREGON ----------------
+
+    # VRA – Latino
+    {
+        "state": "OR",
+        "ensemble": "vra",
+        "group_key": "LATINO_VAP",
+        "raw": ROOT / "cse416_seawulf_results" / "OR_output_vra" / "boxwhisker_raw_final.jsonl",
+        "precincts": ROOT / "OR_data" / "OR_precincts_full.geojson",
+        "out": ROOT / "OR_data" / "OR_boxwhisker_vra_latino.json",
+    },
+
+    # VRA – White
+    {
+        "state": "OR",
+        "ensemble": "vra",
+        "group_key": "NH_WHITE_ALONE_VAP",
+        "raw": ROOT / "cse416_seawulf_results" / "OR_output_vra" / "boxwhisker_raw_final.jsonl",
+        "precincts": ROOT / "OR_data" / "OR_precincts_full.geojson",
+        "out": ROOT / "OR_data" / "OR_boxwhisker_vra_white.json",
+    },
+
+    # Raceblind – Latino
     {
         "state": "OR",
         "ensemble": "raceblind",
@@ -42,19 +85,15 @@ JOBS = [
         "out": ROOT / "OR_data" / "OR_boxwhisker_raceblind_latino.json",
     },
 
-    # Optional legacy race-blind seat/cut-edge summaries:
-    # {
-    #     "state": "AL",
-    #     "ensemble": "raceblind",
-    #     "plans": ROOT / "cse416_seawulf_results" / "AL_output_raceblind" / "plans_final.jsonl",
-    #     "out": ROOT / "AL_data" / "AL_boxwhisker_raceblind.json",
-    # },
-    # {
-    #     "state": "OR",
-    #     "ensemble": "raceblind",
-    #     "plans": ROOT / "cse416_seawulf_results" / "OR_output_raceblind" / "plans_final.jsonl",
-    #     "out": ROOT / "OR_data" / "OR_boxwhisker_raceblind.json",
-    # },
+    # Raceblind – White
+    {
+        "state": "OR",
+        "ensemble": "raceblind",
+        "group_key": "NH_WHITE_ALONE_VAP",
+        "raw": ROOT / "cse416_seawulf_results" / "OR_output_raceblind" / "boxwhisker_raw_final.jsonl",
+        "precincts": ROOT / "OR_data" / "OR_precincts_full.geojson",
+        "out": ROOT / "OR_data" / "OR_boxwhisker_raceblind_white.json",
+    },
 ]
 
 
@@ -69,7 +108,7 @@ def quantile_stats(values):
     }
 
 
-def load_boxwhisker_raw(raw_path: Path):
+def load_boxwhisker_raw(raw_path: Path, target_group_key: str):
     """
     Expected JSONL line format:
     {
@@ -78,6 +117,8 @@ def load_boxwhisker_raw(raw_path: Path):
       "threshold": 0.5,
       "district_pcts_sorted": [0.01, 0.05, ...]
     }
+
+    Only rows matching target_group_key are returned.
     """
     plans = []
 
@@ -86,10 +127,16 @@ def load_boxwhisker_raw(raw_path: Path):
             line = line.strip()
             if not line:
                 continue
-            plans.append(json.loads(line))
+
+            row = json.loads(line)
+
+            if row.get("group_key") != target_group_key:
+                continue
+
+            plans.append(row)
 
     if not plans:
-        raise ValueError(f"No usable rows found in {raw_path}")
+        raise ValueError(f"No usable rows found in {raw_path} for group_key={target_group_key}")
 
     return plans
 
@@ -187,7 +234,7 @@ def run_minority_boxwhisker_job(job):
         print(f"Skipping missing precinct file: {precinct_path}")
         return
 
-    plans = load_boxwhisker_raw(raw_path)
+    plans = load_boxwhisker_raw(raw_path, group_key)
     box_stats = compute_boxwhisker_from_raw(plans)
     enacted_points = compute_enacted_points(precinct_path, group_key)
 

@@ -8,26 +8,36 @@ JOBS = [
     {
         "state": "AL",
         "num_districts": 7,
-        "feasible_groups": ["black"],
+        "feasible_groups": ["black", "white"],
         "group_map": {
             "black": {
                 "raceblind": ROOT / "AL_data" / "AL_boxwhisker_raceblind_black.json",
                 "vra": ROOT / "AL_data" / "AL_boxwhisker_vra_black.json",
                 "district_prefix": "AL",
-            }
+            },
+            "white": {
+                "raceblind": ROOT / "AL_data" / "AL_boxwhisker_raceblind_white.json",
+                "vra": ROOT / "AL_data" / "AL_boxwhisker_vra_white.json",
+                "district_prefix": "AL",
+            },
         },
         "out": ROOT / "AL-real-data" / "AL-boxwhisker.json",
     },
     {
         "state": "OR",
         "num_districts": 6,
-        "feasible_groups": ["latino"],
+        "feasible_groups": ["latino", "white"],
         "group_map": {
             "latino": {
                 "raceblind": ROOT / "OR_data" / "OR_boxwhisker_raceblind_latino.json",
                 "vra": ROOT / "OR_data" / "OR_boxwhisker_vra_latino.json",
                 "district_prefix": "OR",
-            }
+            },
+            "white": {
+                "raceblind": ROOT / "OR_data" / "OR_boxwhisker_raceblind_white.json",
+                "vra": ROOT / "OR_data" / "OR_boxwhisker_vra_white.json",
+                "district_prefix": "OR",
+            },
         },
         "out": ROOT / "OR-real-data" / "OR-boxwhisker.json",
     },
