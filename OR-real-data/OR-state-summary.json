@@ -19,12 +19,6 @@
       "isFeasible": true
     },
     {
-      "group": "Black",
-      "vap": 60012,
-      "vapPercentage": 0.01780427050908845,
-      "isFeasible": false
-    },
-    {
       "group": "Hispanic",
       "vap": 389394,
       "vapPercentage": 0.11552483021089095,

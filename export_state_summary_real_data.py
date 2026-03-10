@@ -22,12 +22,17 @@ JOBS = [
     },
 ]
 
-GROUPS = [
-    ("White", "NH_WHITE_ALONE_VAP"),
-    ("Black", "NH_BLACK_ALONE_VAP"),
-    ("Hispanic", "LATINO_VAP"),
-    ("Other", "OTHER_VAP"),
-]
+# GROUPS = [
+#     ("White", "NH_WHITE_ALONE_VAP"),
+#     ("Black", "NH_BLACK_ALONE_VAP"),
+#     ("Hispanic", "LATINO_VAP"),
+#     ("Other", "OTHER_VAP"),
+# ]
+
+DISPLAY_GROUPS_BY_STATE = {
+    "AL": [("White", "NH_WHITE_ALONE_VAP"), ("Black", "NH_BLACK_ALONE_VAP"), ("Other", "OTHER_VAP")],
+    "OR": [("White", "NH_WHITE_ALONE_VAP"), ("Hispanic", "LATINO_VAP"), ("Other", "OTHER_VAP")],
+}
 
 FEASIBLE_THRESHOLD = 380000
 
@@ -52,8 +57,33 @@ def export_state(job: dict) -> None:
     num_districts = int(baseline["num_districts"])
     ideal_district_population = round(vap_total / num_districts)
 
+    # demographic_groups = []
+    # for label, col in GROUPS:
+    #     vap = int(gdf[col].sum())
+    #     pct = 0.0 if vap_total <= 0 else vap / vap_total
+    #     if label != "Other":
+    #         demographic_groups.append(
+    #             {
+    #                 "group": label,
+    #                 "vap": vap,
+    #                 "vapPercentage": pct,
+    #                 "isFeasible": vap >= FEASIBLE_THRESHOLD,
+    #             }
+    #         )
+    #     else:
+    #         demographic_groups.append(
+    #             {
+    #                 "group": label,
+    #                 "vap": vap,
+    #                 "vapPercentage": pct,
+    #                 "isFeasible": False,
+    #             }
+    #         )
+
+    groups_for_state = DISPLAY_GROUPS_BY_STATE[state]
     demographic_groups = []
-    for label, col in GROUPS:
+
+    for label, col in groups_for_state:
         vap = int(gdf[col].sum())
         pct = 0.0 if vap_total <= 0 else vap / vap_total
         if label != "Other":

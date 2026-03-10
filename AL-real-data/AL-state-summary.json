@@ -25,12 +25,6 @@
       "isFeasible": true
     },
     {
-      "group": "Hispanic",
-      "vap": 166856,
-      "vapPercentage": 0.04259610136511958,
-      "isFeasible": false
-    },
-    {
       "group": "Other",
       "vap": 375890,
       "vapPercentage": 0.09595968105513017,
