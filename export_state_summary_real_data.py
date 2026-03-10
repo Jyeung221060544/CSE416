@@ -56,14 +56,24 @@ def export_state(job: dict) -> None:
     for label, col in GROUPS:
         vap = int(gdf[col].sum())
         pct = 0.0 if vap_total <= 0 else vap / vap_total
-        demographic_groups.append(
-            {
-                "group": label,
-                "vap": vap,
-                "vapPercentage": pct,
-                "isFeasible": vap >= FEASIBLE_THRESHOLD,
-            }
-        )
+        if label != "Other":
+            demographic_groups.append(
+                {
+                    "group": label,
+                    "vap": vap,
+                    "vapPercentage": pct,
+                    "isFeasible": vap >= FEASIBLE_THRESHOLD,
+                }
+            )
+        else:
+            demographic_groups.append(
+                {
+                    "group": label,
+                    "vap": vap,
+                    "vapPercentage": pct,
+                    "isFeasible": False,
+                }
+            )
 
     payload = {
         "stateId": state,

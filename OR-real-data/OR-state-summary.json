@@ -34,7 +34,7 @@
       "group": "Other",
       "vap": 454983,
       "vapPercentage": 0.13498367674859343,
-      "isFeasible": true
+      "isFeasible": false
     }
   ],
   "redistrictingControl": {
