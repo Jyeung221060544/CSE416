@@ -249,12 +249,20 @@ def choose_name(row) -> str:
     return f"Precinct {geoid}"
 
 
-def build_points(gdf: gpd.GeoDataFrame, minority_col: str) -> list[dict]:
+def build_points(
+    gdf: gpd.GeoDataFrame,
+    minority_col: str,
+    *,
+    min_total_pop: int = 10,
+    min_total_votes: int = 10,
+) -> list[dict]:
     points = []
 
+    total_votes_series = gdf["votes_dem"] + gdf["votes_rep"]
+
     mask = (
-        (gdf["VAP"] > 0)
-        & ((gdf["votes_dem"] + gdf["votes_rep"]) > 0)
+        (gdf["VAP"] >= min_total_pop)
+        & (total_votes_series >= min_total_votes)
         & (gdf[minority_col] >= 0)
         & (gdf[minority_col] <= gdf["VAP"])
     )

@@ -66,38 +66,6 @@ def pct_to_bin_id(pct_0_to_100: float, bins: list[dict]) -> int:
     return bins[-1]["binId"]
 
 
-def compress_bins_remove_empty(bins: list[dict], features: list[dict]) -> tuple[list[dict], list[dict]]:
-    used_bin_ids = set()
-
-    for feat in features:
-        for key in ["black", "white", "hispanic", "asian", "other"]:
-            used_bin_ids.add(feat[key])
-
-    used_bins = [b for b in bins if b["binId"] in used_bin_ids]
-
-    id_remap = {}
-    new_bins = []
-    for new_id, old_bin in enumerate(used_bins, start=1):
-        id_remap[old_bin["binId"]] = new_id
-        new_bins.append(
-            {
-                "binId": new_id,
-                "rangeMin": old_bin["rangeMin"],
-                "rangeMax": old_bin["rangeMax"],
-                "color": old_bin["color"],
-            }
-        )
-
-    new_features = []
-    for feat in features:
-        new_feat = {"idx": feat["idx"]}
-        for key in ["black", "white", "hispanic", "asian", "other"]:
-            new_feat[key] = id_remap[feat[key]]
-        new_features.append(new_feat)
-
-    return new_bins, new_features
-
-
 def load_block_vap(vap_csv_path: Path) -> pd.DataFrame:
     pop = pd.read_csv(vap_csv_path, skiprows=[1], dtype=str)
 
@@ -133,26 +101,9 @@ def load_block_vap(vap_csv_path: Path) -> pd.DataFrame:
     return out
 
 
-def export_state(job: dict) -> None:
-    blocks = gpd.read_file(job["blocks_shp"])
-    blocks["GEOID_BLOCK"] = blocks["GEOID20"].astype(str).str.strip().str.zfill(15)
-
-    vap = load_block_vap(job["vap_csv"])
-    merged = blocks.merge(vap, on="GEOID_BLOCK", how="left")
-
-    for col in [
-        "VAP",
-        "LATINO_VAP",
-        "NH_WHITE_ALONE_VAP",
-        "NH_BLACK_ALONE_VAP",
-        "NH_ASIAN_ALONE_VAP",
-        "OTHER_VAP",
-    ]:
-        merged[col] = pd.to_numeric(merged[col], errors="coerce").fillna(0).astype(int)
-
-    bins = build_equal_width_bins(num_bins=5)
-
+def build_features(merged: gpd.GeoDataFrame, bins: list[dict]) -> list[dict]:
     features = []
+
     for idx, row in merged.reset_index(drop=True).iterrows():
         vap_total = int(row["VAP"])
 
@@ -173,13 +124,34 @@ def export_state(job: dict) -> None:
             }
         )
 
-    final_bins, final_features = compress_bins_remove_empty(bins, features)
+    return features
+
+
+def export_state(job: dict) -> None:
+    blocks = gpd.read_file(job["blocks_shp"])
+    blocks["GEOID_BLOCK"] = blocks["GEOID20"].astype(str).str.strip().str.zfill(15)
+
+    vap = load_block_vap(job["vap_csv"])
+    merged = blocks.merge(vap, on="GEOID_BLOCK", how="left")
+
+    for col in [
+        "VAP",
+        "LATINO_VAP",
+        "NH_WHITE_ALONE_VAP",
+        "NH_BLACK_ALONE_VAP",
+        "NH_ASIAN_ALONE_VAP",
+        "OTHER_VAP",
+    ]:
+        merged[col] = pd.to_numeric(merged[col], errors="coerce").fillna(0).astype(int)
+
+    bins = build_equal_width_bins(num_bins=5)
+    features = build_features(merged, bins)
 
     payload = {
         "stateId": job["state"],
         "granularity": "census_block",
-        "bins": final_bins,
-        "features": final_features,
+        "bins": bins,
+        "features": features,
     }
 
     out_path = job["out"]
@@ -188,8 +160,8 @@ def export_state(job: dict) -> None:
         json.dump(payload, f, indent=2)
 
     print(f"Wrote: {out_path}")
-    print(f"Features: {len(final_features)}")
-    print(f"Bins: {final_bins}")
+    print(f"Num bins: {len(bins)}")
+    print(f"Num features: {len(features)}")
 
 
 def main():

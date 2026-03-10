@@ -19,8 +19,8 @@ CONFIGS = [
     },
 ]
 
-MIN_SWING = -0.10
-MAX_SWING = 0.10
+MIN_SWING = -0.30
+MAX_SWING = 0.30
 STEP = 0.025
 
 

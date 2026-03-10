@@ -19312,18 +19312,6 @@
           "repVotes": 331
         },
         {
-          "id": "01109-SACO VFD #1",
-          "name": "Pike County \u2014 SACO VFD #1",
-          "x": 0.16666666666666666,
-          "y": 0.75,
-          "totalPop": 24,
-          "minorityPop": 4,
-          "avgHHIncome": 71773,
-          "regionType": "suburban",
-          "demVotes": 6,
-          "repVotes": 2
-        },
-        {
           "id": "01109-SACO VFD #2",
           "name": "Pike County \u2014 SACO VFD #2",
           "x": 0.5454545454545454,
@@ -24959,9 +24947,9 @@
       "summaryRows": [
         {
           "rangeLabel": "0\u201320%",
-          "precinctCount": 1164,
-          "avgDemocraticVoteShare": 0.1556,
-          "avgRepublicanVoteShare": 0.8444
+          "precinctCount": 1163,
+          "avgDemocraticVoteShare": 0.1551,
+          "avgRepublicanVoteShare": 0.8449
         },
         {
           "rangeLabel": "20\u201340%",
@@ -44300,18 +44288,6 @@
           "repVotes": 331
         },
         {
-          "id": "01109-SACO VFD #1",
-          "name": "Pike County \u2014 SACO VFD #1",
-          "x": 0.5833333333333334,
-          "y": 0.75,
-          "totalPop": 24,
-          "minorityPop": 14,
-          "avgHHIncome": 71773,
-          "regionType": "suburban",
-          "demVotes": 6,
-          "repVotes": 2
-        },
-        {
           "id": "01109-SACO VFD #2",
           "name": "Pike County \u2014 SACO VFD #2",
           "x": 0.45454545454545453,
@@ -49959,9 +49935,9 @@
         },
         {
           "rangeLabel": "40\u201360%",
-          "precinctCount": 210,
-          "avgDemocraticVoteShare": 0.4823,
-          "avgRepublicanVoteShare": 0.5177
+          "precinctCount": 209,
+          "avgDemocraticVoteShare": 0.481,
+          "avgRepublicanVoteShare": 0.519
         },
         {
           "rangeLabel": "60\u201380%",
@@ -69288,18 +69264,6 @@
           "repVotes": 331
         },
         {
-          "id": "01109-SACO VFD #1",
-          "name": "Pike County \u2014 SACO VFD #1",
-          "x": 0.25,
-          "y": 0.75,
-          "totalPop": 24,
-          "minorityPop": 6,
-          "avgHHIncome": 71773,
-          "regionType": "suburban",
-          "demVotes": 6,
-          "repVotes": 2
-        },
-        {
           "id": "01109-SACO VFD #2",
           "name": "Pike County \u2014 SACO VFD #2",
           "x": 0.0,
@@ -73331,9 +73295,9 @@
         },
         {
           "rangeLabel": "20\u201340%",
-          "precinctCount": 54,
-          "avgDemocraticVoteShare": 0.3501,
-          "avgRepublicanVoteShare": 0.6499
+          "precinctCount": 53,
+          "avgDemocraticVoteShare": 0.3426,
+          "avgRepublicanVoteShare": 0.6574
         },
         {
           "rangeLabel": "40\u201360%",

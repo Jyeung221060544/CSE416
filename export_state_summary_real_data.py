@@ -29,7 +29,7 @@ GROUPS = [
     ("Other", "OTHER_VAP"),
 ]
 
-FEASIBLE_THRESHOLD = 400000
+FEASIBLE_THRESHOLD = 380000
 
 
 def load_json(path: Path) -> dict:

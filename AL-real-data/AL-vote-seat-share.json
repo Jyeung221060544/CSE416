@@ -3,12 +3,44 @@
   "electionYear": 2024,
   "raciallyPolarized": true,
   "totalDistricts": 7,
-  "partisanBias": -0.20714285714285718,
-  "notes": "At 50% Democratic vote share, Democrats win ~0.293 of seats (partisan bias \u2248 -0.207).",
+  "partisanBias": -0.04464285714285715,
+  "notes": "At 50% Democratic vote share, Democrats win ~0.455 of seats (partisan bias \u2248 -0.045).",
   "curves": [
     {
       "party": "Democratic",
       "points": [
+        {
+          "voteShare": 0.06912760857897327,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.08562823379524039,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.10434417311980204,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.12442276678020366,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.14726651989971024,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.17106779213801526,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.19572973960205503,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.22072973960205503,
+          "seatShare": 0.0
+        },
         {
           "voteShare": 0.24572973960205505,
           "seatShare": 0.02142857142857143
@@ -44,12 +76,76 @@
         {
           "voteShare": 0.44572973960205503,
           "seatShare": 0.2928571428571428
+        },
+        {
+          "voteShare": 0.47072973960205505,
+          "seatShare": 0.3267857142857143
+        },
+        {
+          "voteShare": 0.4957297396020551,
+          "seatShare": 0.45535714285714285
+        },
+        {
+          "voteShare": 0.5207297396020549,
+          "seatShare": 0.5875
+        },
+        {
+          "voteShare": 0.5457297396020551,
+          "seatShare": 0.6428571428571428
+        },
+        {
+          "voteShare": 0.570729739602055,
+          "seatShare": 0.6982142857142857
+        },
+        {
+          "voteShare": 0.595729739602055,
+          "seatShare": 0.7875
+        },
+        {
+          "voteShare": 0.620729739602055,
+          "seatShare": 0.8375
+        },
+        {
+          "voteShare": 0.6457297396020549,
+          "seatShare": 0.9446428571428571
         }
       ]
     },
     {
       "party": "Republican",
       "points": [
+        {
+          "voteShare": 0.9308723914210267,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.9143717662047596,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.895655826880198,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.8755772332197963,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.8527334801002897,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.8289322078619847,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.804270260397945,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.779270260397945,
+          "seatShare": 1.0
+        },
         {
           "voteShare": 0.754270260397945,
           "seatShare": 0.9785714285714285
@@ -85,6 +181,38 @@
         {
           "voteShare": 0.554270260397945,
           "seatShare": 0.7071428571428572
+        },
+        {
+          "voteShare": 0.5292702603979449,
+          "seatShare": 0.6732142857142858
+        },
+        {
+          "voteShare": 0.504270260397945,
+          "seatShare": 0.5446428571428572
+        },
+        {
+          "voteShare": 0.47927026039794507,
+          "seatShare": 0.4125
+        },
+        {
+          "voteShare": 0.45427026039794494,
+          "seatShare": 0.3571428571428572
+        },
+        {
+          "voteShare": 0.429270260397945,
+          "seatShare": 0.3017857142857143
+        },
+        {
+          "voteShare": 0.404270260397945,
+          "seatShare": 0.21250000000000002
+        },
+        {
+          "voteShare": 0.379270260397945,
+          "seatShare": 0.16249999999999998
+        },
+        {
+          "voteShare": 0.35427026039794507,
+          "seatShare": 0.05535714285714288
         }
       ]
     }

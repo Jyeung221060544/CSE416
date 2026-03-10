@@ -7780,18 +7780,6 @@
           "repVotes": 589
         },
         {
-          "id": "41043-002",
-          "name": "Linn County \u2014 Precinct 002",
-          "x": 0.5,
-          "y": 0.0,
-          "totalPop": 6,
-          "minorityPop": 3,
-          "avgHHIncome": 103557,
-          "regionType": "rural",
-          "demVotes": 0,
-          "repVotes": 1
-        },
-        {
           "id": "41043-003",
           "name": "Linn County \u2014 Precinct 003",
           "x": 0.8991130820399114,
@@ -8342,18 +8330,6 @@
           "regionType": "urban",
           "demVotes": 1091,
           "repVotes": 1064
-        },
-        {
-          "id": "41043-049",
-          "name": "Linn County \u2014 Precinct 049",
-          "x": 0.85,
-          "y": 0.6666666666666666,
-          "totalPop": 20,
-          "minorityPop": 17,
-          "avgHHIncome": 103283,
-          "regionType": "rural",
-          "demVotes": 2,
-          "repVotes": 1
         },
         {
           "id": "41043-050",
@@ -13984,18 +13960,6 @@
           "repVotes": 400
         },
         {
-          "id": "41067-422",
-          "name": "Washington County \u2014 Precinct 422",
-          "x": 0.125,
-          "y": 0.17647058823529413,
-          "totalPop": 8,
-          "minorityPop": 1,
-          "avgHHIncome": 59200,
-          "regionType": "urban",
-          "demVotes": 3,
-          "repVotes": 14
-        },
-        {
           "id": "41067-373",
           "name": "Washington County \u2014 Precinct 373",
           "x": 0.7961165048543689,
@@ -14032,18 +13996,6 @@
           "repVotes": 815
         },
         {
-          "id": "41067-456",
-          "name": "Washington County \u2014 Precinct 456",
-          "x": 0.6666666666666666,
-          "y": 1.0,
-          "totalPop": 12,
-          "minorityPop": 8,
-          "avgHHIncome": 173722,
-          "regionType": "urban",
-          "demVotes": 7,
-          "repVotes": 0
-        },
-        {
           "id": "41067-310",
           "name": "Washington County \u2014 Precinct 310",
           "x": 0.8474820143884892,
@@ -14054,18 +14006,6 @@
           "regionType": "urban",
           "demVotes": 278,
           "repVotes": 307
-        },
-        {
-          "id": "41067-444",
-          "name": "Washington County \u2014 Precinct 444",
-          "x": 0.7142857142857143,
-          "y": 0.4396551724137931,
-          "totalPop": 7,
-          "minorityPop": 5,
-          "avgHHIncome": 168316,
-          "regionType": "urban",
-          "demVotes": 51,
-          "repVotes": 65
         },
         {
           "id": "41067-415",
@@ -14162,18 +14102,6 @@
           "regionType": "urban",
           "demVotes": 3797,
           "repVotes": 2835
-        },
-        {
-          "id": "41067-445",
-          "name": "Washington County \u2014 Precinct 445",
-          "x": 0.08695652173913043,
-          "y": 0.0,
-          "totalPop": 23,
-          "minorityPop": 2,
-          "avgHHIncome": 89300,
-          "regionType": "urban",
-          "demVotes": 0,
-          "repVotes": 1
         },
         {
           "id": "41067-356",
@@ -14330,18 +14258,6 @@
           "regionType": "urban",
           "demVotes": 1286,
           "repVotes": 464
-        },
-        {
-          "id": "41067-313",
-          "name": "Washington County \u2014 Precinct 313",
-          "x": 0.0,
-          "y": 0.6666666666666666,
-          "totalPop": 2,
-          "minorityPop": 0,
-          "avgHHIncome": 171306,
-          "regionType": "urban",
-          "demVotes": 2,
-          "repVotes": 1
         },
         {
           "id": "41067-392",
@@ -14570,18 +14486,6 @@
           "regionType": "urban",
           "demVotes": 1756,
           "repVotes": 672
-        },
-        {
-          "id": "41067-387",
-          "name": "Washington County \u2014 Precinct 387",
-          "x": 0.8,
-          "y": 0.5714285714285714,
-          "totalPop": 5,
-          "minorityPop": 4,
-          "avgHHIncome": 162683,
-          "regionType": "urban",
-          "demVotes": 12,
-          "repVotes": 9
         },
         {
           "id": "41067-367",
@@ -15170,18 +15074,6 @@
           "regionType": "urban",
           "demVotes": 1705,
           "repVotes": 424
-        },
-        {
-          "id": "41067-374",
-          "name": "Washington County \u2014 Precinct 374",
-          "x": 0.3870967741935484,
-          "y": 0.5555555555555556,
-          "totalPop": 31,
-          "minorityPop": 12,
-          "avgHHIncome": 139868,
-          "regionType": "urban",
-          "demVotes": 5,
-          "repVotes": 4
         },
         {
           "id": "41067-344",
@@ -17183,33 +17075,33 @@
       "summaryRows": [
         {
           "rangeLabel": "0\u201320%",
-          "precinctCount": 4,
-          "avgDemocraticVoteShare": 0.4183,
-          "avgRepublicanVoteShare": 0.5817
+          "precinctCount": 1,
+          "avgDemocraticVoteShare": 0.8299,
+          "avgRepublicanVoteShare": 0.1701
         },
         {
           "rangeLabel": "20\u201340%",
-          "precinctCount": 16,
-          "avgDemocraticVoteShare": 0.5262,
-          "avgRepublicanVoteShare": 0.4738
+          "precinctCount": 15,
+          "avgDemocraticVoteShare": 0.5242,
+          "avgRepublicanVoteShare": 0.4758
         },
         {
           "rangeLabel": "40\u201360%",
-          "precinctCount": 105,
-          "avgDemocraticVoteShare": 0.5699,
-          "avgRepublicanVoteShare": 0.4301
+          "precinctCount": 104,
+          "avgDemocraticVoteShare": 0.5754,
+          "avgRepublicanVoteShare": 0.4246
         },
         {
           "rangeLabel": "60\u201380%",
-          "precinctCount": 420,
-          "avgDemocraticVoteShare": 0.5615,
-          "avgRepublicanVoteShare": 0.4385
+          "precinctCount": 418,
+          "avgDemocraticVoteShare": 0.5608,
+          "avgRepublicanVoteShare": 0.4392
         },
         {
           "rangeLabel": "80\u2013100%",
-          "precinctCount": 752,
-          "avgDemocraticVoteShare": 0.4068,
-          "avgRepublicanVoteShare": 0.5932
+          "precinctCount": 750,
+          "avgDemocraticVoteShare": 0.4062,
+          "avgRepublicanVoteShare": 0.5938
         }
       ]
     },
@@ -24992,18 +24884,6 @@
           "repVotes": 589
         },
         {
-          "id": "41043-002",
-          "name": "Linn County \u2014 Precinct 002",
-          "x": 0.0,
-          "y": 0.0,
-          "totalPop": 6,
-          "minorityPop": 0,
-          "avgHHIncome": 103557,
-          "regionType": "rural",
-          "demVotes": 0,
-          "repVotes": 1
-        },
-        {
           "id": "41043-003",
           "name": "Linn County \u2014 Precinct 003",
           "x": 0.02993348115299335,
@@ -25554,18 +25434,6 @@
           "regionType": "urban",
           "demVotes": 1091,
           "repVotes": 1064
-        },
-        {
-          "id": "41043-049",
-          "name": "Linn County \u2014 Precinct 049",
-          "x": 0.05,
-          "y": 0.6666666666666666,
-          "totalPop": 20,
-          "minorityPop": 1,
-          "avgHHIncome": 103283,
-          "regionType": "rural",
-          "demVotes": 2,
-          "repVotes": 1
         },
         {
           "id": "41043-050",
@@ -31196,18 +31064,6 @@
           "repVotes": 400
         },
         {
-          "id": "41067-422",
-          "name": "Washington County \u2014 Precinct 422",
-          "x": 0.125,
-          "y": 0.17647058823529413,
-          "totalPop": 8,
-          "minorityPop": 1,
-          "avgHHIncome": 59200,
-          "regionType": "urban",
-          "demVotes": 3,
-          "repVotes": 14
-        },
-        {
           "id": "41067-373",
           "name": "Washington County \u2014 Precinct 373",
           "x": 0.05825242718446602,
@@ -31244,18 +31100,6 @@
           "repVotes": 815
         },
         {
-          "id": "41067-456",
-          "name": "Washington County \u2014 Precinct 456",
-          "x": 0.08333333333333333,
-          "y": 1.0,
-          "totalPop": 12,
-          "minorityPop": 1,
-          "avgHHIncome": 173722,
-          "regionType": "urban",
-          "demVotes": 7,
-          "repVotes": 0
-        },
-        {
           "id": "41067-310",
           "name": "Washington County \u2014 Precinct 310",
           "x": 0.08345323741007195,
@@ -31266,18 +31110,6 @@
           "regionType": "urban",
           "demVotes": 278,
           "repVotes": 307
-        },
-        {
-          "id": "41067-444",
-          "name": "Washington County \u2014 Precinct 444",
-          "x": 0.0,
-          "y": 0.4396551724137931,
-          "totalPop": 7,
-          "minorityPop": 0,
-          "avgHHIncome": 168316,
-          "regionType": "urban",
-          "demVotes": 51,
-          "repVotes": 65
         },
         {
           "id": "41067-415",
@@ -31374,18 +31206,6 @@
           "regionType": "urban",
           "demVotes": 3797,
           "repVotes": 2835
-        },
-        {
-          "id": "41067-445",
-          "name": "Washington County \u2014 Precinct 445",
-          "x": 0.21739130434782608,
-          "y": 0.0,
-          "totalPop": 23,
-          "minorityPop": 5,
-          "avgHHIncome": 89300,
-          "regionType": "urban",
-          "demVotes": 0,
-          "repVotes": 1
         },
         {
           "id": "41067-356",
@@ -31542,18 +31362,6 @@
           "regionType": "urban",
           "demVotes": 1286,
           "repVotes": 464
-        },
-        {
-          "id": "41067-313",
-          "name": "Washington County \u2014 Precinct 313",
-          "x": 0.5,
-          "y": 0.6666666666666666,
-          "totalPop": 2,
-          "minorityPop": 1,
-          "avgHHIncome": 171306,
-          "regionType": "urban",
-          "demVotes": 2,
-          "repVotes": 1
         },
         {
           "id": "41067-392",
@@ -31782,18 +31590,6 @@
           "regionType": "urban",
           "demVotes": 1756,
           "repVotes": 672
-        },
-        {
-          "id": "41067-387",
-          "name": "Washington County \u2014 Precinct 387",
-          "x": 0.0,
-          "y": 0.5714285714285714,
-          "totalPop": 5,
-          "minorityPop": 0,
-          "avgHHIncome": 162683,
-          "regionType": "urban",
-          "demVotes": 12,
-          "repVotes": 9
         },
         {
           "id": "41067-367",
@@ -32382,18 +32178,6 @@
           "regionType": "urban",
           "demVotes": 1705,
           "repVotes": 424
-        },
-        {
-          "id": "41067-374",
-          "name": "Washington County \u2014 Precinct 374",
-          "x": 0.3548387096774194,
-          "y": 0.5555555555555556,
-          "totalPop": 31,
-          "minorityPop": 11,
-          "avgHHIncome": 139868,
-          "regionType": "urban",
-          "demVotes": 5,
-          "repVotes": 4
         },
         {
           "id": "41067-344",
@@ -34395,21 +34179,21 @@
       "summaryRows": [
         {
           "rangeLabel": "0\u201320%",
-          "precinctCount": 1158,
+          "precinctCount": 1152,
           "avgDemocraticVoteShare": 0.4723,
           "avgRepublicanVoteShare": 0.5277
         },
         {
           "rangeLabel": "20\u201340%",
-          "precinctCount": 106,
-          "avgDemocraticVoteShare": 0.4636,
-          "avgRepublicanVoteShare": 0.5364
+          "precinctCount": 104,
+          "avgDemocraticVoteShare": 0.4672,
+          "avgRepublicanVoteShare": 0.5328
         },
         {
           "rangeLabel": "40\u201360%",
-          "precinctCount": 26,
-          "avgDemocraticVoteShare": 0.4534,
-          "avgRepublicanVoteShare": 0.5466
+          "precinctCount": 25,
+          "avgDemocraticVoteShare": 0.4448,
+          "avgRepublicanVoteShare": 0.5552
         },
         {
           "rangeLabel": "60\u201380%",
@@ -42204,18 +41988,6 @@
           "repVotes": 589
         },
         {
-          "id": "41043-002",
-          "name": "Linn County \u2014 Precinct 002",
-          "x": 0.5,
-          "y": 0.0,
-          "totalPop": 6,
-          "minorityPop": 3,
-          "avgHHIncome": 103557,
-          "regionType": "rural",
-          "demVotes": 0,
-          "repVotes": 1
-        },
-        {
           "id": "41043-003",
           "name": "Linn County \u2014 Precinct 003",
           "x": 0.07095343680709534,
@@ -42766,18 +42538,6 @@
           "regionType": "urban",
           "demVotes": 1091,
           "repVotes": 1064
-        },
-        {
-          "id": "41043-049",
-          "name": "Linn County \u2014 Precinct 049",
-          "x": 0.1,
-          "y": 0.6666666666666666,
-          "totalPop": 20,
-          "minorityPop": 2,
-          "avgHHIncome": 103283,
-          "regionType": "rural",
-          "demVotes": 2,
-          "repVotes": 1
         },
         {
           "id": "41043-050",
@@ -48408,18 +48168,6 @@
           "repVotes": 400
         },
         {
-          "id": "41067-422",
-          "name": "Washington County \u2014 Precinct 422",
-          "x": 0.75,
-          "y": 0.17647058823529413,
-          "totalPop": 8,
-          "minorityPop": 6,
-          "avgHHIncome": 59200,
-          "regionType": "urban",
-          "demVotes": 3,
-          "repVotes": 14
-        },
-        {
           "id": "41067-373",
           "name": "Washington County \u2014 Precinct 373",
           "x": 0.14563106796116504,
@@ -48456,18 +48204,6 @@
           "repVotes": 815
         },
         {
-          "id": "41067-456",
-          "name": "Washington County \u2014 Precinct 456",
-          "x": 0.25,
-          "y": 1.0,
-          "totalPop": 12,
-          "minorityPop": 3,
-          "avgHHIncome": 173722,
-          "regionType": "urban",
-          "demVotes": 7,
-          "repVotes": 0
-        },
-        {
           "id": "41067-310",
           "name": "Washington County \u2014 Precinct 310",
           "x": 0.06906474820143885,
@@ -48478,18 +48214,6 @@
           "regionType": "urban",
           "demVotes": 278,
           "repVotes": 307
-        },
-        {
-          "id": "41067-444",
-          "name": "Washington County \u2014 Precinct 444",
-          "x": 0.2857142857142857,
-          "y": 0.4396551724137931,
-          "totalPop": 7,
-          "minorityPop": 2,
-          "avgHHIncome": 168316,
-          "regionType": "urban",
-          "demVotes": 51,
-          "repVotes": 65
         },
         {
           "id": "41067-415",
@@ -48586,18 +48310,6 @@
           "regionType": "urban",
           "demVotes": 3797,
           "repVotes": 2835
-        },
-        {
-          "id": "41067-445",
-          "name": "Washington County \u2014 Precinct 445",
-          "x": 0.6956521739130435,
-          "y": 0.0,
-          "totalPop": 23,
-          "minorityPop": 16,
-          "avgHHIncome": 89300,
-          "regionType": "urban",
-          "demVotes": 0,
-          "repVotes": 1
         },
         {
           "id": "41067-356",
@@ -48754,18 +48466,6 @@
           "regionType": "urban",
           "demVotes": 1286,
           "repVotes": 464
-        },
-        {
-          "id": "41067-313",
-          "name": "Washington County \u2014 Precinct 313",
-          "x": 0.5,
-          "y": 0.6666666666666666,
-          "totalPop": 2,
-          "minorityPop": 1,
-          "avgHHIncome": 171306,
-          "regionType": "urban",
-          "demVotes": 2,
-          "repVotes": 1
         },
         {
           "id": "41067-392",
@@ -48994,18 +48694,6 @@
           "regionType": "urban",
           "demVotes": 1756,
           "repVotes": 672
-        },
-        {
-          "id": "41067-387",
-          "name": "Washington County \u2014 Precinct 387",
-          "x": 0.2,
-          "y": 0.5714285714285714,
-          "totalPop": 5,
-          "minorityPop": 1,
-          "avgHHIncome": 162683,
-          "regionType": "urban",
-          "demVotes": 12,
-          "repVotes": 9
         },
         {
           "id": "41067-367",
@@ -49596,18 +49284,6 @@
           "repVotes": 424
         },
         {
-          "id": "41067-374",
-          "name": "Washington County \u2014 Precinct 374",
-          "x": 0.25806451612903225,
-          "y": 0.5555555555555556,
-          "totalPop": 31,
-          "minorityPop": 8,
-          "avgHHIncome": 139868,
-          "regionType": "urban",
-          "demVotes": 5,
-          "repVotes": 4
-        },
-        {
           "id": "41067-344",
           "name": "Washington County \u2014 Precinct 344",
           "x": 0.11514504360206443,
@@ -49997,27 +49673,27 @@
       "summaryRows": [
         {
           "rangeLabel": "0\u201320%",
-          "precinctCount": 1159,
-          "avgDemocraticVoteShare": 0.4485,
-          "avgRepublicanVoteShare": 0.5515
+          "precinctCount": 1158,
+          "avgDemocraticVoteShare": 0.4483,
+          "avgRepublicanVoteShare": 0.5517
         },
         {
           "rangeLabel": "20\u201340%",
-          "precinctCount": 120,
-          "avgDemocraticVoteShare": 0.6821,
-          "avgRepublicanVoteShare": 0.3179
+          "precinctCount": 116,
+          "avgDemocraticVoteShare": 0.6835,
+          "avgRepublicanVoteShare": 0.3165
         },
         {
           "rangeLabel": "40\u201360%",
-          "precinctCount": 14,
-          "avgDemocraticVoteShare": 0.5877,
-          "avgRepublicanVoteShare": 0.4123
+          "precinctCount": 12,
+          "avgDemocraticVoteShare": 0.6301,
+          "avgRepublicanVoteShare": 0.3699
         },
         {
           "rangeLabel": "60\u201380%",
-          "precinctCount": 3,
-          "avgDemocraticVoteShare": 0.3048,
-          "avgRepublicanVoteShare": 0.6952
+          "precinctCount": 1,
+          "avgDemocraticVoteShare": 0.7379,
+          "avgRepublicanVoteShare": 0.2621
         },
         {
           "rangeLabel": "80\u2013100%",
