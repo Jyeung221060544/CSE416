@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(where python)",
+      "Bash(where python3)",
+      "Read(//c/Users/T14s/AppData/Local/Programs/Python/Python313/**)"
+    ]
+  }
+}

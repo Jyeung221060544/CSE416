@@ -1,0 +1,62 @@
+{
+  "stateId": "OR",
+  "stateName": "Oregon",
+  "totalPopulation": 4237256,
+  "votingAgePopulation": 3370652,
+  "numDistricts": 6,
+  "idealDistrictPopulation": 561775,
+  "isPreclearance": false,
+  "voterDistribution": {
+    "electionYear": 2024,
+    "democraticVoteShare": 0.574330580348876,
+    "republicanVoteShare": 0.42566941965112404
+  },
+  "demographicGroups": [
+    {
+      "group": "White",
+      "vap": 2526275,
+      "vapPercentage": 0.7494914930405157,
+      "isFeasible": true
+    },
+    {
+      "group": "Black",
+      "vap": 60012,
+      "vapPercentage": 0.01780427050908845,
+      "isFeasible": false
+    },
+    {
+      "group": "Hispanic",
+      "vap": 389394,
+      "vapPercentage": 0.11552483021089095,
+      "isFeasible": false
+    },
+    {
+      "group": "Asian",
+      "vap": 156707,
+      "vapPercentage": 0.04649159865806378,
+      "isFeasible": false
+    },
+    {
+      "group": "Other",
+      "vap": 238264,
+      "vapPercentage": 0.07068780758144122,
+      "isFeasible": false
+    }
+  ],
+  "redistrictingControl": {
+    "controllingParty": ""
+  },
+  "congressionalRepresentatives": {
+    "totalSeats": 6,
+    "byParty": [
+      {
+        "party": "Democratic",
+        "seats": 5
+      },
+      {
+        "party": "Republican",
+        "seats": 1
+      }
+    ]
+  }
+}

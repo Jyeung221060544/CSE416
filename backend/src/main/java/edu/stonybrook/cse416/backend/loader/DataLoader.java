@@ -195,7 +195,7 @@ public class DataLoader implements CommandLineRunner {
      */
     private void loadAllStates() throws Exception {
         seedState("AL");
-        // seedState("OR");  // uncomment when OR analytics JSON files are added to frontend/src/dummy/
+        seedState("OR");
     }
 
     private void seedState(String state) throws Exception {

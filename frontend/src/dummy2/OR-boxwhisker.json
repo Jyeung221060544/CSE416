@@ -1,0 +1,318 @@
+{
+  "stateId": "OR",
+  "numDistricts": 6,
+  "totalPlans": 5000,
+  "feasibleGroups": [
+    "hispanic",
+    "white"
+  ],
+  "ensembles": [
+    {
+      "ensembleId": "OR_RACEBLIND",
+      "ensembleType": "race-blind",
+      "groupDistricts": {
+        "hispanic": [
+          {
+            "index": 1,
+            "min": 0.032,
+            "q1": 0.048,
+            "median": 0.056,
+            "mean": 0.054,
+            "q3": 0.065,
+            "max": 0.083
+          },
+          {
+            "index": 2,
+            "min": 0.058,
+            "q1": 0.072,
+            "median": 0.081,
+            "mean": 0.079,
+            "q3": 0.09,
+            "max": 0.113
+          },
+          {
+            "index": 3,
+            "min": 0.076,
+            "q1": 0.091,
+            "median": 0.099,
+            "mean": 0.097,
+            "q3": 0.108,
+            "max": 0.132
+          },
+          {
+            "index": 4,
+            "min": 0.095,
+            "q1": 0.11,
+            "median": 0.118,
+            "mean": 0.117,
+            "q3": 0.128,
+            "max": 0.154
+          },
+          {
+            "index": 5,
+            "min": 0.112,
+            "q1": 0.13,
+            "median": 0.139,
+            "mean": 0.138,
+            "q3": 0.149,
+            "max": 0.177
+          },
+          {
+            "index": 6,
+            "min": 0.137,
+            "q1": 0.162,
+            "median": 0.178,
+            "mean": 0.181,
+            "q3": 0.196,
+            "max": 0.248
+          }
+        ],
+        "white": [
+          {
+            "index": 1,
+            "min": 0.541,
+            "q1": 0.615,
+            "median": 0.638,
+            "mean": 0.634,
+            "q3": 0.658,
+            "max": 0.703
+          },
+          {
+            "index": 2,
+            "min": 0.623,
+            "q1": 0.668,
+            "median": 0.686,
+            "mean": 0.683,
+            "q3": 0.701,
+            "max": 0.742
+          },
+          {
+            "index": 3,
+            "min": 0.68,
+            "q1": 0.714,
+            "median": 0.728,
+            "mean": 0.726,
+            "q3": 0.742,
+            "max": 0.779
+          },
+          {
+            "index": 4,
+            "min": 0.72,
+            "q1": 0.752,
+            "median": 0.764,
+            "mean": 0.763,
+            "q3": 0.778,
+            "max": 0.813
+          },
+          {
+            "index": 5,
+            "min": 0.758,
+            "q1": 0.788,
+            "median": 0.8,
+            "mean": 0.799,
+            "q3": 0.814,
+            "max": 0.845
+          },
+          {
+            "index": 6,
+            "min": 0.797,
+            "q1": 0.826,
+            "median": 0.839,
+            "mean": 0.837,
+            "q3": 0.851,
+            "max": 0.886
+          }
+        ]
+      }
+    },
+    {
+      "ensembleId": "OR_VRA",
+      "ensembleType": "vra-constrained",
+      "groupDistricts": {
+        "hispanic": [
+          {
+            "index": 1,
+            "min": 0.028,
+            "q1": 0.041,
+            "median": 0.048,
+            "mean": 0.047,
+            "q3": 0.057,
+            "max": 0.075
+          },
+          {
+            "index": 2,
+            "min": 0.052,
+            "q1": 0.066,
+            "median": 0.074,
+            "mean": 0.072,
+            "q3": 0.083,
+            "max": 0.107
+          },
+          {
+            "index": 3,
+            "min": 0.07,
+            "q1": 0.084,
+            "median": 0.092,
+            "mean": 0.09,
+            "q3": 0.101,
+            "max": 0.126
+          },
+          {
+            "index": 4,
+            "min": 0.088,
+            "q1": 0.103,
+            "median": 0.112,
+            "mean": 0.11,
+            "q3": 0.123,
+            "max": 0.148
+          },
+          {
+            "index": 5,
+            "min": 0.105,
+            "q1": 0.122,
+            "median": 0.132,
+            "mean": 0.131,
+            "q3": 0.143,
+            "max": 0.17
+          },
+          {
+            "index": 6,
+            "min": 0.18,
+            "q1": 0.199,
+            "median": 0.213,
+            "mean": 0.218,
+            "q3": 0.23,
+            "max": 0.282
+          }
+        ],
+        "white": [
+          {
+            "index": 1,
+            "min": 0.502,
+            "q1": 0.572,
+            "median": 0.599,
+            "mean": 0.595,
+            "q3": 0.621,
+            "max": 0.672
+          },
+          {
+            "index": 2,
+            "min": 0.618,
+            "q1": 0.659,
+            "median": 0.676,
+            "mean": 0.673,
+            "q3": 0.692,
+            "max": 0.735
+          },
+          {
+            "index": 3,
+            "min": 0.679,
+            "q1": 0.71,
+            "median": 0.723,
+            "mean": 0.721,
+            "q3": 0.737,
+            "max": 0.773
+          },
+          {
+            "index": 4,
+            "min": 0.718,
+            "q1": 0.748,
+            "median": 0.761,
+            "mean": 0.759,
+            "q3": 0.774,
+            "max": 0.809
+          },
+          {
+            "index": 5,
+            "min": 0.757,
+            "q1": 0.787,
+            "median": 0.799,
+            "mean": 0.798,
+            "q3": 0.812,
+            "max": 0.844
+          },
+          {
+            "index": 6,
+            "min": 0.798,
+            "q1": 0.831,
+            "median": 0.845,
+            "mean": 0.843,
+            "q3": 0.857,
+            "max": 0.892
+          }
+        ]
+      }
+    }
+  ],
+  "enactedPlan": {
+    "planId": "OR_ENACTED_2024",
+    "planType": "enacted",
+    "groupDistricts": {
+      "hispanic": [
+        {
+          "index": 1,
+          "districtId": "OR-03",
+          "groupVapPercentage": 0.0548
+        },
+        {
+          "index": 2,
+          "districtId": "OR-02",
+          "groupVapPercentage": 0.0743
+        },
+        {
+          "index": 3,
+          "districtId": "OR-04",
+          "groupVapPercentage": 0.0812
+        },
+        {
+          "index": 4,
+          "districtId": "OR-01",
+          "groupVapPercentage": 0.1023
+        },
+        {
+          "index": 5,
+          "districtId": "OR-06",
+          "groupVapPercentage": 0.1432
+        },
+        {
+          "index": 6,
+          "districtId": "OR-05",
+          "groupVapPercentage": 0.1887
+        }
+      ],
+      "white": [
+        {
+          "index": 1,
+          "districtId": "OR-05",
+          "groupVapPercentage": 0.6401
+        },
+        {
+          "index": 2,
+          "districtId": "OR-03",
+          "groupVapPercentage": 0.6712
+        },
+        {
+          "index": 3,
+          "districtId": "OR-06",
+          "groupVapPercentage": 0.7238
+        },
+        {
+          "index": 4,
+          "districtId": "OR-01",
+          "groupVapPercentage": 0.7713
+        },
+        {
+          "index": 5,
+          "districtId": "OR-04",
+          "groupVapPercentage": 0.8092
+        },
+        {
+          "index": 6,
+          "districtId": "OR-02",
+          "groupVapPercentage": 0.8343
+        }
+      ]
+    }
+  },
+  "proposedPlan": null
+}

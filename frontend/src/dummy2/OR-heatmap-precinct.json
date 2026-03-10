@@ -1,0 +1,1238 @@
+{
+  "stateId": "OR",
+  "granularity": "precinct",
+  "bins": [
+    {
+      "binId": 1,
+      "rangeMin": 0,
+      "rangeMax": 20,
+      "color": "#ccfbf1"
+    },
+    {
+      "binId": 2,
+      "rangeMin": 20,
+      "rangeMax": 40,
+      "color": "#5eead4"
+    },
+    {
+      "binId": 3,
+      "rangeMin": 40,
+      "rangeMax": 60,
+      "color": "#14b8a6"
+    },
+    {
+      "binId": 4,
+      "rangeMin": 60,
+      "rangeMax": 80,
+      "color": "#0f766e"
+    },
+    {
+      "binId": 5,
+      "rangeMin": 80,
+      "rangeMax": 100,
+      "color": "#134e4a"
+    }
+  ],
+  "features": [
+    {
+      "idx": 0,
+      "hispanic": 1,
+      "white": 2,
+      "black": 1,
+      "asian": 1,
+      "other": 4
+    },
+    {
+      "idx": 1,
+      "hispanic": 1,
+      "white": 4,
+      "black": 1,
+      "asian": 2,
+      "other": 1
+    },
+    {
+      "idx": 2,
+      "hispanic": 1,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 3,
+      "hispanic": 1,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 4,
+      "hispanic": 3,
+      "white": 2,
+      "black": 1,
+      "asian": 2,
+      "other": 1
+    },
+    {
+      "idx": 5,
+      "hispanic": 3,
+      "white": 4,
+      "black": 1,
+      "asian": 2,
+      "other": 3
+    },
+    {
+      "idx": 6,
+      "hispanic": 1,
+      "white": 5,
+      "black": 1,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 7,
+      "hispanic": 3,
+      "white": 4,
+      "black": 1,
+      "asian": 2,
+      "other": 2
+    },
+    {
+      "idx": 8,
+      "hispanic": 2,
+      "white": 4,
+      "black": 1,
+      "asian": 2,
+      "other": 2
+    },
+    {
+      "idx": 9,
+      "hispanic": 2,
+      "white": 4,
+      "black": 1,
+      "asian": 2,
+      "other": 1
+    },
+    {
+      "idx": 10,
+      "hispanic": 3,
+      "white": 5,
+      "black": 1,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 11,
+      "hispanic": 1,
+      "white": 2,
+      "black": 1,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 12,
+      "hispanic": 1,
+      "white": 2,
+      "black": 1,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 13,
+      "hispanic": 1,
+      "white": 4,
+      "black": 1,
+      "asian": 2,
+      "other": 2
+    },
+    {
+      "idx": 14,
+      "hispanic": 5,
+      "white": 5,
+      "black": 1,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 15,
+      "hispanic": 1,
+      "white": 5,
+      "black": 1,
+      "asian": 2,
+      "other": 1
+    },
+    {
+      "idx": 16,
+      "hispanic": 1,
+      "white": 3,
+      "black": 1,
+      "asian": 1,
+      "other": 1
+    },
+    {
+      "idx": 17,
+      "hispanic": 1,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 18,
+      "hispanic": 1,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 1
+    },
+    {
+      "idx": 19,
+      "hispanic": 2,
+      "white": 4,
+      "black": 3,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 20,
+      "hispanic": 2,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 4
+    },
+    {
+      "idx": 21,
+      "hispanic": 3,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 22,
+      "hispanic": 1,
+      "white": 2,
+      "black": 2,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 23,
+      "hispanic": 2,
+      "white": 3,
+      "black": 1,
+      "asian": 2,
+      "other": 3
+    },
+    {
+      "idx": 24,
+      "hispanic": 1,
+      "white": 3,
+      "black": 3,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 25,
+      "hispanic": 3,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 3
+    },
+    {
+      "idx": 26,
+      "hispanic": 1,
+      "white": 5,
+      "black": 1,
+      "asian": 3,
+      "other": 3
+    },
+    {
+      "idx": 27,
+      "hispanic": 1,
+      "white": 5,
+      "black": 1,
+      "asian": 1,
+      "other": 3
+    },
+    {
+      "idx": 28,
+      "hispanic": 2,
+      "white": 3,
+      "black": 1,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 29,
+      "hispanic": 3,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 1
+    },
+    {
+      "idx": 30,
+      "hispanic": 1,
+      "white": 4,
+      "black": 2,
+      "asian": 1,
+      "other": 1
+    },
+    {
+      "idx": 31,
+      "hispanic": 1,
+      "white": 5,
+      "black": 2,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 32,
+      "hispanic": 1,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 4
+    },
+    {
+      "idx": 33,
+      "hispanic": 3,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 3
+    },
+    {
+      "idx": 34,
+      "hispanic": 2,
+      "white": 3,
+      "black": 2,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 35,
+      "hispanic": 1,
+      "white": 3,
+      "black": 1,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 36,
+      "hispanic": 3,
+      "white": 5,
+      "black": 1,
+      "asian": 1,
+      "other": 3
+    },
+    {
+      "idx": 37,
+      "hispanic": 1,
+      "white": 2,
+      "black": 2,
+      "asian": 1,
+      "other": 3
+    },
+    {
+      "idx": 38,
+      "hispanic": 1,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 3
+    },
+    {
+      "idx": 39,
+      "hispanic": 3,
+      "white": 3,
+      "black": 3,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 40,
+      "hispanic": 2,
+      "white": 5,
+      "black": 1,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 41,
+      "hispanic": 3,
+      "white": 3,
+      "black": 1,
+      "asian": 2,
+      "other": 2
+    },
+    {
+      "idx": 42,
+      "hispanic": 4,
+      "white": 2,
+      "black": 1,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 43,
+      "hispanic": 4,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 44,
+      "hispanic": 2,
+      "white": 3,
+      "black": 1,
+      "asian": 1,
+      "other": 4
+    },
+    {
+      "idx": 45,
+      "hispanic": 1,
+      "white": 5,
+      "black": 1,
+      "asian": 1,
+      "other": 3
+    },
+    {
+      "idx": 46,
+      "hispanic": 2,
+      "white": 4,
+      "black": 1,
+      "asian": 4,
+      "other": 1
+    },
+    {
+      "idx": 47,
+      "hispanic": 3,
+      "white": 5,
+      "black": 1,
+      "asian": 2,
+      "other": 2
+    },
+    {
+      "idx": 48,
+      "hispanic": 3,
+      "white": 5,
+      "black": 1,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 49,
+      "hispanic": 4,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 1
+    },
+    {
+      "idx": 50,
+      "hispanic": 1,
+      "white": 3,
+      "black": 1,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 51,
+      "hispanic": 2,
+      "white": 3,
+      "black": 1,
+      "asian": 1,
+      "other": 3
+    },
+    {
+      "idx": 52,
+      "hispanic": 3,
+      "white": 5,
+      "black": 1,
+      "asian": 2,
+      "other": 2
+    },
+    {
+      "idx": 53,
+      "hispanic": 1,
+      "white": 2,
+      "black": 1,
+      "asian": 1,
+      "other": 1
+    },
+    {
+      "idx": 54,
+      "hispanic": 1,
+      "white": 5,
+      "black": 1,
+      "asian": 3,
+      "other": 2
+    },
+    {
+      "idx": 55,
+      "hispanic": 3,
+      "white": 2,
+      "black": 1,
+      "asian": 2,
+      "other": 2
+    },
+    {
+      "idx": 56,
+      "hispanic": 1,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 1
+    },
+    {
+      "idx": 57,
+      "hispanic": 1,
+      "white": 5,
+      "black": 1,
+      "asian": 2,
+      "other": 1
+    },
+    {
+      "idx": 58,
+      "hispanic": 2,
+      "white": 4,
+      "black": 1,
+      "asian": 3,
+      "other": 3
+    },
+    {
+      "idx": 59,
+      "hispanic": 3,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 1
+    },
+    {
+      "idx": 60,
+      "hispanic": 2,
+      "white": 5,
+      "black": 1,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 61,
+      "hispanic": 1,
+      "white": 3,
+      "black": 1,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 62,
+      "hispanic": 2,
+      "white": 4,
+      "black": 3,
+      "asian": 1,
+      "other": 1
+    },
+    {
+      "idx": 63,
+      "hispanic": 1,
+      "white": 5,
+      "black": 2,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 64,
+      "hispanic": 3,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 1
+    },
+    {
+      "idx": 65,
+      "hispanic": 1,
+      "white": 5,
+      "black": 1,
+      "asian": 2,
+      "other": 3
+    },
+    {
+      "idx": 66,
+      "hispanic": 2,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 4
+    },
+    {
+      "idx": 67,
+      "hispanic": 1,
+      "white": 3,
+      "black": 1,
+      "asian": 2,
+      "other": 1
+    },
+    {
+      "idx": 68,
+      "hispanic": 3,
+      "white": 2,
+      "black": 1,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 69,
+      "hispanic": 4,
+      "white": 5,
+      "black": 1,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 70,
+      "hispanic": 1,
+      "white": 5,
+      "black": 1,
+      "asian": 3,
+      "other": 3
+    },
+    {
+      "idx": 71,
+      "hispanic": 3,
+      "white": 3,
+      "black": 1,
+      "asian": 1,
+      "other": 1
+    },
+    {
+      "idx": 72,
+      "hispanic": 1,
+      "white": 4,
+      "black": 1,
+      "asian": 2,
+      "other": 3
+    },
+    {
+      "idx": 73,
+      "hispanic": 1,
+      "white": 2,
+      "black": 2,
+      "asian": 1,
+      "other": 1
+    },
+    {
+      "idx": 74,
+      "hispanic": 3,
+      "white": 5,
+      "black": 1,
+      "asian": 2,
+      "other": 3
+    },
+    {
+      "idx": 75,
+      "hispanic": 3,
+      "white": 3,
+      "black": 1,
+      "asian": 3,
+      "other": 2
+    },
+    {
+      "idx": 76,
+      "hispanic": 2,
+      "white": 5,
+      "black": 2,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 77,
+      "hispanic": 2,
+      "white": 1,
+      "black": 1,
+      "asian": 2,
+      "other": 2
+    },
+    {
+      "idx": 78,
+      "hispanic": 1,
+      "white": 5,
+      "black": 1,
+      "asian": 1,
+      "other": 1
+    },
+    {
+      "idx": 79,
+      "hispanic": 2,
+      "white": 5,
+      "black": 1,
+      "asian": 1,
+      "other": 1
+    },
+    {
+      "idx": 80,
+      "hispanic": 1,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 4
+    },
+    {
+      "idx": 81,
+      "hispanic": 4,
+      "white": 3,
+      "black": 1,
+      "asian": 2,
+      "other": 3
+    },
+    {
+      "idx": 82,
+      "hispanic": 3,
+      "white": 5,
+      "black": 1,
+      "asian": 1,
+      "other": 1
+    },
+    {
+      "idx": 83,
+      "hispanic": 5,
+      "white": 4,
+      "black": 1,
+      "asian": 2,
+      "other": 1
+    },
+    {
+      "idx": 84,
+      "hispanic": 1,
+      "white": 3,
+      "black": 1,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 85,
+      "hispanic": 2,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 5
+    },
+    {
+      "idx": 86,
+      "hispanic": 1,
+      "white": 5,
+      "black": 1,
+      "asian": 2,
+      "other": 3
+    },
+    {
+      "idx": 87,
+      "hispanic": 1,
+      "white": 3,
+      "black": 1,
+      "asian": 1,
+      "other": 1
+    },
+    {
+      "idx": 88,
+      "hispanic": 2,
+      "white": 5,
+      "black": 2,
+      "asian": 2,
+      "other": 2
+    },
+    {
+      "idx": 89,
+      "hispanic": 2,
+      "white": 5,
+      "black": 1,
+      "asian": 1,
+      "other": 1
+    },
+    {
+      "idx": 90,
+      "hispanic": 3,
+      "white": 5,
+      "black": 1,
+      "asian": 2,
+      "other": 1
+    },
+    {
+      "idx": 91,
+      "hispanic": 1,
+      "white": 3,
+      "black": 2,
+      "asian": 2,
+      "other": 1
+    },
+    {
+      "idx": 92,
+      "hispanic": 1,
+      "white": 5,
+      "black": 1,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 93,
+      "hispanic": 2,
+      "white": 3,
+      "black": 1,
+      "asian": 1,
+      "other": 3
+    },
+    {
+      "idx": 94,
+      "hispanic": 1,
+      "white": 1,
+      "black": 1,
+      "asian": 1,
+      "other": 4
+    },
+    {
+      "idx": 95,
+      "hispanic": 1,
+      "white": 4,
+      "black": 1,
+      "asian": 2,
+      "other": 3
+    },
+    {
+      "idx": 96,
+      "hispanic": 1,
+      "white": 5,
+      "black": 1,
+      "asian": 2,
+      "other": 1
+    },
+    {
+      "idx": 97,
+      "hispanic": 2,
+      "white": 3,
+      "black": 1,
+      "asian": 2,
+      "other": 2
+    },
+    {
+      "idx": 98,
+      "hispanic": 2,
+      "white": 4,
+      "black": 2,
+      "asian": 2,
+      "other": 1
+    },
+    {
+      "idx": 99,
+      "hispanic": 1,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 3
+    },
+    {
+      "idx": 100,
+      "hispanic": 1,
+      "white": 4,
+      "black": 1,
+      "asian": 2,
+      "other": 3
+    },
+    {
+      "idx": 101,
+      "hispanic": 3,
+      "white": 5,
+      "black": 1,
+      "asian": 1,
+      "other": 1
+    },
+    {
+      "idx": 102,
+      "hispanic": 2,
+      "white": 5,
+      "black": 1,
+      "asian": 1,
+      "other": 1
+    },
+    {
+      "idx": 103,
+      "hispanic": 1,
+      "white": 5,
+      "black": 1,
+      "asian": 2,
+      "other": 2
+    },
+    {
+      "idx": 104,
+      "hispanic": 1,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 1
+    },
+    {
+      "idx": 105,
+      "hispanic": 2,
+      "white": 5,
+      "black": 1,
+      "asian": 4,
+      "other": 4
+    },
+    {
+      "idx": 106,
+      "hispanic": 3,
+      "white": 4,
+      "black": 1,
+      "asian": 2,
+      "other": 4
+    },
+    {
+      "idx": 107,
+      "hispanic": 2,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 3
+    },
+    {
+      "idx": 108,
+      "hispanic": 2,
+      "white": 4,
+      "black": 2,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 109,
+      "hispanic": 1,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 3
+    },
+    {
+      "idx": 110,
+      "hispanic": 1,
+      "white": 3,
+      "black": 1,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 111,
+      "hispanic": 1,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 3
+    },
+    {
+      "idx": 112,
+      "hispanic": 1,
+      "white": 4,
+      "black": 3,
+      "asian": 1,
+      "other": 3
+    },
+    {
+      "idx": 113,
+      "hispanic": 2,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 114,
+      "hispanic": 2,
+      "white": 4,
+      "black": 2,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 115,
+      "hispanic": 3,
+      "white": 5,
+      "black": 3,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 116,
+      "hispanic": 1,
+      "white": 5,
+      "black": 2,
+      "asian": 1,
+      "other": 3
+    },
+    {
+      "idx": 117,
+      "hispanic": 1,
+      "white": 5,
+      "black": 1,
+      "asian": 2,
+      "other": 1
+    },
+    {
+      "idx": 118,
+      "hispanic": 2,
+      "white": 5,
+      "black": 1,
+      "asian": 1,
+      "other": 1
+    },
+    {
+      "idx": 119,
+      "hispanic": 4,
+      "white": 3,
+      "black": 3,
+      "asian": 1,
+      "other": 1
+    },
+    {
+      "idx": 120,
+      "hispanic": 1,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 1
+    },
+    {
+      "idx": 121,
+      "hispanic": 1,
+      "white": 5,
+      "black": 1,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 122,
+      "hispanic": 3,
+      "white": 5,
+      "black": 3,
+      "asian": 1,
+      "other": 1
+    },
+    {
+      "idx": 123,
+      "hispanic": 1,
+      "white": 5,
+      "black": 1,
+      "asian": 2,
+      "other": 5
+    },
+    {
+      "idx": 124,
+      "hispanic": 2,
+      "white": 5,
+      "black": 1,
+      "asian": 2,
+      "other": 3
+    },
+    {
+      "idx": 125,
+      "hispanic": 2,
+      "white": 5,
+      "black": 1,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 126,
+      "hispanic": 3,
+      "white": 5,
+      "black": 1,
+      "asian": 2,
+      "other": 2
+    },
+    {
+      "idx": 127,
+      "hispanic": 2,
+      "white": 3,
+      "black": 2,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 128,
+      "hispanic": 1,
+      "white": 3,
+      "black": 1,
+      "asian": 1,
+      "other": 5
+    },
+    {
+      "idx": 129,
+      "hispanic": 1,
+      "white": 4,
+      "black": 1,
+      "asian": 2,
+      "other": 1
+    },
+    {
+      "idx": 130,
+      "hispanic": 1,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 131,
+      "hispanic": 1,
+      "white": 4,
+      "black": 2,
+      "asian": 1,
+      "other": 1
+    },
+    {
+      "idx": 132,
+      "hispanic": 2,
+      "white": 4,
+      "black": 1,
+      "asian": 2,
+      "other": 2
+    },
+    {
+      "idx": 133,
+      "hispanic": 2,
+      "white": 5,
+      "black": 2,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 134,
+      "hispanic": 1,
+      "white": 2,
+      "black": 2,
+      "asian": 3,
+      "other": 2
+    },
+    {
+      "idx": 135,
+      "hispanic": 3,
+      "white": 5,
+      "black": 1,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 136,
+      "hispanic": 1,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 1
+    },
+    {
+      "idx": 137,
+      "hispanic": 1,
+      "white": 5,
+      "black": 1,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 138,
+      "hispanic": 2,
+      "white": 5,
+      "black": 1,
+      "asian": 2,
+      "other": 1
+    },
+    {
+      "idx": 139,
+      "hispanic": 1,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 3
+    },
+    {
+      "idx": 140,
+      "hispanic": 1,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 141,
+      "hispanic": 3,
+      "white": 4,
+      "black": 2,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 142,
+      "hispanic": 2,
+      "white": 2,
+      "black": 2,
+      "asian": 2,
+      "other": 2
+    },
+    {
+      "idx": 143,
+      "hispanic": 2,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 3
+    },
+    {
+      "idx": 144,
+      "hispanic": 3,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 3
+    },
+    {
+      "idx": 145,
+      "hispanic": 1,
+      "white": 4,
+      "black": 2,
+      "asian": 1,
+      "other": 3
+    },
+    {
+      "idx": 146,
+      "hispanic": 1,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 2
+    },
+    {
+      "idx": 147,
+      "hispanic": 1,
+      "white": 3,
+      "black": 1,
+      "asian": 1,
+      "other": 4
+    },
+    {
+      "idx": 148,
+      "hispanic": 3,
+      "white": 4,
+      "black": 1,
+      "asian": 1,
+      "other": 1
+    },
+    {
+      "idx": 149,
+      "hispanic": 3,
+      "white": 3,
+      "black": 1,
+      "asian": 1,
+      "other": 3
+    }
+  ]
+}

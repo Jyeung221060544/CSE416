@@ -12,7 +12,7 @@
     {
       "stateId": "OR",
       "stateName": "Oregon",
-      "hasData": false,
+      "hasData": true,
       "numDistricts": 6,
       "isPreclearance": false,
       "center": { "lat": 44.572021, "lng": -122.070938 },

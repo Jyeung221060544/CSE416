@@ -1,0 +1,97 @@
+{
+  "stateId": "OR",
+  "electionYear": 2024,
+  "raciallyPolarized": true,
+  "totalDistricts": 6,
+  "partisanBias": 0.052,
+  "notes": "At 50% Democratic vote share, Democrats win ~0.552 of seats (partisan bias \u2248 +0.052).",
+  "curves": [
+    {
+      "party": "Democratic",
+      "points": [
+        {
+          "voteShare": 0.3581,
+          "seatShare": 0.0833
+        },
+        {
+          "voteShare": 0.3831,
+          "seatShare": 0.0833
+        },
+        {
+          "voteShare": 0.4081,
+          "seatShare": 0.1667
+        },
+        {
+          "voteShare": 0.4331,
+          "seatShare": 0.1667
+        },
+        {
+          "voteShare": 0.4581,
+          "seatShare": 0.25
+        },
+        {
+          "voteShare": 0.4831,
+          "seatShare": 0.5
+        },
+        {
+          "voteShare": 0.5081,
+          "seatShare": 0.5
+        },
+        {
+          "voteShare": 0.5331,
+          "seatShare": 0.6667
+        },
+        {
+          "voteShare": 0.5581,
+          "seatShare": 0.8333
+        }
+      ]
+    },
+    {
+      "party": "Republican",
+      "points": [
+        {
+          "voteShare": 0.6419,
+          "seatShare": 0.9167
+        },
+        {
+          "voteShare": 0.6169,
+          "seatShare": 0.9167
+        },
+        {
+          "voteShare": 0.5919,
+          "seatShare": 0.8333
+        },
+        {
+          "voteShare": 0.5669,
+          "seatShare": 0.8333
+        },
+        {
+          "voteShare": 0.5419,
+          "seatShare": 0.75
+        },
+        {
+          "voteShare": 0.5169,
+          "seatShare": 0.5
+        },
+        {
+          "voteShare": 0.4919,
+          "seatShare": 0.5
+        },
+        {
+          "voteShare": 0.4669,
+          "seatShare": 0.3333
+        },
+        {
+          "voteShare": 0.4419,
+          "seatShare": 0.1667
+        }
+      ]
+    }
+  ],
+  "enactedPlan": {
+    "democraticVoteShare": 0.5831,
+    "democraticSeatShare": 0.8333,
+    "label": "Enacted 2024"
+  }
+}

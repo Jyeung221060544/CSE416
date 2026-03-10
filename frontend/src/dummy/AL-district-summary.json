@@ -9,7 +9,7 @@
       "representative": "Barry Moore",
       "party": "Republican",
       "racialGroup": "White",
-      "voteMarginPercentage": 0.568,
+      "voteMarginPercentage": 0.5538616930603876,
       "voteMarginDirection": "R"
     },
     {
@@ -18,7 +18,7 @@
       "representative": "Shomari Figures",
       "party": "Democratic",
       "racialGroup": "Black",
-      "voteMarginPercentage": 0.090,
+      "voteMarginPercentage": 0.07817136820743768,
       "voteMarginDirection": "D"
     },
     {
@@ -27,7 +27,7 @@
       "representative": "Mike Rogers",
       "party": "Republican",
       "racialGroup": "White",
-      "voteMarginPercentage": 1.0,
+      "voteMarginPercentage": 0.4705243522256861,
       "voteMarginDirection": "R"
     },
     {
@@ -36,7 +36,7 @@
       "representative": "Robert Aderholt",
       "party": "Republican",
       "racialGroup": "White",
-      "voteMarginPercentage": 1.0,
+      "voteMarginPercentage": 0.6657865807251783,
       "voteMarginDirection": "R"
     },
     {
@@ -45,7 +45,7 @@
       "representative": "Dale Strong",
       "party": "Republican",
       "racialGroup": "White",
-      "voteMarginPercentage": 1.0,
+      "voteMarginPercentage": 0.29542923413843813,
       "voteMarginDirection": "R"
     },
     {
@@ -54,7 +54,7 @@
       "representative": "Gary Palmer",
       "party": "Republican",
       "racialGroup": "White",
-      "voteMarginPercentage": 0.408,
+      "voteMarginPercentage": 0.3965780682643428,
       "voteMarginDirection": "R"
     },
     {
@@ -63,7 +63,7 @@
       "representative": "Terri Sewell",
       "party": "Democratic",
       "racialGroup": "Black",
-      "voteMarginPercentage": 0.274,
+      "voteMarginPercentage": 0.23913504491007723,
       "voteMarginDirection": "D"
     }
   ]

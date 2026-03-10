@@ -2,34 +2,61 @@
   "stateId": "AL",
   "stateName": "Alabama",
   "totalPopulation": 5024279,
-  "votingAgePopulation": 3826000,
+  "votingAgePopulation": 3917166,
   "numDistricts": 7,
-  "idealDistrictPopulation": 717754,
+  "idealDistrictPopulation": 559595,
   "isPreclearance": true,
-
   "voterDistribution": {
     "electionYear": 2024,
-    "democraticVoteShare": 0.365,
-    "republicanVoteShare": 0.635
+    "democraticVoteShare": 0.34572973960205505,
+    "republicanVoteShare": 0.654270260397945
   },
-
   "demographicGroups": [
-    { "group": "White", "vap": 2460518, "vapPercentage": 0.643, "isFeasible": true },
-    { "group": "Black", "vap": 1010064, "vapPercentage": 0.264, "isFeasible": true },
-    { "group": "Hispanic", "vap": 172170, "vapPercentage": 0.045, "isFeasible": false },
-    { "group": "Asian", "vap": 57390, "vapPercentage": 0.015, "isFeasible": false },
-    { "group": "Other", "vap": 126258, "vapPercentage": 0.033, "isFeasible": false }
+    {
+      "group": "White",
+      "vap": 2564544,
+      "vapPercentage": 0.6546937250042505,
+      "isFeasible": true
+    },
+    {
+      "group": "Black",
+      "vap": 976732,
+      "vapPercentage": 0.2493465939406193,
+      "isFeasible": true
+    },
+    {
+      "group": "Hispanic",
+      "vap": 166856,
+      "vapPercentage": 0.04259610136511958,
+      "isFeasible": false
+    },
+    {
+      "group": "Asian",
+      "vap": 59997,
+      "vapPercentage": 0.01531643029680131,
+      "isFeasible": false
+    },
+    {
+      "group": "Other",
+      "vap": 149037,
+      "vapPercentage": 0.03804714939320927,
+      "isFeasible": false
+    }
   ],
-
   "redistrictingControl": {
     "controllingParty": "Republican"
   },
-
   "congressionalRepresentatives": {
     "totalSeats": 7,
     "byParty": [
-      { "party": "Democratic", "seats": 2 },
-      { "party": "Republican", "seats": 5 }
+      {
+        "party": "Democratic",
+        "seats": 2
+      },
+      {
+        "party": "Republican",
+        "seats": 5
+      }
     ]
   }
 }
