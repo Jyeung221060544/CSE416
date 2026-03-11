@@ -302,6 +302,13 @@ export default function DemographicHeatmap({ stateId, granularity, heatmapData, 
         })
     }, [heatmapData]) // eslint-disable-line react-hooks/exhaustive-deps
 
+    /* ── Step 6b-iii: Keep district overlay on top ────────────────────────────────
+     * The precinct GeoJSON loads async and gets stacked above the district overlay
+     * when it arrives. We use Leaflet's `add` event (fires when the layer actually
+     * joins the map) to call bringToFront() at the right moment — not in a React
+     * effect, which fires before the layer is in the Leaflet DOM. ──────────────── */
+    const districtOverlayRef = useRef(null)
+
     /* ── Step 6c: Map re-key token (forces layer remount on param change) ── */
     const mapKey = `${stateId}-${granularity}-${raceFilter}`
 
@@ -344,6 +351,7 @@ export default function DemographicHeatmap({ stateId, granularity, heatmapData, 
                         key={`heat-${mapKey}`}
                         ref={heatmapLayerRef}
                         data={precinctData}
+                        eventHandlers={{ add: () => districtOverlayRef.current?.bringToFront() }}
                         style={feature => {
                             const idx = feature?.properties?.idx ?? counter++
                             return {
@@ -370,6 +378,7 @@ export default function DemographicHeatmap({ stateId, granularity, heatmapData, 
                 {showDistrictOverlay && outlineData && (
                     <GeoJSON
                         key={`district-overlay-${stateId}-${showDistrictOverlay}`}
+                        ref={districtOverlayRef}
                         data={outlineData}
                         style={feature => {
                             const districtNum = parseInt(feature?.properties?.CD119FP ?? '0', 10)

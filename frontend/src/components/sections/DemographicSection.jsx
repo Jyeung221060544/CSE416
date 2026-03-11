@@ -50,8 +50,8 @@ export default function DemographicSection({ data, stateId }) {
     const activeSection       = useAppStore(s => s.activeSection)
 
     /* ── Fetch heatmap lazily — only once the Demographic section is active ─
-     * hasActivated gates the very first fetch; after that filter changes
-     * (raceFilter, granularityFilter) re-fetch normally regardless of scroll. */
+     * hasActivated gates the very first fetch via the activation effect below.
+     * After first activation, filter/state changes re-fetch via the second effect. */
     const [heatmapData, setHeatmapData] = useState(null)
     const hasActivated = useRef(false)
 
@@ -60,15 +60,27 @@ export default function DemographicSection({ data, stateId }) {
         setHeatmapData(null)
     }, [stateId])
 
+    // First-activation fetch: fires when user scrolls to demographic section.
     useEffect(() => {
+        if (activeSection !== 'demographic') return
+        if (hasActivated.current) return
         if (!stateId || !raceFilter) return
-        if (activeSection !== 'demographic' && !hasActivated.current) return
         hasActivated.current = true
         setHeatmapData(null)
         fetchHeatmap(stateId, granularityFilter, raceFilter)
             .then(setHeatmapData)
             .catch(err => console.error('[Demographic] fetchHeatmap error:', err))
-    }, [stateId, granularityFilter, raceFilter, activeSection])
+    }, [activeSection, stateId, granularityFilter, raceFilter]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    // Re-fetch when filters change after initial activation.
+    useEffect(() => {
+        if (!stateId || !raceFilter) return
+        if (!hasActivated.current) return
+        setHeatmapData(null)
+        fetchHeatmap(stateId, granularityFilter, raceFilter)
+            .then(setHeatmapData)
+            .catch(err => console.error('[Demographic] fetchHeatmap error:', err))
+    }, [stateId, granularityFilter, raceFilter]) // eslint-disable-line react-hooks/exhaustive-deps
 
     /* ── Derived data from overview ──────────────────────────────────────── */
     const s               = data?.stateSummary

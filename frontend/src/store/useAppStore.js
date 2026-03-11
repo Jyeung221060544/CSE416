@@ -210,16 +210,16 @@ const useAppStore = create((set) => ({
     resetFilters: () => set((state) => {
         const groups = state.demographicGroups
 
-        // Primary race: black (if feasible) > hispanic > first group
+        // Primary race: black (if feasible) > hispanic/latino > first group
         const primary =
             groups.find(g => g.group.toLowerCase() === 'black' && g.isFeasible)?.group.toLowerCase() ??
-            groups.find(g => g.group.toLowerCase() === 'hispanic')?.group.toLowerCase() ??
+            groups.find(g => ['hispanic', 'latino'].includes(g.group.toLowerCase()))?.group.toLowerCase() ??
             groups[0]?.group.toLowerCase() ?? null
 
-        // Feasible race: black > hispanic > any feasible
+        // Feasible race: black > hispanic/latino > any feasible
         const preferredFeasible =
             groups.find(g => g.group.toLowerCase() === 'black'    && g.isFeasible)?.group.toLowerCase() ??
-            groups.find(g => g.group.toLowerCase() === 'hispanic' && g.isFeasible)?.group.toLowerCase() ??
+            groups.find(g => ['hispanic', 'latino'].includes(g.group.toLowerCase()) && g.isFeasible)?.group.toLowerCase() ??
             groups.find(g => g.isFeasible)?.group.toLowerCase() ?? null
 
         // Compare pair second race: white if primary is not white, else next available group
