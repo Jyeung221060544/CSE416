@@ -27,6 +27,7 @@
  *                                            the SectionPanel SO sub-nav highlight.
  */
 
+import { useEffect, useRef, useState } from 'react'
 import { MapPin, ArrowLeft, MousePointerClick } from 'lucide-react'
 import { Badge }               from '@/components/ui/badge'
 import { Button }              from '@/components/ui/button'
@@ -41,6 +42,7 @@ import DistrictMap2024            from '@/components/maps/DistrictMap2024'
 import CongressionalTable         from '@/components/tables/CongressionalTable'
 import EnsembleSummaryTable       from '@/components/tables/EnsembleSummaryTable'
 import DemographicPopulationTable from '@/components/tables/DemographicPopulationTable'
+import { fetchOverviewEnsembleDemo } from '../../api'
 
 
 /* ── Tab definitions ─────────────────────────────────────────────────────────
@@ -207,10 +209,27 @@ export default function StateOverviewSection({ data, stateId }) {
     const setActiveTab = useAppStore(s => s.setActiveSOTab)
 
 
+    /* ── Lazy fetch: ensembleSummary — on first entry to ensemble-demo tab ── */
+    const [ensembleData, setEnsembleData] = useState(null)
+    const hasEnsembleFetched = useRef(false)
+
+    useEffect(() => {
+        setEnsembleData(null)
+        hasEnsembleFetched.current = false
+    }, [stateId])
+
+    useEffect(() => {
+        if (!stateId || activeTab !== 'ensemble-demo') return
+        if (hasEnsembleFetched.current) return
+        hasEnsembleFetched.current = true
+        fetchOverviewEnsembleDemo(stateId)
+            .then(bundle => setEnsembleData(bundle?.ensembleSummary ?? null))
+            .catch(err => console.error('[StateOverview] fetchOverviewEnsembleDemo error:', err))
+    }, [stateId, activeTab])
+
     /* ── Derived data ────────────────────────────────────────────────────── */
     const stateData         = data?.stateSummary
     const districtData      = data?.districtSummary
-    const ensembleData      = data?.ensembleSummary
     const demographicGroups = stateData?.demographicGroups ?? []
 
     /* Congressional seat breakdown */

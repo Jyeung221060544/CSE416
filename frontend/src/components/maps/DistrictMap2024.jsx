@@ -67,20 +67,14 @@
  */
 
 /* ── Step 0: React + map library imports ──────────────────────────────── */
-import { useRef, useEffect, useCallback } from 'react'
+import { useRef, useEffect, useCallback, useState } from 'react'
 import { MapContainer, GeoJSON, TileLayer, useMap } from 'react-leaflet'
 import L from 'leaflet'
 import useAppStore from '../../store/useAppStore'
+import { fetchDistricts } from '../../api'
 
-/* ── Step 1: Static GeoJSON assets (replace with API fetch) ───────────── */
-//CONNECT HERE: DISTRICT_GEOJSON — delete these asset imports and the static lookup below,
-// then fetch from GET /api/states/:stateId/districts/geojson in a useEffect
-import ALDistricts from '../../assets/ALCongressionalDistricts.json'
-import ORDistricts from '../../assets/ORCongressionalDistrict.json'
-
-/* ── Step 2: Static lookup — replace with useState populated by fetch ─── */
-//CONNECT HERE: DISTRICT_GEOJSON — replace with useState(null) populated by the fetch above
-const DISTRICT_GEOJSON = { AL: ALDistricts, OR: ORDistricts }
+/* ── Step 1: Module-level cache — avoids re-fetching on re-renders ─────── */
+const districtGeoCache = {} // keyed by stateId
 
 /* ── Step 3: District style resolver ─────────────────────────────────── */
 /**
@@ -181,21 +175,19 @@ export default function DistrictMap2022({ stateId, districtSummary }) {
     const geoJsonRef           = useRef(null)
     const selectedDistrict     = useAppStore(s => s.selectedDistrict)
     const setSelectedDistrict  = useAppStore(s => s.setSelectedDistrict)
-    const hoveredLayerRef = useRef(null)
+    const hoveredLayerRef      = useRef(null)
 
-    /* ── Step 6b: Resolve GeoJSON for the current state ── */
-    const geoData = DISTRICT_GEOJSON[stateId]
-
-    if (!geoData) {
-        return (
-            <div className="h-full flex items-center justify-center text-brand-muted/50 text-sm italic">
-                No district map available for this state.
-            </div>
-        )
-    }
+    /* ── Step 6b: Fetch district GeoJSON from backend (cached) ── */
+    const [geoData, setGeoData] = useState(districtGeoCache[stateId] ?? null)
+    useEffect(() => {
+        if (districtGeoCache[stateId]) { setGeoData(districtGeoCache[stateId]); return }
+        setGeoData(null)
+        fetchDistricts(stateId)
+            .then(data => { districtGeoCache[stateId] = data; setGeoData(data) })
+            .catch(err => console.error('[DistrictMap] fetchDistricts error:', err))
+    }, [stateId])
 
     /* ── Step 6c: Build district number → summary lookup ── */
-    // Build lookup: districtNumber (int) → district summary row
     const districtByNumber = Object.fromEntries(
         (districtSummary?.districts ?? []).map(d => [d.districtNumber, d])
     )
@@ -263,6 +255,14 @@ export default function DistrictMap2022({ stateId, districtSummary }) {
     }, [selectedDistrict])
 
     /* ── Step 6f: Render ── */
+    if (!geoData) {
+        return (
+            <div className="h-full flex items-center justify-center text-brand-muted/50 text-sm italic">
+                Loading district map…
+            </div>
+        )
+    }
+
     return (
         <MapContainer
             center={[39.5, -98.35]}

@@ -82,7 +82,7 @@ export default function FeasibleRaceFilter() {
 
             {/* Feasibility threshold reminder */}
             <p className="text-[10px] text-white/70 px-1 pt-1 leading-snug">
-                Groups with ≥ 400k VAP
+                Gingles-eligible groups only
             </p>
         </CollapsibleGroup>
     )

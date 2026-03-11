@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  * <p>Endpoints:
  * <ul>
  *   <li>{@code GET /api/geo/us-states}            — 48 contiguous US state outlines</li>
- *   <li>{@code GET /api/states/{stateId}/districts} — congressional district boundaries</li>
+ *   <li>{@code GET /api/states/{stateId}/geo/districts} — congressional district boundaries</li>
  * </ul>
  *
  * <p>Both payloads are static (pre-computed) and cached aggressively.
@@ -57,7 +57,7 @@ public class GeoController {
      * @param stateId two-letter state abbreviation (e.g. "AL")
      * @return 200 with GeoJSON; 404 if state not seeded
      */
-    @GetMapping("/api/states/{stateId}/districts")
+    @GetMapping("/api/states/{stateId}/geo/districts")
     public ResponseEntity<Map<String, Object>> getDistricts(@PathVariable String stateId) {
         Map<String, Object> geo = geoService.getDistricts(stateId.toUpperCase());
         if (geo == null) return ResponseEntity.notFound().build();

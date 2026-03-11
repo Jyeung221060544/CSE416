@@ -6,7 +6,7 @@
  * Server returns one race at a time: { bins, features:[{idx, binId}] }
  */
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import SectionHeader from '@/components/ui/section-header'
 import SurfacePanel  from '@/components/ui/surface-panel'
 import MapFrame      from '@/components/ui/map-frame'
@@ -47,17 +47,28 @@ export default function DemographicSection({ data, stateId }) {
     const setRaceFilter       = useAppStore(s => s.setRaceFilter)
     const granularityFilter   = useAppStore(s => s.granularityFilter)
     const showDistrictOverlay = useAppStore(s => s.showDistrictOverlay)
+    const activeSection       = useAppStore(s => s.activeSection)
 
-    /* ── Fetch heatmap on demand ─────────────────────────────────────────── */
+    /* ── Fetch heatmap lazily — only once the Demographic section is active ─
+     * hasActivated gates the very first fetch; after that filter changes
+     * (raceFilter, granularityFilter) re-fetch normally regardless of scroll. */
     const [heatmapData, setHeatmapData] = useState(null)
+    const hasActivated = useRef(false)
+
+    useEffect(() => {
+        hasActivated.current = false
+        setHeatmapData(null)
+    }, [stateId])
 
     useEffect(() => {
         if (!stateId || !raceFilter) return
+        if (activeSection !== 'demographic' && !hasActivated.current) return
+        hasActivated.current = true
         setHeatmapData(null)
         fetchHeatmap(stateId, granularityFilter, raceFilter)
             .then(setHeatmapData)
             .catch(err => console.error('[Demographic] fetchHeatmap error:', err))
-    }, [stateId, granularityFilter, raceFilter])
+    }, [stateId, granularityFilter, raceFilter, activeSection])
 
     /* ── Derived data from overview ──────────────────────────────────────── */
     const s               = data?.stateSummary
@@ -92,6 +103,7 @@ export default function DemographicSection({ data, stateId }) {
                             mapView={s?.mapView}
                             showDistrictOverlay={showDistrictOverlay}
                             districtPartyMap={districtPartyMap}
+                            isActive={activeSection === 'demographic'}
                         />
                     </MapFrame>
                     {heatmapData

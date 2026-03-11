@@ -9,22 +9,13 @@
  *   Shown in FilterPanel when activeSection === 'demographic'.
  *
  * STATE SOURCE
- *   raceFilter / setRaceFilter — from useFilters() (Zustand via useAppStore).
+ *   raceFilter / setRaceFilter  — from useFilters() (Zustand via useAppStore).
+ *   demographicGroups           — from useAppStore; populated by useStateData on load.
  */
 
 import CollapsibleGroup from './CollapsibleGroup'
 import useFilters from '../../hooks/useFilters'
-
-
-/* ── Step 0: Race options ────────────────────────────────────────────────── */
-/* Each value maps to a key in heatmapData.features and ginglesData series. */
-const RACE_OPTIONS = [
-    { value: 'white',    label: 'White' },
-    { value: 'black',    label: 'Black' },
-    { value: 'hispanic', label: 'Hispanic' },
-    { value: 'asian',    label: 'Asian' },
-    { value: 'other',    label: 'Other' },
-]
+import useAppStore from '@/store/useAppStore'
 
 
 /**
@@ -34,14 +25,19 @@ const RACE_OPTIONS = [
  */
 export default function RaceFilter() {
 
-    /* ── Step 1: Read filter state from Zustand ──────────────────────────── */
+    /* ── Step 1: Read filter state and available groups from Zustand ─────── */
     const { raceFilter, setRaceFilter } = useFilters()
+    const demographicGroups = useAppStore(s => s.demographicGroups)
 
+    const raceOptions = demographicGroups.map(g => ({
+        value: g.group.toLowerCase(),
+        label: g.group,
+    }))
 
     /* ── Step 2: Render ──────────────────────────────────────────────────── */
     return (
         <CollapsibleGroup label="Race / Ethnicity">
-            {RACE_OPTIONS.map((opt) => (
+            {raceOptions.map((opt) => (
                 <label key={opt.value} className="flex items-center gap-2 px-1 py-1 cursor-pointer">
                     {/* Custom-styled radio button — uses Tailwind appearance-none + checked: variants */}
                     <input

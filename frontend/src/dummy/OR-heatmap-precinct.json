@@ -36,10427 +36,1203 @@
   "features": [
     {
       "idx": 0,
+      "latino": 1,
+      "white": 2,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 4
     },
     {
       "idx": 1,
+      "latino": 1,
+      "white": 4,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
+      "asian": 2,
       "other": 1
     },
     {
       "idx": 2,
+      "latino": 1,
+      "white": 4,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 3,
+      "latino": 1,
+      "white": 4,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 4,
+      "latino": 3,
+      "white": 2,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
+      "asian": 2,
       "other": 1
     },
     {
       "idx": 5,
+      "latino": 3,
+      "white": 4,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
+      "asian": 2,
+      "other": 3
     },
     {
       "idx": 6,
-      "black": 1,
+      "latino": 1,
       "white": 5,
-      "hispanic": 1,
+      "black": 1,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 7,
+      "latino": 3,
+      "white": 4,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
+      "asian": 2,
+      "other": 2
     },
     {
       "idx": 8,
+      "latino": 2,
+      "white": 4,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
+      "asian": 2,
+      "other": 2
     },
     {
       "idx": 9,
+      "latino": 2,
+      "white": 4,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
+      "asian": 2,
       "other": 1
     },
     {
       "idx": 10,
-      "black": 1,
+      "latino": 3,
       "white": 5,
-      "hispanic": 1,
+      "black": 1,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 11,
+      "latino": 1,
+      "white": 2,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 12,
+      "latino": 1,
+      "white": 2,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 13,
+      "latino": 1,
+      "white": 4,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
+      "asian": 2,
+      "other": 2
     },
     {
       "idx": 14,
-      "black": 1,
+      "latino": 5,
       "white": 5,
-      "hispanic": 1,
+      "black": 1,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 15,
-      "black": 1,
+      "latino": 1,
       "white": 5,
-      "hispanic": 1,
-      "asian": 1,
+      "black": 1,
+      "asian": 2,
       "other": 1
     },
     {
       "idx": 16,
+      "latino": 1,
+      "white": 3,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
       "asian": 1,
       "other": 1
     },
     {
       "idx": 17,
+      "latino": 1,
+      "white": 4,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 18,
+      "latino": 1,
+      "white": 4,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
       "asian": 1,
       "other": 1
     },
     {
       "idx": 19,
-      "black": 1,
+      "latino": 2,
       "white": 4,
-      "hispanic": 1,
+      "black": 3,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 20,
-      "black": 1,
+      "latino": 2,
       "white": 4,
-      "hispanic": 1,
+      "black": 1,
       "asian": 1,
-      "other": 1
+      "other": 4
     },
     {
       "idx": 21,
-      "black": 1,
+      "latino": 3,
       "white": 4,
-      "hispanic": 1,
+      "black": 1,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 22,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
+      "latino": 1,
+      "white": 2,
+      "black": 2,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 23,
+      "latino": 2,
+      "white": 3,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
+      "asian": 2,
+      "other": 3
     },
     {
       "idx": 24,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
+      "latino": 1,
+      "white": 3,
+      "black": 3,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 25,
-      "black": 1,
+      "latino": 3,
       "white": 4,
-      "hispanic": 1,
+      "black": 1,
       "asian": 1,
-      "other": 1
+      "other": 3
     },
     {
       "idx": 26,
-      "black": 1,
+      "latino": 1,
       "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
+      "black": 1,
+      "asian": 3,
+      "other": 3
     },
     {
       "idx": 27,
+      "latino": 1,
+      "white": 5,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 3
     },
     {
       "idx": 28,
+      "latino": 2,
+      "white": 3,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 29,
-      "black": 1,
+      "latino": 3,
       "white": 4,
-      "hispanic": 1,
+      "black": 1,
       "asian": 1,
       "other": 1
     },
     {
       "idx": 30,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
+      "latino": 1,
+      "white": 4,
+      "black": 2,
       "asian": 1,
       "other": 1
     },
     {
       "idx": 31,
-      "black": 1,
+      "latino": 1,
       "white": 5,
-      "hispanic": 1,
+      "black": 2,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 32,
-      "black": 1,
+      "latino": 1,
       "white": 4,
-      "hispanic": 1,
+      "black": 1,
       "asian": 1,
-      "other": 1
+      "other": 4
     },
     {
       "idx": 33,
+      "latino": 3,
+      "white": 4,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 3
     },
     {
       "idx": 34,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "latino": 2,
+      "white": 3,
+      "black": 2,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 35,
+      "latino": 1,
+      "white": 3,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 36,
+      "latino": 3,
+      "white": 5,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 3
     },
     {
       "idx": 37,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "latino": 1,
+      "white": 2,
+      "black": 2,
       "asian": 1,
-      "other": 1
+      "other": 3
     },
     {
       "idx": 38,
-      "black": 1,
+      "latino": 1,
       "white": 4,
-      "hispanic": 1,
+      "black": 1,
       "asian": 1,
-      "other": 1
+      "other": 3
     },
     {
       "idx": 39,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 2,
-      "other": 1
+      "latino": 3,
+      "white": 3,
+      "black": 3,
+      "asian": 1,
+      "other": 2
     },
     {
       "idx": 40,
+      "latino": 2,
+      "white": 5,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 41,
+      "latino": 3,
+      "white": 3,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
       "asian": 2,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 42,
+      "latino": 4,
+      "white": 2,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 43,
-      "black": 1,
+      "latino": 4,
       "white": 4,
-      "hispanic": 1,
+      "black": 1,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 44,
+      "latino": 2,
+      "white": 3,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 4
     },
     {
       "idx": 45,
+      "latino": 1,
+      "white": 5,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 3
     },
     {
       "idx": 46,
+      "latino": 2,
+      "white": 4,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
+      "asian": 4,
       "other": 1
     },
     {
       "idx": 47,
+      "latino": 3,
+      "white": 5,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
+      "asian": 2,
+      "other": 2
     },
     {
       "idx": 48,
+      "latino": 3,
+      "white": 5,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 49,
-      "black": 1,
+      "latino": 4,
       "white": 4,
-      "hispanic": 1,
+      "black": 1,
       "asian": 1,
       "other": 1
     },
     {
       "idx": 50,
+      "latino": 1,
+      "white": 3,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 51,
+      "latino": 2,
+      "white": 3,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
       "asian": 1,
-      "other": 1
+      "other": 3
     },
     {
       "idx": 52,
+      "latino": 3,
+      "white": 5,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
+      "asian": 2,
+      "other": 2
     },
     {
       "idx": 53,
+      "latino": 1,
+      "white": 2,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
       "asian": 1,
       "other": 1
     },
     {
       "idx": 54,
+      "latino": 1,
+      "white": 5,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
+      "asian": 3,
+      "other": 2
     },
     {
       "idx": 55,
+      "latino": 3,
+      "white": 2,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
+      "asian": 2,
+      "other": 2
     },
     {
       "idx": 56,
+      "latino": 1,
+      "white": 4,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
       "asian": 1,
       "other": 1
     },
     {
       "idx": 57,
-      "black": 1,
+      "latino": 1,
       "white": 5,
-      "hispanic": 1,
-      "asian": 1,
+      "black": 1,
+      "asian": 2,
       "other": 1
     },
     {
       "idx": 58,
+      "latino": 2,
+      "white": 4,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
+      "asian": 3,
+      "other": 3
     },
     {
       "idx": 59,
+      "latino": 3,
+      "white": 4,
       "black": 1,
-      "white": 1,
-      "hispanic": 1,
       "asian": 1,
       "other": 1
     },
     {
       "idx": 60,
-      "black": 1,
+      "latino": 2,
       "white": 5,
-      "hispanic": 1,
+      "black": 1,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 61,
+      "latino": 1,
+      "white": 3,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 62,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
+      "latino": 2,
+      "white": 4,
+      "black": 3,
       "asian": 1,
       "other": 1
     },
     {
       "idx": 63,
-      "black": 1,
+      "latino": 1,
       "white": 5,
-      "hispanic": 1,
+      "black": 2,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 64,
-      "black": 1,
+      "latino": 3,
       "white": 4,
-      "hispanic": 1,
+      "black": 1,
       "asian": 1,
       "other": 1
     },
     {
       "idx": 65,
+      "latino": 1,
+      "white": 5,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
+      "asian": 2,
+      "other": 3
     },
     {
       "idx": 66,
+      "latino": 2,
+      "white": 4,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 4
     },
     {
       "idx": 67,
+      "latino": 1,
+      "white": 3,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
+      "asian": 2,
       "other": 1
     },
     {
       "idx": 68,
+      "latino": 3,
+      "white": 2,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 69,
-      "black": 1,
+      "latino": 4,
       "white": 5,
-      "hispanic": 1,
+      "black": 1,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 70,
-      "black": 1,
+      "latino": 1,
       "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
+      "black": 1,
+      "asian": 3,
+      "other": 3
     },
     {
       "idx": 71,
+      "latino": 3,
+      "white": 3,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
       "asian": 1,
       "other": 1
     },
     {
       "idx": 72,
+      "latino": 1,
+      "white": 4,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
+      "asian": 2,
+      "other": 3
     },
     {
       "idx": 73,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "latino": 1,
+      "white": 2,
+      "black": 2,
       "asian": 1,
       "other": 1
     },
     {
       "idx": 74,
+      "latino": 3,
+      "white": 5,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
+      "asian": 2,
+      "other": 3
     },
     {
       "idx": 75,
+      "latino": 3,
+      "white": 3,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
+      "asian": 3,
+      "other": 2
     },
     {
       "idx": 76,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "latino": 2,
+      "white": 5,
+      "black": 2,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 77,
+      "latino": 2,
+      "white": 1,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
+      "asian": 2,
+      "other": 2
     },
     {
       "idx": 78,
-      "black": 1,
+      "latino": 1,
       "white": 5,
-      "hispanic": 1,
+      "black": 1,
       "asian": 1,
       "other": 1
     },
     {
       "idx": 79,
+      "latino": 2,
+      "white": 5,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
       "asian": 1,
       "other": 1
     },
     {
       "idx": 80,
+      "latino": 1,
+      "white": 4,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 4
     },
     {
       "idx": 81,
+      "latino": 4,
+      "white": 3,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
+      "asian": 2,
+      "other": 3
     },
     {
       "idx": 82,
-      "black": 1,
+      "latino": 3,
       "white": 5,
-      "hispanic": 1,
+      "black": 1,
       "asian": 1,
       "other": 1
     },
     {
       "idx": 83,
-      "black": 1,
+      "latino": 5,
       "white": 4,
-      "hispanic": 1,
-      "asian": 1,
+      "black": 1,
+      "asian": 2,
       "other": 1
     },
     {
       "idx": 84,
-      "black": 1,
+      "latino": 1,
       "white": 3,
-      "hispanic": 1,
+      "black": 1,
       "asian": 1,
       "other": 2
     },
     {
       "idx": 85,
+      "latino": 2,
+      "white": 4,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 5
     },
     {
       "idx": 86,
-      "black": 1,
+      "latino": 1,
       "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
+      "black": 1,
+      "asian": 2,
+      "other": 3
     },
     {
       "idx": 87,
+      "latino": 1,
+      "white": 3,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
       "asian": 1,
       "other": 1
     },
     {
       "idx": 88,
-      "black": 1,
+      "latino": 2,
       "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
+      "black": 2,
+      "asian": 2,
+      "other": 2
     },
     {
       "idx": 89,
-      "black": 1,
+      "latino": 2,
       "white": 5,
-      "hispanic": 1,
+      "black": 1,
       "asian": 1,
       "other": 1
     },
     {
       "idx": 90,
+      "latino": 3,
+      "white": 5,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
+      "asian": 2,
       "other": 1
     },
     {
       "idx": 91,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
+      "latino": 1,
+      "white": 3,
+      "black": 2,
+      "asian": 2,
       "other": 1
     },
     {
       "idx": 92,
-      "black": 1,
+      "latino": 1,
       "white": 5,
-      "hispanic": 1,
+      "black": 1,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 93,
+      "latino": 2,
+      "white": 3,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 3
     },
     {
       "idx": 94,
+      "latino": 1,
+      "white": 1,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 4
     },
     {
       "idx": 95,
+      "latino": 1,
+      "white": 4,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
+      "asian": 2,
+      "other": 3
     },
     {
       "idx": 96,
-      "black": 1,
+      "latino": 1,
       "white": 5,
-      "hispanic": 1,
-      "asian": 1,
+      "black": 1,
+      "asian": 2,
       "other": 1
     },
     {
       "idx": 97,
+      "latino": 2,
+      "white": 3,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
+      "asian": 2,
+      "other": 2
     },
     {
       "idx": 98,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
+      "latino": 2,
+      "white": 4,
+      "black": 2,
+      "asian": 2,
       "other": 1
     },
     {
       "idx": 99,
+      "latino": 1,
+      "white": 4,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
       "asian": 1,
-      "other": 1
+      "other": 3
     },
     {
       "idx": 100,
+      "latino": 1,
+      "white": 4,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
+      "asian": 2,
+      "other": 3
     },
     {
       "idx": 101,
-      "black": 1,
+      "latino": 3,
       "white": 5,
-      "hispanic": 1,
+      "black": 1,
       "asian": 1,
       "other": 1
     },
     {
       "idx": 102,
-      "black": 1,
+      "latino": 2,
       "white": 5,
-      "hispanic": 1,
+      "black": 1,
       "asian": 1,
       "other": 1
     },
     {
       "idx": 103,
-      "black": 1,
+      "latino": 1,
       "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
+      "black": 1,
+      "asian": 2,
+      "other": 2
     },
     {
       "idx": 104,
+      "latino": 1,
+      "white": 4,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
       "asian": 1,
       "other": 1
     },
     {
       "idx": 105,
-      "black": 1,
+      "latino": 2,
       "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
+      "black": 1,
+      "asian": 4,
+      "other": 4
     },
     {
       "idx": 106,
+      "latino": 3,
+      "white": 4,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
+      "asian": 2,
+      "other": 4
     },
     {
       "idx": 107,
+      "latino": 2,
+      "white": 4,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 3
     },
     {
       "idx": 108,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
+      "latino": 2,
+      "white": 4,
+      "black": 2,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 109,
+      "latino": 1,
+      "white": 4,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 3
     },
     {
       "idx": 110,
+      "latino": 1,
+      "white": 3,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 111,
-      "black": 1,
+      "latino": 1,
       "white": 4,
-      "hispanic": 1,
+      "black": 1,
       "asian": 1,
-      "other": 1
+      "other": 3
     },
     {
       "idx": 112,
-      "black": 1,
+      "latino": 1,
       "white": 4,
-      "hispanic": 1,
+      "black": 3,
       "asian": 1,
-      "other": 1
+      "other": 3
     },
     {
       "idx": 113,
-      "black": 1,
+      "latino": 2,
       "white": 4,
-      "hispanic": 1,
+      "black": 1,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 114,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
+      "latino": 2,
+      "white": 4,
+      "black": 2,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 115,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "latino": 3,
+      "white": 5,
+      "black": 3,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 116,
-      "black": 1,
+      "latino": 1,
       "white": 5,
-      "hispanic": 1,
+      "black": 2,
       "asian": 1,
-      "other": 1
+      "other": 3
     },
     {
       "idx": 117,
+      "latino": 1,
+      "white": 5,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
+      "asian": 2,
       "other": 1
     },
     {
       "idx": 118,
+      "latino": 2,
+      "white": 5,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
       "asian": 1,
       "other": 1
     },
     {
       "idx": 119,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
+      "latino": 4,
+      "white": 3,
+      "black": 3,
       "asian": 1,
       "other": 1
     },
     {
       "idx": 120,
-      "black": 1,
+      "latino": 1,
       "white": 4,
-      "hispanic": 1,
+      "black": 1,
       "asian": 1,
       "other": 1
     },
     {
       "idx": 121,
+      "latino": 1,
+      "white": 5,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 122,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "latino": 3,
+      "white": 5,
+      "black": 3,
       "asian": 1,
       "other": 1
     },
     {
       "idx": 123,
+      "latino": 1,
+      "white": 5,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
+      "asian": 2,
+      "other": 5
     },
     {
       "idx": 124,
-      "black": 1,
+      "latino": 2,
       "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
+      "black": 1,
+      "asian": 2,
+      "other": 3
     },
     {
       "idx": 125,
-      "black": 1,
+      "latino": 2,
       "white": 5,
-      "hispanic": 1,
+      "black": 1,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 126,
-      "black": 1,
+      "latino": 3,
       "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
+      "black": 1,
+      "asian": 2,
+      "other": 2
     },
     {
       "idx": 127,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
+      "latino": 2,
+      "white": 3,
+      "black": 2,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 128,
+      "latino": 1,
+      "white": 3,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 5
     },
     {
       "idx": 129,
-      "black": 1,
+      "latino": 1,
       "white": 4,
-      "hispanic": 1,
-      "asian": 1,
+      "black": 1,
+      "asian": 2,
       "other": 1
     },
     {
       "idx": 130,
+      "latino": 1,
+      "white": 4,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 131,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
+      "latino": 1,
+      "white": 4,
+      "black": 2,
       "asian": 1,
       "other": 1
     },
     {
       "idx": 132,
+      "latino": 2,
+      "white": 4,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
+      "asian": 2,
+      "other": 2
     },
     {
       "idx": 133,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "latino": 2,
+      "white": 5,
+      "black": 2,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 134,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
+      "latino": 1,
+      "white": 2,
+      "black": 2,
+      "asian": 3,
+      "other": 2
     },
     {
       "idx": 135,
-      "black": 1,
+      "latino": 3,
       "white": 5,
-      "hispanic": 1,
+      "black": 1,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 136,
+      "latino": 1,
+      "white": 4,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
       "asian": 1,
       "other": 1
     },
     {
       "idx": 137,
-      "black": 1,
+      "latino": 1,
       "white": 5,
-      "hispanic": 1,
+      "black": 1,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 138,
-      "black": 1,
+      "latino": 2,
       "white": 5,
-      "hispanic": 1,
-      "asian": 1,
+      "black": 1,
+      "asian": 2,
       "other": 1
     },
     {
       "idx": 139,
+      "latino": 1,
+      "white": 4,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 3
     },
     {
       "idx": 140,
+      "latino": 1,
+      "white": 4,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 141,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
+      "latino": 3,
+      "white": 4,
+      "black": 2,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 142,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
+      "latino": 2,
+      "white": 2,
+      "black": 2,
+      "asian": 2,
+      "other": 2
     },
     {
       "idx": 143,
-      "black": 1,
+      "latino": 2,
       "white": 4,
-      "hispanic": 1,
+      "black": 1,
       "asian": 1,
-      "other": 1
+      "other": 3
     },
     {
       "idx": 144,
+      "latino": 3,
+      "white": 4,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 3
     },
     {
       "idx": 145,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
+      "latino": 1,
+      "white": 4,
+      "black": 2,
       "asian": 1,
-      "other": 1
+      "other": 3
     },
     {
       "idx": 146,
+      "latino": 1,
+      "white": 4,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 147,
+      "latino": 1,
+      "white": 3,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
       "asian": 1,
-      "other": 1
+      "other": 4
     },
     {
       "idx": 148,
+      "latino": 3,
+      "white": 4,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
       "asian": 1,
       "other": 1
     },
     {
       "idx": 149,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 150,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 151,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 152,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 153,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 154,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 155,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 156,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 157,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 158,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 159,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 160,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 161,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 162,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 163,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 164,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 165,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 166,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 167,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 168,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 169,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 170,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 171,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 172,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 173,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 174,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 175,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 176,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 177,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 178,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 179,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 180,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 181,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 182,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 183,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 184,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 185,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 186,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 187,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 188,
-      "black": 1,
+      "latino": 3,
       "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 189,
       "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 190,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 191,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 192,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 193,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 194,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 195,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 196,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 197,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 198,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 199,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 200,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 201,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 202,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 203,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 204,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 205,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 206,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 207,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 208,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 209,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 210,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 211,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 212,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 213,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 214,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 215,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 216,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 217,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 218,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 219,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 220,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 221,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 222,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 223,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 224,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 225,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 226,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 227,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 228,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 229,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 230,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 231,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 232,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 233,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 234,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 235,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 236,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 237,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 238,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 239,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 240,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 241,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 242,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 243,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 244,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 245,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 246,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 247,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 248,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 249,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 250,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 251,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 252,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 253,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 254,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 255,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 256,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 257,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 258,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 259,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 260,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 261,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 262,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 263,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 264,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 265,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 266,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 267,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 268,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 269,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 270,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 271,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 272,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 273,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 274,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 275,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 276,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 277,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 278,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 279,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 280,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 281,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 282,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 283,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 284,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 285,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 286,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 287,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 288,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 289,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 290,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 291,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 292,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 293,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 294,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 295,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 296,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 297,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 298,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 299,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 300,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 301,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 302,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 303,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 304,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 305,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 306,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 307,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 308,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 309,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 310,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 311,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 312,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 313,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 314,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 315,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 316,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 317,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 318,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 319,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 320,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 321,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 322,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 323,
-      "black": 1,
-      "white": 1,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 324,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 325,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 326,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 327,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 328,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 329,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 330,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 331,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 332,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 333,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 334,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 335,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 336,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 337,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 338,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 339,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 340,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 341,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 342,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 343,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 344,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 345,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 346,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 347,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 348,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 349,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 350,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 351,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 352,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 353,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 354,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 355,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 356,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 357,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 358,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 359,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 360,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 361,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 362,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 363,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 364,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 365,
-      "black": 1,
-      "white": 2,
-      "hispanic": 4,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 366,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 367,
-      "black": 1,
-      "white": 3,
-      "hispanic": 3,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 368,
-      "black": 1,
-      "white": 3,
-      "hispanic": 3,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 369,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 370,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 371,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 372,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 373,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 374,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 375,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 376,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 377,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 378,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 379,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 380,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 381,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 382,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 383,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 384,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 385,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 386,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 387,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 388,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 389,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 390,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 391,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 392,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 393,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 394,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 395,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 396,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 397,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 398,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 399,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 400,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 401,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 402,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 403,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 404,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 405,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 406,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 407,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 408,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 409,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 410,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 411,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 412,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 413,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 414,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 415,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 416,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 417,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 418,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 419,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 420,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 421,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 422,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 423,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 424,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 425,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 426,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 427,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 428,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 429,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 430,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 431,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 432,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 433,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 434,
-      "black": 1,
-      "white": 1,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 5
-    },
-    {
-      "idx": 435,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 436,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 437,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 438,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 439,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 440,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 441,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 442,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 443,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 444,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 445,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 446,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 447,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 448,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 449,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 450,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 451,
-      "black": 1,
-      "white": 1,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 452,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 453,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 454,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 455,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 456,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 457,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 458,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 459,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 460,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 461,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 462,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 463,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 464,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 465,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 466,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 467,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 468,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 469,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 470,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 471,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 472,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 473,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 474,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 475,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 476,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 477,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 478,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 479,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 480,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 481,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 482,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 483,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 484,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 485,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 486,
-      "black": 1,
-      "white": 1,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 487,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 488,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 489,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 490,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 491,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 492,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 493,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 494,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 495,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 496,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
       "asian": 1,
       "other": 3
-    },
-    {
-      "idx": 497,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 498,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 499,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 500,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 501,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 502,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 503,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 504,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 505,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 506,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 507,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 508,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 509,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 510,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 511,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 512,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 513,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 514,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 515,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 516,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 517,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 518,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 519,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 520,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 521,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 522,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 523,
-      "black": 1,
-      "white": 3,
-      "hispanic": 3,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 524,
-      "black": 1,
-      "white": 3,
-      "hispanic": 3,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 525,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 526,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 527,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 528,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 529,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 530,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 531,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 532,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 533,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 534,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 535,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 536,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 537,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 538,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 539,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 540,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 541,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 542,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 543,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 544,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 545,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 546,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 547,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 548,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 549,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 550,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 551,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 552,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 553,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 554,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 555,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 556,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 557,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 558,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 559,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 560,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 561,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 562,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 563,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 564,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 565,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 566,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 567,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 568,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 569,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 570,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 571,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 572,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 573,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 574,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 575,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 576,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 577,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 578,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 579,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 580,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 581,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 582,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 583,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 584,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 585,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 586,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 587,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 588,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 589,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 590,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 591,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 592,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 593,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 594,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 595,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 596,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 597,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 598,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 599,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 600,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 601,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 602,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 603,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 604,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 605,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 606,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 607,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 608,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 609,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 610,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 611,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 612,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 613,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 614,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 615,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 616,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 617,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 618,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 619,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 620,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 621,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 622,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 623,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 624,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 2
-    },
-    {
-      "idx": 625,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 626,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 627,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 628,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 629,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 630,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 631,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 632,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 633,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 634,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 2
-    },
-    {
-      "idx": 635,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 636,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 637,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 638,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 639,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 640,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 641,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 642,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 643,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 644,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 645,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 646,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 647,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 648,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 649,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 650,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 651,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 652,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 3
-    },
-    {
-      "idx": 653,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 654,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 655,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 656,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 657,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 658,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 659,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 660,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 661,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 662,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 663,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 664,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 665,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 666,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 667,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 668,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 669,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 670,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 671,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 672,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 673,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 674,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 675,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 676,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 677,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 678,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 679,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 680,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 681,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 682,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 683,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 684,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 685,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 686,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 687,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 688,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 689,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 690,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 691,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 692,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 693,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 694,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 695,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 696,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 697,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 698,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 699,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 700,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 701,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 702,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 703,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 704,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 705,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 706,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 707,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 708,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 709,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 710,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 711,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 712,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 713,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 714,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 715,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 716,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 717,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 718,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 719,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 720,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 721,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 722,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 723,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 724,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 725,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 726,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 727,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 728,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 729,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 730,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 731,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 732,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 733,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 734,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 735,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 736,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 737,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 738,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 739,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 740,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 741,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 742,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 743,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 744,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 745,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 746,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 747,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 748,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 749,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 750,
-      "black": 1,
-      "white": 2,
-      "hispanic": 3,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 751,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 752,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 753,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 754,
-      "black": 1,
-      "white": 3,
-      "hispanic": 3,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 755,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 756,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 757,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 758,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 759,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 760,
-      "black": 1,
-      "white": 1,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 761,
-      "black": 1,
-      "white": 3,
-      "hispanic": 3,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 762,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 763,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 764,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 765,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 766,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 767,
-      "black": 1,
-      "white": 3,
-      "hispanic": 3,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 768,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 769,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 770,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 771,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 772,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 773,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 774,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 775,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 776,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 777,
-      "black": 1,
-      "white": 2,
-      "hispanic": 4,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 778,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 779,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 780,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 781,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 782,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 783,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 784,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 785,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 786,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 787,
-      "black": 1,
-      "white": 2,
-      "hispanic": 4,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 788,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 789,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 790,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 791,
-      "black": 1,
-      "white": 3,
-      "hispanic": 3,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 792,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 793,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 794,
-      "black": 1,
-      "white": 3,
-      "hispanic": 3,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 795,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 796,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 797,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 798,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 799,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 800,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 801,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 802,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 803,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 804,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 805,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 806,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 807,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 808,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 809,
-      "black": 1,
-      "white": 3,
-      "hispanic": 3,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 810,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 811,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 812,
-      "black": 1,
-      "white": 2,
-      "hispanic": 4,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 813,
-      "black": 1,
-      "white": 2,
-      "hispanic": 4,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 814,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 815,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 816,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 817,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 818,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 819,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 820,
-      "black": 1,
-      "white": 3,
-      "hispanic": 3,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 821,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 822,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 823,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 824,
-      "black": 1,
-      "white": 3,
-      "hispanic": 3,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 825,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 826,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 827,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 828,
-      "black": 1,
-      "white": 2,
-      "hispanic": 3,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 829,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 830,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 831,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 832,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 833,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 834,
-      "black": 1,
-      "white": 3,
-      "hispanic": 3,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 835,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 836,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 837,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 838,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 839,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 840,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 841,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 842,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 843,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 844,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 845,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 846,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 847,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 848,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 849,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 850,
-      "black": 1,
-      "white": 3,
-      "hispanic": 3,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 851,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 852,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 853,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 854,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 855,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 856,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 857,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 858,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 859,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 860,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 861,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 862,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 863,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 864,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 865,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 866,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 867,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 868,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 869,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 870,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 871,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 872,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 873,
-      "black": 1,
-      "white": 2,
-      "hispanic": 4,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 874,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 875,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 876,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 877,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 878,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 879,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 880,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 881,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 882,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 883,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 884,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 885,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 886,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 887,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 888,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 889,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 890,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 891,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 892,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 893,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 894,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 895,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 896,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 897,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 898,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 899,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 900,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 901,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 902,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 903,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 904,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 905,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 906,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 907,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 908,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 909,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 910,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 911,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 912,
-      "black": 2,
-      "white": 2,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 913,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 914,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 915,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 916,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 917,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 918,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 919,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 920,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 921,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 922,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 923,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 924,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 925,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 926,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 927,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 928,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 929,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 930,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 931,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 932,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 933,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 934,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 935,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 936,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 937,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 938,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 939,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 940,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 941,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 942,
-      "black": 1,
-      "white": 2,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 943,
-      "black": 1,
-      "white": 1,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 944,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 945,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 946,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 947,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 948,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 2,
-      "other": 1
-    },
-    {
-      "idx": 949,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 950,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 951,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 952,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 953,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 954,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 955,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 956,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 957,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 958,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 959,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 960,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 961,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 2,
-      "other": 1
-    },
-    {
-      "idx": 962,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 963,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 964,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 965,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 966,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 967,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 968,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 969,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 970,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 971,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 972,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 2
-    },
-    {
-      "idx": 973,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 974,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 975,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 976,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 977,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 978,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 979,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 980,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 981,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 982,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 983,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 984,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 985,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 986,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 2
-    },
-    {
-      "idx": 987,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 988,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 989,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 990,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 991,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 992,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 993,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 994,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 995,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 996,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 997,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 998,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 999,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1000,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1001,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1002,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1003,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1004,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1005,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1006,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1007,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1008,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1009,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1010,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1011,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1012,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1013,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1014,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1015,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1016,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1017,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1018,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1019,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1020,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1021,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1022,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1023,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1024,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1025,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1026,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1027,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1028,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1029,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1030,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1031,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1032,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1033,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1034,
-      "black": 1,
-      "white": 3,
-      "hispanic": 3,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1035,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1036,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1037,
-      "black": 1,
-      "white": 3,
-      "hispanic": 3,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1038,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1039,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1040,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1041,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1042,
-      "black": 1,
-      "white": 3,
-      "hispanic": 3,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1043,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1044,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1045,
-      "black": 1,
-      "white": 3,
-      "hispanic": 3,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1046,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1047,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1048,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1049,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1050,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1051,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1052,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1053,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1054,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 2
-    },
-    {
-      "idx": 1055,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1056,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1057,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1058,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1059,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1060,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1061,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 3
-    },
-    {
-      "idx": 1062,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1063,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1064,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1065,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1066,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1067,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1068,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1069,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1070,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1071,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1072,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1073,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1074,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1075,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1076,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1077,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1078,
-      "black": 1,
-      "white": 3,
-      "hispanic": 3,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1079,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1080,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1081,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1082,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1083,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1084,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1085,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1086,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1087,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1088,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1089,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1090,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1091,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1092,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1093,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1094,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1095,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1096,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1097,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1098,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1099,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1100,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1101,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1102,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1103,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1104,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1105,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1106,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1107,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1108,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1109,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1110,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1111,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1112,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1113,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1114,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1115,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1116,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1117,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 3
-    },
-    {
-      "idx": 1118,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1119,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 2
-    },
-    {
-      "idx": 1120,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1121,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1122,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1123,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1124,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1125,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1126,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1127,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1128,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1129,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1130,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1131,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1132,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1133,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1134,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1135,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1136,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1137,
-      "black": 1,
-      "white": 3,
-      "hispanic": 3,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1138,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1139,
-      "black": 1,
-      "white": 2,
-      "hispanic": 2,
-      "asian": 2,
-      "other": 1
-    },
-    {
-      "idx": 1140,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1141,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 2,
-      "other": 1
-    },
-    {
-      "idx": 1142,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1143,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 2,
-      "other": 1
-    },
-    {
-      "idx": 1144,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1145,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1146,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1147,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1148,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 2,
-      "other": 1
-    },
-    {
-      "idx": 1149,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1150,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1151,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1152,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1153,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1154,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1155,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1156,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 2,
-      "other": 1
-    },
-    {
-      "idx": 1157,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1158,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1159,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1160,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1161,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1162,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1163,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1164,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1165,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1166,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1167,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1168,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1169,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1170,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1171,
-      "black": 1,
-      "white": 1,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 4
-    },
-    {
-      "idx": 1172,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1173,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 2,
-      "other": 1
-    },
-    {
-      "idx": 1174,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1175,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 2
-    },
-    {
-      "idx": 1176,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1177,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 2
-    },
-    {
-      "idx": 1178,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1179,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1180,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1181,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1182,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 2,
-      "other": 1
-    },
-    {
-      "idx": 1183,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1184,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1185,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1186,
-      "black": 1,
-      "white": 1,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 3
-    },
-    {
-      "idx": 1187,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1188,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1189,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1190,
-      "black": 1,
-      "white": 2,
-      "hispanic": 1,
-      "asian": 3,
-      "other": 1
-    },
-    {
-      "idx": 1191,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1192,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1193,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1194,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1195,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1196,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1197,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1198,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1199,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1200,
-      "black": 1,
-      "white": 1,
-      "hispanic": 3,
-      "asian": 1,
-      "other": 3
-    },
-    {
-      "idx": 1201,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1202,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1203,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1204,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1205,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 2,
-      "other": 1
-    },
-    {
-      "idx": 1206,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1207,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1208,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 2,
-      "other": 1
-    },
-    {
-      "idx": 1209,
-      "black": 1,
-      "white": 2,
-      "hispanic": 3,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1210,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1211,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1212,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1213,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1214,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1215,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1216,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 3,
-      "other": 1
-    },
-    {
-      "idx": 1217,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1218,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1219,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1220,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 2
-    },
-    {
-      "idx": 1221,
-      "black": 1,
-      "white": 2,
-      "hispanic": 1,
-      "asian": 3,
-      "other": 1
-    },
-    {
-      "idx": 1222,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 2,
-      "other": 1
-    },
-    {
-      "idx": 1223,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1224,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1225,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1226,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 2,
-      "other": 1
-    },
-    {
-      "idx": 1227,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1228,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1229,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1230,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1231,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1232,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1233,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1234,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 2,
-      "other": 1
-    },
-    {
-      "idx": 1235,
-      "black": 1,
-      "white": 2,
-      "hispanic": 4,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1236,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1237,
-      "black": 1,
-      "white": 3,
-      "hispanic": 3,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1238,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1239,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1240,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1241,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1242,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1243,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1244,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1245,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1246,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1247,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1248,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1249,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1250,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1251,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1252,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1253,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1254,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1255,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1256,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1257,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1258,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1259,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1260,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1261,
-      "black": 1,
-      "white": 3,
-      "hispanic": 3,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1262,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1263,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 2,
-      "other": 1
-    },
-    {
-      "idx": 1264,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1265,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1266,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1267,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1268,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1269,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1270,
-      "black": 1,
-      "white": 2,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1271,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1272,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1273,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1274,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1275,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1276,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1277,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1278,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1279,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1280,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1281,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1282,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1283,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1284,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1285,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1286,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1287,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1288,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1289,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1290,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1291,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1292,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1293,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1294,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1295,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1296,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1297,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1298,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1299,
-      "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1300,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1301,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
-    },
-    {
-      "idx": 1302,
-      "black": 1,
-      "white": 5,
-      "hispanic": 1,
-      "asian": 1,
-      "other": 1
     }
   ]
 }

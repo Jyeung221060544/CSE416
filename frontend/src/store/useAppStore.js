@@ -69,11 +69,11 @@ const useAppStore = create((set) => ({
 
     // Selected race group for DemographicHeatmap and DemographicPopulationTable.
     // One of: 'white' | 'black' | 'hispanic' | 'asian' | 'other'
-    raceFilter: 'black',
+    raceFilter: null,
 
     // Selected race for GinglesScatterPlot and GinglesSummaryTable.
     // Only includes races that meet the >= 400k VAP threshold (isFeasible = true).
-    feasibleRaceFilter: 'black',
+    feasibleRaceFilter: null,
 
     // Map granularity for DemographicHeatmap: 'precinct' | 'census_block'
     granularityFilter: 'precinct',
@@ -87,11 +87,11 @@ const useAppStore = create((set) => ({
 
     // Array of race keys to show on the EI KDE + bar charts.
     // Multi-select; always contains at least one item (enforced in toggleEiRaceFilter).
-    eiRaceFilter: ['black'],
+    eiRaceFilter: [],
 
     // Exactly 2 race keys selected for the EI Polarization KDE comparison tab.
     // Derived options list comes from demographicGroups (all groups, not just feasible).
-    eiKdeCompareRaces: ['black', 'white'],
+    eiKdeCompareRaces: [],
 
     // Demographic groups for the currently-loaded state, populated by useStateData.
     // Each entry: { group: string, vap: number, vapPercentage: number, isFeasible: boolean }.
@@ -99,7 +99,7 @@ const useAppStore = create((set) => ({
     demographicGroups: [],
 
     // Whether to draw district boundary outlines (red/blue by party) over the heatmap.
-    showDistrictOverlay: false,
+    showDistrictOverlay: true,
 
     // Whether the Ensemble Analysis section shows the compare chart instead of side-by-side.
     // Resets to false on tab switch (handled in EnsembleAnalysisSection useEffect).
@@ -144,6 +144,9 @@ const useAppStore = create((set) => ({
 
     /** @param {Array<{group:string,vap:number,vapPercentage:number,isFeasible:boolean}>} groups  Groups from stateSummary. */
     setDemographicGroups: (groups) => set({ demographicGroups: groups }),
+
+    /** @param {string[]} races  Array of lowercase race keys for EI multi-select. */
+    setEiRaceFilter: (races) => set({ eiRaceFilter: races }),
 
     /** @param {boolean} val  Show/hide district boundary overlay on the heatmap. */
     setShowDistrictOverlay: (val) => set({ showDistrictOverlay: val }),
@@ -206,20 +209,33 @@ const useAppStore = create((set) => ({
      */
     resetFilters: () => set((state) => {
         const groups = state.demographicGroups
+
+        // Primary race: black (if feasible) > hispanic > first group
+        const primary =
+            groups.find(g => g.group.toLowerCase() === 'black' && g.isFeasible)?.group.toLowerCase() ??
+            groups.find(g => g.group.toLowerCase() === 'hispanic')?.group.toLowerCase() ??
+            groups[0]?.group.toLowerCase() ?? null
+
+        // Feasible race: black > hispanic > any feasible
         const preferredFeasible =
             groups.find(g => g.group.toLowerCase() === 'black'    && g.isFeasible)?.group.toLowerCase() ??
             groups.find(g => g.group.toLowerCase() === 'hispanic' && g.isFeasible)?.group.toLowerCase() ??
-            groups.find(g => g.isFeasible)?.group.toLowerCase() ??
-            'black'
+            groups.find(g => g.isFeasible)?.group.toLowerCase() ?? null
+
+        // Compare pair second race: white if primary is not white, else next available group
+        const secondKey = primary && primary !== 'white'
+            ? 'white'
+            : groups.find(g => g.group.toLowerCase() !== primary)?.group.toLowerCase() ?? null
+
         return {
-            raceFilter:           'black',
+            raceFilter:           primary,
             feasibleRaceFilter:   preferredFeasible,
             granularityFilter:    'precinct',
             ensembleFilter:       'race_blind',
-            eiRaceFilter:         ['black'],
-            eiKdeCompareRaces:    ['black', 'white'],
+            eiRaceFilter:         primary ? [primary] : [],
+            eiKdeCompareRaces:    primary && secondKey ? [primary, secondKey] : [],
             selectedDistrict:     null,
-            showDistrictOverlay:  false,
+            showDistrictOverlay:  true,
             eaCompareMode:        false,
         }
     }),

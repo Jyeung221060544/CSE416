@@ -9,11 +9,14 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
- * EnsembleController — {@code GET /api/states/{stateId}/ensemble}
+ * EnsembleController — lazy-loaded ensemble analysis endpoints.
  *
- * <p>Fetched when the user enters the Ensemble Analysis section.  Returns both
- * ensemble-analysis payloads (splits + box-whisker) in one response (~6 KB).
- * The feasible-race and compare-mode filters are handled client-side.
+ * <ul>
+ *   <li>{@code GET /api/states/{stateId}/ensemble/splits} — fetched when the
+ *       user enters the Ensemble Splits tab.</li>
+ *   <li>{@code GET /api/states/{stateId}/ensemble/box-whisker} — fetched when
+ *       the user enters the Box &amp; Whisker tab.</li>
+ * </ul>
  */
 @RestController
 @RequestMapping("/api/states/{stateId}/ensemble")
@@ -28,17 +31,28 @@ public class EnsembleController {
     }
 
     /**
-     * Returns the ensemble analysis bundle for the given state.
-     *
-     * <p>Response: {@code { splits: {...}, boxWhisker: {...} }}
+     * Returns only the splits payload for the given state.
      *
      * @param stateId two-letter state abbreviation (e.g. "AL")
-     * @return 200 with bundle; 404 if state is unknown
+     * @return 200 with splits data; 404 if state is unknown
      */
-    @GetMapping
-    public ResponseEntity<Map<String, Object>> getEnsemble(@PathVariable String stateId) {
-        Map<String, Object> ensemble = ensembleService.getEnsemble(stateId);
-        if (ensemble == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok().cacheControl(CACHE).body(ensemble);
+    @GetMapping("/splits")
+    public ResponseEntity<Map<String, Object>> getSplits(@PathVariable String stateId) {
+        Map<String, Object> splits = ensembleService.getSplits(stateId);
+        if (splits == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().cacheControl(CACHE).body(splits);
+    }
+
+    /**
+     * Returns only the box-whisker payload for the given state.
+     *
+     * @param stateId two-letter state abbreviation (e.g. "AL")
+     * @return 200 with box-whisker data; 404 if state is unknown
+     */
+    @GetMapping("/box-whisker")
+    public ResponseEntity<Map<String, Object>> getBoxWhisker(@PathVariable String stateId) {
+        Map<String, Object> bw = ensembleService.getBoxWhisker(stateId);
+        if (bw == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().cacheControl(CACHE).body(bw);
     }
 }

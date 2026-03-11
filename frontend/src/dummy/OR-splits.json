@@ -3,7 +3,7 @@
   "numDistricts": 6,
   "totalPlans": 5000,
   "unionSplitRange": {
-    "minRepublican": 0,
+    "minRepublican": 1,
     "maxRepublican": 3
   },
   "ensembles": [
@@ -12,8 +12,28 @@
       "ensembleType": "race-blind",
       "splits": [
         {
-          "republican": 6,
-          "democratic": 0,
+          "republican": 0,
+          "democratic": 6,
+          "frequency": 1180
+        },
+        {
+          "republican": 1,
+          "democratic": 5,
+          "frequency": 3420
+        },
+        {
+          "republican": 2,
+          "democratic": 4,
+          "frequency": 375
+        },
+        {
+          "republican": 3,
+          "democratic": 3,
+          "frequency": 25
+        },
+        {
+          "republican": 4,
+          "democratic": 2,
           "frequency": 0
         },
         {
@@ -22,28 +42,8 @@
           "frequency": 0
         },
         {
-          "republican": 4,
-          "democratic": 2,
-          "frequency": 0
-        },
-        {
-          "republican": 3,
-          "democratic": 3,
-          "frequency": 483
-        },
-        {
-          "republican": 2,
-          "democratic": 4,
-          "frequency": 2455
-        },
-        {
-          "republican": 1,
-          "democratic": 5,
-          "frequency": 2062
-        },
-        {
-          "republican": 0,
-          "democratic": 6,
+          "republican": 6,
+          "democratic": 0,
           "frequency": 0
         }
       ]
@@ -53,8 +53,28 @@
       "ensembleType": "vra-constrained",
       "splits": [
         {
-          "republican": 6,
-          "democratic": 0,
+          "republican": 0,
+          "democratic": 6,
+          "frequency": 1540
+        },
+        {
+          "republican": 1,
+          "democratic": 5,
+          "frequency": 3310
+        },
+        {
+          "republican": 2,
+          "democratic": 4,
+          "frequency": 145
+        },
+        {
+          "republican": 3,
+          "democratic": 3,
+          "frequency": 5
+        },
+        {
+          "republican": 4,
+          "democratic": 2,
           "frequency": 0
         },
         {
@@ -63,29 +83,9 @@
           "frequency": 0
         },
         {
-          "republican": 4,
-          "democratic": 2,
+          "republican": 6,
+          "democratic": 0,
           "frequency": 0
-        },
-        {
-          "republican": 3,
-          "democratic": 3,
-          "frequency": 124
-        },
-        {
-          "republican": 2,
-          "democratic": 4,
-          "frequency": 2105
-        },
-        {
-          "republican": 1,
-          "democratic": 5,
-          "frequency": 2768
-        },
-        {
-          "republican": 0,
-          "democratic": 6,
-          "frequency": 3
         }
       ]
     }

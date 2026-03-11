@@ -3,7 +3,8 @@
     "allow": [
       "Bash(where python)",
       "Bash(where python3)",
-      "Read(//c/Users/T14s/AppData/Local/Programs/Python/Python313/**)"
+      "Read(//c/Users/T14s/AppData/Local/Programs/Python/Python313/**)",
+      "Bash(\"/c/Users/T14s/AppData/Local/Programs/Python/Python313/python.exe\" -c \":*)"
     ]
   }
 }

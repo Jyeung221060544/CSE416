@@ -5,7 +5,7 @@
   "differenceThreshold": 0.3,
   "groups": [
     {
-      "groupKey": "Black_NH",
+      "groupKey": "black",
       "groupLabel": "Black",
       "meanDemSupport": 0.9562941977793503,
       "meanRepSupport": 0.04370580222064962,
@@ -19,7 +19,7 @@
       ]
     },
     {
-      "groupKey": "White_NH",
+      "groupKey": "white",
       "groupLabel": "White",
       "meanDemSupport": 0.10550339280279636,
       "meanRepSupport": 0.8944966071972036,
@@ -33,7 +33,7 @@
       ]
     },
     {
-      "groupKey": "Other",
+      "groupKey": "other",
       "groupLabel": "Other",
       "meanDemSupport": 0.6672369334163422,
       "meanRepSupport": 0.33276306658365795,
@@ -50,10 +50,10 @@
   "racePairs": [
     {
       "groups": [
-        "Black_NH",
-        "White_NH"
+        "black",
+        "white"
       ],
-      "label": "Black \u2212 White",
+      "label": "Black − White",
       "candidates": [
         {
           "candidateId": "DEM_PRES_2024",
@@ -1687,10 +1687,10 @@
     },
     {
       "groups": [
-        "Black_NH",
-        "Other"
+        "black",
+        "other"
       ],
-      "label": "Black \u2212 Other",
+      "label": "Black − Other",
       "candidates": [
         {
           "candidateId": "DEM_PRES_2024",
@@ -3324,10 +3324,10 @@
     },
     {
       "groups": [
-        "White_NH",
-        "Other"
+        "white",
+        "other"
       ],
-      "label": "White \u2212 Other",
+      "label": "White − Other",
       "candidates": [
         {
           "candidateId": "DEM_PRES_2024",

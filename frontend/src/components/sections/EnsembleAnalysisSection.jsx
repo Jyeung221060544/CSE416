@@ -11,16 +11,18 @@
  *   │                       Race selected via FeasibleRaceFilter sidebar  │
  *   └─────────────────────────────────────────────────────────────────────┘
  *
- * PROPS
- *   data    {object|null} — Full state bundle; uses splits + boxWhisker sub-keys.
+ * LAZY FETCH STRATEGY
+ *   Ensemble Splits  — GET /ensemble/splits      fetched on first entry to ensemble-splits tab
+ *   Box & Whisker    — GET /ensemble/box-whisker  fetched on first entry to box-whisker tab
+ *   Each fetch is guarded by a useRef flag so revisiting a tab never re-fetches.
  *
- * DATA SHAPE (data.splits)
+ * DATA SHAPE (splitsData — from /ensemble/splits)
  *   splitsData.enactedPlanSplit  — { republican, democratic } seat counts for the enacted plan.
  *   splitsData.ensembles[]       — Array with ensembleType 'race-blind' and 'vra-constrained'.
  *   splitsData.totalPlans        — Total number of sampled redistricting plans.
  *   splitsData.numDistricts      — Number of congressional districts in the state.
  *
- * DATA SHAPE (data.boxWhisker)
+ * DATA SHAPE (bwData — from /ensemble/box-whisker)
  *   bwData.feasibleGroups        — Array of lowercase race keys with box-whisker data.
  *   bwData.ensembles[]           — One entry per ensemble type.
  *   bwData.ensembles[].ensembleType      — 'race-blind' | 'vra-constrained'
@@ -29,10 +31,11 @@
  *
  * STATE SOURCES (Zustand)
  *   activeEATab        — Active mini-nav tab; drives sidebar sub-nav highlight.
+ *   activeSection      — Top-level section detector; gates all fetches.
  *   feasibleRaceFilter — Selected race for box & whisker (FeasibleRaceFilter in sidebar).
  */
 
-import { useMemo, useEffect, useState } from 'react'
+import { useMemo, useEffect, useRef, useState } from 'react'
 import SectionHeader             from '@/components/ui/section-header'
 import BrowserTabs               from '@/components/ui/browser-tabs'
 import EnsembleSplitChart        from '@/components/charts/EnsembleSplitChart'
@@ -41,7 +44,7 @@ import BoxWhiskerChart           from '@/components/charts/BoxWhiskerChart'
 import BoxWhiskerCompareChart    from '@/components/charts/BoxWhiskerCompareChart'
 import useAppStore               from '@/store/useAppStore'
 import { RACE_LABELS } from '@/lib/partyColors'
-import { fetchEnsemble } from '../../api'
+import { fetchEnsembleSplits, fetchEnsembleBoxWhisker } from '../../api'
 
 
 /* ── Tab definitions ─────────────────────────────────────────────────────────
@@ -72,25 +75,51 @@ export default function EnsembleAnalysisSection({ data, stateId }) {
     const eaCompareMode      = useAppStore(s => s.eaCompareMode)
     const setEaCompareMode   = useAppStore(s => s.setEaCompareMode)
     const feasibleRaceFilter = useAppStore(s => s.feasibleRaceFilter)
+    const activeSection      = useAppStore(s => s.activeSection)
+
+    const inEA = activeSection === 'ensemble-analysis'
 
     /* ── Tab state ────────────────────────────────────────────────────────── */
     useEffect(() => { setEaCompareMode(false) }, [activeTab, setEaCompareMode])
 
-    /* ── Fetch ensemble on stateId mount ─────────────────────────────────── */
-    const [ensembleBundle, setEnsembleBundle] = useState(null)
+    /* ── Lazy fetch: Ensemble Splits — on first entry to ensemble-splits tab ─ */
+    const [splitsData, setSplitsData] = useState(null)
+    const hasSplitsFetched = useRef(false)
+
+    /* ── Lazy fetch: Box & Whisker — on first entry to box-whisker tab ──────  */
+    const [bwData, setBwData] = useState(null)
+    const hasBWFetched = useRef(false)
+
+    /* Reset on state change */
     useEffect(() => {
-        if (!stateId) return
-        setEnsembleBundle(null)
-        fetchEnsemble(stateId)
-            .then(setEnsembleBundle)
-            .catch(err => console.error('[Ensemble] fetchEnsemble error:', err))
+        setSplitsData(null)
+        setBwData(null)
+        hasSplitsFetched.current = false
+        hasBWFetched.current = false
     }, [stateId])
 
+    useEffect(() => {
+        if (!stateId || !inEA || activeTab !== 'ensemble-splits') return
+        if (hasSplitsFetched.current) return
+        hasSplitsFetched.current = true
+        fetchEnsembleSplits(stateId)
+            .then(setSplitsData)
+            .catch(err => console.error('[Ensemble] fetchEnsembleSplits error:', err))
+    }, [stateId, inEA, activeTab])
+
+    useEffect(() => {
+        if (!stateId || !inEA || activeTab !== 'box-whisker') return
+        if (hasBWFetched.current) return
+        hasBWFetched.current = true
+        fetchEnsembleBoxWhisker(stateId)
+            .then(setBwData)
+            .catch(err => console.error('[Ensemble] fetchEnsembleBoxWhisker error:', err))
+    }, [stateId, inEA, activeTab])
+
     /* ── Derived data ────────────────────────────────────────────────────── */
-    const stateName    = data?.stateSummary?.stateName ?? null
+    const stateName = data?.stateSummary?.stateName ?? null
 
     /* Ensemble Splits */
-    const splitsData   = ensembleBundle?.splits ?? null
     const enactedSplit = splitsData?.enactedPlanSplit ?? null
 
     const raceBlind = splitsData?.ensembles?.find(e => e.ensembleType === 'race-blind')     ?? null
@@ -136,7 +165,6 @@ export default function EnsembleAnalysisSection({ data, stateId }) {
 
 
     /* Box & Whisker */
-    const bwData      = ensembleBundle?.boxWhisker ?? null
     const bwRaceBlind = bwData?.ensembles?.find(e => e.ensembleType === 'race-blind')     ?? null
     const bwVraConstr = bwData?.ensembles?.find(e => e.ensembleType === 'vra-constrained') ?? null
 

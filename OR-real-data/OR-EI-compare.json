@@ -5,7 +5,7 @@
   "differenceThreshold": 0.3,
   "groups": [
     {
-      "groupKey": "Latino",
+      "groupKey": "latino",
       "groupLabel": "Latino",
       "meanDemSupport": 0.5811509232968795,
       "meanRepSupport": 0.41884907670312044,
@@ -19,7 +19,7 @@
       ]
     },
     {
-      "groupKey": "White_NH",
+      "groupKey": "white",
       "groupLabel": "White",
       "meanDemSupport": 0.5063738288127914,
       "meanRepSupport": 0.49362617118720864,
@@ -33,7 +33,7 @@
       ]
     },
     {
-      "groupKey": "Other",
+      "groupKey": "other",
       "groupLabel": "Other",
       "meanDemSupport": 0.974762938314693,
       "meanRepSupport": 0.02523706168530694,
@@ -50,10 +50,10 @@
   "racePairs": [
     {
       "groups": [
-        "Latino",
-        "White_NH"
+        "latino",
+        "white"
       ],
-      "label": "Latino \u2212 White",
+      "label": "Latino − White",
       "candidates": [
         {
           "candidateId": "DEM_PRES_2024",
@@ -1687,10 +1687,10 @@
     },
     {
       "groups": [
-        "Latino",
-        "Other"
+        "latino",
+        "other"
       ],
-      "label": "Latino \u2212 Other",
+      "label": "Latino − Other",
       "candidates": [
         {
           "candidateId": "DEM_PRES_2024",
@@ -3324,10 +3324,10 @@
     },
     {
       "groups": [
-        "White_NH",
-        "Other"
+        "white",
+        "other"
       ],
-      "label": "White \u2212 Other",
+      "label": "White − Other",
       "candidates": [
         {
           "candidateId": "DEM_PRES_2024",
