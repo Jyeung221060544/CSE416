@@ -11,6 +11,7 @@
 
 module purge
 module load anaconda/3-new
+module load mvapich2/gcc12.1/2.3.7
 source /gpfs/software/Anaconda/etc/profile.d/conda.sh
 conda activate cse416-gis-py311
 
@@ -18,6 +19,7 @@ cd /gpfs/home/jayeung/projects/CSE416/seawulf_runs/OR
 
 which python
 python --version
+python -c "import mpi4py, gerrychain, geopandas; print('imports ok')"
 python -c "import gerrychain, geopandas; print('imports ok')"
 
 mpirun -np 4 python -u scripts/run_recom_mpi.py input/config_raceblind.json final
