@@ -3,47 +3,47 @@
   "electionYear": 2024,
   "raciallyPolarized": true,
   "totalDistricts": 6,
-  "partisanBias": -0.0854166666666667,
-  "notes": "At 50% Democratic vote share, Democrats win ~0.415 of seats (partisan bias \u2248 -0.085).",
+  "partisanBias": 0.052,
+  "notes": "At 50% Democratic vote share, Democrats win ~0.552 of seats (partisan bias \u2248 +0.052).",
   "curves": [
     {
       "party": "Democratic",
       "points": [
         {
-          "voteShare": 0.474330580348876,
-          "seatShare": 0.38125
+          "voteShare": 0.3581,
+          "seatShare": 0.0833
         },
         {
-          "voteShare": 0.49933058034887595,
-          "seatShare": 0.4145833333333333
+          "voteShare": 0.3831,
+          "seatShare": 0.0833
         },
         {
-          "voteShare": 0.5243305803488759,
-          "seatShare": 0.5666666666666667
+          "voteShare": 0.4081,
+          "seatShare": 0.1667
         },
         {
-          "voteShare": 0.5493305803488759,
-          "seatShare": 0.6875
+          "voteShare": 0.4331,
+          "seatShare": 0.1667
         },
         {
-          "voteShare": 0.574330580348876,
-          "seatShare": 0.75625
+          "voteShare": 0.4581,
+          "seatShare": 0.25
         },
         {
-          "voteShare": 0.599330580348876,
-          "seatShare": 0.8083333333333333
+          "voteShare": 0.4831,
+          "seatShare": 0.5
         },
         {
-          "voteShare": 0.624330580348876,
-          "seatShare": 0.8458333333333333
+          "voteShare": 0.5081,
+          "seatShare": 0.5
         },
         {
-          "voteShare": 0.6493305803488759,
-          "seatShare": 0.88125
+          "voteShare": 0.5331,
+          "seatShare": 0.6667
         },
         {
-          "voteShare": 0.6743305803488759,
-          "seatShare": 0.8895833333333334
+          "voteShare": 0.5581,
+          "seatShare": 0.8333
         }
       ]
     },
@@ -51,47 +51,47 @@
       "party": "Republican",
       "points": [
         {
-          "voteShare": 0.525669419651124,
-          "seatShare": 0.61875
+          "voteShare": 0.6419,
+          "seatShare": 0.9167
         },
         {
-          "voteShare": 0.5006694196511241,
-          "seatShare": 0.5854166666666667
+          "voteShare": 0.6169,
+          "seatShare": 0.9167
         },
         {
-          "voteShare": 0.4756694196511241,
-          "seatShare": 0.43333333333333335
+          "voteShare": 0.5919,
+          "seatShare": 0.8333
         },
         {
-          "voteShare": 0.45066941965112406,
-          "seatShare": 0.3125
+          "voteShare": 0.5669,
+          "seatShare": 0.8333
         },
         {
-          "voteShare": 0.42566941965112404,
-          "seatShare": 0.24375000000000002
+          "voteShare": 0.5419,
+          "seatShare": 0.75
         },
         {
-          "voteShare": 0.400669419651124,
-          "seatShare": 0.19166666666666665
+          "voteShare": 0.5169,
+          "seatShare": 0.5
         },
         {
-          "voteShare": 0.375669419651124,
-          "seatShare": 0.15416666666666667
+          "voteShare": 0.4919,
+          "seatShare": 0.5
         },
         {
-          "voteShare": 0.3506694196511241,
-          "seatShare": 0.11875000000000002
+          "voteShare": 0.4669,
+          "seatShare": 0.3333
         },
         {
-          "voteShare": 0.32566941965112406,
-          "seatShare": 0.11041666666666661
+          "voteShare": 0.4419,
+          "seatShare": 0.1667
         }
       ]
     }
   ],
   "enactedPlan": {
-    "democraticVoteShare": 0.574330580348876,
-    "democraticSeatShare": 0.8333333333333334,
+    "democraticVoteShare": 0.5831,
+    "democraticSeatShare": 0.8333,
     "label": "Enacted 2024"
   }
 }

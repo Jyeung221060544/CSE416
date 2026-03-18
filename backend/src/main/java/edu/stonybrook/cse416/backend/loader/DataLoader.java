@@ -51,10 +51,11 @@ public class DataLoader implements CommandLineRunner {
     @Value("${app.load-data:false}")
     private boolean loadData;
 
-    @Value("${app.dummy-data.base-path:../frontend/src/dummy}")
-    private String dummyBase;
+    /** Used only for splash-states.json (not state-specific). */
+    @Value("${app.splash-data.base-path:../frontend/src/dummy}")
+    private String splashBase;
 
-    /** Root that contains AL_data/ and OR_data/ subdirectories. */
+    /** Root containing AL_data/, OR_data/, AL-real-data/, OR-real-data/, etc. */
     @Value("${app.geodata.base-path:..}")
     private String geoBase;
 
@@ -118,7 +119,7 @@ public class DataLoader implements CommandLineRunner {
 
     @SuppressWarnings("unchecked")
     private void loadStates() throws Exception {
-        Map<String, Object> root = read("splash-states.json");
+        Map<String, Object> root = mapper.readValue(new File(splashBase, "splash-states.json"), mapType());
         List<Map<String, Object>> list = (List<Map<String, Object>>) root.get("states");
         for (Map<String, Object> s : list) {
             StateDoc doc = new StateDoc();
@@ -168,12 +169,14 @@ public class DataLoader implements CommandLineRunner {
     }
 
     /**
-     * Seeds the district GeoJSON for one state from
-     * {@code {geoBase}/{STATE}_data/{STATE}_enacted_districts_with_stats.geojson}.
+     * Seeds the district GeoJSON for one state from the frontend assets folder.
+     * AL → frontend/src/assets/ALCongressionalDistricts.json
+     * OR → frontend/src/assets/ORCongressionalDistrict.json
      */
     private void loadDistrictGeo(String state) throws Exception {
-        File file = new File(geoBase,
-                state + "_data/" + state + "_enacted_districts_with_stats.geojson");
+        String filename = state.equals("AL") ? "ALCongressionalDistricts.json"
+                                             : state + "CongressionalDistrict.json";
+        File file = new File(geoBase, "frontend/src/assets/" + filename);
         if (!file.exists()) {
             System.out.println("[DataLoader] geo_assets: district file not found for "
                     + state + " at " + file.getAbsolutePath() + ", skipping");
@@ -198,17 +201,23 @@ public class DataLoader implements CommandLineRunner {
         seedState("OR");
     }
 
+    /** Returns the directory that holds all JSON files for the given state. */
+    private File stateDir(String state) {
+        return new File(geoBase, state + "-real-data");
+    }
+
     private void seedState(String state) throws Exception {
         System.out.println("[DataLoader] Seeding state: " + state);
+        File dir = stateDir(state);
         // EI compare first — returns the pairs manifest for embedding in overview
-        List<List<String>> eiPairs = loadEiCompare(state);
+        List<List<String>> eiPairs = loadEiCompare(state, dir);
         // Heatmaps second — discovers available races dynamically from data keys
-        List<String> heatmapRaces = loadHeatmaps(state);
-        loadOverview(state, eiPairs, heatmapRaces);
-        loadEnsemble(state);
-        loadGingles(state);
-        loadEiKde(state);
-        loadVoteSeatShare(state);
+        List<String> heatmapRaces = loadHeatmaps(state, dir);
+        loadOverview(state, dir, eiPairs, heatmapRaces);
+        loadEnsemble(state, dir);
+        loadGingles(state, dir);
+        loadEiKde(state, dir);
+        loadVoteSeatShare(state, dir);
     }
 
     // ── state_overview ────────────────────────────────────────────────────────
@@ -223,12 +232,12 @@ public class DataLoader implements CommandLineRunner {
      *                     Frontend uses this list to know which {@code race} values are
      *                     valid for {@code GET /heatmap?race=} requests.
      */
-    private void loadOverview(String state, List<List<String>> eiPairs,
+    private void loadOverview(String state, File dir, List<List<String>> eiPairs,
                               List<String> heatmapRaces) throws Exception {
         String prefix = state + "-";
-        Map<String, Object> stateSummary    = readIfExists(prefix + "state-summary.json");
-        Map<String, Object> districtSummary = readIfExists(prefix + "district-summary.json");
-        Map<String, Object> ensembleSummary = readIfExists(prefix + "ensemble-summary.json");
+        Map<String, Object> stateSummary    = readIfExists(dir, prefix + "state-summary.json");
+        Map<String, Object> districtSummary = readIfExists(dir, prefix + "district-summary.json");
+        Map<String, Object> ensembleSummary = readIfExists(dir, prefix + "ensemble-summary.json");
 
         if (stateSummary == null && districtSummary == null && ensembleSummary == null) {
             System.out.println("[DataLoader] state_overview: no files found for " + state + ", skipping");
@@ -258,11 +267,11 @@ public class DataLoader implements CommandLineRunner {
      *
      * @return de-duplicated, ordered list of race keys found (e.g. ["black","white"])
      */
-    private List<String> loadHeatmaps(String state) throws Exception {
+    private List<String> loadHeatmaps(String state, File dir) throws Exception {
         // LinkedHashSet preserves insertion order and de-duplicates across granularities
         Set<String> raceSet = new LinkedHashSet<>();
-        raceSet.addAll(loadHeatmapGranularity(state, "precinct",     state + "-heatmap-precinct.json"));
-        raceSet.addAll(loadHeatmapGranularity(state, "census_block", state + "-heatmap-census.json"));
+        raceSet.addAll(loadHeatmapGranularity(state, dir, "precinct",     state + "-heatmap-precinct.json"));
+        raceSet.addAll(loadHeatmapGranularity(state, dir, "census_block", state + "-heatmap-census.json"));
         return new ArrayList<>(raceSet);
     }
 
@@ -284,9 +293,9 @@ public class DataLoader implements CommandLineRunner {
      *         was not found
      */
     @SuppressWarnings("unchecked")
-    private List<String> loadHeatmapGranularity(String state, String granularity, String filename)
+    private List<String> loadHeatmapGranularity(String state, File dir, String granularity, String filename)
             throws Exception {
-        Map<String, Object> raw = readIfExists(filename);
+        Map<String, Object> raw = readIfExists(dir, filename);
         if (raw == null) {
             System.out.println("[DataLoader] heatmaps: " + filename + " not found, skipping");
             return Collections.emptyList();
@@ -331,10 +340,10 @@ public class DataLoader implements CommandLineRunner {
 
     // ── ensemble_analysis ─────────────────────────────────────────────────────
 
-    private void loadEnsemble(String state) throws Exception {
+    private void loadEnsemble(String state, File dir) throws Exception {
         String prefix = state + "-";
-        Map<String, Object> splits     = readIfExists(prefix + "splits.json");
-        Map<String, Object> boxWhisker = readIfExists(prefix + "boxwhisker.json");
+        Map<String, Object> splits     = readIfExists(dir, prefix + "splits.json");
+        Map<String, Object> boxWhisker = readIfExists(dir, prefix + "boxwhisker.json");
 
         if (splits == null && boxWhisker == null) {
             System.out.println("[DataLoader] ensemble_analysis: no files found for " + state + ", skipping");
@@ -352,8 +361,8 @@ public class DataLoader implements CommandLineRunner {
     // ── gingles (one doc per feasible race) ───────────────────────────────────
 
     @SuppressWarnings("unchecked")
-    private void loadGingles(String state) throws Exception {
-        Map<String, Object> raw = readIfExists(state + "-Gingles-precinct.json");
+    private void loadGingles(String state, File dir) throws Exception {
+        Map<String, Object> raw = readIfExists(dir, state + "-Gingles-precinct.json");
         if (raw == null) {
             System.out.println("[DataLoader] gingles: file not found for " + state + ", skipping");
             return;
@@ -383,8 +392,8 @@ public class DataLoader implements CommandLineRunner {
     // ── ei_kde (inverted: one doc per race, all candidates) ───────────────────
 
     @SuppressWarnings("unchecked")
-    private void loadEiKde(String state) throws Exception {
-        Map<String, Object> raw = readIfExists(state + "-EI.json");
+    private void loadEiKde(String state, File dir) throws Exception {
+        Map<String, Object> raw = readIfExists(dir, state + "-EI.json");
         if (raw == null) {
             System.out.println("[DataLoader] ei_kde: file not found for " + state + ", skipping");
             return;
@@ -450,10 +459,10 @@ public class DataLoader implements CommandLineRunner {
      * @return sorted list of available race pairs for embedding in the overview doc
      */
     @SuppressWarnings("unchecked")
-    private List<List<String>> loadEiCompare(String state) throws Exception {
+    private List<List<String>> loadEiCompare(String state, File dir) throws Exception {
         List<List<String>> pairsManifest = new ArrayList<>();
 
-        Map<String, Object> raw = readIfExists(state + "-EI-compare.json");
+        Map<String, Object> raw = readIfExists(dir, state + "-EI-compare.json");
         if (raw == null) {
             System.out.println("[DataLoader] ei_compare: file not found for " + state + ", skipping");
             return pairsManifest;
@@ -465,10 +474,10 @@ public class DataLoader implements CommandLineRunner {
                 (List<Map<String, Object>>) raw.get("racePairs");
 
         for (Map<String, Object> pair : racePairs) {
-            List<String> races = (List<String>) pair.get("races");
+            List<String> races = (List<String>) pair.get("groups");
             if (races == null || races.size() < 2) continue;
 
-            // Sort alphabetically for a deterministic _id regardless of source order.
+            // groupKey values are normalized simple names (e.g. "black", "white", "hispanic").
             String[] sorted = { races.get(0).toLowerCase(), races.get(1).toLowerCase() };
             Arrays.sort(sorted);
 
@@ -492,8 +501,8 @@ public class DataLoader implements CommandLineRunner {
     // ── vote_seat_share ───────────────────────────────────────────────────────
 
     @SuppressWarnings("unchecked")
-    private void loadVoteSeatShare(String state) throws Exception {
-        Map<String, Object> raw = readIfExists(state + "-vote-seat-share.json");
+    private void loadVoteSeatShare(String state, File dir) throws Exception {
+        Map<String, Object> raw = readIfExists(dir, state + "-vote-seat-share.json");
         if (raw == null) {
             System.out.println("[DataLoader] vote_seat_share: file not found for " + state + ", skipping");
             return;
@@ -514,17 +523,12 @@ public class DataLoader implements CommandLineRunner {
 
     // ── Helpers ───────────────────────────────────────────────────────────────
 
-    /** Reads a JSON file from the dummy base path. */
-    private Map<String, Object> read(String filename) throws Exception {
-        return mapper.readValue(new File(dummyBase, filename), mapType());
-    }
-
     /**
-     * Like {@link #read} but returns {@code null} if the file does not exist,
-     * allowing partial seeding when some data files are not yet available.
+     * Returns {@code null} if the file does not exist, allowing partial seeding
+     * when some data files are not yet available for a state.
      */
-    private Map<String, Object> readIfExists(String filename) throws Exception {
-        File f = new File(dummyBase, filename);
+    private Map<String, Object> readIfExists(File dir, String filename) throws Exception {
+        File f = new File(dir, filename);
         if (!f.exists()) return null;
         return mapper.readValue(f, mapType());
     }

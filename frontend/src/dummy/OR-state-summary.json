@@ -2,49 +2,49 @@
   "stateId": "OR",
   "stateName": "Oregon",
   "totalPopulation": 4237256,
-  "votingAgePopulation": 3370652,
+  "votingAgePopulation": 3291000,
   "numDistricts": 6,
-  "idealDistrictPopulation": 561775,
+  "idealDistrictPopulation": 706209,
   "isPreclearance": false,
   "voterDistribution": {
     "electionYear": 2024,
-    "democraticVoteShare": 0.574330580348876,
-    "republicanVoteShare": 0.42566941965112404
+    "democraticVoteShare": 0.583,
+    "republicanVoteShare": 0.417
   },
   "demographicGroups": [
     {
       "group": "White",
-      "vap": 2526275,
-      "vapPercentage": 0.7494914930405157,
+      "vap": 2484500,
+      "vapPercentage": 0.7548,
       "isFeasible": true
     },
     {
-      "group": "Black",
-      "vap": 60012,
-      "vapPercentage": 0.01780427050908845,
-      "isFeasible": false
-    },
-    {
-      "group": "Hispanic",
-      "vap": 389394,
-      "vapPercentage": 0.11552483021089095,
-      "isFeasible": false
+      "group": "Latino",
+      "vap": 355200,
+      "vapPercentage": 0.1079,
+      "isFeasible": true
     },
     {
       "group": "Asian",
-      "vap": 156707,
-      "vapPercentage": 0.04649159865806378,
+      "vap": 172200,
+      "vapPercentage": 0.0523,
+      "isFeasible": false
+    },
+    {
+      "group": "Black",
+      "vap": 86900,
+      "vapPercentage": 0.0264,
       "isFeasible": false
     },
     {
       "group": "Other",
-      "vap": 238264,
-      "vapPercentage": 0.07068780758144122,
+      "vap": 192200,
+      "vapPercentage": 0.0584,
       "isFeasible": false
     }
   ],
   "redistrictingControl": {
-    "controllingParty": ""
+    "controllingParty": "Democratic"
   },
   "congressionalRepresentatives": {
     "totalSeats": 6,

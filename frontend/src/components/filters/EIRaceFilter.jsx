@@ -14,21 +14,12 @@
  *
  * STATE SOURCE
  *   eiRaceFilter / toggleEiRaceFilter — from useFilters() (Zustand via useAppStore).
+ *   demographicGroups                 — from useAppStore; populated by useStateData on load.
  */
 
 import CollapsibleGroup from './CollapsibleGroup'
 import useFilters from '../../hooks/useFilters'
-
-
-/* ── Step 0: Race options ────────────────────────────────────────────────── */
-/* Values must match the group keys in ei.candidates[n].racialGroups[].group */
-const EI_RACE_OPTIONS = [
-    { value: 'white',    label: 'White' },
-    { value: 'black',    label: 'Black' },
-    { value: 'hispanic', label: 'Hispanic' },
-    { value: 'asian',    label: 'Asian' },
-    { value: 'other',    label: 'Other' },
-]
+import useAppStore from '@/store/useAppStore'
 
 
 /**
@@ -38,14 +29,19 @@ const EI_RACE_OPTIONS = [
  */
 export default function EIRaceFilter() {
 
-    /* ── Step 1: Read filter state from Zustand ──────────────────────────── */
+    /* ── Step 1: Read filter state and available groups from Zustand ─────── */
     const { eiRaceFilter, toggleEiRaceFilter } = useFilters()
+    const demographicGroups = useAppStore(s => s.demographicGroups)
 
+    const eiRaceOptions = demographicGroups.map(g => ({
+        value: g.group.toLowerCase(),
+        label: g.group,
+    }))
 
     /* ── Step 2: Render ──────────────────────────────────────────────────── */
     return (
         <CollapsibleGroup label="EI Race / Minority">
-            {EI_RACE_OPTIONS.map((opt) => {
+            {eiRaceOptions.map((opt) => {
                 const checked = eiRaceFilter.includes(opt.value)
 
                 /* Disable this checkbox if it's the only remaining selected item */

@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
  * using the pattern {@code {stateId}_data/{stateId}_precincts_full.geojson}.
  */
 @RestController
-@RequestMapping("/api/states/{stateId}/precincts")
+@RequestMapping("/api/states/{stateId}/geo/precincts")
 public class PrecinctGeoController {
 
     private static final CacheControl CACHE = CacheControl.maxAge(24, TimeUnit.HOURS).cachePublic();
@@ -57,7 +57,7 @@ public class PrecinctGeoController {
     public ResponseEntity<Resource> getPrecincts(@PathVariable String stateId) {
         String upper = stateId.toUpperCase();
         File file = new File(geoBasePath,
-                upper + "_data/" + upper + "_precincts_full.geojson");
+                "frontend/src/assets/" + upper + "PrecinctMap.json");
 
         if (!file.exists()) return ResponseEntity.notFound().build();
 

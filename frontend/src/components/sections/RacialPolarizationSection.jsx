@@ -1,20 +1,22 @@
 /**
  * RacialPolarizationSection.jsx — Third section on StatePage (id="racial-polarization").
  *
- * Fetch-on-demand strategy:
- *   Gingles    — GET /gingles?race=        on (stateId, feasibleRaceFilter) change
+ * Lazy fetch strategy (all fetches gated on activeSection + activeRPTab):
+ *   Gingles    — GET /gingles?race=           when activeRPTab === 'gingles'
  *                Results cached in ginglesByRace map; re-used on tab revisit.
- *   EI KDE     — GET /ei?race=             for each race added to eiRaceFilter
+ *   EI KDE     — GET /ei?race=                when activeRPTab === 'ei-kde' or 'ei-bar'
  *                Results cached in eiKdeByRace map; only new races hit the server.
- *   EI Compare — GET /ei-compare?race1=&race2= on eiKdeCompareRaces pair change
- *   VS-SS      — GET /vote-seat-share      on stateId mount
+ *   EI Compare — GET /ei-compare?race1=&race2= when activeRPTab === 'ei-bar'
+ *   VS-SS      — GET /vote-seat-share          on section entry (activeSection gate only)
+ *                Fetched at section level (not tab) so the VS-SS tab can show
+ *                enabled/disabled based on raciallyPolarized before it is clicked.
  *
  * The server stores EI KDE race-first (one doc per race, all candidates).
  * We invert back to candidate-first here so EIKDEChart/EIBarChart receive the
  * same shape they always expected: candidate.racialGroups[].kdePoints.
  */
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import SectionHeader        from '@/components/ui/section-header'
 import BrowserTabs          from '@/components/ui/browser-tabs'
 import useAppStore          from '@/store/useAppStore'
@@ -35,6 +37,9 @@ export default function RacialPolarizationSection({ data, stateId }) {
     const eiKdeCompareRaces  = useAppStore(s => s.eiKdeCompareRaces)
     const activeTab          = useAppStore(s => s.activeRPTab)
     const setActiveTab       = useAppStore(s => s.setActiveRPTab)
+    const activeSection      = useAppStore(s => s.activeSection)
+
+    const inRP = activeSection === 'racial-polarization'
 
     /* ── Local selection state ───────────────────────────────────────────── */
     const [selectedId, setSelectedId] = useState(null)
@@ -50,50 +55,61 @@ export default function RacialPolarizationSection({ data, stateId }) {
     // voteSeatData: VS-SS bundle
     const [voteSeatData,   setVoteSeatData]   = useState(null)
 
+    // One-time fetch guard for VS-SS (section-level, not tab-level)
+    const hasVSSFetched = useRef(false)
+
     /* Reset all on stateId change */
     useEffect(() => {
         setGinglesByRace({})
         setEiKdeByRace({})
         setEiCompareDoc(null)
         setVoteSeatData(null)
+        hasVSSFetched.current = false
     }, [stateId])
 
-    /* ── Fetch: Gingles — on (stateId, feasibleRaceFilter) ──────────────── */
+    /* ── Fetch: Gingles — gated on Gingles tab ───────────────────────────── */
     useEffect(() => {
         if (!stateId || !feasibleRaceFilter) return
+        if (!inRP || activeTab !== 'gingles') return
         if (ginglesByRace[feasibleRaceFilter]) return  // already cached
         fetchGingles(stateId, feasibleRaceFilter)
             .then(doc => setGinglesByRace(prev => ({ ...prev, [feasibleRaceFilter]: doc })))
             .catch(err => console.error('[RP] fetchGingles error:', err))
-    }, [stateId, feasibleRaceFilter])  // eslint-disable-line react-hooks/exhaustive-deps
+    }, [stateId, feasibleRaceFilter, inRP, activeTab])  // eslint-disable-line react-hooks/exhaustive-deps
 
-    /* ── Fetch: EI KDE — one fetch per newly added race ─────────────────── */
+    /* ── Fetch: EI KDE — gated on ei-kde or ei-bar tab ──────────────────── */
     useEffect(() => {
         if (!stateId) return
+        if (!inRP || (activeTab !== 'ei-kde' && activeTab !== 'ei-bar')) return
         eiRaceFilter.forEach(race => {
             if (eiKdeByRace[race]) return  // already cached
             fetchEiKde(stateId, race)
                 .then(doc => setEiKdeByRace(prev => ({ ...prev, [race]: doc })))
                 .catch(err => console.error('[RP] fetchEiKde error:', err))
         })
-    }, [stateId, eiRaceFilter])  // eslint-disable-line react-hooks/exhaustive-deps
+    }, [stateId, eiRaceFilter, inRP, activeTab])  // eslint-disable-line react-hooks/exhaustive-deps
 
-    /* ── Fetch: EI Compare — on pair change ─────────────────────────────── */
+    /* ── Fetch: EI Compare — gated on ei-bar tab ─────────────────────────── */
     useEffect(() => {
         if (!stateId || eiKdeCompareRaces.length !== 2) return
+        if (!inRP || activeTab !== 'ei-bar') return
         setEiCompareDoc(null)
         fetchEiCompare(stateId, eiKdeCompareRaces[0], eiKdeCompareRaces[1])
             .then(setEiCompareDoc)
             .catch(err => console.error('[RP] fetchEiCompare error:', err))
-    }, [stateId, eiKdeCompareRaces])
+    }, [stateId, eiKdeCompareRaces, inRP, activeTab])
 
-    /* ── Fetch: Vote / Seat Share — on stateId mount ─────────────────────── */
+    /* ── Fetch: Vote / Seat Share — gated on section entry (one-time) ───────
+     * Fetched at section level (not tab) so the VS-SS tab can show
+     * enabled/disabled based on raciallyPolarized before it is clicked. */
     useEffect(() => {
-        if (!stateId) return
+        if (!stateId || !inRP) return
+        if (hasVSSFetched.current) return
+        hasVSSFetched.current = true
         fetchVoteSeatShare(stateId)
             .then(setVoteSeatData)
             .catch(err => console.error('[RP] fetchVoteSeatShare error:', err))
-    }, [stateId])
+    }, [stateId, inRP])
 
     /* ── Build candidate-first EI structure from race-first cache ─────────
      * Server returns race-first: each race doc has all candidates.

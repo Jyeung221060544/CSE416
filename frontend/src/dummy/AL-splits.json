@@ -14,17 +14,17 @@
         {
           "republican": 7,
           "democratic": 0,
-          "frequency": 4142
+          "frequency": 3821
         },
         {
           "republican": 6,
           "democratic": 1,
-          "frequency": 842
+          "frequency": 1138
         },
         {
           "republican": 5,
           "democratic": 2,
-          "frequency": 16
+          "frequency": 41
         },
         {
           "republican": 4,
@@ -65,12 +65,12 @@
         {
           "republican": 6,
           "democratic": 1,
-          "frequency": 4985
+          "frequency": 4980
         },
         {
           "republican": 5,
           "democratic": 2,
-          "frequency": 15
+          "frequency": 20
         },
         {
           "republican": 4,

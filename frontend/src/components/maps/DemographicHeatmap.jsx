@@ -70,32 +70,114 @@
  */
 
 /* ── Step 0: React + map library imports ──────────────────────────────── */
-import { useEffect, useRef } from 'react'
-import { MapContainer, GeoJSON, TileLayer, useMap } from 'react-leaflet'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { MapContainer, GeoJSON, TileLayer, useMap, useMapEvents } from 'react-leaflet'
 import L from 'leaflet'
 
-/* ── Step 1: Static GeoJSON assets (replace with API fetch) ───────────── */
-//CONNECT HERE: GEO_SAMPLES + STATE_OUTLINE — delete these 4 asset imports and both
-// static lookup objects; replace with geometry from GET /api/states/:stateId/heatmap
-// and outline from GET /api/states/:stateId/districts/geojson
-import ALPrecinctFull from '../../assets/ALPrecinctMap.json'
-import ALBlockSample  from '../../assets/ALBlockMap.json'
-import ALDistricts    from '../../assets/ALCongressionalDistricts.json'
-import ORDistricts    from '../../assets/ORCongressionalDistrict.json'
+/* ── Step 1: GeoJSON — fetched from backend, cached per stateId ─────────── */
+import { fetchDistricts, fetchPrecincts } from '../../api'
+const districtOutlineCache = {} // keyed by stateId
+const precinctCache        = {} // keyed by stateId
 
-/* ── Step 2: Static lookups (replace with API data) ──────────────────── */
-//CONNECT HERE: STATE_OUTLINE — replace with GeoJSON from /api/states/:stateId/districts/geojson
-const STATE_OUTLINE = { AL: ALDistricts, OR: ORDistricts }
+/** Minimum zoom level before census blocks are fetched from the backend. */
+const CENSUS_MIN_ZOOM = 10
 
-//CONNECT HERE: GEO_SAMPLES — replace with geometry embedded in the heatmap API response
-const GEO_SAMPLES = {
-    AL: {
-        precinct:     ALPrecinctFull,   // 1947 real precincts, reprojected to WGS84
-        census_block: ALBlockSample,    // 100 real census blocks (NW Alabama)
-    },
+/* ── Step 3: CensusBlockLayer — fetches blocks for the current viewport ──
+ * Rendered inside a MapContainer so it can call useMap() / useMapEvents().
+ * Fires a debounced fetch whenever the user pans or zooms past CENSUS_MIN_ZOOM.
+ */
+function CensusBlockLayer({ stateId, colorByIdx, heatmapData, onZoomChange }) {
+    const map = useMap()
+    const [geoData, setGeoData]   = useState(null)
+    const [loading, setLoading]   = useState(false)
+    const [zoom, setZoom]         = useState(() => map.getZoom())
+    const abortRef                = useRef(null)
+    const timerRef                = useRef(null)
+
+    const fetchBlocks = useCallback(() => {
+        const z = map.getZoom()
+        setZoom(z)
+        onZoomChange?.(z)
+        if (z < CENSUS_MIN_ZOOM) return
+
+        const b = map.getBounds()
+        const bbox = [
+            b.getWest().toFixed(5),
+            b.getSouth().toFixed(5),
+            b.getEast().toFixed(5),
+            b.getNorth().toFixed(5),
+        ].join(',')
+
+        // Cancel any in-flight request
+        if (abortRef.current) abortRef.current.abort()
+        abortRef.current = new AbortController()
+
+        setLoading(true)
+        fetch(`/api/states/${stateId}/census-blocks?bbox=${bbox}`,
+              { signal: abortRef.current.signal })
+            .then(r => r.ok ? r.json() : null)
+            .then(data => { setGeoData(data); setLoading(false) })
+            .catch(err => { if (err.name !== 'AbortError') setLoading(false) })
+    }, [map, stateId])
+
+    // Debounce on map move/zoom
+    useMapEvents({
+        moveend() {
+            clearTimeout(timerRef.current)
+            timerRef.current = setTimeout(fetchBlocks, 300)
+        },
+        zoomend() {
+            const z = map.getZoom()
+            setZoom(z)
+            onZoomChange?.(z)
+            clearTimeout(timerRef.current)
+            timerRef.current = setTimeout(fetchBlocks, 300)
+        },
+    })
+
+    // Initial fetch on mount
+    useEffect(() => { fetchBlocks() }, [fetchBlocks])
+
+    // Re-style when heatmap data changes (race filter changed)
+    const layerRef = useRef(null)
+    useEffect(() => {
+        if (!layerRef.current || !heatmapData) return
+        let counter = 0
+        layerRef.current.eachLayer(layer => {
+            const idx = layer.feature?.properties?.idx ?? counter++
+            layer.setStyle({
+                fillColor:   colorByIdx[idx] ?? '#f0fdfa',
+                fillOpacity: 0.82,
+                color:       '#134e4a',
+                weight:      0.3,
+            })
+        })
+    }, [heatmapData, colorByIdx])
+
+    if (zoom < CENSUS_MIN_ZOOM) {
+        return null // parent shows the "zoom in" overlay
+    }
+
+    let counter = 0
+    return geoData ? (
+        <GeoJSON
+            key={`census-${stateId}-${geoData.features?.length}`}
+            ref={layerRef}
+            data={geoData}
+            style={feature => {
+                const idx = feature?.properties?.idx ?? counter++
+                return {
+                    fillColor:   colorByIdx[idx] ?? '#f0fdfa',
+                    fillOpacity: 0.82,
+                    color:       '#134e4a',
+                    weight:      0.3,
+                }
+            }}
+        />
+    ) : null
 }
 
-/* ── Step 3: FitBounds helper ─────────────────────────────────────────── */
+/* ── Step 4: FitBounds helper ─────────────────────────────────────────── */
 /**
  * Inner Leaflet component that fits the map viewport to the extent of the
  * provided GeoJSON. Used to keep the full state in frame on first render.
@@ -116,7 +198,7 @@ function FitBounds({ data }) {
     return null
 }
 
-/* ── Step 4: MapResizeHandler helper ─────────────────────────────────── */
+/* ── Step 5: MapResizeHandler helper ─────────────────────────────────── */
 /**
  * Watches the Leaflet container for ResizeObserver events and invalidates +
  * re-fits the map so the state always fills the panel after sidebar toggles.
@@ -145,7 +227,7 @@ function MapResizeHandler({ data }) {
     return null
 }
 
-/* ── Step 5: Main DemographicHeatmap component ────────────────────────── */
+/* ── Step 6: Main DemographicHeatmap component ────────────────────────── */
 /**
  * Renders the demographic density heatmap for a given state and granularity.
  * Each geographic unit is colored according to the server-assigned bin for the
@@ -163,12 +245,34 @@ function MapResizeHandler({ data }) {
  *                                             Falls back to the US center if null.
  * @returns {JSX.Element} Full-height Leaflet map or an "unavailable" fallback.
  */
-export default function DemographicHeatmap({ stateId, granularity, heatmapData, raceFilter, mapView, showDistrictOverlay, districtPartyMap }) {
-    /* ── Step 5a: Resolve geometry sources ── */
-    const outlineData = STATE_OUTLINE[stateId] ?? null
-    const sampleData  = GEO_SAMPLES[stateId]?.[granularity] ?? null
+export default function DemographicHeatmap({ stateId, granularity, heatmapData, raceFilter, mapView, showDistrictOverlay, districtPartyMap, isActive }) {
+    /* ── Step 6a: Resolve geometry sources ── */
+    const [outlineData, setOutlineData] = useState(districtOutlineCache[stateId] ?? null)
+    useEffect(() => {
+        if (districtOutlineCache[stateId]) { setOutlineData(districtOutlineCache[stateId]); return }
+        setOutlineData(null)
+        fetchDistricts(stateId)
+            .then(data => { districtOutlineCache[stateId] = data; setOutlineData(data) })
+            .catch(err => console.error('[DemographicHeatmap] fetchDistricts error:', err))
+    }, [stateId])
 
-    /* ── Step 5b: Build idx → hex color map from server bin data ── */
+    // Precinct GeoJSON (fetched from backend, cached in module scope)
+    // Gated on isActive so precincts are not fetched until the Demographic section is in view.
+    const [precinctData, setPrecinctData] = useState(null)
+    useEffect(() => {
+        if (granularity !== 'precinct') { setPrecinctData(null); return }
+        if (precinctCache[stateId]) { setPrecinctData(precinctCache[stateId]); return }
+        if (!isActive) return
+        setPrecinctData(null)
+        fetchPrecincts(stateId)
+            .then(data => { precinctCache[stateId] = data; setPrecinctData(data) })
+            .catch(err => console.error('[DemographicHeatmap] fetchPrecincts error:', err))
+    }, [stateId, granularity, isActive])
+
+    // Track map zoom to show/hide "zoom in" overlay for census_block mode
+    const [mapZoom, setMapZoom] = useState(null)
+
+    /* ── Step 6b: Build idx → hex color map from server bin data ── */
     // Server returns per-race features: { idx, binId } — no race key lookup needed.
     const colorByIdx = {}
     if (heatmapData?.features && heatmapData?.bins) {
@@ -179,7 +283,7 @@ export default function DemographicHeatmap({ stateId, granularity, heatmapData, 
         })
     }
 
-    /* ── Step 5b-ii: Imperatively re-style heatmap when data arrives ────────
+    /* ── Step 6b-ii: Imperatively re-style precinct heatmap when data arrives ─
      * We do NOT change the GeoJSON key when heatmapData loads. Remounting the
      * heatmap layer after the district overlay would push the heatmap on top.
      * Instead we call layer.setStyle() on every feature via the ref. ──────── */
@@ -198,89 +302,108 @@ export default function DemographicHeatmap({ stateId, granularity, heatmapData, 
         })
     }, [heatmapData]) // eslint-disable-line react-hooks/exhaustive-deps
 
-    /* ── Step 5c: Map re-key token (forces layer remount on param change) ── */
+    /* ── Step 6b-iii: Keep district overlay on top ────────────────────────────────
+     * The precinct GeoJSON loads async and gets stacked above the district overlay
+     * when it arrives. We use Leaflet's `add` event (fires when the layer actually
+     * joins the map) to call bringToFront() at the right moment — not in a React
+     * effect, which fires before the layer is in the Leaflet DOM. ──────────────── */
+    const districtOverlayRef = useRef(null)
+
+    /* ── Step 6c: Map re-key token (forces layer remount on param change) ── */
     const mapKey = `${stateId}-${granularity}-${raceFilter}`
 
-    /* ── Step 5d: Guard — no outline data means we can't render ── */
-    if (!outlineData) {
-        return (
-            <div className="h-full flex flex-col items-center justify-center gap-3 text-center px-6">
-                <p className="text-brand-darkest font-semibold text-sm">Map Unavailable</p>
-                <p className="text-brand-muted/60 text-xs leading-relaxed">
-                    Geographic data for this state will be loaded from the backend.
-                </p>
-            </div>
-        )
-    }
-
-    /* ── Step 5e: Running counter for features without an explicit idx ── */
+    /* ── Step 6e: Running counter for features without an explicit idx ── */
     let counter = 0
 
-    /* ── Step 5f: Render ── */
+    /* ── Step 6f: Render ── */
     return (
-        <MapContainer
-            key={mapKey}
-            center={mapView?.center ?? [39.5, -98.35]}
-            zoom={mapView?.zoom ?? 5}
-            zoomSnap={0}
-            zoomControl
-            scrollWheelZoom={false}
-            doubleClickZoom={false}
-            attributionControl={false}
-            style={{ height: '100%', width: '100%' }}
-        >
-            {/* ── MAP UTILITIES ──────────────────────────────────────── */}
-            {/* Always fit to the district outline which covers the full state extent.
-                sampleData may cover only a sub-region (e.g. census_block sample = NW AL only). */}
-            <FitBounds data={outlineData} />
-            <MapResizeHandler data={outlineData} />
+        <div style={{ position: 'relative', height: '100%', width: '100%' }}>
+            <MapContainer
+                key={mapKey}
+                center={mapView?.center ?? [39.5, -98.35]}
+                zoom={mapView?.zoom ?? 5}
+                zoomSnap={0}
+                zoomControl
+                scrollWheelZoom={false}
+                doubleClickZoom={false}
+                attributionControl={false}
+                style={{ height: '100%', width: '100%' }}
+            >
+                {/* ── MAP UTILITIES ──────────────────────────────────────── */}
+                <FitBounds data={outlineData} />
+                <MapResizeHandler data={outlineData} />
 
-            {/* ── BASE TILE LAYER ────────────────────────────────────── */}
-            <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
+                {/* ── BASE TILE LAYER ────────────────────────────────────── */}
+                <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
 
-            {/* ── STATE OUTLINE LAYER ────────────────────────────────── */}
-            {/* State outline — teal border, near-transparent fill */}
-            <GeoJSON
-                key={`outline-${stateId}`}
-                data={outlineData}
-                style={{ fillColor: '#f0fdfa', fillOpacity: 0.12, color: '#0d9488', weight: 1.5 }}
-            />
+                {/* ── STATE OUTLINE LAYER ────────────────────────────────── */}
+                {outlineData && (
+                    <GeoJSON
+                        key={`outline-${stateId}`}
+                        data={outlineData}
+                        style={{ fillColor: '#f0fdfa', fillOpacity: 0.12, color: '#0d9488', weight: 1.5 }}
+                    />
+                )}
 
-            {/* ── HEATMAP LAYER ──────────────────────────────────────── */}
-            {/* Heatmap — color comes directly from server-assigned binId */}
-            {sampleData && (
-                <GeoJSON
-                    key={`heat-${mapKey}`}
-                    ref={heatmapLayerRef}
-                    data={sampleData}
-                    style={feature => {
-                        const idx = feature?.properties?.idx ?? counter++
-                        return {
-                            fillColor:   colorByIdx[idx] ?? '#f0fdfa',
-                            fillOpacity: 0.82,
-                            color:       '#134e4a',
-                            weight:      0.5,
-                        }
-                    }}
-                />
+                {/* ── PRECINCT HEATMAP LAYER ─────────────────────────────── */}
+                {granularity === 'precinct' && precinctData && (
+                    <GeoJSON
+                        key={`heat-${mapKey}`}
+                        ref={heatmapLayerRef}
+                        data={precinctData}
+                        eventHandlers={{ add: () => districtOverlayRef.current?.bringToFront() }}
+                        style={feature => {
+                            const idx = feature?.properties?.idx ?? counter++
+                            return {
+                                fillColor:   colorByIdx[idx] ?? '#f0fdfa',
+                                fillOpacity: 0.82,
+                                color:       '#134e4a',
+                                weight:      0.5,
+                            }
+                        }}
+                    />
+                )}
+
+                {/* ── CENSUS BLOCK LAYER (backend bbox API) ─────────────── */}
+                {granularity === 'census_block' && (
+                    <CensusBlockLayer
+                        stateId={stateId}
+                        colorByIdx={colorByIdx}
+                        heatmapData={heatmapData}
+                        onZoomChange={setMapZoom}
+                    />
+                )}
+
+                {/* ── DISTRICT BOUNDARY OVERLAY ───────────────────────────── */}
+                {showDistrictOverlay && outlineData && (
+                    <GeoJSON
+                        key={`district-overlay-${stateId}-${showDistrictOverlay}`}
+                        ref={districtOverlayRef}
+                        data={outlineData}
+                        style={feature => {
+                            const districtNum = parseInt(feature?.properties?.CD119FP ?? '0', 10)
+                            const party = districtPartyMap?.[districtNum]
+                            const color = party === 'Democratic' ? '#3b82f6'
+                                        : party === 'Republican' ? '#ef4444'
+                                        : '#94a3b8'
+                            return { fillOpacity: 0, color, weight: 2.5, opacity: 0.9 }
+                        }}
+                    />
+                )}
+            </MapContainer>
+
+            {/* ── ZOOM-IN OVERLAY (census_block only, zoom < threshold) ── */}
+            {granularity === 'census_block' && mapZoom !== null && mapZoom < CENSUS_MIN_ZOOM && (
+                <div style={{
+                    position: 'absolute', inset: 0, pointerEvents: 'none',
+                    display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
+                    paddingBottom: '1.5rem', zIndex: 1000,
+                }}>
+                    <div className="bg-white/80 backdrop-blur-sm rounded-lg px-4 py-2 shadow text-sm text-brand-darkest">
+                        Zoom in to see census block detail
+                    </div>
+                </div>
             )}
-
-            {/* ── DISTRICT BOUNDARY OVERLAY ───────────────────────────── */}
-            {/* Borders only (no fill) colored red/blue by party majority */}
-            {showDistrictOverlay && outlineData && (
-                <GeoJSON
-                    key={`district-overlay-${stateId}-${showDistrictOverlay}`}
-                    data={outlineData}
-                    style={feature => {
-                        const districtNum = parseInt(feature?.properties?.CD119FP ?? '0', 10)
-                        const party = districtPartyMap?.[districtNum]
-                        const color = party === 'Democratic' ? '#3b82f6'
-                                    : party === 'Republican' ? '#ef4444'
-                                    : '#94a3b8'
-                        return { fillOpacity: 0, color, weight: 2.5, opacity: 0.9 }
-                    }}
-                />
-            )}
-        </MapContainer>
+        </div>
     )
 }

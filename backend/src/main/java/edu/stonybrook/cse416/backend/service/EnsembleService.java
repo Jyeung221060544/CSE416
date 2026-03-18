@@ -5,15 +5,19 @@ import edu.stonybrook.cse416.backend.repository.EnsembleAnalysisRepository;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
 /**
- * EnsembleService — serves the {@code GET /api/states/{stateId}/ensemble} endpoint.
+ * EnsembleService — serves the split ensemble endpoints:
+ * <ul>
+ *   <li>{@code GET /api/states/{stateId}/ensemble/splits}</li>
+ *   <li>{@code GET /api/states/{stateId}/ensemble/box-whisker}</li>
+ * </ul>
  *
- * <p>Returns both ensemble-analysis payloads (splits + box-whisker) in one
- * response (~6 KB).  Cached under {@code "ensemble"} keyed by {@code stateId}.
+ * <p>Each method returns only the payload needed for its tab, supporting
+ * lazy loading: splits data is fetched when the user enters the
+ * Ensemble Splits tab; box-whisker data when they enter Box &amp; Whisker.
  */
 @Service
 public class EnsembleService {
@@ -25,21 +29,24 @@ public class EnsembleService {
     }
 
     /**
-     * Returns the ensemble analysis bundle for the given state, or {@code null}
-     * if no data exists.
-     *
-     * <p>Response shape:
-     * <pre>{ splits: {...}, boxWhisker: {...} }</pre>
+     * Returns only the ensemble splits payload for the given state, or
+     * {@code null} if no data exists.
      */
-    @Cacheable(value = "ensemble", key = "#stateId")
-    public Map<String, Object> getEnsemble(String stateId) {
+    @Cacheable(value = "ensembleSplits", key = "#stateId")
+    public Map<String, Object> getSplits(String stateId) {
         Optional<EnsembleAnalysisDoc> opt = ensembleRepo.findById(stateId);
         if (opt.isEmpty()) return null;
+        return opt.get().getSplits();
+    }
 
-        EnsembleAnalysisDoc doc = opt.get();
-        Map<String, Object> response = new LinkedHashMap<>();
-        response.put("splits",     doc.getSplits());
-        response.put("boxWhisker", doc.getBoxWhisker());
-        return response;
+    /**
+     * Returns only the box-whisker payload for the given state, or
+     * {@code null} if no data exists.
+     */
+    @Cacheable(value = "ensembleBoxWhisker", key = "#stateId")
+    public Map<String, Object> getBoxWhisker(String stateId) {
+        Optional<EnsembleAnalysisDoc> opt = ensembleRepo.findById(stateId);
+        if (opt.isEmpty()) return null;
+        return opt.get().getBoxWhisker();
     }
 }

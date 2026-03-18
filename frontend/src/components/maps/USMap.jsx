@@ -56,15 +56,15 @@
  */
 
 /* ── Step 0: React + map library imports ──────────────────────────────── */
-import { useRef, useEffect, useMemo, useCallback } from 'react'
+import { useRef, useEffect, useMemo, useCallback, useState } from 'react'
 import { MapContainer, TileLayer, GeoJSON, useMap } from 'react-leaflet'
 import L from 'leaflet'
 import { useNavigate } from 'react-router-dom'
 import useAppStore from '../../store/useAppStore'
+import { fetchUsStatesGeo } from '../../api'
 
-/* ── Step 1: Static GeoJSON boundary shapes (never changes) ───────────── */
-// states prop comes from HomePage via GET /api/states — no dummy import needed
-import usGeoJson from '../../assets/US-48-States.geojson'
+/* ── Step 1: US states GeoJSON — fetched once from backend, then cached ── */
+let _usGeoCache = null
 
 /* ── Step 2: Base style function (accepts lookup as parameter) ─────────── */
 /**
@@ -149,6 +149,15 @@ export default function USMap({ states = [], onStateHover }) {
     const navigate   = useNavigate()
     const setSelectedState = useAppStore(s => s.setSelectedState)
 
+    /* ── Step 5a-0: Fetch US states GeoJSON from backend (cached) ── */
+    const [usGeoJson, setUsGeoJson] = useState(_usGeoCache)
+    useEffect(() => {
+        if (_usGeoCache) return
+        fetchUsStatesGeo()
+            .then(data => { _usGeoCache = data; setUsGeoJson(data) })
+            .catch(err => console.error('[USMap] fetchUsStatesGeo error:', err))
+    }, [])
+
     /* ── Step 5a-i: Build lookup from API-fetched states ─────────────────── */
     // Rebuild whenever states array changes (i.e. after the API response arrives).
     const stateByName = useMemo(
@@ -229,13 +238,15 @@ export default function USMap({ states = [], onStateHover }) {
             />
 
             {/* ── STATE CHOROPLETH LAYER ─────────────────────────────── */}
-            <GeoJSON
-                key={states.length}
-                ref={geoJsonRef}
-                data={usGeoJson}
-                style={style}
-                onEachFeature={onEachFeature}
-            />
+            {usGeoJson && (
+                <GeoJSON
+                    key={states.length}
+                    ref={geoJsonRef}
+                    data={usGeoJson}
+                    style={style}
+                    onEachFeature={onEachFeature}
+                />
+            )}
 
         </MapContainer>
     )

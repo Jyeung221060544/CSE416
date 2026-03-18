@@ -32,7 +32,7 @@ export default function Navbar() {
     const navigate  = useNavigate()
     const location  = useLocation()
 
-    const { selectedState, resetFilters, setSelectedState } = useAppStore()
+    const { selectedState, resetFilters, setSelectedState, setActiveSection } = useAppStore()
 
     /* ── Step 1: Derive page-type flags from the current URL ─────────────── */
     const isStatePage = location.pathname.startsWith('/state/')
@@ -51,9 +51,10 @@ export default function Navbar() {
      * values if the user navigates to a different state later.
      */
     const handleHome = () => {
-        resetFilters()          // clear all sidebar filter selections
-        setSelectedState(null)  // clear the navbar state badge
-        navigate('/')           // navigate to the home page
+        resetFilters()                        // clear all sidebar filter selections
+        setSelectedState(null)                // clear the navbar state badge
+        setActiveSection('state-overview')    // reset so DemographicSection doesn't pre-fire on next visit
+        navigate('/')                         // navigate to the home page
     }
 
 

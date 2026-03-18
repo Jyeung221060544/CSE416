@@ -6,54 +6,54 @@
     {
       "districtId": "OR-01",
       "districtNumber": 1,
-      "representative": "",
+      "representative": "Suzanne Bonamici",
       "party": "Democratic",
-      "racialGroup": "",
+      "racialGroup": "White",
       "voteMarginPercentage": 0.3911038077969175,
       "voteMarginDirection": "D"
     },
     {
       "districtId": "OR-02",
       "districtNumber": 2,
-      "representative": "",
+      "representative": "Cliff Bentz",
       "party": "Republican",
-      "racialGroup": "",
+      "racialGroup": "White",
       "voteMarginPercentage": 0.2785953562292739,
       "voteMarginDirection": "R"
     },
     {
       "districtId": "OR-03",
       "districtNumber": 3,
-      "representative": "",
+      "representative": "Maxine Dexter",
       "party": "Democratic",
-      "racialGroup": "",
+      "racialGroup": "White",
       "voteMarginPercentage": 0.4758732129543544,
       "voteMarginDirection": "D"
     },
     {
       "districtId": "OR-04",
       "districtNumber": 4,
-      "representative": "",
+      "representative": "Val Hoyle",
       "party": "Democratic",
-      "racialGroup": "",
+      "racialGroup": "White",
       "voteMarginPercentage": 0.12442914801419136,
       "voteMarginDirection": "D"
     },
     {
       "districtId": "OR-05",
       "districtNumber": 5,
-      "representative": "",
+      "representative": "Janelle Bynum",
       "party": "Democratic",
-      "racialGroup": "",
+      "racialGroup": "Latino",
       "voteMarginPercentage": 0.08888226885728519,
       "voteMarginDirection": "D"
     },
     {
       "districtId": "OR-06",
       "districtNumber": 6,
-      "representative": "",
+      "representative": "Andrea Salinas",
       "party": "Democratic",
-      "racialGroup": "",
+      "racialGroup": "Latino",
       "voteMarginPercentage": 0.11741978237845321,
       "voteMarginDirection": "D"
     }

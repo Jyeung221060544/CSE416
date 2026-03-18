@@ -9,11 +9,14 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
- * OverviewController — {@code GET /api/states/{stateId}/overview}
+ * OverviewController — lazy-loaded state overview endpoints.
  *
- * <p>Fetched once when the user navigates to a state page.  Returns the three
- * small payloads needed immediately: stateSummary, districtSummary, and
- * ensembleSummary (~3 KB combined).
+ * <ul>
+ *   <li>{@code GET /api/states/{stateId}/overview/state-stats} — fetched on
+ *       state-overview section entry; stateSummary + districtSummary + filter manifests.</li>
+ *   <li>{@code GET /api/states/{stateId}/overview/ensemble-demo} — fetched when
+ *       the user first opens the Ensemble/Pop Stats tab.</li>
+ * </ul>
  */
 @RestController
 @RequestMapping("/api/states/{stateId}/overview")
@@ -28,17 +31,34 @@ public class OverviewController {
     }
 
     /**
-     * Returns the overview bundle for the given state.
+     * Returns the state-stats bundle needed immediately on state-page load.
      *
-     * <p>Response: {@code { stateSummary, districtSummary, ensembleSummary }}
+     * <p>Response: {@code { stateSummary, districtSummary,
+     *                        availableHeatmapRaces, availableEiComparePairs }}
      *
      * @param stateId two-letter state abbreviation (e.g. "AL")
      * @return 200 with bundle; 404 if state is unknown
      */
-    @GetMapping
-    public ResponseEntity<Map<String, Object>> getOverview(@PathVariable String stateId) {
-        Map<String, Object> overview = overviewService.getOverview(stateId);
-        if (overview == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok().cacheControl(CACHE).body(overview);
+    @GetMapping("/state-stats")
+    public ResponseEntity<Map<String, Object>> getStateStats(@PathVariable String stateId) {
+        Map<String, Object> bundle = overviewService.getStateStats(stateId);
+        if (bundle == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().cacheControl(CACHE).body(bundle);
+    }
+
+    /**
+     * Returns the ensemble-demo bundle, fetched lazily when the user opens
+     * the Ensemble/Pop Stats tab.
+     *
+     * <p>Response: {@code { ensembleSummary }}
+     *
+     * @param stateId two-letter state abbreviation (e.g. "AL")
+     * @return 200 with bundle; 404 if state is unknown
+     */
+    @GetMapping("/ensemble-demo")
+    public ResponseEntity<Map<String, Object>> getEnsembleDemo(@PathVariable String stateId) {
+        Map<String, Object> bundle = overviewService.getEnsembleDemo(stateId);
+        if (bundle == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().cacheControl(CACHE).body(bundle);
     }
 }
