@@ -5,8 +5,9 @@
 #SBATCH --ntasks=2
 #SBATCH --cpus-per-task=8
 #SBATCH --time=01:00:00
-#SBATCH --output=../output_vra_mpi/slurm-%j.out
-#SBATCH --error=../output_vra_mpi/slurm-%j.err
+#SBATCH -A class_cse416
+#SBATCH -o /gpfs/home/jayeung/projects/CSE416/seawulf_runs/OR/logs/output_vra_mpi_%j.out
+#SBATCH -e /gpfs/home/jayeung/projects/CSE416/seawulf_runs/OR/logs/output_vra_mpi_%j.err
 
 set -euo pipefail
 
