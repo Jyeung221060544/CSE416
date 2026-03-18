@@ -1,9 +1,9 @@
 #!/bin/bash
 #SBATCH --job-name=AL_MPI_VRA
-#SBATCH --partition=medium-28core
-#SBATCH --nodes=1
+#SBATCH --partition=debug-28core
+#SBATCH --nodes=2
 #SBATCH --ntasks=2
-#SBATCH --cpus-per-task=4
+#SBATCH --cpus-per-task=8
 #SBATCH --time=01:00:00
 #SBATCH --output=../output_vra_mpi/slurm-%j.out
 #SBATCH --error=../output_vra_mpi/slurm-%j.err
