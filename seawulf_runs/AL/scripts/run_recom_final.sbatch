@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH -p debug-28core
-#SBATCH -N 1
-#SBATCH -c 8
+#SBATCH -N 4
+#SBATCH -c 28
 #SBATCH -t 00:30:00
 #SBATCH -J AL_RECOM_RB
 #SBATCH -A class_cse416
