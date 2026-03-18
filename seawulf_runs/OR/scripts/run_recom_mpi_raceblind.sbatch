@@ -1,8 +1,8 @@
 #!/bin/bash
 #SBATCH -p debug-28core
-#SBATCH -N 2
-#SBATCH --ntasks=2
-#SBATCH -c 8
+#SBATCH -N 4
+#SBATCH --ntasks=4
+#SBATCH -c 28
 #SBATCH -t 00:30:00
 #SBATCH -J OR_MPI_RB
 #SBATCH -A class_cse416
