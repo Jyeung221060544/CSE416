@@ -3,8 +3,8 @@
 #SBATCH --partition=medium-28core
 #SBATCH --nodes=2
 #SBATCH --ntasks=2
-#SBATCH --cpus-per-task=28
-#SBATCH --time=08:00:00
+#SBATCH --cpus-per-task=1
+#SBATCH --time=00:20:00
 #SBATCH --output=../output_vra_multinode/slurm-%j.out
 #SBATCH --error=../output_vra_multinode/slurm-%j.err
 
