@@ -13,6 +13,8 @@ seawulf_runs/AL/input/AL_enacted_districts_with_stats.geojson
 seawulf_runs/OR/input/OR_enacted_districts_with_stats.geojson
 seawulf_runs/AL/input/AL_starting_assignment_enacted.json
 seawulf_runs/OR/input/OR_starting_assignment_enacted.json
+seawulf_runs/AL/output_raceblind_multinode
+seawulf_runs/OR/output_raceblind_multinode
 cse416_seawulf_results
 AL-real-data/AL-heatmap-census.json
 OR-real-data/OR-heatmap-census.json
