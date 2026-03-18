@@ -11,11 +11,13 @@
 
 set -euo pipefail
 
-STATE_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+STATE_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 SCRIPTS_DIR="$STATE_ROOT/scripts"
 BASE_CONFIG="$STATE_ROOT/input/config_vra.json"
 MPI_OUT="$STATE_ROOT/output_vra_mpi"
 
+mkdir -p "$STATE_ROOT/logs"
 mkdir -p "$MPI_OUT"
 
 module purge
@@ -26,4 +28,4 @@ conda activate cse416-gis
 
 cd "$STATE_ROOT"
 
-mpirun -np 2 python "$SCRIPTS_DIR/run_recom_mpi.py" "$BASE_CONFIG" final "$MPI_OUT"
+mpirun -np "$SLURM_NTASKS" python "$SCRIPTS_DIR/run_recom_mpi.py" "$BASE_CONFIG" final "$MPI_OUT"
