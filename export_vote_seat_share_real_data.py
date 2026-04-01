@@ -33,13 +33,16 @@ def closest_point(points: list[dict], target_vote_share: float) -> dict:
 
 
 def build_dem_curve_points(curve_points: list[dict]) -> list[dict]:
-    return [
+    points = [
         {
             "voteShare": float(p["mean_vote_share"]),
             "seatShare": float(p["mean_seat_share"]),
         }
         for p in curve_points
     ]
+    points = [{"voteShare": 0.0, "seatShare": 0.0}] + points + [{"voteShare": 1.0, "seatShare": 1.0}]
+    points = sorted(points, key=lambda p: p["voteShare"])
+    return points
 
 
 def build_rep_curve_points(curve_points: list[dict]) -> list[dict]:
@@ -50,7 +53,9 @@ def build_rep_curve_points(curve_points: list[dict]) -> list[dict]:
         }
         for p in curve_points
     ]
-    return sorted(points, key=lambda p: p["voteShare"])
+    points = [{"voteShare": 0.0, "seatShare": 0.0}] + points + [{"voteShare": 1.0, "seatShare": 1.0}]
+    points = sorted(points, key=lambda p: p["voteShare"])
+    return points
 
 
 def export_state(job: dict) -> None:

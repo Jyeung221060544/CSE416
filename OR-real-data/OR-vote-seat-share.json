@@ -10,6 +10,10 @@
       "party": "Democratic",
       "points": [
         {
+          "voteShare": 0.0,
+          "seatShare": 0.0
+        },
+        {
           "voteShare": 0.09500796266804934,
           "seatShare": 0.0
         },
@@ -412,12 +416,20 @@
         {
           "voteShare": 0.9793226176808266,
           "seatShare": 1.0
+        },
+        {
+          "voteShare": 1.0,
+          "seatShare": 1.0
         }
       ]
     },
     {
       "party": "Republican",
       "points": [
+        {
+          "voteShare": 0.0,
+          "seatShare": 0.0
+        },
         {
           "voteShare": 0.020677382319173376,
           "seatShare": 0.0
@@ -820,6 +832,10 @@
         },
         {
           "voteShare": 0.9049920373319507,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 1.0,
           "seatShare": 1.0
         }
       ]
