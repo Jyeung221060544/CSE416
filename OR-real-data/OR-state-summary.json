@@ -19,7 +19,7 @@
       "isFeasible": true
     },
     {
-      "group": "Latino",
+      "group": "Hispanic",
       "vap": 389394,
       "vapPercentage": 0.11552483021089095,
       "isFeasible": true
@@ -32,7 +32,7 @@
     }
   ],
   "redistrictingControl": {
-    "controllingParty": ""
+    "controllingParty": "Democratic"
   },
   "congressionalRepresentatives": {
     "totalSeats": 6,

@@ -21,7 +21,7 @@ CONFIGS = [
 
 MIN_SWING = -0.30
 MAX_SWING = 0.30
-STEP = 0.025
+STEP = 0.005
 
 
 def load_graph_votes(graph_path: Path):

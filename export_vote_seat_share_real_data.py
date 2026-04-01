@@ -43,13 +43,14 @@ def build_dem_curve_points(curve_points: list[dict]) -> list[dict]:
 
 
 def build_rep_curve_points(curve_points: list[dict]) -> list[dict]:
-    return [
+    points = [
         {
             "voteShare": 1.0 - float(p["mean_vote_share"]),
             "seatShare": 1.0 - float(p["mean_seat_share"]),
         }
         for p in curve_points
     ]
+    return sorted(points, key=lambda p: p["voteShare"])
 
 
 def export_state(job: dict) -> None:
