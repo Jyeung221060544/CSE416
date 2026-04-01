@@ -9,7 +9,7 @@
  * @prop {object} heatmapData  - Binning data from the backend:
  *   { bins: [{ binId, color }], features: [{ idx, binId }] }
  * @prop {string} raceFilter   - Currently selected race group key
- *   ("black" | "white" | "hispanic" | "asian" | "other").
+ *   ("black" | "white" | "latino" | "asian" | "other").
  *
  * LAYOUT
  * - Full-bleed <MapContainer> (Leaflet), re-keyed on state+race.

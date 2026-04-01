@@ -129,22 +129,22 @@ export const REGION_CLS = {
  *
  *  RACE_COLORS  → raw hex for Nivo SVG rendering
  *                 Keys are lowercase race strings matching eiRaceFilter values:
- *                 'black' | 'white' | 'hispanic' | 'asian' | 'other'
+ *                 'black' | 'white' | 'latino' | 'asian' | 'other'
  *
  *  RACE_LABELS  → display strings for legends, tooltips, and table headers
  * ─────────────────────────────────────────────────────────────────────────── */
 export const RACE_COLORS = {
-    black:    '#009E73',   
-    white:    '#E69F00 ', 
-    hispanic: '#F0E442',   
-    asian:    '#ec4899 ',   
-    other:    '#9c00d5',  
+    black:    '#009E73',
+    white:    '#E69F00',
+    latino:   '#F0E442',
+    asian:    '#ec4899',
+    other:    '#9c00d5',
 }
 
 export const RACE_LABELS = {
     black:    'Black',
     white:    'White',
-    hispanic: 'Hispanic',
+    latino:   'Latino',
     asian:    'Asian',
     other:    'Other',
 }

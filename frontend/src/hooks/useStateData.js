@@ -53,29 +53,32 @@ export default function useStateData() {
                 const groups = overview.stateSummary?.demographicGroups ?? []
                 setDemographicGroups(groups)
 
-                // Feasible race filter: black > hispanic/latino > any feasible
+                // Feasible race filter: black > latino > any feasible
                 const preferred =
-                    groups.find(g => g.group.toLowerCase() === 'black'    && g.isFeasible) ??
-                    groups.find(g => ['hispanic', 'latino'].includes(g.group.toLowerCase()) && g.isFeasible) ??
+                    groups.find(g => g.group.toLowerCase() === 'black' && g.isFeasible) ??
+                    groups.find(g => g.group.toLowerCase() === 'latino' && g.isFeasible) ??
                     groups.find(g => g.isFeasible)
                 if (preferred) setFeasibleRaceFilter(preferred.group.toLowerCase())
 
-                // Primary race: black (if feasible) > hispanic/latino > first group
+                // Primary race: black (if feasible) > latino > first group
                 const primary =
                     groups.find(g => g.group.toLowerCase() === 'black' && g.isFeasible) ??
-                    groups.find(g => ['hispanic', 'latino'].includes(g.group.toLowerCase())) ??
+                    groups.find(g => g.group.toLowerCase() === 'latino') ??
                     groups[0]
                 const primaryKey = primary?.group.toLowerCase()
 
                 // raceFilter (demographic heatmap) — derived from state data
                 if (primaryKey) setRaceFilter(primaryKey)
 
-                // EI race filter — single default race
-                if (primaryKey) setEiRaceFilter([primaryKey])
+                // EI race filter — default: [primary, white]
+                const whiteKey = 'white'
+                const eiDefaults = primaryKey && primaryKey !== whiteKey
+                    ? [primaryKey, whiteKey]
+                    : (primaryKey ? [primaryKey] : [])
+                if (eiDefaults.length) setEiRaceFilter(eiDefaults)
 
                 // EI KDE compare races: [primary, white] — white if primary isn't white,
                 // otherwise pick the next available group
-                const whiteKey = 'white'
                 const secondKey = primaryKey !== whiteKey
                     ? whiteKey
                     : groups.find(g => g.group.toLowerCase() !== primaryKey)?.group.toLowerCase()

@@ -13,7 +13,7 @@
  *
  * HOW TO WRITE TO THE STORE (in any component)
  *   const setRaceFilter = useAppStore((state) => state.setRaceFilter)
- *   // then: setRaceFilter('hispanic')
+ *   // then: setRaceFilter('latino')
  *
  * SHORTCUT — useFilters hook
  *   For components that need several filter values at once, prefer the
@@ -68,7 +68,7 @@ const useAppStore = create((set) => ({
     /* ── Step 2: Filter state ────────────────────────────────────────────── */
 
     // Selected race group for DemographicHeatmap and DemographicPopulationTable.
-    // One of: 'white' | 'black' | 'hispanic' | 'asian' | 'other'
+    // One of: 'white' | 'black' | 'latino' | 'asian' | 'other'
     raceFilter: null,
 
     // Selected race for GinglesScatterPlot and GinglesSummaryTable.
@@ -137,7 +137,7 @@ const useAppStore = create((set) => ({
     /** @param {string} tab  One of the EA_TABS ids in EnsembleAnalysisSection. */
     setActiveEATab: (tab)        => set({ activeEATab: tab }),
 
-    /** @param {string} race  Lowercase race key: 'white'|'black'|'hispanic'|'asian'|'other'. */
+    /** @param {string} race  Lowercase race key: 'white'|'black'|'latino'|'asian'|'other'. */
     setRaceFilter: (race)        => set({ raceFilter: race }),
 
     /** @param {string} race  Same values as raceFilter, but limited to feasible groups. */
@@ -227,16 +227,16 @@ const useAppStore = create((set) => ({
     resetFilters: () => set((state) => {
         const groups = state.demographicGroups
 
-        // Primary race: black (if feasible) > hispanic/latino > first group
+        // Primary race: black (if feasible) > latino > first group
         const primary =
             groups.find(g => g.group.toLowerCase() === 'black' && g.isFeasible)?.group.toLowerCase() ??
-            groups.find(g => ['hispanic', 'latino'].includes(g.group.toLowerCase()))?.group.toLowerCase() ??
+            groups.find(g => g.group.toLowerCase() === 'latino')?.group.toLowerCase() ??
             groups[0]?.group.toLowerCase() ?? null
 
-        // Feasible race: black > hispanic/latino > any feasible
+        // Feasible race: black > latino > any feasible
         const preferredFeasible =
-            groups.find(g => g.group.toLowerCase() === 'black'    && g.isFeasible)?.group.toLowerCase() ??
-            groups.find(g => ['hispanic', 'latino'].includes(g.group.toLowerCase()) && g.isFeasible)?.group.toLowerCase() ??
+            groups.find(g => g.group.toLowerCase() === 'black'  && g.isFeasible)?.group.toLowerCase() ??
+            groups.find(g => g.group.toLowerCase() === 'latino' && g.isFeasible)?.group.toLowerCase() ??
             groups.find(g => g.isFeasible)?.group.toLowerCase() ?? null
 
         // Compare pair second race: white if primary is not white, else next available group
@@ -244,12 +244,17 @@ const useAppStore = create((set) => ({
             ? 'white'
             : groups.find(g => g.group.toLowerCase() !== primary)?.group.toLowerCase() ?? null
 
+        // EI race filter — default: [primary, white]
+        const eiDefaults = primary && primary !== 'white'
+            ? [primary, 'white']
+            : (primary ? [primary] : [])
+
         return {
             raceFilter:           primary,
             feasibleRaceFilter:   preferredFeasible,
             mapCompareFilter:     ['current', 'high'],
             ensembleFilter:       'race_blind',
-            eiRaceFilter:         primary ? [primary] : [],
+            eiRaceFilter:         eiDefaults,
             eiKdeCompareRaces:    primary && secondKey ? [primary, secondKey] : [],
             selectedDistrict:     null,
             showDistrictOverlay:  true,
