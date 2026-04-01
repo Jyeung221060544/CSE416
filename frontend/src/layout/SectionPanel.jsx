@@ -37,7 +37,6 @@ import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import SubSectionNav from '@/components/ui/sub-section-nav'
 import useAppStore from '../store/useAppStore'
-import { lockScroll } from '../utils/scrollLock'
 
 
 /* ── Step 0: Section + sub-section data ──────────────────────────────────────
@@ -95,58 +94,21 @@ export default function SectionPanel({ collapsed }) {
             activeRPTab, setActiveRPTab,
             activeEATab, setActiveEATab } = useAppStore()
 
-    // hoveredSection — id of the section whose subsections are currently visible (null = none)
-    const [hoveredSection, setHoveredSection] = useState(null)
+    // expandedSection — id of the section whose subsections are currently visible
+    const [expandedSection, setExpandedSection] = useState('state-overview')
 
 
     /* ── Step 2: Navigation helpers ──────────────────────────────────────── */
 
-    /**
-     * scrollToSection — Smooth-scrolls the viewport to a top-level section.
-     *
-     * Calls lockScroll() first so that the IntersectionObserver in useActiveSection
-     * does not immediately overwrite the section we are navigating to.
-     *
-     * @param {string} id  The DOM element id of the target section (e.g. 'demographic').
-     *                     Must match the id= prop on the corresponding section wrapper div.
-     */
-    const scrollToSection = (id) => {
-        lockScroll()
-        setActiveSection(id)
-        const el = document.getElementById(id)
-        if (el) el.scrollIntoView({ behavior: 'smooth' })
-    }
+    const toggleExpand = (id) => setExpandedSection(prev => prev === id ? null : id)
 
-    /**
-     * activateSOTab — Activates a State Overview tab and scrolls to the section.
-     * Called when the user clicks a sub-item in the SO sub-nav.
-     */
-    const activateSOTab = (tabId) => {
-        setActiveSOTab(tabId)
-        scrollToSection('state-overview')
-    }
+    const activateSOTab = (tabId) => { setActiveSOTab(tabId); setActiveSection('state-overview') }
+    const activateRPTab = (tabId) => { setActiveRPTab(tabId); setActiveSection('racial-polarization') }
+    const activateEATab = (tabId) => { setActiveEATab(tabId); setActiveSection('ensemble-analysis') }
 
-    /**
-     * activateRPTab — Activates a Racial Polarization tab and scrolls to the section.
-     * Called when the user clicks a sub-item in the RP sub-nav.
-     */
-    const activateRPTab = (tabId) => {
-        setActiveRPTab(tabId)
-        scrollToSection('racial-polarization')
-    }
-
-    /**
-     * activateEATab — Activates an Ensemble Analysis tab and scrolls to the section.
-     * Called when the user clicks a sub-item in the EA sub-nav.
-     */
-    const activateEATab = (tabId) => {
-        setActiveEATab(tabId)
-        scrollToSection('ensemble-analysis')
-    }
-
-    const handleSOClick = () => scrollToSection('state-overview')
-    const handleRPClick = () => scrollToSection('racial-polarization')
-    const handleEAClick = () => scrollToSection('ensemble-analysis')
+    const handleSOClick = () => { setActiveSection('state-overview');      toggleExpand('state-overview') }
+    const handleRPClick = () => { setActiveSection('racial-polarization'); toggleExpand('racial-polarization') }
+    const handleEAClick = () => { setActiveSection('ensemble-analysis');   toggleExpand('ensemble-analysis') }
 
 
     /* ── Step 3: Render ──────────────────────────────────────────────────── */
@@ -184,10 +146,10 @@ export default function SectionPanel({ collapsed }) {
                     const handleClick = isSO ? handleSOClick
                                       : isRP ? handleRPClick
                                       : isEA ? handleEAClick
-                                      : () => scrollToSection(section.id)
+                                      : () => { setActiveSection(section.id); setExpandedSection(null) }
 
                     /* Which sub-nav state / items / active id / select handler belong to this section */
-                    const subNavOpen     = hoveredSection === section.id
+                    const subNavOpen     = expandedSection === section.id
                     const subsections    = isSO ? SO_SUBSECTIONS : isRP ? RP_SUBSECTIONS : EA_SUBSECTIONS
                     const subNavActiveId = isSO ? activeSOTab : isRP ? activeRPTab : activeEATab
                     const subNavOnSelect = isSO ? activateSOTab
@@ -195,11 +157,7 @@ export default function SectionPanel({ collapsed }) {
                                         : activateEATab
 
                     return (
-                        <div
-                            key={section.id}
-                            onMouseEnter={() => hasSubNav && !collapsed && setHoveredSection(section.id)}
-                            onMouseLeave={() => hasSubNav && setHoveredSection(null)}
-                        >
+                        <div key={section.id}>
 
                             {/* ── COLLAPSED MODE: dot button + tooltip ─────── */}
                             {collapsed ? (
