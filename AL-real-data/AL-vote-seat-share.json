@@ -3,18 +3,94 @@
   "electionYear": 2024,
   "raciallyPolarized": true,
   "totalDistricts": 7,
-  "partisanBias": -0.035714285714285754,
-  "notes": "At 50% Democratic vote share, Democrats win ~0.464 of seats (partisan bias \u2248 -0.036).",
+  "partisanBias": -0.04464285714285715,
+  "notes": "At 50% Democratic vote share, Democrats win ~0.455 of seats (partisan bias \u2248 -0.045).",
   "curves": [
     {
       "party": "Democratic",
       "points": [
         {
-          "voteShare": 0.06912760857897327,
+          "voteShare": 0.00792711109181276,
           "seatShare": 0.0
         },
         {
-          "voteShare": 0.07232642309932241,
+          "voteShare": 0.009414611242892003,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.010902111393971247,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.012400387411943188,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.0139960568317586,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.015659618409643642,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.017330408737617656,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.01905232422545589,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.020974996497199777,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.023162980370441833,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.025850548160257694,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.02865285794925259,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.031673146548656245,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.034770096840675634,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.038154595024815045,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.04190252272119904,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.04642580946020169,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.0515690823827278,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.05736193707314518,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.06318029584225447,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.06912760857897327,
           "seatShare": 0.0
         },
         {
@@ -22,15 +98,7 @@
           "seatShare": 0.0
         },
         {
-          "voteShare": 0.07879705970136895,
-          "seatShare": 0.0
-        },
-        {
           "voteShare": 0.08215405942092108,
-          "seatShare": 0.0
-        },
-        {
-          "voteShare": 0.08562823379524039,
           "seatShare": 0.0
         },
         {
@@ -38,15 +106,7 @@
           "seatShare": 0.0
         },
         {
-          "voteShare": 0.0926090972869749,
-          "seatShare": 0.0
-        },
-        {
           "voteShare": 0.09650596897302373,
-          "seatShare": 0.0
-        },
-        {
-          "voteShare": 0.10042507104641289,
           "seatShare": 0.0
         },
         {
@@ -54,15 +114,7 @@
           "seatShare": 0.0
         },
         {
-          "voteShare": 0.10826327519319119,
-          "seatShare": 0.0
-        },
-        {
           "voteShare": 0.11221441412364863,
-          "seatShare": 0.0
-        },
-        {
-          "voteShare": 0.11623722787271026,
           "seatShare": 0.0
         },
         {
@@ -70,15 +122,7 @@
           "seatShare": 0.0
         },
         {
-          "voteShare": 0.12442276678020366,
-          "seatShare": 0.0
-        },
-        {
           "voteShare": 0.12881254143488127,
-          "seatShare": 0.0
-        },
-        {
-          "voteShare": 0.13335870006047648,
           "seatShare": 0.0
         },
         {
@@ -86,15 +130,7 @@
           "seatShare": 0.0
         },
         {
-          "voteShare": 0.14257718462263988,
-          "seatShare": 0.0
-        },
-        {
           "voteShare": 0.14726651989971024,
-          "seatShare": 0.0
-        },
-        {
-          "voteShare": 0.15199508793819133,
           "seatShare": 0.0
         },
         {
@@ -102,15 +138,7 @@
           "seatShare": 0.0
         },
         {
-          "voteShare": 0.1614969530394234,
-          "seatShare": 0.0
-        },
-        {
           "voteShare": 0.16628237258871933,
-          "seatShare": 0.0
-        },
-        {
-          "voteShare": 0.17106779213801526,
           "seatShare": 0.0
         },
         {
@@ -118,15 +146,7 @@
           "seatShare": 0.0
         },
         {
-          "voteShare": 0.18072973960205502,
-          "seatShare": 0.0
-        },
-        {
           "voteShare": 0.18572973960205502,
-          "seatShare": 0.0
-        },
-        {
-          "voteShare": 0.19072973960205503,
           "seatShare": 0.0
         },
         {
@@ -134,15 +154,7 @@
           "seatShare": 0.0
         },
         {
-          "voteShare": 0.20072973960205504,
-          "seatShare": 0.0
-        },
-        {
           "voteShare": 0.205729739602055,
-          "seatShare": 0.0
-        },
-        {
-          "voteShare": 0.21072973960205502,
           "seatShare": 0.0
         },
         {
@@ -150,23 +162,11 @@
           "seatShare": 0.0
         },
         {
-          "voteShare": 0.22072973960205503,
-          "seatShare": 0.0
-        },
-        {
           "voteShare": 0.22572973960205503,
           "seatShare": 0.0
         },
         {
-          "voteShare": 0.23072973960205503,
-          "seatShare": 0.02142857142857143
-        },
-        {
           "voteShare": 0.23572973960205504,
-          "seatShare": 0.02142857142857143
-        },
-        {
-          "voteShare": 0.24072973960205504,
           "seatShare": 0.02142857142857143
         },
         {
@@ -174,23 +174,11 @@
           "seatShare": 0.02142857142857143
         },
         {
-          "voteShare": 0.2507297396020551,
-          "seatShare": 0.02142857142857143
-        },
-        {
           "voteShare": 0.2557297396020551,
           "seatShare": 0.02142857142857143
         },
         {
-          "voteShare": 0.26072973960205503,
-          "seatShare": 0.024999999999999998
-        },
-        {
           "voteShare": 0.26572973960205504,
-          "seatShare": 0.026785714285714284
-        },
-        {
-          "voteShare": 0.27072973960205504,
           "seatShare": 0.026785714285714284
         },
         {
@@ -198,15 +186,7 @@
           "seatShare": 0.026785714285714284
         },
         {
-          "voteShare": 0.28072973960205505,
-          "seatShare": 0.026785714285714284
-        },
-        {
           "voteShare": 0.28572973960205506,
-          "seatShare": 0.039285714285714285
-        },
-        {
-          "voteShare": 0.29072973960205506,
           "seatShare": 0.039285714285714285
         },
         {
@@ -214,23 +194,11 @@
           "seatShare": 0.055357142857142855
         },
         {
-          "voteShare": 0.30072973960205507,
-          "seatShare": 0.05714285714285714
-        },
-        {
           "voteShare": 0.3057297396020551,
           "seatShare": 0.07857142857142857
         },
         {
-          "voteShare": 0.310729739602055,
-          "seatShare": 0.14285714285714285
-        },
-        {
           "voteShare": 0.3157297396020551,
-          "seatShare": 0.15535714285714286
-        },
-        {
-          "voteShare": 0.32072973960205503,
           "seatShare": 0.15535714285714286
         },
         {
@@ -238,15 +206,7 @@
           "seatShare": 0.15535714285714286
         },
         {
-          "voteShare": 0.33072973960205504,
-          "seatShare": 0.15714285714285714
-        },
-        {
           "voteShare": 0.33572973960205504,
-          "seatShare": 0.1607142857142857
-        },
-        {
-          "voteShare": 0.34072973960205505,
           "seatShare": 0.1607142857142857
         },
         {
@@ -254,15 +214,7 @@
           "seatShare": 0.1607142857142857
         },
         {
-          "voteShare": 0.35072973960205506,
-          "seatShare": 0.1607142857142857
-        },
-        {
           "voteShare": 0.35572973960205506,
-          "seatShare": 0.1607142857142857
-        },
-        {
-          "voteShare": 0.36072973960205507,
           "seatShare": 0.1607142857142857
         },
         {
@@ -270,23 +222,11 @@
           "seatShare": 0.1607142857142857
         },
         {
-          "voteShare": 0.3707297396020551,
-          "seatShare": 0.1607142857142857
-        },
-        {
           "voteShare": 0.375729739602055,
           "seatShare": 0.16428571428571428
         },
         {
-          "voteShare": 0.3807297396020551,
-          "seatShare": 0.1732142857142857
-        },
-        {
           "voteShare": 0.38572973960205503,
-          "seatShare": 0.17857142857142855
-        },
-        {
-          "voteShare": 0.39072973960205504,
           "seatShare": 0.17857142857142855
         },
         {
@@ -294,47 +234,23 @@
           "seatShare": 0.17857142857142855
         },
         {
-          "voteShare": 0.40072973960205505,
-          "seatShare": 0.17857142857142855
-        },
-        {
           "voteShare": 0.40572973960205505,
           "seatShare": 0.18035714285714285
-        },
-        {
-          "voteShare": 0.41072973960205506,
-          "seatShare": 0.1875
         },
         {
           "voteShare": 0.41572973960205506,
           "seatShare": 0.19107142857142856
         },
         {
-          "voteShare": 0.42072973960205506,
-          "seatShare": 0.20535714285714285
-        },
-        {
           "voteShare": 0.42572973960205507,
           "seatShare": 0.2125
-        },
-        {
-          "voteShare": 0.4307297396020551,
-          "seatShare": 0.2339285714285714
         },
         {
           "voteShare": 0.435729739602055,
           "seatShare": 0.26964285714285713
         },
         {
-          "voteShare": 0.440729739602055,
-          "seatShare": 0.29107142857142854
-        },
-        {
           "voteShare": 0.44572973960205503,
-          "seatShare": 0.2928571428571428
-        },
-        {
-          "voteShare": 0.45072973960205504,
           "seatShare": 0.2928571428571428
         },
         {
@@ -342,111 +258,55 @@
           "seatShare": 0.3089285714285714
         },
         {
-          "voteShare": 0.46072973960205504,
-          "seatShare": 0.3232142857142857
-        },
-        {
           "voteShare": 0.46572973960205505,
           "seatShare": 0.32499999999999996
-        },
-        {
-          "voteShare": 0.47072973960205505,
-          "seatShare": 0.3267857142857143
         },
         {
           "voteShare": 0.47572973960205506,
           "seatShare": 0.3410714285714285
         },
         {
-          "voteShare": 0.48072973960205506,
-          "seatShare": 0.3571428571428571
-        },
-        {
           "voteShare": 0.48572973960205507,
           "seatShare": 0.3714285714285714
-        },
-        {
-          "voteShare": 0.49072973960205507,
-          "seatShare": 0.375
         },
         {
           "voteShare": 0.4957297396020551,
           "seatShare": 0.45535714285714285
         },
         {
-          "voteShare": 0.500729739602055,
-          "seatShare": 0.46428571428571425
-        },
-        {
           "voteShare": 0.505729739602055,
           "seatShare": 0.475
-        },
-        {
-          "voteShare": 0.510729739602055,
-          "seatShare": 0.5196428571428571
         },
         {
           "voteShare": 0.515729739602055,
           "seatShare": 0.575
         },
         {
-          "voteShare": 0.5207297396020549,
-          "seatShare": 0.5875
-        },
-        {
           "voteShare": 0.5257297396020549,
           "seatShare": 0.5875
-        },
-        {
-          "voteShare": 0.5307297396020549,
-          "seatShare": 0.5892857142857143
         },
         {
           "voteShare": 0.5357297396020549,
           "seatShare": 0.5892857142857143
         },
         {
-          "voteShare": 0.540729739602055,
-          "seatShare": 0.5964285714285714
-        },
-        {
           "voteShare": 0.5457297396020551,
           "seatShare": 0.6428571428571428
-        },
-        {
-          "voteShare": 0.550729739602055,
-          "seatShare": 0.6446428571428571
         },
         {
           "voteShare": 0.555729739602055,
           "seatShare": 0.6446428571428571
         },
         {
-          "voteShare": 0.560729739602055,
-          "seatShare": 0.6678571428571428
-        },
-        {
           "voteShare": 0.565729739602055,
           "seatShare": 0.6928571428571428
-        },
-        {
-          "voteShare": 0.570729739602055,
-          "seatShare": 0.6982142857142857
         },
         {
           "voteShare": 0.575729739602055,
           "seatShare": 0.7
         },
         {
-          "voteShare": 0.580729739602055,
-          "seatShare": 0.7017857142857142
-        },
-        {
           "voteShare": 0.585729739602055,
-          "seatShare": 0.7875
-        },
-        {
-          "voteShare": 0.590729739602055,
           "seatShare": 0.7875
         },
         {
@@ -454,44 +314,104 @@
           "seatShare": 0.7875
         },
         {
-          "voteShare": 0.600729739602055,
-          "seatShare": 0.7875
-        },
-        {
           "voteShare": 0.605729739602055,
           "seatShare": 0.8017857142857143
-        },
-        {
-          "voteShare": 0.610729739602055,
-          "seatShare": 0.8178571428571428
         },
         {
           "voteShare": 0.615729739602055,
           "seatShare": 0.8178571428571428
         },
         {
-          "voteShare": 0.620729739602055,
-          "seatShare": 0.8375
-        },
-        {
           "voteShare": 0.625729739602055,
           "seatShare": 0.9089285714285714
-        },
-        {
-          "voteShare": 0.630729739602055,
-          "seatShare": 0.9107142857142857
         },
         {
           "voteShare": 0.6357297396020549,
           "seatShare": 0.9249999999999999
         },
         {
-          "voteShare": 0.640729739602055,
-          "seatShare": 0.9375
-        },
-        {
           "voteShare": 0.6457297396020549,
           "seatShare": 0.9446428571428571
+        },
+        {
+          "voteShare": 0.6557297396020549,
+          "seatShare": 0.95
+        },
+        {
+          "voteShare": 0.665729739602055,
+          "seatShare": 0.9571428571428571
+        },
+        {
+          "voteShare": 0.675729739602055,
+          "seatShare": 0.9571428571428571
+        },
+        {
+          "voteShare": 0.685729739602055,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.695729739602055,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.705729739602055,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.715729739602055,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.725729739602055,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.735541919230127,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.7453456088762077,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.7551492985222883,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.7649343576356792,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.774692374515819,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.7844036537451761,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.7939989360663978,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.8034393819717476,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.8121733378037868,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.8207381919821014,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.8292901286613215,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.8378026285102422,
+          "seatShare": 1.0
         }
       ]
     },
@@ -499,35 +419,99 @@
       "party": "Republican",
       "points": [
         {
-          "voteShare": 0.35427026039794507,
-          "seatShare": 0.05535714285714288
+          "voteShare": 0.16219737148975777,
+          "seatShare": 0.0
         },
         {
-          "voteShare": 0.35927026039794496,
-          "seatShare": 0.0625
+          "voteShare": 0.17070987133867854,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.1792618080178986,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.18782666219621325,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.19656061802825242,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.20600106393360218,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.21559634625482393,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.22530762548418104,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.23506564236432081,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.2448507014777117,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.2546543911237923,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.264458080769873,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.274270260397945,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.284270260397945,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.294270260397945,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.304270260397945,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.31427026039794503,
+          "seatShare": 0.0
+        },
+        {
+          "voteShare": 0.32427026039794504,
+          "seatShare": 0.04285714285714293
+        },
+        {
+          "voteShare": 0.33427026039794505,
+          "seatShare": 0.04285714285714293
+        },
+        {
+          "voteShare": 0.34427026039794506,
+          "seatShare": 0.050000000000000044
+        },
+        {
+          "voteShare": 0.35427026039794507,
+          "seatShare": 0.05535714285714288
         },
         {
           "voteShare": 0.3642702603979451,
           "seatShare": 0.07500000000000007
         },
         {
-          "voteShare": 0.36927026039794497,
-          "seatShare": 0.0892857142857143
-        },
-        {
           "voteShare": 0.374270260397945,
           "seatShare": 0.09107142857142858
         },
         {
-          "voteShare": 0.379270260397945,
-          "seatShare": 0.16249999999999998
-        },
-        {
           "voteShare": 0.384270260397945,
-          "seatShare": 0.18214285714285716
-        },
-        {
-          "voteShare": 0.389270260397945,
           "seatShare": 0.18214285714285716
         },
         {
@@ -535,15 +519,7 @@
           "seatShare": 0.19821428571428568
         },
         {
-          "voteShare": 0.399270260397945,
-          "seatShare": 0.21250000000000002
-        },
-        {
           "voteShare": 0.404270260397945,
-          "seatShare": 0.21250000000000002
-        },
-        {
-          "voteShare": 0.409270260397945,
           "seatShare": 0.21250000000000002
         },
         {
@@ -551,31 +527,15 @@
           "seatShare": 0.21250000000000002
         },
         {
-          "voteShare": 0.419270260397945,
-          "seatShare": 0.29821428571428577
-        },
-        {
           "voteShare": 0.424270260397945,
           "seatShare": 0.30000000000000004
-        },
-        {
-          "voteShare": 0.429270260397945,
-          "seatShare": 0.3017857142857143
         },
         {
           "voteShare": 0.43427026039794503,
           "seatShare": 0.30714285714285716
         },
         {
-          "voteShare": 0.43927026039794503,
-          "seatShare": 0.3321428571428572
-        },
-        {
           "voteShare": 0.44427026039794504,
-          "seatShare": 0.3553571428571429
-        },
-        {
-          "voteShare": 0.44927026039794504,
           "seatShare": 0.3553571428571429
         },
         {
@@ -583,15 +543,7 @@
           "seatShare": 0.3571428571428572
         },
         {
-          "voteShare": 0.45927026039794505,
-          "seatShare": 0.4035714285714286
-        },
-        {
           "voteShare": 0.46427026039794506,
-          "seatShare": 0.4107142857142857
-        },
-        {
-          "voteShare": 0.46927026039794506,
           "seatShare": 0.4107142857142857
         },
         {
@@ -599,111 +551,55 @@
           "seatShare": 0.4125
         },
         {
-          "voteShare": 0.47927026039794507,
-          "seatShare": 0.4125
-        },
-        {
           "voteShare": 0.48427026039794496,
           "seatShare": 0.42500000000000004
-        },
-        {
-          "voteShare": 0.48927026039794497,
-          "seatShare": 0.4803571428571429
         },
         {
           "voteShare": 0.49427026039794497,
           "seatShare": 0.525
         },
         {
-          "voteShare": 0.499270260397945,
-          "seatShare": 0.5357142857142858
-        },
-        {
           "voteShare": 0.504270260397945,
           "seatShare": 0.5446428571428572
-        },
-        {
-          "voteShare": 0.5092702603979449,
-          "seatShare": 0.625
         },
         {
           "voteShare": 0.514270260397945,
           "seatShare": 0.6285714285714286
         },
         {
-          "voteShare": 0.5192702603979449,
-          "seatShare": 0.6428571428571429
-        },
-        {
           "voteShare": 0.524270260397945,
           "seatShare": 0.6589285714285715
-        },
-        {
-          "voteShare": 0.5292702603979449,
-          "seatShare": 0.6732142857142858
         },
         {
           "voteShare": 0.534270260397945,
           "seatShare": 0.675
         },
         {
-          "voteShare": 0.5392702603979449,
-          "seatShare": 0.6767857142857143
-        },
-        {
           "voteShare": 0.544270260397945,
           "seatShare": 0.6910714285714286
-        },
-        {
-          "voteShare": 0.5492702603979449,
-          "seatShare": 0.7071428571428572
         },
         {
           "voteShare": 0.554270260397945,
           "seatShare": 0.7071428571428572
         },
         {
-          "voteShare": 0.5592702603979449,
-          "seatShare": 0.7089285714285715
-        },
-        {
           "voteShare": 0.564270260397945,
           "seatShare": 0.7303571428571429
-        },
-        {
-          "voteShare": 0.5692702603979449,
-          "seatShare": 0.7660714285714286
         },
         {
           "voteShare": 0.5742702603979449,
           "seatShare": 0.7875
         },
         {
-          "voteShare": 0.5792702603979449,
-          "seatShare": 0.7946428571428572
-        },
-        {
           "voteShare": 0.5842702603979449,
           "seatShare": 0.8089285714285714
-        },
-        {
-          "voteShare": 0.589270260397945,
-          "seatShare": 0.8125
         },
         {
           "voteShare": 0.594270260397945,
           "seatShare": 0.8196428571428571
         },
         {
-          "voteShare": 0.599270260397945,
-          "seatShare": 0.8214285714285714
-        },
-        {
           "voteShare": 0.604270260397945,
-          "seatShare": 0.8214285714285714
-        },
-        {
-          "voteShare": 0.609270260397945,
           "seatShare": 0.8214285714285714
         },
         {
@@ -711,23 +607,11 @@
           "seatShare": 0.8214285714285714
         },
         {
-          "voteShare": 0.619270260397945,
-          "seatShare": 0.8267857142857142
-        },
-        {
           "voteShare": 0.624270260397945,
           "seatShare": 0.8357142857142857
         },
         {
-          "voteShare": 0.629270260397945,
-          "seatShare": 0.8392857142857143
-        },
-        {
           "voteShare": 0.6342702603979449,
-          "seatShare": 0.8392857142857143
-        },
-        {
-          "voteShare": 0.639270260397945,
           "seatShare": 0.8392857142857143
         },
         {
@@ -735,15 +619,7 @@
           "seatShare": 0.8392857142857143
         },
         {
-          "voteShare": 0.649270260397945,
-          "seatShare": 0.8392857142857143
-        },
-        {
           "voteShare": 0.6542702603979449,
-          "seatShare": 0.8392857142857143
-        },
-        {
-          "voteShare": 0.659270260397945,
           "seatShare": 0.8392857142857143
         },
         {
@@ -751,15 +627,7 @@
           "seatShare": 0.8392857142857143
         },
         {
-          "voteShare": 0.669270260397945,
-          "seatShare": 0.8428571428571429
-        },
-        {
           "voteShare": 0.6742702603979449,
-          "seatShare": 0.8446428571428571
-        },
-        {
-          "voteShare": 0.679270260397945,
           "seatShare": 0.8446428571428571
         },
         {
@@ -767,39 +635,19 @@
           "seatShare": 0.8446428571428571
         },
         {
-          "voteShare": 0.689270260397945,
-          "seatShare": 0.8571428571428572
-        },
-        {
           "voteShare": 0.6942702603979449,
           "seatShare": 0.9214285714285715
-        },
-        {
-          "voteShare": 0.6992702603979449,
-          "seatShare": 0.9428571428571428
         },
         {
           "voteShare": 0.7042702603979449,
           "seatShare": 0.9446428571428571
         },
         {
-          "voteShare": 0.7092702603979449,
-          "seatShare": 0.9607142857142857
-        },
-        {
           "voteShare": 0.714270260397945,
           "seatShare": 0.9607142857142857
         },
         {
-          "voteShare": 0.719270260397945,
-          "seatShare": 0.9732142857142857
-        },
-        {
           "voteShare": 0.724270260397945,
-          "seatShare": 0.9732142857142857
-        },
-        {
-          "voteShare": 0.729270260397945,
           "seatShare": 0.9732142857142857
         },
         {
@@ -807,15 +655,7 @@
           "seatShare": 0.9732142857142857
         },
         {
-          "voteShare": 0.739270260397945,
-          "seatShare": 0.975
-        },
-        {
           "voteShare": 0.744270260397945,
-          "seatShare": 0.9785714285714285
-        },
-        {
-          "voteShare": 0.7492702603979449,
           "seatShare": 0.9785714285714285
         },
         {
@@ -823,15 +663,7 @@
           "seatShare": 0.9785714285714285
         },
         {
-          "voteShare": 0.759270260397945,
-          "seatShare": 0.9785714285714285
-        },
-        {
           "voteShare": 0.764270260397945,
-          "seatShare": 0.9785714285714285
-        },
-        {
-          "voteShare": 0.769270260397945,
           "seatShare": 0.9785714285714285
         },
         {
@@ -839,15 +671,7 @@
           "seatShare": 1.0
         },
         {
-          "voteShare": 0.779270260397945,
-          "seatShare": 1.0
-        },
-        {
           "voteShare": 0.784270260397945,
-          "seatShare": 1.0
-        },
-        {
-          "voteShare": 0.789270260397945,
           "seatShare": 1.0
         },
         {
@@ -855,15 +679,7 @@
           "seatShare": 1.0
         },
         {
-          "voteShare": 0.7992702603979449,
-          "seatShare": 1.0
-        },
-        {
           "voteShare": 0.804270260397945,
-          "seatShare": 1.0
-        },
-        {
-          "voteShare": 0.8092702603979449,
           "seatShare": 1.0
         },
         {
@@ -871,15 +687,7 @@
           "seatShare": 1.0
         },
         {
-          "voteShare": 0.8192702603979449,
-          "seatShare": 1.0
-        },
-        {
           "voteShare": 0.8241467883126888,
-          "seatShare": 1.0
-        },
-        {
-          "voteShare": 0.8289322078619847,
           "seatShare": 1.0
         },
         {
@@ -887,15 +695,7 @@
           "seatShare": 1.0
         },
         {
-          "voteShare": 0.8385030469605765,
-          "seatShare": 1.0
-        },
-        {
           "voteShare": 0.8432569422031249,
-          "seatShare": 1.0
-        },
-        {
-          "voteShare": 0.8480049120618087,
           "seatShare": 1.0
         },
         {
@@ -903,15 +703,7 @@
           "seatShare": 1.0
         },
         {
-          "voteShare": 0.8574228153773601,
-          "seatShare": 1.0
-        },
-        {
           "voteShare": 0.862082806868801,
-          "seatShare": 1.0
-        },
-        {
-          "voteShare": 0.8666412999395235,
           "seatShare": 1.0
         },
         {
@@ -919,15 +711,7 @@
           "seatShare": 1.0
         },
         {
-          "voteShare": 0.8755772332197963,
-          "seatShare": 1.0
-        },
-        {
           "voteShare": 0.8796891431546331,
-          "seatShare": 1.0
-        },
-        {
-          "voteShare": 0.8837627721272897,
           "seatShare": 1.0
         },
         {
@@ -935,15 +719,7 @@
           "seatShare": 1.0
         },
         {
-          "voteShare": 0.8917367248068088,
-          "seatShare": 1.0
-        },
-        {
           "voteShare": 0.895655826880198,
-          "seatShare": 1.0
-        },
-        {
-          "voteShare": 0.8995749289535871,
           "seatShare": 1.0
         },
         {
@@ -951,15 +727,7 @@
           "seatShare": 1.0
         },
         {
-          "voteShare": 0.9073909027130251,
-          "seatShare": 1.0
-        },
-        {
           "voteShare": 0.9108838595665839,
-          "seatShare": 1.0
-        },
-        {
-          "voteShare": 0.9143717662047596,
           "seatShare": 1.0
         },
         {
@@ -967,19 +735,91 @@
           "seatShare": 1.0
         },
         {
-          "voteShare": 0.921202940298631,
-          "seatShare": 1.0
-        },
-        {
           "voteShare": 0.9244673287220218,
           "seatShare": 1.0
         },
         {
-          "voteShare": 0.9276735769006776,
+          "voteShare": 0.9308723914210267,
           "seatShare": 1.0
         },
         {
-          "voteShare": 0.9308723914210267,
+          "voteShare": 0.9368197041577455,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.9426380629268548,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.9484309176172722,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.9535741905397983,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.9580974772788009,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.961845404975185,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.9652299031593243,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.9683268534513437,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.9713471420507475,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.9741494518397423,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.9768370196295582,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.9790250035028002,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.9809476757745441,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.9826695912623823,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.9843403815903563,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.9860039431682414,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.9875996125880568,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.9890978886060288,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.990585388757108,
+          "seatShare": 1.0
+        },
+        {
+          "voteShare": 0.9920728889081872,
           "seatShare": 1.0
         }
       ]
