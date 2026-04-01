@@ -29,8 +29,8 @@ import java.util.*;
  *                                  not stored here</li>
  *   <li>{@code state_overview}   — from AL-state-summary + AL-district-summary +
  *                                  AL-ensemble-summary + EI compare pairs manifest</li>
- *   <li>{@code heatmaps}         — from AL-heatmap-precinct + AL-heatmap-census;
- *                                  <b>one doc per (granularity, race)</b> — features
+ *   <li>{@code heatmaps}         — from AL-heatmap-precinct;
+ *                                  <b>one doc per race</b> — features
  *                                  contain only {@code {idx, binId}} for that race</li>
  *   <li>{@code ensemble_analysis}— from AL-splits + AL-boxwhisker</li>
  *   <li>{@code gingles}          — from AL-Gingles-precinct (one doc per feasible race)</li>
@@ -257,27 +257,23 @@ public class DataLoader implements CommandLineRunner {
                 + eiPairs.size() + " EI compare pairs)");
     }
 
-    // ── heatmaps (one doc per granularity × race) ─────────────────────────────
+    // ── heatmaps (one doc per race) ───────────────────────────────────────────
 
     /**
-     * Seeds heatmap documents for all granularities and returns the union of race
-     * keys discovered across all files.  Races are discovered dynamically from the
-     * feature map keys rather than a hardcoded list, so adding a new racial group
-     * to the source JSON requires no code change.
+     * Seeds heatmap documents from the precinct file and returns the race keys
+     * discovered.  Races are discovered dynamically from the feature map keys
+     * rather than a hardcoded list, so adding a new racial group to the source
+     * JSON requires no code change.
      *
-     * @return de-duplicated, ordered list of race keys found (e.g. ["black","white"])
+     * @return ordered list of race keys found (e.g. ["black","white"])
      */
     private List<String> loadHeatmaps(String state, File dir) throws Exception {
-        // LinkedHashSet preserves insertion order and de-duplicates across granularities
-        Set<String> raceSet = new LinkedHashSet<>();
-        raceSet.addAll(loadHeatmapGranularity(state, dir, "precinct",     state + "-heatmap-precinct.json"));
-        raceSet.addAll(loadHeatmapGranularity(state, dir, "census_block", state + "-heatmap-census.json"));
-        return new ArrayList<>(raceSet);
+        return loadHeatmapFile(state, dir, state + "-heatmap-precinct.json");
     }
 
     /**
-     * Reads one heatmap JSON file, discovers available races from the feature keys,
-     * and writes a separate HeatmapDoc for each discovered race.
+     * Reads the precinct heatmap JSON file, discovers available races from the
+     * feature keys, and writes a separate HeatmapDoc for each discovered race.
      *
      * <p>The source format stores all races per feature:
      * <pre>features: [{ idx, black, white, hispanic, asian, other }]</pre>
@@ -285,15 +281,11 @@ public class DataLoader implements CommandLineRunner {
      * <p>Each output document contains only the selected race's bin assignment:
      * <pre>features: [{ idx, binId }]</pre>
      *
-     * <p>Races are discovered at seed time by inspecting the first feature entry's
-     * key set (all keys except {@code "idx"}).  This means adding a new racial
-     * group to the source JSON requires no code change.
-     *
      * @return list of race keys discovered in this file, or empty list if the file
      *         was not found
      */
     @SuppressWarnings("unchecked")
-    private List<String> loadHeatmapGranularity(String state, File dir, String granularity, String filename)
+    private List<String> loadHeatmapFile(String state, File dir, String filename)
             throws Exception {
         Map<String, Object> raw = readIfExists(dir, filename);
         if (raw == null) {
@@ -324,9 +316,8 @@ public class DataLoader implements CommandLineRunner {
             }
 
             HeatmapDoc doc = new HeatmapDoc();
-            doc.setId(state + "_" + granularity + "_" + race);
+            doc.setId(state + "_" + race);
             doc.setStateId(state);
-            doc.setGranularity(granularity);
             doc.setRace(race);
             doc.setBins(bins);
             doc.setFeatures(raceFeatures);

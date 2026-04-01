@@ -24,8 +24,6 @@ import useAppStore from '../store/useAppStore'
  *   setRaceFilter:         (race: string) => void,
  *   feasibleRaceFilter:    string,
  *   setFeasibleRaceFilter: (race: string) => void,
- *   granularityFilter:     string,
- *   setGranularityFilter:  (g: string) => void,
  *   ensembleFilter:        string,
  *   setEnsembleFilter:     (e: string) => void,
  *   eiRaceFilter:          string[],
@@ -34,7 +32,7 @@ import useAppStore from '../store/useAppStore'
  * }}
  *
  * CONSUMERS
- *   RaceFilter, FeasibleRaceFilter, EIRaceFilter, GranularityFilter,
+ *   RaceFilter, FeasibleRaceFilter, EIRaceFilter,
  *   EnsembleFilter, ResetFiltersButton
  */
 export default function useFilters() {
@@ -51,10 +49,6 @@ export default function useFilters() {
     // Gingles scatter / box-whisker race selection (FeasibleRaceFilter)
     const feasibleRaceFilter    = useAppStore((state) => state.feasibleRaceFilter)
     const setFeasibleRaceFilter = useAppStore((state) => state.setFeasibleRaceFilter)
-
-    // Heatmap granularity toggle (GranularityFilter)
-    const granularityFilter    = useAppStore((state) => state.granularityFilter)
-    const setGranularityFilter = useAppStore((state) => state.setGranularityFilter)
 
     // Ensemble type selection (EnsembleFilter)
     const ensembleFilter    = useAppStore((state) => state.ensembleFilter)
@@ -79,7 +73,6 @@ export default function useFilters() {
     return {
         raceFilter,            setRaceFilter,
         feasibleRaceFilter,    setFeasibleRaceFilter,
-        granularityFilter,     setGranularityFilter,
         ensembleFilter,        setEnsembleFilter,
         eiRaceFilter,          toggleEiRaceFilter,
         showDistrictOverlay,   setShowDistrictOverlay,

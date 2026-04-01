@@ -12,6 +12,8 @@
  *   │          │  │  RacialPolarizationSection          │   │
  *   │          │  ├────────────────────────────────────┤   │
  *   │          │  │  EnsembleAnalysisSection            │   │
+ *   │          │  ├────────────────────────────────────┤   │
+ *   │          │  │  RepresentationGapSection           │   │
  *   │          │  └────────────────────────────────────┘   │
  *   └──────────┴────────────────────────────────────────────┘
  *
@@ -34,6 +36,7 @@ import StateOverviewSection      from '@/components/sections/StateOverviewSectio
 import DemographicSection        from '@/components/sections/DemographicSection'
 import RacialPolarizationSection from '@/components/sections/RacialPolarizationSection'
 import EnsembleAnalysisSection   from '@/components/sections/EnsembleAnalysisSection'
+import RepresentationGapSection  from '@/components/sections/RepresentationGapSection'
 import useActiveSection          from '@/hooks/useActiveSection'
 import useStateData              from '@/hooks/useStateData'
 
@@ -88,6 +91,10 @@ export default function StatePage() {
                     {/* ── ENSEMBLE ANALYSIS ────────────────────────────────── */}
                     {/* Sub-sections: Ensemble Splits + Box & Whisker */}
                     <EnsembleAnalysisSection data={data} stateId={stateId} />
+
+                    {/* ── REPRESENTATION GAP ───────────────────────────────── */}
+                    {/* Side-by-side plan comparison: current vs high/low effectiveness */}
+                    <RepresentationGapSection data={data} stateId={stateId} />
 
                 </div>
             </div>

@@ -67,7 +67,7 @@ public class AnalyticsDoc {
 
     /**
      * Spatial granularity for heatmap analytics.
-     * Known values: {@code "precinct"}, {@code "census_block"}.
+     * Known value: {@code "precinct"}.
      * {@code null} for non-spatial analytics.
      */
     private String granularity;
@@ -174,13 +174,13 @@ public class AnalyticsDoc {
 
     /**
      * Returns the spatial granularity for heatmap analytics.
-     * @return granularity string ("precinct" or "census_block"), or {@code null}.
+     * @return granularity string (e.g. "precinct"), or {@code null}.
      */
     public String getGranularity() { return granularity; }
 
     /**
      * Sets the spatial granularity.
-     * @param granularity "precinct" or "census_block".
+     * @param granularity spatial granularity string (e.g. "precinct").
      */
     public void setGranularity(String granularity) { this.granularity = granularity; }
 

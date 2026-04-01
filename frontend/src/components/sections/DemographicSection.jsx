@@ -1,8 +1,8 @@
 /**
  * DemographicSection.jsx — Second section on StatePage (id="demographic").
  *
- * Fetches heatmap data from: GET /api/states/:stateId/heatmap?granularity=&race=
- * Re-fetches whenever stateId, granularityFilter, or raceFilter changes.
+ * Fetches heatmap data from: GET /api/states/:stateId/heatmap?race=
+ * Re-fetches whenever stateId or raceFilter changes.
  * Server returns one race at a time: { bins, features:[{idx, binId}] }
  */
 
@@ -45,7 +45,6 @@ export default function DemographicSection({ data, stateId }) {
 
     const raceFilter          = useAppStore(s => s.raceFilter)
     const setRaceFilter       = useAppStore(s => s.setRaceFilter)
-    const granularityFilter   = useAppStore(s => s.granularityFilter)
     const showDistrictOverlay = useAppStore(s => s.showDistrictOverlay)
     const activeSection       = useAppStore(s => s.activeSection)
 
@@ -67,20 +66,20 @@ export default function DemographicSection({ data, stateId }) {
         if (!stateId || !raceFilter) return
         hasActivated.current = true
         setHeatmapData(null)
-        fetchHeatmap(stateId, granularityFilter, raceFilter)
+        fetchHeatmap(stateId, raceFilter)
             .then(setHeatmapData)
             .catch(err => console.error('[Demographic] fetchHeatmap error:', err))
-    }, [activeSection, stateId, granularityFilter, raceFilter]) // eslint-disable-line react-hooks/exhaustive-deps
+    }, [activeSection, stateId, raceFilter]) // eslint-disable-line react-hooks/exhaustive-deps
 
     // Re-fetch when filters change after initial activation.
     useEffect(() => {
         if (!stateId || !raceFilter) return
         if (!hasActivated.current) return
         setHeatmapData(null)
-        fetchHeatmap(stateId, granularityFilter, raceFilter)
+        fetchHeatmap(stateId, raceFilter)
             .then(setHeatmapData)
             .catch(err => console.error('[Demographic] fetchHeatmap error:', err))
-    }, [stateId, granularityFilter, raceFilter]) // eslint-disable-line react-hooks/exhaustive-deps
+    }, [stateId, raceFilter]) // eslint-disable-line react-hooks/exhaustive-deps
 
     /* ── Derived data from overview ──────────────────────────────────────── */
     const s               = data?.stateSummary
@@ -109,7 +108,6 @@ export default function DemographicSection({ data, stateId }) {
                     <MapFrame className="flex-1 min-h-0">
                         <DemographicHeatmap
                             stateId={stateId}
-                            granularity={granularityFilter}
                             heatmapData={heatmapData}
                             raceFilter={raceFilter}
                             mapView={s?.mapView}

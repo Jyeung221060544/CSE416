@@ -54,6 +54,7 @@ const SECTIONS = [
     { id: 'demographic',         label: 'Demographic Data' },
     { id: 'racial-polarization', label: 'Racial Polarization' },
     { id: 'ensemble-analysis',   label: 'Ensemble Analysis' },
+    { id: 'representation-gap',  label: 'Representation Gap' },
 ]
 
 const SO_SUBSECTIONS = [

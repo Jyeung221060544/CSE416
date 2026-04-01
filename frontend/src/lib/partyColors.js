@@ -150,7 +150,23 @@ export const RACE_LABELS = {
 }
 
 
-/* ── Step 6: Shared Nivo chart axis / label UI colors ────────────────────────
+/* ── Step 6: Representation Gap district effectiveness colors ────────────────
+ *
+ *  Used by: RepresentationGapMap
+ *  Districts are colored by minority effectiveness (not party) in the
+ *  Representation Gap section.
+ *
+ *  EFFECTIVE_FILL / EFFECTIVE_BORDER    → district where selected race has effective
+ *                                         representation (racialGroup matches selected race)
+ *  NOT_EFFECTIVE_FILL / NOT_EFFECTIVE_BORDER → district without effective representation
+ * ─────────────────────────────────────────────────────────────────────────── */
+export const EFFECTIVE_FILL       = '#86efac'   // green-300 (light green fill)
+export const EFFECTIVE_BORDER     = '#16a34a'   // green-600 (green border)
+export const NOT_EFFECTIVE_FILL   = '#d1d5db'   // gray-300  (neutral grey fill)
+export const NOT_EFFECTIVE_BORDER = '#6b7280'   // gray-500  (grey border)
+
+
+/* ── Step 7: Shared Nivo chart axis / label UI colors ────────────────────────
  *
  *  Used by: GinglesScatterPlot, EIKDEChart, EIBarChart, EnsembleSplitChart
  *  Passed into each chart's `theme` config object under axis.ticks / legend.

@@ -6,7 +6,8 @@
  *   Racial Polarization, the active mini-nav tab (read from Zustand).
  *
  *   state-overview                        → no filters (placeholder message)
- *   demographic                           → GranularityFilter + RaceFilter
+ *   demographic                           → RaceFilter + district overlay toggle
+ *   representation-gap                    → MapCompareFilter + FeasibleRaceFilter
  *   racial-polarization
  *     activeRPTab === 'gingles'           → FeasibleRaceFilter
  *     activeRPTab === 'ei-kde'            → EIRaceFilter
@@ -31,8 +32,8 @@ import useAppStore from '../store/useAppStore'
 import RaceFilter         from '../components/filters/RaceFilter'
 import FeasibleRaceFilter from '../components/filters/FeasibleRaceFilter'
 import EIRaceFilter       from '../components/filters/EIRaceFilter'
-import GranularityFilter      from '../components/filters/GranularityFilter'
-
+import CollapsibleGroup   from '../components/filters/CollapsibleGroup'
+import MapCompareFilter   from '../components/filters/MapCompareFilter'
 import CompareFilter       from '../components/filters/CompareFilter'
 import Select2RaceFilter  from '../components/filters/Select2RaceFilter'
 import ResetFiltersButton from '../components/filters/ResetFiltersButton'
@@ -46,9 +47,11 @@ import ResetFiltersButton from '../components/filters/ResetFiltersButton'
 export default function FilterPanel() {
 
     /* ── Step 0: Read active section + tab state from Zustand ───────────── */
-    const activeSection = useAppStore((state) => state.activeSection)
-    const activeRPTab   = useAppStore((state) => state.activeRPTab)
-    const activeEATab   = useAppStore((state) => state.activeEATab)
+    const activeSection       = useAppStore((state) => state.activeSection)
+    const activeRPTab         = useAppStore((state) => state.activeRPTab)
+    const activeEATab         = useAppStore((state) => state.activeEATab)
+    const showDistrictOverlay    = useAppStore((state) => state.showDistrictOverlay)
+    const setShowDistrictOverlay = useAppStore((state) => state.setShowDistrictOverlay)
 
 
     /* ── Step 1: Render ──────────────────────────────────────────────────── */
@@ -62,11 +65,19 @@ export default function FilterPanel() {
             )}
 
             {/* ── DEMOGRAPHIC ──────────────────────────────────────────────── */}
-            {/* GranularityFilter: toggle between precinct-level and census-block-level data.
-                RaceFilter: select which racial group's heatmap layer is shown. */}
             {activeSection === 'demographic' && (
                 <div className="flex flex-col gap-3">
-                    <GranularityFilter />
+                    <CollapsibleGroup label="Map Options">
+                        <label className="flex items-center gap-2 px-1 py-1 cursor-pointer select-none">
+                            <input
+                                type="checkbox"
+                                checked={showDistrictOverlay}
+                                onChange={e => setShowDistrictOverlay(e.target.checked)}
+                                className="appearance-none w-4 h-4 rounded border border-brand-primary checked:bg-brand-primary checked:border-brand-primary transition-colors shrink-0"
+                            />
+                            <span className="text-sm text-brand-surface">Show District Borders</span>
+                        </label>
+                    </CollapsibleGroup>
                     <Separator className="bg-brand-deep" />
                     <RaceFilter />
                 </div>
@@ -109,6 +120,17 @@ export default function FilterPanel() {
             {activeSection === 'ensemble-analysis' && activeEATab === 'box-whisker' && (
                 <div className="flex flex-col gap-3">
                     <CompareFilter />
+                    <Separator className="bg-brand-deep" />
+                    <FeasibleRaceFilter />
+                </div>
+            )}
+
+            {/* ── REPRESENTATION GAP ───────────────────────────────────────── */}
+
+            {/* MapCompareFilter: picks which 2 of the 3 plans to compare side-by-side */}
+            {activeSection === 'representation-gap' && (
+                <div className="flex flex-col gap-3">
+                    <MapCompareFilter />
                     <Separator className="bg-brand-deep" />
                     <FeasibleRaceFilter />
                 </div>

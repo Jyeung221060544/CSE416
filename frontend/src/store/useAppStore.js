@@ -75,15 +75,16 @@ const useAppStore = create((set) => ({
     // Only includes races that meet the >= 400k VAP threshold (isFeasible = true).
     feasibleRaceFilter: null,
 
-    // Map granularity for DemographicHeatmap: 'precinct' | 'census_block'
-    granularityFilter: 'precinct',
-
     // Currently highlighted district number (int) or null.
     // Set when user clicks a map polygon or a CongressionalTable row.
     selectedDistrict: null,
 
     // Which ensemble type to display: 'race_blind' | 'vra'
     ensembleFilter: 'race_blind',
+
+    // Which district plans to show side-by-side in RepresentationGapSection.
+    // Multi-select: 'current' | 'high' | 'low'. Min 1, max 2. Default: current + high.
+    mapCompareFilter: ['current', 'high'],
 
     // Array of race keys to show on the EI KDE + bar charts.
     // Multi-select; always contains at least one item (enforced in toggleEiRaceFilter).
@@ -148,14 +149,30 @@ const useAppStore = create((set) => ({
     /** @param {string[]} races  Array of lowercase race keys for EI multi-select. */
     setEiRaceFilter: (races) => set({ eiRaceFilter: races }),
 
+    /**
+     * toggleMapCompareFilter — Adds or removes a plan key from the comparison pair.
+     *
+     * Guards:
+     *   - Cannot remove the last selected plan (min 1).
+     *   - Cannot add a plan when 2 are already selected (max 2).
+     *
+     * @param {string} plan  One of 'current' | 'high' | 'low'.
+     */
+    toggleMapCompareFilter: (plan) => set((state) => {
+        const current = state.mapCompareFilter
+        if (current.includes(plan)) {
+            if (current.length <= 1) return {} // no-op — already at minimum
+            return { mapCompareFilter: current.filter(p => p !== plan) }
+        }
+        if (current.length >= 2) return {} // no-op — already at maximum
+        return { mapCompareFilter: [...current, plan] }
+    }),
+
     /** @param {boolean} val  Show/hide district boundary overlay on the heatmap. */
     setShowDistrictOverlay: (val) => set({ showDistrictOverlay: val }),
 
     /** @param {boolean} val  Toggle compare view in Ensemble Analysis. */
     setEaCompareMode: (val) => set({ eaCompareMode: val }),
-
-    /** @param {string} g  'precinct' or 'census_block'. */
-    setGranularityFilter: (g)    => set({ granularityFilter: g }),
 
     /** @param {number|null} district  District number (int) or null to deselect. */
     setSelectedDistrict: (district) => set({ selectedDistrict: district }),
@@ -230,7 +247,7 @@ const useAppStore = create((set) => ({
         return {
             raceFilter:           primary,
             feasibleRaceFilter:   preferredFeasible,
-            granularityFilter:    'precinct',
+            mapCompareFilter:     ['current', 'high'],
             ensembleFilter:       'race_blind',
             eiRaceFilter:         primary ? [primary] : [],
             eiKdeCompareRaces:    primary && secondKey ? [primary, secondKey] : [],

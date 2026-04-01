@@ -9,15 +9,13 @@ import java.util.Optional;
 public interface HeatmapRepository extends MongoRepository<HeatmapDoc, String> {
 
     /**
-     * Finds the heatmap document for a specific (state, granularity, race) triple.
+     * Finds the heatmap document for a specific (state, race) pair.
      * Documents are stored one-per-race so the client fetches only the active
      * race layer.  The {@code _id} is deterministic:
-     * {@code "{stateId}_{granularity}_{race}"}.
+     * {@code "{stateId}_{race}"} (e.g. {@code "AL_black"}).
      *
-     * @param stateId     two-letter state abbreviation (e.g. "AL")
-     * @param granularity "precinct" or "census_block"
-     * @param race        lowercase racial group key (e.g. "black")
+     * @param stateId two-letter state abbreviation (e.g. "AL")
+     * @param race    lowercase racial group key (e.g. "black")
      */
-    Optional<HeatmapDoc> findByStateIdAndGranularityAndRace(
-            String stateId, String granularity, String race);
+    Optional<HeatmapDoc> findByStateIdAndRace(String stateId, String race);
 }

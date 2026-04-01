@@ -16,13 +16,27 @@ export async function fetchStates() {
     return res.json()
 }
 
-/** GET /api/states/:stateId/overview/state-stats
+/** !!!!! GET /api/states/:stateId/overview/state-stats
  *  Returns { stateSummary, districtSummary }
  *  Triggered by: entering the State Overview section (immediately on state page load) */
 export async function fetchOverviewStateStats(stateId) {
     const res = await fetch(`${BASE}/api/states/${stateId}/overview/state-stats`)
     if (!res.ok) throw new Error(`GET /api/states/${stateId}/overview/state-stats failed: ${res.status}`)
     return res.json()
+}
+
+/** !!!!! GET /api/states/:stateId/geo/districts
+ *  Returns GeoJSON FeatureCollection of congressional district boundaries.
+ *  Used by DistrictMap2024 and DemographicHeatmap.
+ *  Promise-cached: concurrent calls (e.g. StrictMode double-invoke, two map components) share one in-flight request. */
+const _districtPromise = {}
+export function fetchDistricts(stateId) {
+    if (!_districtPromise[stateId]) {
+        _districtPromise[stateId] = fetch(`${BASE}/api/states/${stateId}/geo/districts`)
+            .then(res => { if (!res.ok) throw new Error(`GET /api/states/${stateId}/geo/districts failed: ${res.status}`); return res.json() })
+            .catch(err => { delete _districtPromise[stateId]; throw err })
+    }
+    return _districtPromise[stateId]
 }
 
 /** GET /api/states/:stateId/overview/ensemble-demo
@@ -34,12 +48,12 @@ export async function fetchOverviewEnsembleDemo(stateId) {
     return res.json()
 }
 
-/** GET /api/states/:stateId/heatmap?granularity=&race=
- *  Returns { stateId, granularity, race, bins:[{binId,rangeMin,rangeMax,color}],
+/** GET /api/states/:stateId/heatmap?race=
+ *  Returns { stateId, race, bins:[{binId,rangeMin,rangeMax,color}],
  *            features:[{idx, binId}] }
- *  Triggered by: entering Demographic section OR raceFilter/granularityFilter change */
-export async function fetchHeatmap(stateId, granularity, race) {
-    const res = await fetch(`${BASE}/api/states/${stateId}/heatmap?granularity=${granularity}&race=${race}`)
+ *  Triggered by: entering Demographic section OR raceFilter change */
+export async function fetchHeatmap(stateId, race) {
+    const res = await fetch(`${BASE}/api/states/${stateId}/heatmap?race=${race}`)
     if (!res.ok) throw new Error(`GET /api/states/${stateId}/heatmap failed: ${res.status}`)
     return res.json()
 }
@@ -124,16 +138,4 @@ export async function fetchUsStatesGeo() {
     return res.json()
 }
 
-/** GET /api/states/:stateId/geo/districts
- *  Returns GeoJSON FeatureCollection of congressional district boundaries.
- *  Used by DistrictMap2024 and DemographicHeatmap.
- *  Promise-cached: concurrent calls (e.g. StrictMode double-invoke, two map components) share one in-flight request. */
-const _districtPromise = {}
-export function fetchDistricts(stateId) {
-    if (!_districtPromise[stateId]) {
-        _districtPromise[stateId] = fetch(`${BASE}/api/states/${stateId}/geo/districts`)
-            .then(res => { if (!res.ok) throw new Error(`GET /api/states/${stateId}/geo/districts failed: ${res.status}`); return res.json() })
-            .catch(err => { delete _districtPromise[stateId]; throw err })
-    }
-    return _districtPromise[stateId]
-}
+

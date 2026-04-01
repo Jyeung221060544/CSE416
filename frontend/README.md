@@ -6,6 +6,7 @@ $env:MONGODB_URI = "mongodb+srv://vivian:cse416@cse416cubs.hs1tfym.mongodb.net/c
 ./mvnw spring-boot:run
 
 
+# For vvn to run backend!
 $env:JAVA_HOME = "C:\Program Files\Java\jdk-20"
 $env:PATH = "$env:JAVA_HOME\bin;$env:PATH"
 $env:MONGODB_URI = "mongodb+srv://vivian:cse416@cse416cubs.hs1tfym.mongodb.net/cse416?appName=CSE416Cubs"
