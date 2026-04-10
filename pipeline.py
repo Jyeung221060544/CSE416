@@ -19,7 +19,9 @@ Analytics (run after seawulf ensemble is generated):
 6. compute_boxwhisker         — Compute box-and-whisker percentile data from JSONL plans
 7. generate_seat_vote_curves  — Compute seat–vote curves from ensemble plans
 8. gingles_regression         — Fit Gingles non-linear regression curves
-9. export_*                   — Export all JSON payloads for the backend (10 scripts)
+9. ei_rxc_al                  — Run RxC ecological inference for Alabama (MCMC, slow)
+10. ei_rxc_or                 — Run RxC ecological inference for Oregon (MCMC, slow)
+11. export_*                  — Export all JSON payloads for the backend (10 scripts)
 
 Usage
 -----
@@ -35,6 +37,7 @@ See seawulf_runs/AL/scripts/ and seawulf_runs/OR/scripts/ for those runners.
 """
 
 import sys
+import importlib.util
 from pathlib import Path
 
 # Ensure sub-packages are importable
@@ -43,6 +46,11 @@ sys.path.insert(0, str(ROOT / "preprocessing"))
 sys.path.insert(0, str(ROOT / "analytics"))
 
 # ── Stage definitions ─────────────────────────────────────────────────────
+# Stages can be either:
+#   ("label", "dotted.module.path")   — imported via importlib.import_module
+#   ("label", Path(...))              — loaded from file via spec_from_file_location
+
+SEAWULF = ROOT / "seawulf_runs"
 
 PREPROCESSING_STAGES = [
     ("assign_enacted_districts",    "preprocessing.assign_enacted_districts"),
@@ -56,6 +64,8 @@ ANALYTICS_STAGES = [
     ("compute_boxwhisker",               "analytics.compute_boxwhisker"),
     ("generate_seat_vote_curves",        "analytics.generate_seat_vote_curves"),
     ("gingles_regression",               "analytics.gingles_regression"),
+    ("ei_rxc_al",                        SEAWULF / "AL/scripts/run_ei_statewide_rxc_al.py"),
+    ("ei_rxc_or",                        SEAWULF / "OR/scripts/run_ei_statewide_rxc_or.py"),
     ("export_state_summary",             "analytics.export_state_summary_real_data"),
     ("export_district_summary",          "analytics.export_district_summary_real_data"),
     ("export_gingles_precinct",          "analytics.export_gingles_precinct_real_data"),
@@ -73,12 +83,21 @@ ALL_STAGES = PREPROCESSING_STAGES + ANALYTICS_STAGES
 
 
 def run_stage(label, module_path):
-    """Import *module_path* and call its ``main()`` function."""
+    """Import *module_path* and call its ``main()`` function.
+
+    *module_path* may be a dotted module string (e.g. ``"analytics.foo"``)
+    or a :class:`pathlib.Path` pointing directly to a ``.py`` script file.
+    """
     import importlib
     print(f"\n{'='*60}")
     print(f"  STAGE: {label}")
     print(f"{'='*60}")
-    mod = importlib.import_module(module_path)
+    if isinstance(module_path, Path):
+        spec = importlib.util.spec_from_file_location(label, module_path)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+    else:
+        mod = importlib.import_module(module_path)
     mod.main()
     print(f"  ✓ {label} complete")
 
