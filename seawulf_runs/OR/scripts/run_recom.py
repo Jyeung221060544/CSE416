@@ -1,20 +1,33 @@
 import json
 import os
 import sys
+from functools import partial
+from pathlib import Path
 
 from gerrychain import Graph, MarkovChain, Partition, accept
-from gerrychain.updaters import Tally, cut_edges
 from gerrychain.constraints import within_percent_of_ideal_population
 from gerrychain.proposals import recom
-from functools import partial
 from gerrychain.tree import bipartition_tree
+from gerrychain.updaters import Tally, cut_edges
+
+# ── Shared helpers ────────────────────────────────────────────────────────
+_SHARED = Path(__file__).resolve().parents[2] / "shared"
+sys.path.insert(0, str(_SHARED))
+
+from chain_metrics import (  # noqa: E402
+    district_minority_pct,
+    effective_count,
+    opp_count,
+    plan_metrics,
+    seat_count,
+)
+from io_utils import ensure_dir  # noqa: E402
+
 
 def load_config(path):
     with open(path, "r") as f:
         return json.load(f)
 
-def ensure_dir(p):
-    os.makedirs(p, exist_ok=True)
 
 def district_effectiveness_record(part, dist, group_key, thr, party):
     pop = part["population"][dist]
@@ -44,6 +57,7 @@ def district_effectiveness_record(part, dist, group_key, thr, party):
         "effectiveness_score": 1 if effective else 0,
         "is_effective": effective,
     }
+
 
 def main():
     if len(sys.argv) < 3:
@@ -117,62 +131,6 @@ def main():
 
     pop_constraint = within_percent_of_ideal_population(initial, eps, pop_key="population")
     constraints = [pop_constraint]
-
-    def district_minority_pct(part, dist, group_key):
-        pop = part["population"][dist]
-        if pop <= 0:
-            return 0.0
-        m = part["min_{}".format(group_key)][dist]
-        return float(m) / float(pop)
-
-    def opp_count(part, thr, group_key):
-        return sum(
-            1 for dist in part.parts
-            if district_minority_pct(part, dist, group_key) >= thr
-        )
-
-    def effective_count(part, thr, group_key, party):
-        # effective = opportunity + party-of-choice wins district (simple version)
-        if ("dem" not in part.updaters) or ("rep" not in part.updaters):
-            return 0
-
-        c = 0
-        for dist in part.parts:
-            if district_minority_pct(part, dist, group_key) < thr:
-                continue
-            dem = part["dem"][dist]
-            rep = part["rep"][dist]
-            winner = "D" if dem > rep else "R"
-            if winner == party:
-                c += 1
-        return c
-
-    def seat_count(part):
-        if ("dem" not in part.updaters) or ("rep" not in part.updaters):
-            return None, None
-        dem_seats = 0
-        for dist in part.parts:
-            if part["dem"][dist] > part["rep"][dist]:
-                dem_seats += 1
-        rep_seats = len(part.parts) - dem_seats
-        return dem_seats, rep_seats
-
-    def plan_metrics(part, group_key=None, thr=None, party=None):
-        dem_seats, rep_seats = seat_count(part)
-        cut = len(part["cut_edges"]) if "cut_edges" in part.updaters else None
-
-        metrics = {
-            "dem_seats": dem_seats,
-            "rep_seats": rep_seats,
-            "cut_edges": cut,
-        }
-
-        if group_key is not None and thr is not None:
-            metrics["opp_districts"] = opp_count(part, thr, group_key)
-            if party is not None:
-                metrics["eff_districts"] = effective_count(part, thr, group_key, party)
-
-        return metrics
 
     # ---------------- VRA constraints (if enabled) ----------------
     if vra_enabled:
@@ -317,7 +275,6 @@ def main():
                 k = str(metrics["cut_edges"])
                 cut_hist[k] = cut_hist.get(k, 0) + 1
 
-            
             # ---- box/whisker raw data for every configured group ----
             dists = sorted(part.parts.keys(), key=lambda x: int(x) if str(x).isdigit() else str(x))
 
@@ -392,6 +349,7 @@ def main():
 
     print("Wrote:", plans_path)
     print("Wrote:", summary_path)
+
 
 if __name__ == "__main__":
     main()

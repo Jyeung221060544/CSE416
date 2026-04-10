@@ -1,5 +1,4 @@
 import copy
-import json
 import os
 import shutil
 import subprocess
@@ -7,61 +6,20 @@ import sys
 import time
 from pathlib import Path
 
+# ── Shared helpers ────────────────────────────────────────────────────────
+_SHARED = Path(__file__).resolve().parents[2] / "shared"
+sys.path.insert(0, str(_SHARED))
 
-def load_json(path):
-    with open(path, "r", encoding="utf-8") as f:
-        return json.load(f)
-
-
-def write_json(path, data):
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2)
-
-
-def ensure_dir(path):
-    Path(path).mkdir(parents=True, exist_ok=True)
-
-
-def merge_hist(dst, src):
-    for k, v in src.items():
-        dst[str(k)] = dst.get(str(k), 0) + int(v)
-
-
-def concat_jsonl(files, out_path):
-    written = 0
-    with open(out_path, "w", encoding="utf-8") as fout:
-        for fp in files:
-            if not Path(fp).exists():
-                continue
-            with open(fp, "r", encoding="utf-8") as fin:
-                for line in fin:
-                    line = line.strip()
-                    if not line:
-                        continue
-                    fout.write(line + "\n")
-                    written += 1
-    return written
-
-
-def split_counts(total, pieces):
-    base = total // pieces
-    rem = total % pieces
-    return [base + (1 if i < rem else 0) for i in range(pieces)]
-
-
-def get_rank():
-    for key in ["OMPI_COMM_WORLD_RANK", "MV2_COMM_WORLD_RANK", "PMI_RANK", "SLURM_PROCID"]:
-        if key in os.environ:
-            return int(os.environ[key])
-    return 0
-
-
-def get_world_size():
-    for key in ["OMPI_COMM_WORLD_SIZE", "MV2_COMM_WORLD_SIZE", "PMI_SIZE", "SLURM_NTASKS"]:
-        if key in os.environ:
-            return int(os.environ[key])
-    return 1
-
+from io_utils import (  # noqa: E402
+    concat_jsonl,
+    ensure_dir,
+    get_rank,
+    get_world_size,
+    load_json,
+    merge_hist,
+    split_counts,
+    write_json,
+)
 
 def wait_for_files(paths, timeout_seconds=3600, poll_seconds=2):
     start = time.time()
