@@ -28,6 +28,15 @@ import SectionHeader     from '@/components/ui/section-header'
 import useAppStore       from '@/store/useAppStore'
 import RepresentationGapMap from '@/components/maps/RepresentationGapMap'
 
+/* ── District summary dummy fallback ─────────────────────────────────────────
+ * Used when the backend does not yet serve districtSummary with racialGroup
+ * fields for a state.  Replace by ensuring the backend endpoint returns the
+ * full districtSummary (including racialGroup) for all states.
+ * ─────────────────────────────────────────────────────────────────────────── */
+import AL_DISTRICTS from '@/dummy/AL-district-summary.json'
+import OR_DISTRICTS from '@/dummy/OR-district-summary.json'
+const DISTRICT_DUMMY = { AL: AL_DISTRICTS, OR: OR_DISTRICTS }
+
 
 /* ── Plan label lookup ───────────────────────────────────────────────────── */
 const PLAN_LABELS = {
@@ -51,7 +60,12 @@ export default function RepresentationGapSection({ data, stateId }) {
 
     /* ── Derived ─────────────────────────────────────────────────────────── */
     const stateName      = data?.stateSummary?.stateName ?? null
-    const districtSummary = data?.districtSummary ?? null
+    /* Fall back to dummy data when the backend does not return districtSummary
+     * or when the districts are missing the racialGroup field. */
+    const backendDistricts = data?.districtSummary
+    const districtSummary = (backendDistricts?.districts?.[0]?.racialGroup != null)
+        ? backendDistricts
+        : (DISTRICT_DUMMY[stateId?.toUpperCase()] ?? backendDistricts ?? null)
 
     /* The two slots: plan key (or null if not enough selections) */
     const planA = mapCompareFilter[0] ?? null

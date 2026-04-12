@@ -50,7 +50,15 @@ export default function useStateData() {
             .then(overview => {
                 setData(overview)
 
-                const groups = overview.stateSummary?.demographicGroups ?? []
+                /* Normalize legacy "Hispanic" label → "Latino" for consistency.
+                 * The backend may be seeded from data using "Hispanic"; all frontend
+                 * logic and partyColors.js use "latino" / "Latino" as the canonical key. */
+                const raw = overview.stateSummary?.demographicGroups ?? []
+                const groups = raw.map(g =>
+                    g.group.toLowerCase() === 'hispanic'
+                        ? { ...g, group: 'Latino' }
+                        : g
+                )
                 setDemographicGroups(groups)
 
                 // Feasible race filter: black > latino > any feasible

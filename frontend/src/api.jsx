@@ -76,6 +76,16 @@ export async function fetchEnsembleBoxWhisker(stateId) {
     return res.json()
 }
 
+/** GET /api/states/:stateId/ensemble/effectiveness
+ *  Returns the effectiveness analysis payload
+ *  { feasibleGroups, effectivenessHistogram, effectivenessBoxWhisker, vraImpactThreshold }
+ *  Triggered by: entering the Effectiveness Analysis tab */
+export async function fetchEnsembleEffectiveness(stateId) {
+    const res = await fetch(`${BASE}/api/states/${stateId}/ensemble/effectiveness`)
+    if (!res.ok) throw new Error(`GET /api/states/${stateId}/ensemble/effectiveness failed: ${res.status}`)
+    return res.json()
+}
+
 /** GET /api/states/:stateId/gingles?race=
  *  Returns { stateId, race, points, democraticTrendline, republicanTrendline, summaryRows }
  *  Triggered by: entering Gingles tab OR feasibleRaceFilter change */

@@ -50,8 +50,8 @@
   "racePairs": [
     {
       "groups": [
-        "Latino",
-        "White_NH"
+        "latino",
+        "white"
       ],
       "label": "Latino \u2212 White",
       "candidates": [
@@ -1687,8 +1687,8 @@
     },
     {
       "groups": [
-        "Latino",
-        "Other"
+        "latino",
+        "other"
       ],
       "label": "Latino \u2212 Other",
       "candidates": [
@@ -3324,8 +3324,8 @@
     },
     {
       "groups": [
-        "White_NH",
-        "Other"
+        "white",
+        "other"
       ],
       "label": "White \u2212 Other",
       "candidates": [

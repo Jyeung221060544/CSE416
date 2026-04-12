@@ -64,6 +64,10 @@ const useAppStore = create((set) => ({
     // Set by EnsembleAnalysisSection pills and SectionPanel EA sub-nav clicks.
     activeEATab: 'ensemble-splits',
 
+    // Active mini-nav tab for Effectiveness Analysis section.
+    // One of: 'effectiveness-visualizations' | 'vra-impact'.
+    activeEFFTab: 'effectiveness-visualizations',
+
 
     /* ── Step 2: Filter state ────────────────────────────────────────────── */
 
@@ -136,6 +140,9 @@ const useAppStore = create((set) => ({
 
     /** @param {string} tab  One of the EA_TABS ids in EnsembleAnalysisSection. */
     setActiveEATab: (tab)        => set({ activeEATab: tab }),
+
+    /** @param {string} tab  One of the EFF_TABS ids in EffectivenessSection. */
+    setActiveEFFTab: (tab)       => set({ activeEFFTab: tab }),
 
     /** @param {string} race  Lowercase race key: 'white'|'black'|'latino'|'asian'|'other'. */
     setRaceFilter: (race)        => set({ raceFilter: race }),

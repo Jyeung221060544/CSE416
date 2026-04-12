@@ -32,7 +32,13 @@
  * STATE SOURCES (Zustand)
  *   activeEATab        — Active mini-nav tab; drives sidebar sub-nav highlight.
  *   activeSection      — Top-level section detector; gates all fetches.
- *   feasibleRaceFilter — Selected race for box & whisker (FeasibleRaceFilter in sidebar).
+ *   feasibleRaceFilter — Selected race for box & whisker + effectiveness histogram.
+ *
+ * DATA SHAPE (effectivenessData — from /ensemble/effectiveness)
+ *   effectivenessData.feasibleGroups           — Array of lowercase race keys with data.
+ *   effectivenessData.effectivenessHistogram   — { enactedEffectiveByGroup, ensembles[] }
+ *   effectivenessData.effectivenessBoxWhisker  — { enactedPlan, ensembles[] }
+ *   effectivenessData.vraImpactThreshold       — { rows[{ id, label, raceBlindPct, vraConstrainedPct }] }
  */
 
 import { useMemo, useEffect, useRef, useState } from 'react'
@@ -40,11 +46,11 @@ import SectionHeader             from '@/components/ui/section-header'
 import BrowserTabs               from '@/components/ui/browser-tabs'
 import EnsembleSplitChart        from '@/components/charts/EnsembleSplitChart'
 import EnsembleSplitCompareChart from '@/components/charts/EnsembleSplitCompareChart'
-import BoxWhiskerChart           from '@/components/charts/BoxWhiskerChart'
-import BoxWhiskerCompareChart    from '@/components/charts/BoxWhiskerCompareChart'
-import useAppStore               from '@/store/useAppStore'
-import { RACE_LABELS } from '@/lib/partyColors'
+import BoxWhiskerChart              from '@/components/charts/BoxWhiskerChart'
+import BoxWhiskerCompareChart       from '@/components/charts/BoxWhiskerCompareChart'
+import useAppStore                  from '@/store/useAppStore'
 import { fetchEnsembleSplits, fetchEnsembleBoxWhisker } from '../../api'
+import { RACE_LABELS }              from '@/lib/partyColors'
 
 
 /* ── Tab definitions ─────────────────────────────────────────────────────────
@@ -115,6 +121,7 @@ export default function EnsembleAnalysisSection({ data, stateId }) {
             .then(setBwData)
             .catch(err => console.error('[Ensemble] fetchEnsembleBoxWhisker error:', err))
     }, [stateId, inEA, activeTab])
+
 
     /* ── Derived data ────────────────────────────────────────────────────── */
     const stateName = data?.stateSummary?.stateName ?? null
@@ -309,6 +316,8 @@ export default function EnsembleAnalysisSection({ data, stateId }) {
                         </div>
                     )
                 )}
+
+                {/* ── EFFECTIVENESS ANALYSIS ────────────────────────────── */}
 
             </BrowserTabs>
 

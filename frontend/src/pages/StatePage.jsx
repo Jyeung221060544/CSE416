@@ -35,6 +35,7 @@ import StateOverviewSection      from '@/components/sections/StateOverviewSectio
 import DemographicSection        from '@/components/sections/DemographicSection'
 import RacialPolarizationSection from '@/components/sections/RacialPolarizationSection'
 import EnsembleAnalysisSection   from '@/components/sections/EnsembleAnalysisSection'
+import EffectivenessSection      from '@/components/sections/EffectivenessSection'
 import RepresentationGapSection  from '@/components/sections/RepresentationGapSection'
 import useStateData              from '@/hooks/useStateData'
 import useAppStore               from '@/store/useAppStore'
@@ -74,6 +75,9 @@ export default function StatePage() {
                 )}
                 {activeSection === 'ensemble-analysis' && (
                     <EnsembleAnalysisSection data={data} stateId={stateId} />
+                )}
+                {activeSection === 'effectiveness-analysis' && (
+                    <EffectivenessSection data={data} stateId={stateId} />
                 )}
                 {activeSection === 'representation-gap' && (
                     <RepresentationGapSection data={data} stateId={stateId} />

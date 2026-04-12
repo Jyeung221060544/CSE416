@@ -50,8 +50,8 @@
   "racePairs": [
     {
       "groups": [
-        "Black_NH",
-        "White_NH"
+        "black",
+        "white"
       ],
       "label": "Black \u2212 White",
       "candidates": [
@@ -1687,8 +1687,8 @@
     },
     {
       "groups": [
-        "Black_NH",
-        "Other"
+        "black",
+        "other"
       ],
       "label": "Black \u2212 Other",
       "candidates": [
@@ -3324,8 +3324,8 @@
     },
     {
       "groups": [
-        "White_NH",
-        "Other"
+        "white",
+        "other"
       ],
       "label": "White \u2212 Other",
       "candidates": [

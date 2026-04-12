@@ -49,11 +49,12 @@ import useAppStore from '../store/useAppStore'
  * EA_SUBSECTIONS  — DOM ids used for scroll-based navigation inside the section.
  * ─────────────────────────────────────────────────────────────────────────── */
 const SECTIONS = [
-    { id: 'state-overview',      label: 'State Overview' },
-    { id: 'demographic',         label: 'Demographic Data' },
-    { id: 'racial-polarization', label: 'Racial Polarization' },
-    { id: 'ensemble-analysis',   label: 'Ensemble Analysis' },
-    { id: 'representation-gap',  label: 'Representation Gap' },
+    { id: 'state-overview',          label: 'State Overview' },
+    { id: 'demographic',             label: 'Demographic Data' },
+    { id: 'racial-polarization',     label: 'Racial Polarization' },
+    { id: 'ensemble-analysis',       label: 'Ensemble Analysis' },
+    { id: 'effectiveness-analysis',  label: 'Effectiveness Analysis' },
+    { id: 'representation-gap',      label: 'Representation Gap' },
 ]
 
 const SO_SUBSECTIONS = [
@@ -66,12 +67,16 @@ const RP_SUBSECTIONS = [
     { id: 'gingles', label: 'Gingles Analysis'        },
     { id: 'ei-kde',  label: 'Ecological Inference KDE' },
     { id: 'ei-bar',  label: 'EI Bar & Polarization'    },
-    { id: 'vs-ss',   label: 'Vote / Seat Share'        },
 ]
 
 const EA_SUBSECTIONS = [
     { id: 'ensemble-splits', label: 'Ensemble Splits' },
-    { id: 'box-whisker',     label: 'Box & Whisker' },
+    { id: 'box-whisker',     label: 'Box & Whisker'   },
+]
+
+const EFF_SUBSECTIONS = [
+    { id: 'effectiveness-visualizations', label: 'Effectiveness Visualizations' },
+    { id: 'vra-impact',                   label: 'VRA Impact'                   },
 ]
 
 
@@ -92,7 +97,8 @@ export default function SectionPanel({ collapsed }) {
     const { activeSection, setActiveSection,
             activeSOTab, setActiveSOTab,
             activeRPTab, setActiveRPTab,
-            activeEATab, setActiveEATab } = useAppStore()
+            activeEATab, setActiveEATab,
+            activeEFFTab, setActiveEFFTab } = useAppStore()
 
     // expandedSection — id of the section whose subsections are currently visible
     const [expandedSection, setExpandedSection] = useState('state-overview')
@@ -102,13 +108,15 @@ export default function SectionPanel({ collapsed }) {
 
     const toggleExpand = (id) => setExpandedSection(prev => prev === id ? null : id)
 
-    const activateSOTab = (tabId) => { setActiveSOTab(tabId); setActiveSection('state-overview') }
-    const activateRPTab = (tabId) => { setActiveRPTab(tabId); setActiveSection('racial-polarization') }
-    const activateEATab = (tabId) => { setActiveEATab(tabId); setActiveSection('ensemble-analysis') }
+    const activateSOTab  = (tabId) => { setActiveSOTab(tabId);  setActiveSection('state-overview') }
+    const activateRPTab  = (tabId) => { setActiveRPTab(tabId);  setActiveSection('racial-polarization') }
+    const activateEATab  = (tabId) => { setActiveEATab(tabId);  setActiveSection('ensemble-analysis') }
+    const activateEFFTab = (tabId) => { setActiveEFFTab(tabId); setActiveSection('effectiveness-analysis') }
 
-    const handleSOClick = () => { setActiveSection('state-overview');      toggleExpand('state-overview') }
-    const handleRPClick = () => { setActiveSection('racial-polarization'); toggleExpand('racial-polarization') }
-    const handleEAClick = () => { setActiveSection('ensemble-analysis');   toggleExpand('ensemble-analysis') }
+    const handleSOClick  = () => { setActiveSection('state-overview');         toggleExpand('state-overview') }
+    const handleRPClick  = () => { setActiveSection('racial-polarization');    toggleExpand('racial-polarization') }
+    const handleEAClick  = () => { setActiveSection('ensemble-analysis');      toggleExpand('ensemble-analysis') }
+    const handleEFFClick = () => { setActiveSection('effectiveness-analysis'); toggleExpand('effectiveness-analysis') }
 
 
     /* ── Step 3: Render ──────────────────────────────────────────────────── */
@@ -140,21 +148,30 @@ export default function SectionPanel({ collapsed }) {
                     const isSO      = section.id === 'state-overview'
                     const isRP      = section.id === 'racial-polarization'
                     const isEA      = section.id === 'ensemble-analysis'
-                    const hasSubNav = isSO || isRP || isEA
+                    const isEFF     = section.id === 'effectiveness-analysis'
+                    const hasSubNav = isSO || isRP || isEA || isEFF
 
                     /* Route click to the correct handler */
-                    const handleClick = isSO ? handleSOClick
-                                      : isRP ? handleRPClick
-                                      : isEA ? handleEAClick
+                    const handleClick = isSO  ? handleSOClick
+                                      : isRP  ? handleRPClick
+                                      : isEA  ? handleEAClick
+                                      : isEFF ? handleEFFClick
                                       : () => { setActiveSection(section.id); setExpandedSection(null) }
 
                     /* Which sub-nav state / items / active id / select handler belong to this section */
                     const subNavOpen     = expandedSection === section.id
-                    const subsections    = isSO ? SO_SUBSECTIONS : isRP ? RP_SUBSECTIONS : EA_SUBSECTIONS
-                    const subNavActiveId = isSO ? activeSOTab : isRP ? activeRPTab : activeEATab
-                    const subNavOnSelect = isSO ? activateSOTab
-                                        : isRP ? activateRPTab
-                                        : activateEATab
+                    const subsections    = isSO  ? SO_SUBSECTIONS
+                                        : isRP  ? RP_SUBSECTIONS
+                                        : isEA  ? EA_SUBSECTIONS
+                                        : EFF_SUBSECTIONS
+                    const subNavActiveId = isSO  ? activeSOTab
+                                        : isRP  ? activeRPTab
+                                        : isEA  ? activeEATab
+                                        : activeEFFTab
+                    const subNavOnSelect = isSO  ? activateSOTab
+                                        : isRP  ? activateRPTab
+                                        : isEA  ? activateEATab
+                                        : activateEFFTab
 
                     return (
                         <div key={section.id}>

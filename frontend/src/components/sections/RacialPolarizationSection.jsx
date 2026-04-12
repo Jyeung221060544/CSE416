@@ -185,13 +185,7 @@ export default function RacialPolarizationSection({ data, stateId }) {
         { id: 'gingles', label: 'Gingles Analysis'       },
         { id: 'ei-kde',  label: 'EI KDE Charts'          },
         { id: 'ei-bar',  label: 'EI Bar & Polarization'  },
-        {
-            id:            'vs-ss',
-            label:         'Vote / Seat Share',
-            disabled:      !isRaciallyPolarized,
-            disabledTitle: 'Gingles 2/3 not satisfied — racially polarized voting not detected in this state',
-        },
-    ], [isRaciallyPolarized])
+    ], [])
 
     /* Current gingles series for the precinct table */
     const currentGinglesSeries = ginglesByRace[feasibleRaceFilter] ?? null
@@ -289,16 +283,6 @@ export default function RacialPolarizationSection({ data, stateId }) {
                     </div>
                 )}
 
-                {/* ── VOTE / SEAT SHARE ───────────────────────────────────── */}
-                {activeTab === 'vs-ss' && (
-                    <div className="flex flex-col gap-3 h-full">
-                        <SectionHeader title="Vote Share vs. Seat Share Curve" />
-                        <VoteSeatShareChart
-                            voteSeatData={voteSeatData}
-                            className="flex-1 min-h-0"
-                        />
-                    </div>
-                )}
 
             </BrowserTabs>
 

@@ -1,0 +1,104 @@
+{
+  "stateId": "OR",
+  "numDistricts": 6,
+  "totalPlans": 5000,
+  "feasibleGroups": ["latino", "white"],
+  "effectivenessHistogram": {
+    "enactedEffectiveByGroup": {
+      "latino": 1,
+      "white": 5
+    },
+    "ensembles": [
+      {
+        "ensembleType": "race-blind",
+        "groupCounts": {
+          "latino": [
+            { "numEffective": 0, "frequency": 350 },
+            { "numEffective": 1, "frequency": 1600 },
+            { "numEffective": 2, "frequency": 1700 },
+            { "numEffective": 3, "frequency": 950 },
+            { "numEffective": 4, "frequency": 300 },
+            { "numEffective": 5, "frequency": 80 },
+            { "numEffective": 6, "frequency": 20 }
+          ],
+          "white": [
+            { "numEffective": 0, "frequency": 5 },
+            { "numEffective": 1, "frequency": 30 },
+            { "numEffective": 2, "frequency": 120 },
+            { "numEffective": 3, "frequency": 450 },
+            { "numEffective": 4, "frequency": 1200 },
+            { "numEffective": 5, "frequency": 1900 },
+            { "numEffective": 6, "frequency": 1295 }
+          ]
+        }
+      },
+      {
+        "ensembleType": "vra-constrained",
+        "groupCounts": {
+          "latino": [
+            { "numEffective": 0, "frequency": 10 },
+            { "numEffective": 1, "frequency": 80 },
+            { "numEffective": 2, "frequency": 390 },
+            { "numEffective": 3, "frequency": 1050 },
+            { "numEffective": 4, "frequency": 1620 },
+            { "numEffective": 5, "frequency": 1300 },
+            { "numEffective": 6, "frequency": 550 }
+          ],
+          "white": [
+            { "numEffective": 0, "frequency": 0 },
+            { "numEffective": 1, "frequency": 10 },
+            { "numEffective": 2, "frequency": 50 },
+            { "numEffective": 3, "frequency": 250 },
+            { "numEffective": 4, "frequency": 900 },
+            { "numEffective": 5, "frequency": 1900 },
+            { "numEffective": 6, "frequency": 1890 }
+          ]
+        }
+      }
+    ]
+  },
+  "effectivenessBoxWhisker": {
+    "enactedPlan": {
+      "latino": 1,
+      "white": 5
+    },
+    "ensembles": [
+      {
+        "ensembleType": "race-blind",
+        "groupStats": {
+          "latino": { "min": 0, "q1": 1, "median": 2, "mean": 1.9, "q3": 3, "max": 6 },
+          "white":  { "min": 0, "q1": 4, "median": 5, "mean": 4.7, "q3": 6, "max": 6 }
+        }
+      },
+      {
+        "ensembleType": "vra-constrained",
+        "groupStats": {
+          "latino": { "min": 0, "q1": 3, "median": 4, "mean": 4.1, "q3": 5, "max": 6 },
+          "white":  { "min": 1, "q1": 5, "median": 5, "mean": 5.1, "q3": 6, "max": 6 }
+        }
+      }
+    ]
+  },
+  "vraImpactThreshold": {
+    "rows": [
+      {
+        "id": "satisfies-enacted",
+        "label": "Satisfies Enacted Effectiveness",
+        "raceBlindPct": 0.284,
+        "vraConstrainedPct": 0.867
+      },
+      {
+        "id": "satisfies-proportionality",
+        "label": "Satisfies Rough Proportionality",
+        "raceBlindPct": 0.131,
+        "vraConstrainedPct": 0.741
+      },
+      {
+        "id": "satisfies-both",
+        "label": "Satisfies Both Conditions",
+        "raceBlindPct": 0.083,
+        "vraConstrainedPct": 0.698
+      }
+    ]
+  }
+}
