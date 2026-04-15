@@ -69,6 +69,14 @@ export default function useFilters() {
     const eaCompareMode    = useAppStore((state) => state.eaCompareMode)
     const setEaCompareMode = useAppStore((state) => state.setEaCompareMode)
 
+    // Effectiveness histogram + VRA table single-select race (EffRaceFilter)
+    const effRaceFilter    = useAppStore((state) => state.effRaceFilter)
+    const setEffRaceFilter = useAppStore((state) => state.setEffRaceFilter)
+
+    // Effectiveness box & whisker multi-select races (EffBWRaceFilter)
+    const effBWRaceFilter       = useAppStore((state) => state.effBWRaceFilter)
+    const toggleEffBWRaceFilter = useAppStore((state) => state.toggleEffBWRaceFilter)
+
     /* ── Step 1: Return bundled object for destructuring at call site ───── */
     return {
         raceFilter,            setRaceFilter,
@@ -77,6 +85,8 @@ export default function useFilters() {
         eiRaceFilter,          toggleEiRaceFilter,
         showDistrictOverlay,   setShowDistrictOverlay,
         eaCompareMode,         setEaCompareMode,
+        effRaceFilter,         setEffRaceFilter,
+        effBWRaceFilter,       toggleEffBWRaceFilter,
         resetFilters,
     }
 }

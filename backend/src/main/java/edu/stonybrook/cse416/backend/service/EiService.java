@@ -8,15 +8,11 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 /**
- * EiService — serves {@code GET /api/states/{stateId}/ei?race=}.
+ * EiService — serves {@code GET /api/states/{stateId}/ei}.
  *
- * <p>Each call returns EI KDE curves for all candidates for a single racial
- * group (~2 KB).  The frontend's {@code eiRaceFilter} is a multi-select; when
- * the user toggles a race on, the frontend fetches that race's doc and merges
- * it client-side with previously fetched races.  Caching per (stateId, race)
- * makes repeat toggles instant.
- *
- * <p>Cached under {@code "ei_kde"} keyed by {@code stateId + "_" + race}.
+ * <p>Returns the full EI KDE document for the given state in one response.
+ * The document is candidate-first; race filtering is done on the frontend
+ * via {@code eiRaceFilter}.  Cached per stateId.
  */
 @Service
 public class EiService {
@@ -28,15 +24,13 @@ public class EiService {
     }
 
     /**
-     * Returns the EI KDE document for the given state and racial group,
-     * or {@code null} if not found.
+     * Returns the EI KDE document for the given state, or {@code null} if not found.
      *
      * @param stateId two-letter state abbreviation (e.g. "AL")
-     * @param race    racial group key — case-insensitive (e.g. "black", "Black")
      */
-    @Cacheable(value = "ei_kde", key = "#stateId + '_' + #race.toLowerCase()")
-    public EiKdeDoc getEiKde(String stateId, String race) {
-        Optional<EiKdeDoc> opt = eiRepo.findByStateIdAndRaceIgnoreCase(stateId, race);
+    @Cacheable(value = "ei_kde", key = "#stateId")
+    public EiKdeDoc getEiKde(String stateId) {
+        Optional<EiKdeDoc> opt = eiRepo.findById(stateId);
         return opt.orElse(null);
     }
 }

@@ -51,6 +51,14 @@ public class StateDoc {
      */
     private Boolean hasData;
 
+    /**
+     * Relative path to the precinct GeoJSON file on disk, resolved against
+     * {@code app.geodata.base-path}.  Stored here so {@code PrecinctGeoController}
+     * looks up the path from the DB rather than hardcoding it.
+     * Example: {@code "frontend/src/assets/ALPrecinctMap.json"}.
+     */
+    private String precinctGeoPath;
+
     /** No-arg constructor required by Spring Data MongoDB. */
     public StateDoc() {}
 
@@ -137,4 +145,7 @@ public class StateDoc {
      * @param hasData {@code true} if analysis data exists.
      */
     public void setHasData(Boolean hasData) { this.hasData = hasData; }
+
+    public String getPrecinctGeoPath() { return precinctGeoPath; }
+    public void setPrecinctGeoPath(String precinctGeoPath) { this.precinctGeoPath = precinctGeoPath; }
 }

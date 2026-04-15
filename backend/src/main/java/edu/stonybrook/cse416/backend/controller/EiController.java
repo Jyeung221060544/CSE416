@@ -9,16 +9,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.concurrent.TimeUnit;
 
 /**
- * EiController — {@code GET /api/states/{stateId}/ei?race=}
+ * EiController — {@code GET /api/states/{stateId}/ei}
  *
- * <p>The frontend {@code eiRaceFilter} is a multi-select.  When the user
- * toggles a race on, the frontend fetches this endpoint for that race and
- * merges the result with any previously fetched races client-side.  Each
- * per-race payload is small (~2 KB), so independent caching per (state, race)
- * keeps the cache compact and repeat-toggles instant.
- *
- * <p>The {@code race} parameter is case-insensitive (stored data may use title
- * case, e.g. "Black").
+ * <p>Returns the full EI KDE document for the given state in one response.
+ * The document is candidate-first; race filtering is done on the frontend
+ * via {@code eiRaceFilter}.  No {@code ?race=} parameter needed.
  */
 @RestController
 @RequestMapping("/api/states/{stateId}/ei")
@@ -33,23 +28,20 @@ public class EiController {
     }
 
     /**
-     * Returns EI KDE data for one racial group across all candidates.
+     * Returns EI KDE data for all candidates and racial groups for the given state.
      *
-     * <p>Response: {@code { stateId, race, electionYear,
+     * <p>Response: {@code { stateId, electionYear,
      * candidates: [{ candidateId, candidateName, party,
-     *                peakSupportEstimate, confidenceIntervalLow, confidenceIntervalHigh,
-     *                kdePoints: [{ x, y }] }] }}
+     *                racialGroups: [{ group, peakSupportEstimate,
+     *                                confidenceIntervalLow, confidenceIntervalHigh,
+     *                                kdePoints: [{ x, y }] }] }] }}
      *
      * @param stateId two-letter state abbreviation (e.g. "AL")
-     * @param race    racial group key — case-insensitive (e.g. "black", "Black")
-     * @return 200 with data; 404 if state or race not found
+     * @return 200 with EI KDE doc; 404 if no data found for state
      */
     @GetMapping
-    public ResponseEntity<EiKdeDoc> getEiKde(
-            @PathVariable String stateId,
-            @RequestParam String race) {
-
-        EiKdeDoc doc = eiService.getEiKde(stateId, race.toLowerCase());
+    public ResponseEntity<EiKdeDoc> getEiKde(@PathVariable String stateId) {
+        EiKdeDoc doc = eiService.getEiKde(stateId);
         if (doc == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok().cacheControl(CACHE).body(doc);
     }

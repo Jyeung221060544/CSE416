@@ -26,6 +26,8 @@ export default function useStateData() {
     const setEiRaceFilter       = useAppStore(s => s.setEiRaceFilter)
     const setRaceFilter         = useAppStore(s => s.setRaceFilter)
     const setEiKdeCompareRaces  = useAppStore(s => s.setEiKdeCompareRaces)
+    const setEffRaceFilter      = useAppStore(s => s.setEffRaceFilter)
+    const setEffBWRaceFilter    = useAppStore(s => s.setEffBWRaceFilter)
     const setActiveSection      = useAppStore(s => s.setActiveSection)
     const setActiveSOTab        = useAppStore(s => s.setActiveSOTab)
     const setActiveRPTab        = useAppStore(s => s.setActiveRPTab)
@@ -91,6 +93,17 @@ export default function useStateData() {
                     ? whiteKey
                     : groups.find(g => g.group.toLowerCase() !== primaryKey)?.group.toLowerCase()
                 if (primaryKey && secondKey) setEiKdeCompareRaces([primaryKey, secondKey])
+
+                // Effectiveness filters — non-white feasible races only
+                // effRaceFilter: black > latino > first non-white feasible
+                // effBWRaceFilter: all non-white feasible (multi-select, all pre-selected)
+                const nonWhiteFeasible = groups
+                    .filter(g => g.isFeasible && g.group.toLowerCase() !== whiteKey)
+                    .map(g => g.group.toLowerCase())
+                if (nonWhiteFeasible.length) {
+                    setEffRaceFilter(nonWhiteFeasible[0])
+                    setEffBWRaceFilter(nonWhiteFeasible)
+                }
             })
             .catch(err => {
                 console.error('[useStateData] fetchOverview error:', err)
@@ -100,6 +113,7 @@ export default function useStateData() {
 
     }, [stateId, setSelectedState, setDemographicGroups, setFeasibleRaceFilter,
         setEiRaceFilter, setRaceFilter, setEiKdeCompareRaces,
+        setEffRaceFilter, setEffBWRaceFilter,
         setActiveSection, setActiveSOTab, setActiveRPTab, setActiveEATab])
 
     return { stateId, data, loading, error }

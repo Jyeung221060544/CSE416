@@ -20,10 +20,7 @@ import VRAImpactTable           from '@/components/tables/VRAImpactTable'
 import useAppStore              from '@/store/useAppStore'
 import { RACE_LABELS }          from '@/lib/partyColors'
 
-// TODO: import { fetchEnsembleEffectiveness } from '../../api'  ← wire in once backend endpoint is implemented
-import AL_EFFECTIVENESS from '@/dummy/AL-effectiveness.json'
-import OR_EFFECTIVENESS from '@/dummy/OR-effectiveness.json'
-const EFFECTIVENESS_DUMMY = { AL: AL_EFFECTIVENESS, OR: OR_EFFECTIVENESS }
+import { fetchEnsembleEffectiveness } from '@/api'
 
 
 /* ── Tab definitions ─────────────────────────────────────────────────────── */
@@ -43,10 +40,11 @@ const EFF_TABS = [
 export default function EffectivenessSection({ data, stateId }) {
 
     /* ── Zustand state ───────────────────────────────────────────────────── */
-    const activeTab          = useAppStore(s => s.activeEFFTab)
-    const setActiveTab       = useAppStore(s => s.setActiveEFFTab)
-    const feasibleRaceFilter = useAppStore(s => s.feasibleRaceFilter)
-    const activeSection      = useAppStore(s => s.activeSection)
+    const activeTab         = useAppStore(s => s.activeEFFTab)
+    const setActiveTab      = useAppStore(s => s.setActiveEFFTab)
+    const effRaceFilter     = useAppStore(s => s.effRaceFilter)
+    const effBWRaceFilter   = useAppStore(s => s.effBWRaceFilter)
+    const activeSection     = useAppStore(s => s.activeSection)
 
     const inEFF = activeSection === 'effectiveness-analysis'
 
@@ -64,15 +62,14 @@ export default function EffectivenessSection({ data, stateId }) {
         if (!stateId || !inEFF) return
         if (hasFetched.current) return
         hasFetched.current = true
-        // TODO: Replace with API call once backend endpoint is implemented:
-        //   fetchEnsembleEffectiveness(stateId).then(setEffectivenessData).catch(...)
-        const dummy = EFFECTIVENESS_DUMMY[stateId?.toUpperCase()] ?? null
-        setEffectivenessData(dummy)
+        fetchEnsembleEffectiveness(stateId)
+            .then(setEffectivenessData)
+            .catch(err => console.error('[Effectiveness] fetchEnsembleEffectiveness error:', err))
     }, [stateId, inEFF])
 
     /* ── Derived ─────────────────────────────────────────────────────────── */
     const stateName = data?.stateSummary?.stateName ?? null
-    const raceName  = RACE_LABELS[feasibleRaceFilter] ?? feasibleRaceFilter
+    const raceName  = RACE_LABELS[effRaceFilter] ?? effRaceFilter
 
     /* ── Empty state ─────────────────────────────────────────────────────── */
     const emptyState = (
@@ -118,7 +115,7 @@ export default function EffectivenessSection({ data, stateId }) {
                                 <SectionHeader title="Effectiveness Histogram" className="shrink-0" />
                                 <EffectivenessHistogram
                                     data={effectivenessData.effectivenessHistogram}
-                                    raceKey={feasibleRaceFilter}
+                                    raceKey={effRaceFilter}
                                     raceName={raceName}
                                     className="flex-1 min-h-0"
                                 />
@@ -129,7 +126,7 @@ export default function EffectivenessSection({ data, stateId }) {
                                 <SectionHeader title="Effectiveness Box & Whisker" className="shrink-0" />
                                 <EffectivenessBoxWhisker
                                     data={effectivenessData.effectivenessBoxWhisker}
-                                    feasibleGroups={effectivenessData.feasibleGroups}
+                                    feasibleGroups={effBWRaceFilter.length > 0 ? effBWRaceFilter : effectivenessData.feasibleGroups}
                                     className="flex-1 min-h-0"
                                 />
                             </div>
@@ -143,7 +140,10 @@ export default function EffectivenessSection({ data, stateId }) {
                     effectivenessData ? (
                         <div className="h-full flex">
                             <div className="w-[70%] h-full">
-                                <VRAImpactTable data={effectivenessData.vraImpactThreshold} />
+                                <VRAImpactTable
+                                    data={effectivenessData.vraImpactThreshold}
+                                    raceKey={effRaceFilter}
+                                />
                             </div>
                         </div>
                     ) : emptyState

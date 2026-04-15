@@ -40,7 +40,7 @@ export default function EIRaceFilter() {
 
     /* ── Step 2: Render ──────────────────────────────────────────────────── */
     return (
-        <CollapsibleGroup label="EI Race / Minority">
+        <CollapsibleGroup label="Race">
             {eiRaceOptions.map((opt) => {
                 const checked = eiRaceFilter.includes(opt.value)
 

@@ -95,14 +95,15 @@ export async function fetchGingles(stateId, race) {
     return res.json()
 }
 
-/** GET /api/states/:stateId/ei?race=
- *  Returns { stateId, race, electionYear,
+/** GET /api/states/:stateId/ei
+ *  Returns { stateId, electionYear,
  *            candidates:[{candidateId, candidateName, party,
- *              peakSupportEstimate, confidenceIntervalLow, confidenceIntervalHigh, kdePoints}] }
- *  Triggered by: each newly checked race in eiRaceFilter (multi-select) */
-export async function fetchEiKde(stateId, race) {
-    const res = await fetch(`${BASE}/api/states/${stateId}/ei?race=${race}`)
-    if (!res.ok) throw new Error(`GET /api/states/${stateId}/ei?race=${race} failed: ${res.status}`)
+ *              racialGroups:[{group, peakSupportEstimate,
+ *                confidenceIntervalLow, confidenceIntervalHigh, kdePoints:[{x,y}]}]}] }
+ *  Triggered by: first entry to EI KDE or EI Bar tab; one doc covers all races */
+export async function fetchEiKde(stateId) {
+    const res = await fetch(`${BASE}/api/states/${stateId}/ei`)
+    if (!res.ok) throw new Error(`GET /api/states/${stateId}/ei failed: ${res.status}`)
     return res.json()
 }
 

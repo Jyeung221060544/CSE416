@@ -4,8 +4,8 @@
  * Lazy fetch strategy (all fetches gated on activeSection + activeRPTab):
  *   Gingles    — GET /gingles?race=           when activeRPTab === 'gingles'
  *                Results cached in ginglesByRace map; re-used on tab revisit.
- *   EI KDE     — GET /ei?race=                when activeRPTab === 'ei-kde' or 'ei-bar'
- *                Results cached in eiKdeByRace map; only new races hit the server.
+ *   EI KDE     — GET /ei                      when activeRPTab === 'ei-kde' or 'ei-bar'
+ *                All feasible races returned in one call; hasFetchedEI guard prevents re-fetch.
  *   EI Compare — GET /ei-compare?race1=&race2= when activeRPTab === 'ei-bar'
  *   VS-SS      — GET /vote-seat-share          on section entry (activeSection gate only)
  *                Fetched at section level (not tab) so the VS-SS tab can show
@@ -48,23 +48,25 @@ export default function RacialPolarizationSection({ data, stateId }) {
     /* ── Section-level fetched data ──────────────────────────────────────── */
     // ginglesByRace: { race → serverDoc } — cache; never cleared mid-session
     const [ginglesByRace,  setGinglesByRace]  = useState({})
-    // eiKdeByRace: { race → serverDoc } — cache per race fetch
-    const [eiKdeByRace,    setEiKdeByRace]    = useState({})
+    // eiData: candidate-first doc from server; null until fetched
+    const [eiData,         setEiData]         = useState(null)
     // eiCompareDoc: single pair doc from server
     const [eiCompareDoc,   setEiCompareDoc]   = useState(null)
     // voteSeatData: VS-SS bundle
     const [voteSeatData,   setVoteSeatData]   = useState(null)
 
-    // One-time fetch guard for VS-SS (section-level, not tab-level)
+    // One-time fetch guards
     const hasVSSFetched = useRef(false)
+    const hasEIFetched  = useRef(false)
 
     /* Reset all on stateId change */
     useEffect(() => {
         setGinglesByRace({})
-        setEiKdeByRace({})
+        setEiData(null)
         setEiCompareDoc(null)
         setVoteSeatData(null)
         hasVSSFetched.current = false
+        hasEIFetched.current  = false
     }, [stateId])
 
     /* ── Fetch: Gingles — gated on Gingles tab ───────────────────────────── */
@@ -77,17 +79,16 @@ export default function RacialPolarizationSection({ data, stateId }) {
             .catch(err => console.error('[RP] fetchGingles error:', err))
     }, [stateId, feasibleRaceFilter, inRP, activeTab])  // eslint-disable-line react-hooks/exhaustive-deps
 
-    /* ── Fetch: EI KDE — gated on ei-kde or ei-bar tab ──────────────────── */
+    /* ── Fetch: EI KDE — gated on ei-kde or ei-bar tab (one-time) ───────────── */
     useEffect(() => {
         if (!stateId) return
         if (!inRP || (activeTab !== 'ei-kde' && activeTab !== 'ei-bar')) return
-        eiRaceFilter.forEach(race => {
-            if (eiKdeByRace[race]) return  // already cached
-            fetchEiKde(stateId, race)
-                .then(doc => setEiKdeByRace(prev => ({ ...prev, [race]: doc })))
-                .catch(err => console.error('[RP] fetchEiKde error:', err))
-        })
-    }, [stateId, eiRaceFilter, inRP, activeTab])  // eslint-disable-line react-hooks/exhaustive-deps
+        if (hasEIFetched.current) return
+        hasEIFetched.current = true
+        fetchEiKde(stateId)
+            .then(setEiData)
+            .catch(err => console.error('[RP] fetchEiKde error:', err))
+    }, [stateId, inRP, activeTab])  // eslint-disable-line react-hooks/exhaustive-deps
 
     /* ── Fetch: EI Compare — gated on ei-bar tab ─────────────────────────── */
     useEffect(() => {
@@ -111,34 +112,7 @@ export default function RacialPolarizationSection({ data, stateId }) {
             .catch(err => console.error('[RP] fetchVoteSeatShare error:', err))
     }, [stateId, inRP])
 
-    /* ── Build candidate-first EI structure from race-first cache ─────────
-     * Server returns race-first: each race doc has all candidates.
-     * Charts expect candidate-first: each candidate has racialGroups[].
-     * ─────────────────────────────────────────────────────────────────────── */
-    const eiData = useMemo(() => {
-        if (!Object.keys(eiKdeByRace).length) return null
-        const candidateMap = {}
-        Object.entries(eiKdeByRace).forEach(([race, doc]) => {
-            doc.candidates.forEach(c => {
-                if (!candidateMap[c.candidateId]) {
-                    candidateMap[c.candidateId] = {
-                        candidateId:   c.candidateId,
-                        candidateName: c.candidateName,
-                        party:         c.party,
-                        racialGroups:  [],
-                    }
-                }
-                candidateMap[c.candidateId].racialGroups.push({
-                    group:                race,
-                    peakSupportEstimate:  c.peakSupportEstimate,
-                    confidenceIntervalLow:  c.confidenceIntervalLow,
-                    confidenceIntervalHigh: c.confidenceIntervalHigh,
-                    kdePoints:            c.kdePoints,
-                })
-            })
-        })
-        return { candidates: Object.values(candidateMap) }
-    }, [eiKdeByRace])
+    /* eiData is candidate-first directly from server — no inversion needed */
 
     /* ── Build gingles adapted shape for GinglesScatterPlot ──────────────── */
     const ginglesAdapted = useMemo(() => {

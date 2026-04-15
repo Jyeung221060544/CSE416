@@ -16,6 +16,9 @@
  *   ensemble-analysis
  *     activeEATab === 'ensemble-splits'   → no filters (placeholder message)
  *     activeEATab === 'box-whisker'       → FeasibleRaceFilter
+ *   effectiveness-analysis
+ *     activeEFFTab === 'effectiveness-visualizations' → EffRaceFilter + EffBWRaceFilter
+ *     activeEFFTab === 'vra-impact'                   → EffRaceFilter (shared with histogram)
  *
  * STATE SOURCES
  *   activeSection — from Zustand; set by SectionPanel clicks and scroll.
@@ -36,6 +39,8 @@ import CollapsibleGroup   from '../components/filters/CollapsibleGroup'
 import MapCompareFilter   from '../components/filters/MapCompareFilter'
 import CompareFilter       from '../components/filters/CompareFilter'
 import Select2RaceFilter  from '../components/filters/Select2RaceFilter'
+import EffRaceFilter      from '../components/filters/EffRaceFilter'
+import EffBWRaceFilter    from '../components/filters/EffBWRaceFilter'
 import ResetFiltersButton from '../components/filters/ResetFiltersButton'
 
 
@@ -50,6 +55,7 @@ export default function FilterPanel() {
     const activeSection       = useAppStore((state) => state.activeSection)
     const activeRPTab         = useAppStore((state) => state.activeRPTab)
     const activeEATab         = useAppStore((state) => state.activeEATab)
+    const activeEFFTab        = useAppStore((state) => state.activeEFFTab)
     const showDistrictOverlay    = useAppStore((state) => state.showDistrictOverlay)
     const setShowDistrictOverlay = useAppStore((state) => state.setShowDistrictOverlay)
 
@@ -125,6 +131,22 @@ export default function FilterPanel() {
                 </div>
             )}
 
+            {/* ── EFFECTIVENESS ANALYSIS ───────────────────────────────────── */}
+
+            {/* Effectiveness Visualizations tab: EffRaceFilter (histogram) + EffBWRaceFilter (box & whisker) */}
+            {activeSection === 'effectiveness-analysis' && activeEFFTab === 'effectiveness-visualizations' && (
+                <div className="flex flex-col gap-3">
+                    <EffRaceFilter />
+                    <Separator className="bg-brand-deep" />
+                    <EffBWRaceFilter />
+                </div>
+            )}
+
+            {/* VRA Impact tab: EffRaceFilter only — shared with histogram */}
+            {activeSection === 'effectiveness-analysis' && activeEFFTab === 'vra-impact' && (
+                <EffRaceFilter />
+            )}
+
             {/* ── REPRESENTATION GAP ───────────────────────────────────────── */}
 
             {/* MapCompareFilter: picks which 2 of the 3 plans to compare side-by-side */}
@@ -132,7 +154,7 @@ export default function FilterPanel() {
                 <div className="flex flex-col gap-3">
                     <MapCompareFilter />
                     <Separator className="bg-brand-deep" />
-                    <FeasibleRaceFilter />
+                    <EffRaceFilter />
                 </div>
             )}
 

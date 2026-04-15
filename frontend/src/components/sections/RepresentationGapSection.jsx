@@ -55,8 +55,8 @@ const PLAN_LABELS = {
 export default function RepresentationGapSection({ data, stateId }) {
 
     /* ── Zustand state ───────────────────────────────────────────────────── */
-    const mapCompareFilter  = useAppStore(s => s.mapCompareFilter)
-    const feasibleRaceFilter = useAppStore(s => s.feasibleRaceFilter)
+    const mapCompareFilter = useAppStore(s => s.mapCompareFilter)
+    const effRaceFilter    = useAppStore(s => s.effRaceFilter)
 
     /* ── Derived ─────────────────────────────────────────────────────────── */
     const stateName      = data?.stateSummary?.stateName ?? null
@@ -107,7 +107,7 @@ export default function RepresentationGapSection({ data, stateId }) {
                                 stateId={stateId}
                                 plan={planA}
                                 districtSummary={districtSummary}
-                                feasibleRace={feasibleRaceFilter}
+                                feasibleRace={effRaceFilter}
                             />
                         </MapFrame>
                     </div>
@@ -120,7 +120,7 @@ export default function RepresentationGapSection({ data, stateId }) {
                                 stateId={stateId}
                                 plan={planB}
                                 districtSummary={districtSummary}
-                                feasibleRace={feasibleRaceFilter}
+                                feasibleRace={effRaceFilter}
                             />
                         </MapFrame>
                     </div>
@@ -141,7 +141,7 @@ export default function RepresentationGapSection({ data, stateId }) {
                                     stateId={stateId}
                                     plan={planA}
                                     districtSummary={districtSummary}
-                                    feasibleRace={feasibleRaceFilter}
+                                    feasibleRace={effRaceFilter}
                                 />
                             ) : (
                                 <div className="h-full flex items-center justify-center text-brand-muted/50 text-sm italic">

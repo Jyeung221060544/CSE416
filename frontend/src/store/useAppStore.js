@@ -110,6 +110,14 @@ const useAppStore = create((set) => ({
     // Resets to false on tab switch (handled in EnsembleAnalysisSection useEffect).
     eaCompareMode: false,
 
+    // Single-select race for EffectivenessHistogram + VRAImpactTable.
+    // Only non-white feasible groups are shown in EffRaceFilter.
+    effRaceFilter: null,
+
+    // Multi-select races for EffectivenessBoxWhisker.
+    // Only non-white feasible groups are shown in EffBWRaceFilter.
+    effBWRaceFilter: [],
+
 
     /* ── Step 3: UI state ────────────────────────────────────────────────── */
 
@@ -180,6 +188,27 @@ const useAppStore = create((set) => ({
 
     /** @param {boolean} val  Toggle compare view in Ensemble Analysis. */
     setEaCompareMode: (val) => set({ eaCompareMode: val }),
+
+    /** @param {string|null} race  Non-white feasible race key for histogram + VRA table. */
+    setEffRaceFilter: (race) => set({ effRaceFilter: race }),
+
+    /** @param {string[]} races  Array of non-white feasible race keys for box & whisker. */
+    setEffBWRaceFilter: (races) => set({ effBWRaceFilter: races }),
+
+    /**
+     * toggleEffBWRaceFilter — Adds or removes a race from the EFF box-whisker multi-select.
+     * Guards against removing the last selected race.
+     *
+     * @param {string} race  Lowercase race key to toggle.
+     */
+    toggleEffBWRaceFilter: (race) => set((state) => {
+        const current = state.effBWRaceFilter
+        if (current.includes(race)) {
+            if (current.length > 1) return { effBWRaceFilter: current.filter(r => r !== race) }
+            return {}
+        }
+        return { effBWRaceFilter: [...current, race] }
+    }),
 
     /** @param {number|null} district  District number (int) or null to deselect. */
     setSelectedDistrict: (district) => set({ selectedDistrict: district }),
@@ -256,6 +285,16 @@ const useAppStore = create((set) => ({
             ? [primary, 'white']
             : (primary ? [primary] : [])
 
+        // Non-white feasible races for effectiveness filters
+        const nonWhiteFeasible = groups
+            .filter(g => g.isFeasible && g.group.toLowerCase() !== 'white')
+            .map(g => g.group.toLowerCase())
+
+        const preferredEffRace =
+            groups.find(g => g.group.toLowerCase() === 'black'  && g.isFeasible)?.group.toLowerCase() ??
+            groups.find(g => g.group.toLowerCase() === 'latino' && g.isFeasible)?.group.toLowerCase() ??
+            nonWhiteFeasible[0] ?? null
+
         return {
             raceFilter:           primary,
             feasibleRaceFilter:   preferredFeasible,
@@ -266,6 +305,8 @@ const useAppStore = create((set) => ({
             selectedDistrict:     null,
             showDistrictOverlay:  true,
             eaCompareMode:        false,
+            effRaceFilter:        preferredEffRace,
+            effBWRaceFilter:      nonWhiteFeasible,
         }
     }),
 

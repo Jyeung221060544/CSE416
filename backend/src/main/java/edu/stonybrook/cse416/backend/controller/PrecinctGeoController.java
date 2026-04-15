@@ -1,5 +1,7 @@
 package edu.stonybrook.cse416.backend.controller;
 
+import edu.stonybrook.cse416.backend.model.StateDoc;
+import edu.stonybrook.cse416.backend.repository.StateRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -9,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
-import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -41,23 +43,34 @@ public class PrecinctGeoController {
     @Value("${app.geodata.base-path:..}")
     private String geoBasePath;
 
+    private final StateRepository stateRepo;
+
+    public PrecinctGeoController(StateRepository stateRepo) {
+        this.stateRepo = stateRepo;
+    }
+
     /**
      * Streams the full precinct GeoJSON for the given state.
+     *
+     * <p>The file path is looked up from the {@code states} MongoDB collection
+     * via {@code StateDoc.precinctGeoPath}, rather than being hardcoded.
      *
      * <p>Each precinct feature includes polygon geometry and properties:
      * {@code GEOID, enacted_cd, votes_dem, votes_rep, VAP, NH_BLACK_ALONE_VAP,
      * NH_WHITE_ALONE_VAP, LATINO_VAP, NH_ASIAN_ALONE_VAP, OTHER_VAP}.
-     * The frontend uses {@code GEOID} as the stable identifier and array
-     * position (matching the heatmap {@code idx} field) for coloring.
+     * The frontend uses array position (matching the heatmap {@code idx} field)
+     * for coloring.
      *
      * @param stateId two-letter state abbreviation (e.g. "AL")
-     * @return 200 with GeoJSON stream; 404 if file not found
+     * @return 200 with GeoJSON stream; 404 if state or file not found
      */
     @GetMapping
     public ResponseEntity<Resource> getPrecincts(@PathVariable String stateId) {
-        String upper = stateId.toUpperCase();
-        File file = new File(geoBasePath,
-                "frontend/src/assets/" + upper + "PrecinctMap.json");
+        Optional<StateDoc> stateOpt = stateRepo.findById(stateId.toUpperCase());
+        if (stateOpt.isEmpty()) return ResponseEntity.notFound().build();
+
+        String path = stateOpt.get().getPrecinctGeoPath();
+        File file = new File(geoBasePath, path);
 
         if (!file.exists()) return ResponseEntity.notFound().build();
 

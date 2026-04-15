@@ -36,7 +36,7 @@ export default function RaceFilter() {
 
     /* ── Step 2: Render ──────────────────────────────────────────────────── */
     return (
-        <CollapsibleGroup label="Race / Ethnicity">
+        <CollapsibleGroup label="Race">
             {raceOptions.map((opt) => (
                 <label key={opt.value} className="flex items-center gap-2 px-1 py-1 cursor-pointer">
                     {/* Custom-styled radio button — uses Tailwind appearance-none + checked: variants */}

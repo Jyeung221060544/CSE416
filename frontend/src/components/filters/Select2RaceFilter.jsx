@@ -52,7 +52,7 @@ export default function Select2RaceFilter() {
     const atLimit = eiKdeCompareRaces.length >= 2
 
     return (
-        <CollapsibleGroup label="Compare Two Races">
+        <CollapsibleGroup label="Race Pair">
 
             <p className="text-[10px] text-brand-muted/70 px-1 pb-1 leading-snug italic">
                 Select 2 groups to compare.

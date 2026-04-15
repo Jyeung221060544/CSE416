@@ -6,7 +6,8 @@
  * Each uses its own header + 3 data rows so alignment is exact.
  *
  * PROPS
- *   data {object|null} — { rows: [{ id, label, raceBlindPct, vraConstrainedPct }] }
+ *   data    {object|null} — { [raceKey]: { rows: [{ id, label, raceBlindPct, vraConstrainedPct }] } }
+ *   raceKey {string|null} — Race key to look up in data (e.g. 'black', 'latino').
  */
 
 import { COMPARE_RB_COLOR, COMPARE_VRA_COLOR } from '@/lib/partyColors'
@@ -51,8 +52,9 @@ function DonutGauge({ pct, color }) {
 
 /* ── Main component ──────────────────────────────────────────────────────── */
 
-export default function VRAImpactTable({ data }) {
-    if (!data?.rows?.length) return null
+export default function VRAImpactTable({ data, raceKey }) {
+    const rows = data?.[raceKey]?.rows
+    if (!rows?.length) return null
 
     return (
         /*
@@ -79,7 +81,7 @@ export default function VRAImpactTable({ data }) {
             </div>
 
             {/* ── ROWS 1-3: Data ──────────────────────────────────────────── */}
-            {data.rows.map(row => {
+            {rows.map(row => {
                 const delta    = row.vraConstrainedPct - row.raceBlindPct
                 const deltaStr = `+${(delta * 100).toFixed(1)}%`
                 return [

@@ -1,7 +1,7 @@
 package edu.stonybrook.cse416.backend.service;
 
-import edu.stonybrook.cse416.backend.model.EnsembleAnalysisDoc;
-import edu.stonybrook.cse416.backend.repository.EnsembleAnalysisRepository;
+import edu.stonybrook.cse416.backend.model.EnsembleDoc;
+import edu.stonybrook.cse416.backend.repository.EnsembleRepository;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -22,9 +22,9 @@ import java.util.Optional;
 @Service
 public class EnsembleService {
 
-    private final EnsembleAnalysisRepository ensembleRepo;
+    private final EnsembleRepository ensembleRepo;
 
-    public EnsembleService(EnsembleAnalysisRepository ensembleRepo) {
+    public EnsembleService(EnsembleRepository ensembleRepo) {
         this.ensembleRepo = ensembleRepo;
     }
 
@@ -34,7 +34,7 @@ public class EnsembleService {
      */
     @Cacheable(value = "ensembleSplits", key = "#stateId")
     public Map<String, Object> getSplits(String stateId) {
-        Optional<EnsembleAnalysisDoc> opt = ensembleRepo.findById(stateId);
+        Optional<EnsembleDoc> opt = ensembleRepo.findById(stateId);
         if (opt.isEmpty()) return null;
         return opt.get().getSplits();
     }
@@ -45,7 +45,7 @@ public class EnsembleService {
      */
     @Cacheable(value = "ensembleBoxWhisker", key = "#stateId")
     public Map<String, Object> getBoxWhisker(String stateId) {
-        Optional<EnsembleAnalysisDoc> opt = ensembleRepo.findById(stateId);
+        Optional<EnsembleDoc> opt = ensembleRepo.findById(stateId);
         if (opt.isEmpty()) return null;
         return opt.get().getBoxWhisker();
     }

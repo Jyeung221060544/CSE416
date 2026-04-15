@@ -3,121 +3,51 @@ package edu.stonybrook.cse416.backend.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Map;
+
 /**
- * EnsembleDoc — MongoDB document model for the {@code ensembles} collection.
+ * EnsembleDoc — MongoDB document for the {@code ensemble_analysis} collection.
  *
- * <p>An ensemble is a set of randomly generated redistricting plans produced
- * by a Markov chain (ReCom) algorithm. Each ensemble belongs to a single state
- * and is characterized by its type (e.g. race-blind, VRA-constrained), the
- * number of plans it contains, and the population equality threshold used
- * during generation.
+ * <p>Combines the two ensemble-analysis payloads into a single document so the
+ * {@code GET /api/states/{stateId}/ensemble} endpoint is a single MongoDB read
+ * (~6 KB total).
  *
- * <p>Mapped to the {@code ensembles} collection via
- * {@link Document @Document(collection = "ensembles")}.
+ * <p>Served by: {@code GET /api/states/{stateId}/ensemble}
  */
-@Document(collection = "ensembles")
+@Document(collection = "ensemble_analysis")
 public class EnsembleDoc {
 
-    /**
-     * Unique identifier for this ensemble (MongoDB {@code _id}).
-     * Typically a composite string such as {@code "AL_race-blind"}.
-     */
+    /** MongoDB {@code _id} — two-letter state abbreviation (e.g. "AL"). */
     @Id
-    private String ensembleId;
-
-    /** Two-letter state abbreviation this ensemble belongs to (e.g. "AL"). */
-    private String state;
+    private String id;
 
     /**
-     * Ensemble generation algorithm / constraint type.
-     * Known values: {@code "race-blind"}, {@code "vra-constrained"}.
+     * Seat-split histogram payload.
+     * Shape: {@code { stateId, numDistricts, totalPlans,
+     * enactedPlanSplit: { republican, democratic },
+     * ensembles: [{ ensembleId, ensembleType,
+     *               splits: [{ republican, democratic, frequency }] }] }}.
      */
-    private String ensembleType;
-
-    /** Total number of redistricting plans in this ensemble. */
-    private Integer numPlans;
+    private Map<String, Object> splits;
 
     /**
-     * Maximum allowable deviation from the ideal district population, expressed
-     * as a decimal fraction (e.g. {@code 0.035} for ±3.5%).
+     * Box-and-whisker distribution payload.
+     * Shape: {@code { stateId, numDistricts, totalPlans, feasibleGroups,
+     * ensembles: [{ ensembleId, ensembleType,
+     *               groupDistricts: { [race]: [{ index, min, q1, median, mean, q3, max }] } }],
+     * enactedPlan: { planId, planType,
+     *                groupDistricts: { [race]: [{ index, districtId, groupVapPercentage }] } } }}.
      */
-    private Double populationEqualityThreshold;
+    private Map<String, Object> boxWhisker;
 
-    /** Human-readable description of the ensemble's methodology or purpose. */
-    private String description;
-
-    /** No-arg constructor required by Spring Data MongoDB. */
     public EnsembleDoc() {}
 
-    /**
-     * Returns the unique ensemble identifier.
-     * @return ensemble ID string.
-     */
-    public String getEnsembleId() { return ensembleId; }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
-    /**
-     * Sets the unique ensemble identifier.
-     * @param ensembleId ensemble ID string.
-     */
-    public void setEnsembleId(String ensembleId) { this.ensembleId = ensembleId; }
+    public Map<String, Object> getSplits() { return splits; }
+    public void setSplits(Map<String, Object> splits) { this.splits = splits; }
 
-    /**
-     * Returns the two-letter state abbreviation.
-     * @return state abbreviation (e.g. "AL").
-     */
-    public String getState() { return state; }
-
-    /**
-     * Sets the two-letter state abbreviation.
-     * @param state state abbreviation.
-     */
-    public void setState(String state) { this.state = state; }
-
-    /**
-     * Returns the ensemble type string.
-     * @return type key such as {@code "race-blind"} or {@code "vra-constrained"}.
-     */
-    public String getEnsembleType() { return ensembleType; }
-
-    /**
-     * Sets the ensemble type string.
-     * @param ensembleType type key.
-     */
-    public void setEnsembleType(String ensembleType) { this.ensembleType = ensembleType; }
-
-    /**
-     * Returns the total number of plans in this ensemble.
-     * @return plan count.
-     */
-    public Integer getNumPlans() { return numPlans; }
-
-    /**
-     * Sets the total number of plans.
-     * @param numPlans plan count.
-     */
-    public void setNumPlans(Integer numPlans) { this.numPlans = numPlans; }
-
-    /**
-     * Returns the population equality threshold (as a decimal fraction).
-     * @return threshold, e.g. {@code 0.035} for ±3.5%.
-     */
-    public Double getPopulationEqualityThreshold() { return populationEqualityThreshold; }
-
-    /**
-     * Sets the population equality threshold.
-     * @param populationEqualityThreshold decimal fraction threshold.
-     */
-    public void setPopulationEqualityThreshold(Double populationEqualityThreshold) { this.populationEqualityThreshold = populationEqualityThreshold; }
-
-    /**
-     * Returns the human-readable description of this ensemble.
-     * @return description string.
-     */
-    public String getDescription() { return description; }
-
-    /**
-     * Sets the description of this ensemble.
-     * @param description description string.
-     */
-    public void setDescription(String description) { this.description = description; }
+    public Map<String, Object> getBoxWhisker() { return boxWhisker; }
+    public void setBoxWhisker(Map<String, Object> boxWhisker) { this.boxWhisker = boxWhisker; }
 }

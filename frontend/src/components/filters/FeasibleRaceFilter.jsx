@@ -64,7 +64,7 @@ export default function FeasibleRaceFilter() {
 
     /* ── Step 3: Render ──────────────────────────────────────────────────── */
     return (
-        <CollapsibleGroup label="Feasible Race / Ethnicity">
+        <CollapsibleGroup label="Race">
             {feasibleRaces.map((opt) => (
                 <label key={opt.value} className="flex items-center gap-2 px-1 py-1 cursor-pointer">
                     {/* Custom-styled radio button */}

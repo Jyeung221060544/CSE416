@@ -62,7 +62,8 @@ public class DataLoader implements CommandLineRunner {
     private final StateRepository              stateRepo;
     private final StateOverviewRepository      overviewRepo;
     private final HeatmapRepository            heatmapRepo;
-    private final EnsembleAnalysisRepository   ensembleRepo;
+    private final EnsembleRepository           ensembleRepo;
+    private final EffectivenessRepository      effectivenessRepo;
     private final GinglesRepository            ginglesRepo;
     private final EiKdeRepository              eiKdeRepo;
     private final EiCompareRepository          eiCompareRepo;
@@ -73,22 +74,24 @@ public class DataLoader implements CommandLineRunner {
     public DataLoader(StateRepository stateRepo,
                       StateOverviewRepository overviewRepo,
                       HeatmapRepository heatmapRepo,
-                      EnsembleAnalysisRepository ensembleRepo,
+                      EnsembleRepository ensembleRepo,
+                      EffectivenessRepository effectivenessRepo,
                       GinglesRepository ginglesRepo,
                       EiKdeRepository eiKdeRepo,
                       EiCompareRepository eiCompareRepo,
                       VoteSeatShareRepository vsRepo,
                       GeoAssetRepository geoRepo) {
-        this.stateRepo     = stateRepo;
-        this.overviewRepo  = overviewRepo;
-        this.heatmapRepo   = heatmapRepo;
-        this.ensembleRepo  = ensembleRepo;
-        this.ginglesRepo   = ginglesRepo;
-        this.eiKdeRepo     = eiKdeRepo;
-        this.eiCompareRepo = eiCompareRepo;
-        this.vsRepo        = vsRepo;
-        this.geoRepo       = geoRepo;
-        this.mapper        = new ObjectMapper();
+        this.stateRepo          = stateRepo;
+        this.overviewRepo       = overviewRepo;
+        this.heatmapRepo        = heatmapRepo;
+        this.ensembleRepo       = ensembleRepo;
+        this.effectivenessRepo  = effectivenessRepo;
+        this.ginglesRepo        = ginglesRepo;
+        this.eiKdeRepo          = eiKdeRepo;
+        this.eiCompareRepo      = eiCompareRepo;
+        this.vsRepo             = vsRepo;
+        this.geoRepo            = geoRepo;
+        this.mapper             = new ObjectMapper();
     }
 
     // ── Entry point ───────────────────────────────────────────────────────────
@@ -102,6 +105,7 @@ public class DataLoader implements CommandLineRunner {
         overviewRepo.deleteAll();
         heatmapRepo.deleteAll();
         ensembleRepo.deleteAll();
+        effectivenessRepo.deleteAll();
         ginglesRepo.deleteAll();
         eiKdeRepo.deleteAll();
         eiCompareRepo.deleteAll();
@@ -130,6 +134,7 @@ public class DataLoader implements CommandLineRunner {
             doc.setIsPreclearance((Boolean) s.get("isPreclearance"));
             doc.setCenter((Map<String, Object>) s.get("center"));
             doc.setZoom((Integer) s.get("zoom"));
+            doc.setPrecinctGeoPath("frontend/src/assets/" + doc.getId() + "PrecinctMap.json");
             stateRepo.save(doc);
             System.out.println("[DataLoader] states: saved " + doc.getId());
         }
@@ -215,6 +220,7 @@ public class DataLoader implements CommandLineRunner {
         List<String> heatmapRaces = loadHeatmaps(state, dir);
         loadOverview(state, dir, eiPairs, heatmapRaces);
         loadEnsemble(state, dir);
+        loadEffectiveness(state, dir);
         loadGingles(state, dir);
         loadEiKde(state, dir);
         loadVoteSeatShare(state, dir);
@@ -341,12 +347,39 @@ public class DataLoader implements CommandLineRunner {
             return;
         }
 
-        EnsembleAnalysisDoc doc = new EnsembleAnalysisDoc();
+        EnsembleDoc doc = new EnsembleDoc();
         doc.setId(state);
         doc.setSplits(splits);
         doc.setBoxWhisker(boxWhisker);
         ensembleRepo.save(doc);
         System.out.println("[DataLoader] ensemble_analysis: saved " + state);
+    }
+
+    // ── effectiveness ─────────────────────────────────────────────────────────
+
+    /**
+     * Seeds one {@code effectiveness} document from {@code {STATE}-effectiveness.json}.
+     * The full payload (histogram, box-whisker, VRA threshold) is stored in a
+     * single document; race extraction is done on the frontend.
+     */
+    @SuppressWarnings("unchecked")
+    private void loadEffectiveness(String state, File dir) throws Exception {
+        Map<String, Object> raw = readIfExists(dir, state + "-effectiveness.json");
+        if (raw == null) {
+            System.out.println("[DataLoader] effectiveness: file not found for " + state + ", skipping");
+            return;
+        }
+
+        EffectivenessDoc doc = new EffectivenessDoc();
+        doc.setId(state);
+        doc.setNumDistricts((Integer) raw.get("numDistricts"));
+        doc.setTotalPlans((Integer) raw.get("totalPlans"));
+        doc.setFeasibleGroups((List<String>) raw.get("feasibleGroups"));
+        doc.setHistogram((Map<String, Object>) raw.get("effectivenessHistogram"));
+        doc.setBoxWhisker((Map<String, Object>) raw.get("effectivenessBoxWhisker"));
+        doc.setVraImpactThreshold((Map<String, Object>) raw.get("vraImpactThreshold"));
+        effectivenessRepo.save(doc);
+        System.out.println("[DataLoader] effectiveness: saved " + state);
     }
 
     // ── gingles (one doc per feasible race) ───────────────────────────────────
@@ -380,7 +413,7 @@ public class DataLoader implements CommandLineRunner {
         }
     }
 
-    // ── ei_kde (inverted: one doc per race, all candidates) ───────────────────
+    // ── ei_kde (one doc per state, candidate-first as stored in source JSON) ────
 
     @SuppressWarnings("unchecked")
     private void loadEiKde(String state, File dir) throws Exception {
@@ -390,50 +423,13 @@ public class DataLoader implements CommandLineRunner {
             return;
         }
 
-        Integer electionYear = (Integer) raw.get("electionYear");
-        List<Map<String, Object>> candidates =
-                (List<Map<String, Object>>) raw.get("candidates");
-
-        // Source is candidate-first: candidates[].racialGroups[].{group, kdePoints, ...}
-        // Invert to race-first: race → [{candidateId, candidateName, party, kdePoints, ...}]
-        // This allows the client to fetch exactly one race's KDE curves per request.
-        Map<String, List<Map<String, Object>>> raceMap = new LinkedHashMap<>();
-
-        for (Map<String, Object> candidate : candidates) {
-            String candidateId   = (String) candidate.get("candidateId");
-            String candidateName = (String) candidate.get("candidateName");
-            String party         = (String) candidate.get("party");
-
-            List<Map<String, Object>> racialGroups =
-                    (List<Map<String, Object>>) candidate.get("racialGroups");
-
-            for (Map<String, Object> rg : racialGroups) {
-                String raceKey = ((String) rg.get("group")).toLowerCase();
-
-                Map<String, Object> candidateSlice = new LinkedHashMap<>();
-                candidateSlice.put("candidateId",            candidateId);
-                candidateSlice.put("candidateName",          candidateName);
-                candidateSlice.put("party",                  party);
-                candidateSlice.put("peakSupportEstimate",    rg.get("peakSupportEstimate"));
-                candidateSlice.put("confidenceIntervalLow",  rg.get("confidenceIntervalLow"));
-                candidateSlice.put("confidenceIntervalHigh", rg.get("confidenceIntervalHigh"));
-                candidateSlice.put("kdePoints",              rg.get("kdePoints"));
-
-                raceMap.computeIfAbsent(raceKey, k -> new ArrayList<>()).add(candidateSlice);
-            }
-        }
-
-        for (Map.Entry<String, List<Map<String, Object>>> entry : raceMap.entrySet()) {
-            String raceKey = entry.getKey();
-            EiKdeDoc doc = new EiKdeDoc();
-            doc.setId(state + "_ei_" + raceKey);
-            doc.setStateId(state);
-            doc.setRace(raceKey);
-            doc.setElectionYear(electionYear);
-            doc.setCandidates(entry.getValue());
-            eiKdeRepo.save(doc);
-            System.out.println("[DataLoader] ei_kde: saved " + doc.getId());
-        }
+        EiKdeDoc doc = new EiKdeDoc();
+        doc.setId(state);
+        doc.setStateId(state);
+        doc.setElectionYear((Integer) raw.get("electionYear"));
+        doc.setCandidates((List<Map<String, Object>>) raw.get("candidates"));
+        eiKdeRepo.save(doc);
+        System.out.println("[DataLoader] ei_kde: saved " + doc.getId());
     }
 
     // ── ei_compare (one doc per race pair) ────────────────────────────────────
