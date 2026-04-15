@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
  * EffectivenessController — effectiveness analysis endpoint.
  *
  * <ul>
- *   <li>{@code GET /api/states/{stateId}/ensemble/effectiveness} — full payload;
+ *   <li>{@code GET /api/states/{stateId}/effectiveness} — full payload;
  *       fetched once when the user first enters the Effectiveness Analysis section.</li>
  * </ul>
  *
@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
  * is handled on the frontend — no {@code ?race=} query parameter is needed.
  */
 @RestController
-@RequestMapping("/api/states/{stateId}/ensemble")
+@RequestMapping("/api/states/{stateId}")
 public class EffectivenessController {
 
     private static final CacheControl CACHE = CacheControl.maxAge(24, TimeUnit.HOURS).cachePublic();

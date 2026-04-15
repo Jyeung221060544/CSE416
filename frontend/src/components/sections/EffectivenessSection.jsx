@@ -7,7 +7,7 @@
  *
  * DATA
  *   Loaded from dummy JSON until the backend endpoint is implemented.
- *   TODO: Replace with fetchEnsembleEffectiveness(stateId) once
+ *   TODO: Replace with fetchEffectiveness(stateId) once
  *         GET /api/states/:stateId/ensemble/effectiveness is ready.
  */
 
@@ -20,7 +20,7 @@ import VRAImpactTable           from '@/components/tables/VRAImpactTable'
 import useAppStore              from '@/store/useAppStore'
 import { RACE_LABELS }          from '@/lib/partyColors'
 
-import { fetchEnsembleEffectiveness } from '@/api'
+import { fetchEffectiveness } from '@/api'
 
 
 /* ── Tab definitions ─────────────────────────────────────────────────────── */
@@ -62,9 +62,9 @@ export default function EffectivenessSection({ data, stateId }) {
         if (!stateId || !inEFF) return
         if (hasFetched.current) return
         hasFetched.current = true
-        fetchEnsembleEffectiveness(stateId)
+        fetchEffectiveness(stateId)
             .then(setEffectivenessData)
-            .catch(err => console.error('[Effectiveness] fetchEnsembleEffectiveness error:', err))
+            .catch(err => console.error('[Effectiveness] fetchEffectiveness error:', err))
     }, [stateId, inEFF])
 
     /* ── Derived ─────────────────────────────────────────────────────────── */
