@@ -1,6 +1,7 @@
 package edu.stonybrook.cse416.backend.service;
 
 import edu.stonybrook.cse416.backend.model.GinglesDoc;
+import edu.stonybrook.cse416.backend.model.State;
 import edu.stonybrook.cse416.backend.repository.GinglesRepository;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class GinglesService {
      * @param race    lowercase racial group key (e.g. "black")
      */
     @Cacheable(value = "gingles", key = "#stateId + '_' + #race")
-    public GinglesDoc getGingles(String stateId, String race) {
+    public GinglesDoc getGingles(State stateId, String race) {
         Optional<GinglesDoc> opt = ginglesRepo.findByStateIdAndRace(stateId, race.toLowerCase());
         return opt.orElse(null);
     }

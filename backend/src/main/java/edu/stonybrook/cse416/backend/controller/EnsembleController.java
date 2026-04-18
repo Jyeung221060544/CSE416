@@ -1,5 +1,6 @@
 package edu.stonybrook.cse416.backend.controller;
 
+import edu.stonybrook.cse416.backend.model.State;
 import edu.stonybrook.cse416.backend.service.EnsembleService;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +38,7 @@ public class EnsembleController {
      * @return 200 with splits data; 404 if state is unknown
      */
     @GetMapping("/splits")
-    public ResponseEntity<Map<String, Object>> getSplits(@PathVariable String stateId) {
+    public ResponseEntity<Map<String, Object>> getSplits(@PathVariable State stateId) {
         Map<String, Object> splits = ensembleService.getSplits(stateId);
         if (splits == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok().cacheControl(CACHE).body(splits);
@@ -50,7 +51,7 @@ public class EnsembleController {
      * @return 200 with box-whisker data; 404 if state is unknown
      */
     @GetMapping("/box-whisker")
-    public ResponseEntity<Map<String, Object>> getBoxWhisker(@PathVariable String stateId) {
+    public ResponseEntity<Map<String, Object>> getBoxWhisker(@PathVariable State stateId) {
         Map<String, Object> bw = ensembleService.getBoxWhisker(stateId);
         if (bw == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok().cacheControl(CACHE).body(bw);

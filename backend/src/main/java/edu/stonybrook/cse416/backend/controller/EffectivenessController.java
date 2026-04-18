@@ -1,5 +1,6 @@
 package edu.stonybrook.cse416.backend.controller;
 
+import edu.stonybrook.cse416.backend.model.State;
 import edu.stonybrook.cse416.backend.service.EffectivenessService;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +39,7 @@ public class EffectivenessController {
      * @return 200 with effectiveness data; 404 if state is unknown
      */
     @GetMapping("/effectiveness")
-    public ResponseEntity<Map<String, Object>> getEffectiveness(@PathVariable String stateId) {
+    public ResponseEntity<Map<String, Object>> getEffectiveness(@PathVariable State stateId) {
         Map<String, Object> data = effectivenessService.getEffectiveness(stateId);
         if (data == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok().cacheControl(CACHE).body(data);

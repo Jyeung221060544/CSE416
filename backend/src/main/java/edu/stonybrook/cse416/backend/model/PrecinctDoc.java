@@ -24,8 +24,8 @@ public class PrecinctDoc {
     @Id
     private String id;
 
-    /** Two-letter state abbreviation this precinct belongs to (e.g. "AL"). */
-    private String state;
+    /** State this precinct belongs to. */
+    private State state;
 
     /**
      * Geographic GEOID from the Census Bureau (e.g. 15-digit block GEOID
@@ -74,13 +74,13 @@ public class PrecinctDoc {
      * Returns the two-letter state abbreviation.
      * @return state abbreviation (e.g. "AL").
      */
-    public String getState() { return state; }
+    public State getState() { return state; }
 
     /**
-     * Sets the two-letter state abbreviation.
-     * @param state state abbreviation.
+     * Sets the state.
+     * @param state State enum value.
      */
-    public void setState(String state) { this.state = state; }
+    public void setState(State state) { this.state = state; }
 
     /**
      * Returns the Census GEOID for this precinct.

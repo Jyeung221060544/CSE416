@@ -1,6 +1,7 @@
 package edu.stonybrook.cse416.backend.service;
 
 import edu.stonybrook.cse416.backend.model.HeatmapDoc;
+import edu.stonybrook.cse416.backend.model.State;
 import edu.stonybrook.cse416.backend.repository.HeatmapRepository;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class HeatmapService {
      * @param race    lowercase racial group key (e.g. "black")
      */
     @Cacheable(value = "heatmaps", key = "#stateId + '_' + #race")
-    public HeatmapDoc getHeatmap(String stateId, String race) {
+    public HeatmapDoc getHeatmap(State stateId, String race) {
         Optional<HeatmapDoc> opt = heatmapRepo.findByStateIdAndRace(
                 stateId, race.toLowerCase());
         return opt.orElse(null);

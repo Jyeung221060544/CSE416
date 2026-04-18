@@ -1,6 +1,7 @@
 package edu.stonybrook.cse416.backend.service;
 
 import edu.stonybrook.cse416.backend.model.GeoAssetDoc;
+import edu.stonybrook.cse416.backend.model.State;
 import edu.stonybrook.cse416.backend.repository.GeoAssetRepository;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -37,8 +38,8 @@ public class GeoAssetService {
      * @param stateId two-letter state abbreviation (e.g. "AL")
      */
     @Cacheable(value = "geo_districts", key = "#stateId")
-    public Map<String, Object> getDistricts(String stateId) {
-        return fetch(stateId + "_districts");
+    public Map<String, Object> getDistricts(State stateId) {
+        return fetch(stateId.name() + "_districts");
     }
 
     private Map<String, Object> fetch(String id) {

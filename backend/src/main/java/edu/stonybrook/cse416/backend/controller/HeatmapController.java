@@ -1,6 +1,7 @@
 package edu.stonybrook.cse416.backend.controller;
 
 import edu.stonybrook.cse416.backend.model.HeatmapDoc;
+import edu.stonybrook.cse416.backend.model.State;
 import edu.stonybrook.cse416.backend.service.HeatmapService;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
@@ -60,7 +61,7 @@ public class HeatmapController {
      */
     @GetMapping
     public ResponseEntity<HeatmapDoc> getHeatmap(
-            @PathVariable  String stateId,
+            @PathVariable State stateId,
             @RequestParam(defaultValue = "black") String race) {
 
         String raceLower = race.toLowerCase();

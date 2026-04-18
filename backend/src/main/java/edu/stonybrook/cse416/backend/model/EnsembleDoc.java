@@ -21,6 +21,9 @@ public class EnsembleDoc {
     @Id
     private String id;
 
+    /** State this document belongs to. */
+    private State stateId;
+
     /**
      * Seat-split histogram payload.
      * Shape: {@code { stateId, numDistricts, totalPlans,
@@ -44,6 +47,9 @@ public class EnsembleDoc {
 
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
+
+    public State getStateId() { return stateId; }
+    public void setStateId(State stateId) { this.stateId = stateId; }
 
     public Map<String, Object> getSplits() { return splits; }
     public void setSplits(Map<String, Object> splits) { this.splits = splits; }

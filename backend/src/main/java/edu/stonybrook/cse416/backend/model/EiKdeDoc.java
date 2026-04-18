@@ -25,8 +25,8 @@ public class EiKdeDoc {
     @Id
     private String id;
 
-    /** Two-letter state abbreviation (e.g. "AL"). */
-    private String stateId;
+    /** State this document belongs to. */
+    private State stateId;
 
     /** Election year the EI was computed for (e.g. 2024). */
     private Integer electionYear;
@@ -45,8 +45,8 @@ public class EiKdeDoc {
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 
-    public String getStateId() { return stateId; }
-    public void setStateId(String stateId) { this.stateId = stateId; }
+    public State getStateId() { return stateId; }
+    public void setStateId(State stateId) { this.stateId = stateId; }
 
     public Integer getElectionYear() { return electionYear; }
     public void setElectionYear(Integer electionYear) { this.electionYear = electionYear; }

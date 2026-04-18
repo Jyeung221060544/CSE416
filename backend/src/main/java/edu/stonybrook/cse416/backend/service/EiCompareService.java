@@ -1,6 +1,7 @@
 package edu.stonybrook.cse416.backend.service;
 
 import edu.stonybrook.cse416.backend.model.EiCompareDoc;
+import edu.stonybrook.cse416.backend.model.State;
 import edu.stonybrook.cse416.backend.repository.EiCompareRepository;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -36,10 +37,10 @@ public class EiCompareService {
      * @param race2   second racial group (any case)
      * @return composite ID string, e.g. "AL_eicompare_black_white"
      */
-    public static String buildId(String stateId, String race1, String race2) {
+    public static String buildId(State stateId, String race1, String race2) {
         String[] pair = { race1.toLowerCase(), race2.toLowerCase() };
         Arrays.sort(pair);
-        return stateId + "_eicompare_" + pair[0] + "_" + pair[1];
+        return stateId.name() + "_eicompare_" + pair[0] + "_" + pair[1];
     }
 
     /**
@@ -51,7 +52,7 @@ public class EiCompareService {
      * @param race2   second racial group
      */
     @Cacheable(value = "ei_compare", key = "T(edu.stonybrook.cse416.backend.service.EiCompareService).buildId(#stateId, #race1, #race2)")
-    public EiCompareDoc getEiCompare(String stateId, String race1, String race2) {
+    public EiCompareDoc getEiCompare(State stateId, String race1, String race2) {
         String id = buildId(stateId, race1, race2);
         Optional<EiCompareDoc> opt = eiCompareRepo.findById(id);
         return opt.orElse(null);

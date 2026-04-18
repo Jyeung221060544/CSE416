@@ -1,5 +1,6 @@
 package edu.stonybrook.cse416.backend.service;
 
+import edu.stonybrook.cse416.backend.model.State;
 import edu.stonybrook.cse416.backend.model.VoteSeatShareDoc;
 import edu.stonybrook.cse416.backend.repository.VoteSeatShareRepository;
 import org.springframework.cache.annotation.Cacheable;
@@ -29,8 +30,8 @@ public class VoteSeatShareService {
      * @param stateId two-letter state abbreviation (e.g. "AL")
      */
     @Cacheable(value = "vote_seat_share", key = "#stateId")
-    public VoteSeatShareDoc getVoteSeatShare(String stateId) {
-        Optional<VoteSeatShareDoc> opt = vsRepo.findById(stateId);
+    public VoteSeatShareDoc getVoteSeatShare(State stateId) {
+        Optional<VoteSeatShareDoc> opt = vsRepo.findByStateId(stateId);
         return opt.orElse(null);
     }
 }

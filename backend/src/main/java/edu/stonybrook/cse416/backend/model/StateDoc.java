@@ -23,6 +23,9 @@ public class StateDoc {
     @Id
     private String id; // AL, OR
 
+    /** State enum value for this document. */
+    private State stateId;
+
     /** Full display name of the state (e.g. "Alabama"). */
     private String name;
 
@@ -73,6 +76,9 @@ public class StateDoc {
      * @param id two-letter state abbreviation.
      */
     public void setId(String id) { this.id = id; }
+
+    public State getStateId() { return stateId; }
+    public void setStateId(State stateId) { this.stateId = stateId; }
 
     /**
      * Returns the full display name of the state.

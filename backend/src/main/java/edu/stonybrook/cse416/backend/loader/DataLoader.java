@@ -128,6 +128,7 @@ public class DataLoader implements CommandLineRunner {
         for (Map<String, Object> s : list) {
             StateDoc doc = new StateDoc();
             doc.setId((String) s.get("stateId"));
+            doc.setStateId(State.valueOf((String) s.get("stateId")));
             doc.setName((String) s.get("stateName"));
             doc.setHasData((Boolean) s.get("hasData"));
             doc.setNumDistricts((Integer) s.get("numDistricts"));
@@ -252,6 +253,7 @@ public class DataLoader implements CommandLineRunner {
 
         StateOverviewDoc doc = new StateOverviewDoc();
         doc.setId(state);
+        doc.setStateId(State.valueOf(state));
         doc.setStateSummary(stateSummary);
         doc.setDistrictSummary(districtSummary);
         doc.setEnsembleSummary(ensembleSummary);
@@ -323,7 +325,7 @@ public class DataLoader implements CommandLineRunner {
 
             HeatmapDoc doc = new HeatmapDoc();
             doc.setId(state + "_" + race);
-            doc.setStateId(state);
+            doc.setStateId(State.valueOf(state));
             doc.setRace(race);
             doc.setBins(bins);
             doc.setFeatures(raceFeatures);
@@ -349,6 +351,7 @@ public class DataLoader implements CommandLineRunner {
 
         EnsembleDoc doc = new EnsembleDoc();
         doc.setId(state);
+        doc.setStateId(State.valueOf(state));
         doc.setSplits(splits);
         doc.setBoxWhisker(boxWhisker);
         ensembleRepo.save(doc);
@@ -372,6 +375,7 @@ public class DataLoader implements CommandLineRunner {
 
         EffectivenessDoc doc = new EffectivenessDoc();
         doc.setId(state);
+        doc.setStateId(State.valueOf(state));
         doc.setNumDistricts((Integer) raw.get("numDistricts"));
         doc.setTotalPlans((Integer) raw.get("totalPlans"));
         doc.setFeasibleGroups((List<String>) raw.get("feasibleGroups"));
@@ -402,7 +406,7 @@ public class DataLoader implements CommandLineRunner {
 
             GinglesDoc doc = new GinglesDoc();
             doc.setId(state + "_" + race);
-            doc.setStateId(state);
+            doc.setStateId(State.valueOf(state));
             doc.setRace(race);
             doc.setPoints((List<Map<String, Object>>) series.get("points"));
             doc.setDemocraticTrendline((List<Map<String, Object>>) series.get("democraticTrendline"));
@@ -425,7 +429,7 @@ public class DataLoader implements CommandLineRunner {
 
         EiKdeDoc doc = new EiKdeDoc();
         doc.setId(state);
-        doc.setStateId(state);
+        doc.setStateId(State.valueOf(state));
         doc.setElectionYear((Integer) raw.get("electionYear"));
         doc.setCandidates((List<Map<String, Object>>) raw.get("candidates"));
         eiKdeRepo.save(doc);
@@ -470,7 +474,7 @@ public class DataLoader implements CommandLineRunner {
 
             EiCompareDoc doc = new EiCompareDoc();
             doc.setId(state + "_eicompare_" + sorted[0] + "_" + sorted[1]);
-            doc.setStateId(state);
+            doc.setStateId(State.valueOf(state));
             doc.setRaces(Arrays.asList(sorted));
             doc.setLabel((String) pair.get("label"));
             doc.setElectionYear(electionYear);
@@ -497,7 +501,7 @@ public class DataLoader implements CommandLineRunner {
 
         VoteSeatShareDoc doc = new VoteSeatShareDoc();
         doc.setId(state);
-        doc.setStateId(state);
+        doc.setStateId(State.valueOf(state));
         doc.setElectionYear((Integer) raw.get("electionYear"));
         doc.setRaciallyPolarized((Boolean) raw.get("raciallyPolarized"));
         doc.setTotalDistricts((Integer) raw.get("totalDistricts"));

@@ -9,7 +9,7 @@
       "party": "Democratic",
       "racialGroups": [
         {
-          "group": "Hispanic",
+          "group": "Latino",
           "groupKey": "Latino",
           "peakSupportEstimate": 0.585,
           "meanSupportEstimate": 0.5811509232968795,
@@ -2461,7 +2461,7 @@
       "party": "Republican",
       "racialGroups": [
         {
-          "group": "Hispanic",
+          "group": "Latino",
           "groupKey": "Latino",
           "peakSupportEstimate": 0.41500000000000004,
           "meanSupportEstimate": 0.41884907670312044,

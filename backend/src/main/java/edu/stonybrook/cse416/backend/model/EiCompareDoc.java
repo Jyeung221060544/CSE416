@@ -34,8 +34,8 @@ public class EiCompareDoc {
     @Id
     private String id;
 
-    /** Two-letter state abbreviation (e.g. "AL"). */
-    private String stateId;
+    /** State this document belongs to. */
+    private State stateId;
 
     /**
      * The two races being compared, sorted alphabetically.
@@ -67,8 +67,8 @@ public class EiCompareDoc {
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 
-    public String getStateId() { return stateId; }
-    public void setStateId(String stateId) { this.stateId = stateId; }
+    public State getStateId() { return stateId; }
+    public void setStateId(State stateId) { this.stateId = stateId; }
 
     public List<String> getRaces() { return races; }
     public void setRaces(List<String> races) { this.races = races; }

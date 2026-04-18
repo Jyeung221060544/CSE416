@@ -1,6 +1,7 @@
 package edu.stonybrook.cse416.backend.controller;
 
 import edu.stonybrook.cse416.backend.model.EiCompareDoc;
+import edu.stonybrook.cse416.backend.model.State;
 import edu.stonybrook.cse416.backend.service.EiCompareService;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +46,7 @@ public class EiCompareController {
      */
     @GetMapping
     public ResponseEntity<EiCompareDoc> getEiCompare(
-            @PathVariable String stateId,
+            @PathVariable State stateId,
             @RequestParam String race1,
             @RequestParam String race2) {
 

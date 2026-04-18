@@ -1,6 +1,7 @@
 package edu.stonybrook.cse416.backend.service;
 
 import edu.stonybrook.cse416.backend.model.EffectivenessDoc;
+import edu.stonybrook.cse416.backend.model.State;
 import edu.stonybrook.cse416.backend.repository.EffectivenessRepository;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -47,8 +48,8 @@ public class EffectivenessService {
      * }</pre>
      */
     @Cacheable(value = "effectiveness", key = "#stateId")
-    public Map<String, Object> getEffectiveness(String stateId) {
-        Optional<EffectivenessDoc> opt = effectivenessRepo.findById(stateId);
+    public Map<String, Object> getEffectiveness(State stateId) {
+        Optional<EffectivenessDoc> opt = effectivenessRepo.findByStateId(stateId);
         if (opt.isEmpty()) return null;
 
         EffectivenessDoc doc = opt.get();

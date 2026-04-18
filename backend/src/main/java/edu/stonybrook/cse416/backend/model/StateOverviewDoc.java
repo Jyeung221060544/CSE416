@@ -23,6 +23,9 @@ public class StateOverviewDoc {
     @Id
     private String id;
 
+    /** State this document belongs to. */
+    private State stateId;
+
     /**
      * Full state summary payload.
      * Shape: {@code { stateId, stateName, totalPopulation, votingAgePopulation,
@@ -73,6 +76,9 @@ public class StateOverviewDoc {
 
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
+
+    public State getStateId() { return stateId; }
+    public void setStateId(State stateId) { this.stateId = stateId; }
 
     public Map<String, Object> getStateSummary() { return stateSummary; }
     public void setStateSummary(Map<String, Object> stateSummary) { this.stateSummary = stateSummary; }

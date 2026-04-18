@@ -1,6 +1,7 @@
 package edu.stonybrook.cse416.backend.controller;
 
 import edu.stonybrook.cse416.backend.model.EiKdeDoc;
+import edu.stonybrook.cse416.backend.model.State;
 import edu.stonybrook.cse416.backend.service.EiService;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +41,7 @@ public class EiController {
      * @return 200 with EI KDE doc; 404 if no data found for state
      */
     @GetMapping
-    public ResponseEntity<EiKdeDoc> getEiKde(@PathVariable String stateId) {
+    public ResponseEntity<EiKdeDoc> getEiKde(@PathVariable State stateId) {
         EiKdeDoc doc = eiService.getEiKde(stateId);
         if (doc == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok().cacheControl(CACHE).body(doc);

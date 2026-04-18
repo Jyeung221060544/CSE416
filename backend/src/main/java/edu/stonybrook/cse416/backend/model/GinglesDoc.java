@@ -27,8 +27,8 @@ public class GinglesDoc {
     @Id
     private String id;
 
-    /** Two-letter state abbreviation (e.g. "AL"). */
-    private String stateId;
+    /** State this document belongs to. */
+    private State stateId;
 
     /**
      * Racial group key (lowercase), matching {@code feasibleRaceFilter} values.
@@ -68,8 +68,8 @@ public class GinglesDoc {
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 
-    public String getStateId() { return stateId; }
-    public void setStateId(String stateId) { this.stateId = stateId; }
+    public State getStateId() { return stateId; }
+    public void setStateId(State stateId) { this.stateId = stateId; }
 
     public String getRace() { return race; }
     public void setRace(String race) { this.race = race; }

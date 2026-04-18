@@ -1,6 +1,7 @@
 package edu.stonybrook.cse416.backend.service;
 
 import edu.stonybrook.cse416.backend.model.EiKdeDoc;
+import edu.stonybrook.cse416.backend.model.State;
 import edu.stonybrook.cse416.backend.repository.EiKdeRepository;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -29,8 +30,8 @@ public class EiService {
      * @param stateId two-letter state abbreviation (e.g. "AL")
      */
     @Cacheable(value = "ei_kde", key = "#stateId")
-    public EiKdeDoc getEiKde(String stateId) {
-        Optional<EiKdeDoc> opt = eiRepo.findById(stateId);
+    public EiKdeDoc getEiKde(State stateId) {
+        Optional<EiKdeDoc> opt = eiRepo.findByStateId(stateId);
         return opt.orElse(null);
     }
 }

@@ -1,5 +1,6 @@
 package edu.stonybrook.cse416.backend.controller;
 
+import edu.stonybrook.cse416.backend.model.State;
 import edu.stonybrook.cse416.backend.service.GeoAssetService;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
@@ -58,8 +59,8 @@ public class GeoController {
      * @return 200 with GeoJSON; 404 if state not seeded
      */
     @GetMapping("/api/states/{stateId}/geo/districts")
-    public ResponseEntity<Map<String, Object>> getDistricts(@PathVariable String stateId) {
-        Map<String, Object> geo = geoService.getDistricts(stateId.toUpperCase());
+    public ResponseEntity<Map<String, Object>> getDistricts(@PathVariable State stateId) {
+        Map<String, Object> geo = geoService.getDistricts(stateId);
         if (geo == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok().cacheControl(CACHE).body(geo);
     }

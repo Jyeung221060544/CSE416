@@ -1,6 +1,7 @@
 package edu.stonybrook.cse416.backend.service;
 
 import edu.stonybrook.cse416.backend.model.EnsembleDoc;
+import edu.stonybrook.cse416.backend.model.State;
 import edu.stonybrook.cse416.backend.repository.EnsembleRepository;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -33,8 +34,8 @@ public class EnsembleService {
      * {@code null} if no data exists.
      */
     @Cacheable(value = "ensembleSplits", key = "#stateId")
-    public Map<String, Object> getSplits(String stateId) {
-        Optional<EnsembleDoc> opt = ensembleRepo.findById(stateId);
+    public Map<String, Object> getSplits(State stateId) {
+        Optional<EnsembleDoc> opt = ensembleRepo.findByStateId(stateId);
         if (opt.isEmpty()) return null;
         return opt.get().getSplits();
     }
@@ -44,8 +45,8 @@ public class EnsembleService {
      * {@code null} if no data exists.
      */
     @Cacheable(value = "ensembleBoxWhisker", key = "#stateId")
-    public Map<String, Object> getBoxWhisker(String stateId) {
-        Optional<EnsembleDoc> opt = ensembleRepo.findById(stateId);
+    public Map<String, Object> getBoxWhisker(State stateId) {
+        Optional<EnsembleDoc> opt = ensembleRepo.findByStateId(stateId);
         if (opt.isEmpty()) return null;
         return opt.get().getBoxWhisker();
     }

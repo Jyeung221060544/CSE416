@@ -1,6 +1,7 @@
 package edu.stonybrook.cse416.backend.repository;
 
 import edu.stonybrook.cse416.backend.model.HeatmapDoc;
+import edu.stonybrook.cse416.backend.model.State;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;
@@ -14,8 +15,8 @@ public interface HeatmapRepository extends MongoRepository<HeatmapDoc, String> {
      * race layer.  The {@code _id} is deterministic:
      * {@code "{stateId}_{race}"} (e.g. {@code "AL_black"}).
      *
-     * @param stateId two-letter state abbreviation (e.g. "AL")
+     * @param stateId state enum value (e.g. State.AL)
      * @param race    lowercase racial group key (e.g. "black")
      */
-    Optional<HeatmapDoc> findByStateIdAndRace(String stateId, String race);
+    Optional<HeatmapDoc> findByStateIdAndRace(State stateId, String race);
 }

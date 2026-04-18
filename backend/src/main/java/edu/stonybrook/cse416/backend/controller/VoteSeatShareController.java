@@ -1,5 +1,6 @@
 package edu.stonybrook.cse416.backend.controller;
 
+import edu.stonybrook.cse416.backend.model.State;
 import edu.stonybrook.cse416.backend.model.VoteSeatShareDoc;
 import edu.stonybrook.cse416.backend.service.VoteSeatShareService;
 import org.springframework.http.CacheControl;
@@ -39,7 +40,7 @@ public class VoteSeatShareController {
      * @return 200 with data; 404 if state not found
      */
     @GetMapping
-    public ResponseEntity<VoteSeatShareDoc> getVoteSeatShare(@PathVariable String stateId) {
+    public ResponseEntity<VoteSeatShareDoc> getVoteSeatShare(@PathVariable State stateId) {
         VoteSeatShareDoc doc = vsService.getVoteSeatShare(stateId);
         if (doc == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok().cacheControl(CACHE).body(doc);

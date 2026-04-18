@@ -1,5 +1,6 @@
 package edu.stonybrook.cse416.backend.service;
 
+import edu.stonybrook.cse416.backend.model.State;
 import edu.stonybrook.cse416.backend.model.StateOverviewDoc;
 import edu.stonybrook.cse416.backend.repository.StateOverviewRepository;
 import org.springframework.cache.annotation.Cacheable;
@@ -35,8 +36,8 @@ public class OverviewService {
      * <p>Response shape: {@code { stateSummary, districtSummary }}
      */
     @Cacheable(value = "overview_state_stats", key = "#stateId")
-    public Map<String, Object> getStateStats(String stateId) {
-        Optional<StateOverviewDoc> opt = overviewRepo.findById(stateId);
+    public Map<String, Object> getStateStats(State stateId) {
+        Optional<StateOverviewDoc> opt = overviewRepo.findByStateId(stateId);
         if (opt.isEmpty()) return null;
 
         StateOverviewDoc doc = opt.get();
@@ -53,8 +54,8 @@ public class OverviewService {
      * <p>Response shape: {@code { ensembleSummary }}
      */
     @Cacheable(value = "overview_ensemble_demo", key = "#stateId")
-    public Map<String, Object> getEnsembleDemo(String stateId) {
-        Optional<StateOverviewDoc> opt = overviewRepo.findById(stateId);
+    public Map<String, Object> getEnsembleDemo(State stateId) {
+        Optional<StateOverviewDoc> opt = overviewRepo.findByStateId(stateId);
         if (opt.isEmpty()) return null;
 
         StateOverviewDoc doc = opt.get();

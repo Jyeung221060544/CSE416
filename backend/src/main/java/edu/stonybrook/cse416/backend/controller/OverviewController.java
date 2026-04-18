@@ -1,5 +1,6 @@
 package edu.stonybrook.cse416.backend.controller;
 
+import edu.stonybrook.cse416.backend.model.State;
 import edu.stonybrook.cse416.backend.service.OverviewService;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +41,7 @@ public class OverviewController {
      * @return 200 with bundle; 404 if state is unknown
      */
     @GetMapping("/state-stats")
-    public ResponseEntity<Map<String, Object>> getStateStats(@PathVariable String stateId) {
+    public ResponseEntity<Map<String, Object>> getStateStats(@PathVariable State stateId) {
         Map<String, Object> bundle = overviewService.getStateStats(stateId);
         if (bundle == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok().cacheControl(CACHE).body(bundle);
@@ -56,7 +57,7 @@ public class OverviewController {
      * @return 200 with bundle; 404 if state is unknown
      */
     @GetMapping("/ensemble-demo")
-    public ResponseEntity<Map<String, Object>> getEnsembleDemo(@PathVariable String stateId) {
+    public ResponseEntity<Map<String, Object>> getEnsembleDemo(@PathVariable State stateId) {
         Map<String, Object> bundle = overviewService.getEnsembleDemo(stateId);
         if (bundle == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok().cacheControl(CACHE).body(bundle);

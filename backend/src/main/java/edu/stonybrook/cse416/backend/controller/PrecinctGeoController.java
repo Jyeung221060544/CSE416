@@ -1,5 +1,6 @@
 package edu.stonybrook.cse416.backend.controller;
 
+import edu.stonybrook.cse416.backend.model.State;
 import edu.stonybrook.cse416.backend.model.StateDoc;
 import edu.stonybrook.cse416.backend.repository.StateRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -65,8 +66,8 @@ public class PrecinctGeoController {
      * @return 200 with GeoJSON stream; 404 if state or file not found
      */
     @GetMapping
-    public ResponseEntity<Resource> getPrecincts(@PathVariable String stateId) {
-        Optional<StateDoc> stateOpt = stateRepo.findById(stateId.toUpperCase());
+    public ResponseEntity<Resource> getPrecincts(@PathVariable State stateId) {
+        Optional<StateDoc> stateOpt = stateRepo.findByStateId(stateId);
         if (stateOpt.isEmpty()) return ResponseEntity.notFound().build();
 
         String path = stateOpt.get().getPrecinctGeoPath();

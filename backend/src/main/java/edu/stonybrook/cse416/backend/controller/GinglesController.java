@@ -1,6 +1,7 @@
 package edu.stonybrook.cse416.backend.controller;
 
 import edu.stonybrook.cse416.backend.model.GinglesDoc;
+import edu.stonybrook.cse416.backend.model.State;
 import edu.stonybrook.cse416.backend.service.GinglesService;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +44,7 @@ public class GinglesController {
      */
     @GetMapping
     public ResponseEntity<GinglesDoc> getGingles(
-            @PathVariable String stateId,
+            @PathVariable State stateId,
             @RequestParam String race) {
 
         GinglesDoc doc = ginglesService.getGingles(stateId, race.toLowerCase());

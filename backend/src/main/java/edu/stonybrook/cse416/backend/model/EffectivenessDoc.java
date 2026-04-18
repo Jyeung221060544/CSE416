@@ -23,6 +23,9 @@ public class EffectivenessDoc {
     @Id
     private String id;
 
+    /** State this document belongs to. */
+    private State stateId;
+
     /** Total congressional districts in this state (e.g. 7 for AL). */
     private Integer numDistricts;
 
@@ -60,6 +63,9 @@ public class EffectivenessDoc {
 
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
+
+    public State getStateId() { return stateId; }
+    public void setStateId(State stateId) { this.stateId = stateId; }
 
     public Integer getNumDistricts() { return numDistricts; }
     public void setNumDistricts(Integer numDistricts) { this.numDistricts = numDistricts; }
