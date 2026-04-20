@@ -14,9 +14,7 @@ import java.util.concurrent.TimeUnit;
  *
  * <ul>
  *   <li>{@code GET /api/states/{stateId}/overview/state-stats} — fetched on
- *       state-overview section entry; stateSummary + districtSummary + filter manifests.</li>
- *   <li>{@code GET /api/states/{stateId}/overview/ensemble-demo} — fetched when
- *       the user first opens the Ensemble/Pop Stats tab.</li>
+ *       state-overview section entry; stateSummary + districtSummary + ensembleSummary.</li>
  * </ul>
  */
 @RestController
@@ -47,19 +45,5 @@ public class OverviewController {
         return ResponseEntity.ok().cacheControl(CACHE).body(bundle);
     }
 
-    /**
-     * Returns the ensemble-demo bundle, fetched lazily when the user opens
-     * the Ensemble/Pop Stats tab.
-     *
-     * <p>Response: {@code { ensembleSummary }}
-     *
-     * @param stateId two-letter state abbreviation (e.g. "AL")
-     * @return 200 with bundle; 404 if state is unknown
-     */
-    @GetMapping("/ensemble-demo")
-    public ResponseEntity<Map<String, Object>> getEnsembleDemo(@PathVariable State stateId) {
-        Map<String, Object> bundle = overviewService.getEnsembleDemo(stateId);
-        if (bundle == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok().cacheControl(CACHE).body(bundle);
-    }
+
 }

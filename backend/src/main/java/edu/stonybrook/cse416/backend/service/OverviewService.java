@@ -42,24 +42,8 @@ public class OverviewService {
 
         StateOverviewDoc doc = opt.get();
         Map<String, Object> response = new LinkedHashMap<>();
-        response.put("stateSummary",   doc.getStateSummary());
+        response.put("stateSummary",    doc.getStateSummary());
         response.put("districtSummary", doc.getDistrictSummary());
-        return response;
-    }
-
-    /**
-     * Returns the ensemble-demo bundle: fetched lazily when the user first
-     * opens the Ensemble/Pop Stats tab in the State Overview section.
-     *
-     * <p>Response shape: {@code { ensembleSummary }}
-     */
-    @Cacheable(value = "overview_ensemble_demo", key = "#stateId")
-    public Map<String, Object> getEnsembleDemo(State stateId) {
-        Optional<StateOverviewDoc> opt = overviewRepo.findByStateId(stateId);
-        if (opt.isEmpty()) return null;
-
-        StateOverviewDoc doc = opt.get();
-        Map<String, Object> response = new LinkedHashMap<>();
         response.put("ensembleSummary", doc.getEnsembleSummary());
         return response;
     }

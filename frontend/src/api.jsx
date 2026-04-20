@@ -39,14 +39,6 @@ export function fetchDistricts(stateId) {
     return _districtPromise[stateId]
 }
 
-/** GET /api/states/:stateId/overview/ensemble-demo
- *  Returns { ensembleSummary }
- *  Triggered by: first entry to the Ensemble/Pop Stats tab in State Overview */
-export async function fetchOverviewEnsembleDemo(stateId) {
-    const res = await fetch(`${BASE}/api/states/${stateId}/overview/ensemble-demo`)
-    if (!res.ok) throw new Error(`GET /api/states/${stateId}/overview/ensemble-demo failed: ${res.status}`)
-    return res.json()
-}
 
 /** GET /api/states/:stateId/heatmap?race=
  *  Returns { stateId, race, bins:[{binId,rangeMin,rangeMax,color}],
