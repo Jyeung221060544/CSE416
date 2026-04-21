@@ -31,7 +31,7 @@
     "effectiveness": {
       "enabled": true,
       "party_of_choice": "D",
-      "min_effective_districts": null
+      "min_effective_districts": 2
     }
   }
 }
