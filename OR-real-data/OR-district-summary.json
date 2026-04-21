@@ -8,7 +8,7 @@
       "districtNumber": 1,
       "representative": "Suzanne Bonamici",
       "party": "Democratic",
-      "racialGroup": "White",
+      "racialGroup": "",
       "voteMarginPercentage": 0.3911038077969175,
       "voteMarginDirection": "D"
     },
@@ -17,7 +17,7 @@
       "districtNumber": 2,
       "representative": "Cliff Bentz",
       "party": "Republican",
-      "racialGroup": "White",
+      "racialGroup": "",
       "voteMarginPercentage": 0.2785953562292739,
       "voteMarginDirection": "R"
     },
@@ -26,7 +26,7 @@
       "districtNumber": 3,
       "representative": "Maxine Dexter",
       "party": "Democratic",
-      "racialGroup": "White",
+      "racialGroup": "",
       "voteMarginPercentage": 0.4758732129543544,
       "voteMarginDirection": "D"
     },
@@ -35,7 +35,7 @@
       "districtNumber": 4,
       "representative": "Val Hoyle",
       "party": "Democratic",
-      "racialGroup": "White",
+      "racialGroup": "",
       "voteMarginPercentage": 0.12442914801419136,
       "voteMarginDirection": "D"
     },
@@ -44,7 +44,7 @@
       "districtNumber": 5,
       "representative": "Janelle Bynum",
       "party": "Democratic",
-      "racialGroup": "Latino",
+      "racialGroup": "",
       "voteMarginPercentage": 0.08888226885728519,
       "voteMarginDirection": "D"
     },
@@ -53,7 +53,7 @@
       "districtNumber": 6,
       "representative": "Andrea Salinas",
       "party": "Democratic",
-      "racialGroup": "Latino",
+      "racialGroup": "",
       "voteMarginPercentage": 0.11741978237845321,
       "voteMarginDirection": "D"
     }

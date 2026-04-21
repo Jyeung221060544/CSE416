@@ -3,7 +3,7 @@
   "numDistricts": 6,
   "totalPlans": 5000,
   "unionSplitRange": {
-    "minRepublican": 1,
+    "minRepublican": 0,
     "maxRepublican": 3
   },
   "ensembles": [
@@ -70,22 +70,22 @@
         {
           "republican": 3,
           "democratic": 3,
-          "frequency": 306
+          "frequency": 758
         },
         {
           "republican": 2,
           "democratic": 4,
-          "frequency": 2294
+          "frequency": 2202
         },
         {
           "republican": 1,
           "democratic": 5,
-          "frequency": 2400
+          "frequency": 2018
         },
         {
           "republican": 0,
           "democratic": 6,
-          "frequency": 0
+          "frequency": 22
         }
       ]
     }
