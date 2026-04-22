@@ -11,7 +11,7 @@
     {
       "ensembleId": "AL_VRA",
       "ensembleType": "vra-constrained",
-      "numPlans": 5000,
+      "numPlans": 4822,
       "populationEqualityThreshold": 0.035,
       "description": "VRA-constrained ReCom ensemble"
     }

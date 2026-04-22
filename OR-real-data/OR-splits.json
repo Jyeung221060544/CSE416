@@ -70,22 +70,22 @@
         {
           "republican": 3,
           "democratic": 3,
-          "frequency": 758
+          "frequency": 564
         },
         {
           "republican": 2,
           "democratic": 4,
-          "frequency": 2202
+          "frequency": 2241
         },
         {
           "republican": 1,
           "democratic": 5,
-          "frequency": 2018
+          "frequency": 2193
         },
         {
           "republican": 0,
           "democratic": 6,
-          "frequency": 22
+          "frequency": 2
         }
       ]
     }
