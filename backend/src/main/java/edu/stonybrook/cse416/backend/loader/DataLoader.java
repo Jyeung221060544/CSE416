@@ -251,6 +251,11 @@ public class DataLoader implements CommandLineRunner {
             return;
         }
 
+        // Normalise demographicGroups race names inside stateSummary
+        if (stateSummary != null) {
+            normalizeGroupNames((List<Map<String, Object>>) stateSummary.get("demographicGroups"));
+        }
+
         StateOverviewDoc doc = new StateOverviewDoc();
         doc.setId(state);
         doc.setStateId(State.valueOf(state));
@@ -312,14 +317,17 @@ public class DataLoader implements CommandLineRunner {
             }
         }
 
-        for (String race : discoveredRaces) {
-            // Slice features to {idx, binId} for this race only
+        List<String> normalizedRaces = new ArrayList<>();
+        for (String rawRace : discoveredRaces) {
+            String race = normalizeRaceKey(rawRace);  // e.g. "hispanic" → "latino"
+
+            // Slice features to {idx, binId} for this race using the original key
             List<Map<String, Object>> raceFeatures = new ArrayList<>(features.size());
             for (Map<String, Object> f : features) {
-                if (!f.containsKey(race)) continue; // race absent for this unit — skip
+                if (!f.containsKey(rawRace)) continue;
                 Map<String, Object> slim = new LinkedHashMap<>();
                 slim.put("idx",   f.get("idx"));
-                slim.put("binId", f.get(race));
+                slim.put("binId", f.get(rawRace));
                 raceFeatures.add(slim);
             }
 
@@ -332,9 +340,10 @@ public class DataLoader implements CommandLineRunner {
             heatmapRepo.save(doc);
             System.out.println("[DataLoader] heatmaps: saved " + doc.getId()
                     + " (" + raceFeatures.size() + " features)");
+            normalizedRaces.add(race);
         }
 
-        return discoveredRaces;
+        return normalizedRaces;
     }
 
     // ── ensemble_analysis ─────────────────────────────────────────────────────
@@ -401,7 +410,7 @@ public class DataLoader implements CommandLineRunner {
         if (seriesByRace == null) return;
 
         for (Map.Entry<String, Object> entry : seriesByRace.entrySet()) {
-            String race = entry.getKey().toLowerCase();
+            String race = normalizeRaceKey(entry.getKey());
             Map<String, Object> series = (Map<String, Object>) entry.getValue();
 
             GinglesDoc doc = new GinglesDoc();
@@ -427,16 +436,54 @@ public class DataLoader implements CommandLineRunner {
             return;
         }
 
+        List<Map<String, Object>> candidates = (List<Map<String, Object>>) raw.get("candidates");
+        // Normalise race group names inside each candidate's racialGroups
+        if (candidates != null) {
+            for (Map<String, Object> cand : candidates) {
+                normalizeGroupNames((List<Map<String, Object>>) cand.get("racialGroups"));
+            }
+        }
+
         EiKdeDoc doc = new EiKdeDoc();
         doc.setId(state);
         doc.setStateId(State.valueOf(state));
         doc.setElectionYear((Integer) raw.get("electionYear"));
-        doc.setCandidates((List<Map<String, Object>>) raw.get("candidates"));
+        doc.setCandidates(candidates);
         eiKdeRepo.save(doc);
         System.out.println("[DataLoader] ei_kde: saved " + doc.getId());
     }
 
     // ── ei_compare (one doc per race pair) ────────────────────────────────────
+
+    /** Normalises raw RxC group keys to the simple lowercase keys used throughout
+     *  the frontend and as doc-ID segments.
+     *  "Black_NH" → "black", "White_NH" → "white", "Hispanic"/"hispanic" → "latino". */
+    private static final Map<String, String> RACE_KEY_NORM = new HashMap<>(Map.of(
+        "black_nh",    "black",
+        "white_nh",    "white",
+        "latino",      "latino",
+        "hispanic",    "latino",
+        "other",       "other",
+        "unaccounted", "unaccounted"
+    ));
+
+    private static String normalizeRaceKey(String raw) {
+        String lower = raw.toLowerCase();
+        return RACE_KEY_NORM.getOrDefault(lower, lower);
+    }
+
+    /** Normalises the "group" (and optional "groupKey") fields inside a list of
+     *  racial-group maps — used for both EI KDE racialGroups and demographicGroups. */
+    @SuppressWarnings("unchecked")
+    private static void normalizeGroupNames(List<Map<String, Object>> groups) {
+        if (groups == null) return;
+        for (Map<String, Object> g : groups) {
+            if (g.containsKey("group"))
+                g.put("group", normalizeRaceKey((String) g.get("group")));
+            if (g.containsKey("groupKey"))
+                g.put("groupKey", normalizeRaceKey((String) g.get("groupKey")));
+        }
+    }
 
     /**
      * Seeds EI-compare documents — one per race pair found in the source file.
@@ -468,8 +515,9 @@ public class DataLoader implements CommandLineRunner {
             List<String> races = (List<String>) pair.get("groups");
             if (races == null || races.size() < 2) continue;
 
-            // groupKey values are normalized simple names (e.g. "black", "white", "hispanic").
-            String[] sorted = { races.get(0).toLowerCase(), races.get(1).toLowerCase() };
+            // Normalise raw source keys (e.g. "Black_NH" → "black") so doc IDs
+            // match the simple race keys the frontend sends as query params.
+            String[] sorted = { normalizeRaceKey(races.get(0)), normalizeRaceKey(races.get(1)) };
             Arrays.sort(sorted);
 
             EiCompareDoc doc = new EiCompareDoc();
