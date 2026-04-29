@@ -4,32 +4,32 @@
   "bins": [
     {
       "binId": 1,
-      "rangeMin": 0,
-      "rangeMax": 20,
+      "rangeMin": 0.0,
+      "rangeMax": 20.0,
       "color": "#ccfbf1"
     },
     {
       "binId": 2,
-      "rangeMin": 20,
-      "rangeMax": 40,
+      "rangeMin": 20.0,
+      "rangeMax": 40.0,
       "color": "#5eead4"
     },
     {
       "binId": 3,
-      "rangeMin": 40,
-      "rangeMax": 60,
+      "rangeMin": 40.0,
+      "rangeMax": 60.0,
       "color": "#14b8a6"
     },
     {
       "binId": 4,
-      "rangeMin": 60,
-      "rangeMax": 80,
+      "rangeMin": 60.0,
+      "rangeMax": 80.0,
       "color": "#0f766e"
     },
     {
       "binId": 5,
-      "rangeMin": 80,
-      "rangeMax": 100,
+      "rangeMin": 80.0,
+      "rangeMax": 100.0,
       "color": "#134e4a"
     }
   ],

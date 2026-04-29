@@ -59,6 +59,66 @@ def district_effectiveness_record(part, dist, group_key, thr, party):
     }
 
 
+# ── Interesting-plan helpers ──────────────────────────────────────────────
+
+def _matches_criterion(value, op_dict):
+    """
+    Check a single metric value against an operator dict.
+    Supported keys: eq, gte, gt, lte, lt.
+    All specified operators must be satisfied.
+    """
+    if value is None:
+        return False
+    ops = {
+        "eq":  lambda v, t: v == t,
+        "gte": lambda v, t: v >= t,
+        "gt":  lambda v, t: v > t,
+        "lte": lambda v, t: v <= t,
+        "lt":  lambda v, t: v < t,
+    }
+    for op, target in op_dict.items():
+        if op not in ops or not ops[op](value, target):
+            return False
+    return True
+
+
+def _plan_matches_criteria(metrics, criteria):
+    """
+    Return True if all criteria fields in the dict match metrics.
+    Each criteria value is either a literal (equality check) or an
+    operator dict like {"gte": 3}.
+    """
+    for field, spec in criteria.items():
+        val = metrics.get(field)
+        if isinstance(spec, dict):
+            if not _matches_criterion(val, spec):
+                return False
+        else:
+            if val != spec:
+                return False
+    return True
+
+
+def save_interesting_plan(outdir, plan_def, step, metrics, part):
+    """Write a single interesting plan record to disk."""
+    plan_id = plan_def["id"]
+    outpath = os.path.join(outdir, "interesting_plan_{}.json".format(plan_id))
+    assignment = {
+        n: (int(d) if str(d).isdigit() else str(d))
+        for n, d in part.assignment.items()
+    }
+    record = {
+        "plan_id": plan_id,
+        "description": plan_def.get("description", ""),
+        "step": step,
+        "metrics": metrics,
+        "assignment": assignment,
+    }
+    with open(outpath, "w") as f:
+        json.dump(record, f)
+    print("[interesting] Saved '{}' at step {} → {}".format(plan_id, step, outpath))
+
+
 def main():
     if len(sys.argv) < 3:
         print("Usage: python run_recom.py <config.json> <mode:test|final>")
@@ -100,12 +160,10 @@ def main():
     chosen_party = None
 
     # ---------------- box/whisker analysis groups ----------------
-    # Supports multiple groups for frontend-ready exports.
     boxwhisker_group_keys = cfg.get("boxwhisker_group_keys", [])
     boxwhisker_thresholds = cfg.get("boxwhisker_thresholds", {})
     boxwhisker_parties = cfg.get("boxwhisker_parties_of_choice", {})
 
-    # Backward compatibility: if older single-group config is present
     if not boxwhisker_group_keys:
         legacy_group = cfg.get("boxwhisker_group_key")
         if legacy_group is not None:
@@ -117,11 +175,9 @@ def main():
                 legacy_group: cfg.get("boxwhisker_party_of_choice")
             }
 
-    # In VRA mode, make sure the constrained group is included too
     if vra_enabled and group_key is not None and group_key not in boxwhisker_group_keys:
         boxwhisker_group_keys.append(group_key)
 
-    # Add tally for every requested boxwhisker group
     for gk in boxwhisker_group_keys:
         updater_name = "min_{}".format(gk)
         if updater_name not in updaters:
@@ -172,7 +228,6 @@ def main():
 
             constraints.append(vra_eff_constraint)
 
-        # Override box/whisker metadata for the actual VRA-constrained group
         boxwhisker_thresholds[group_key] = chosen_thr
         boxwhisker_parties[group_key] = chosen_party if eff_enabled else boxwhisker_parties.get(group_key)
 
@@ -181,6 +236,11 @@ def main():
             if eff_enabled:
                 msg += " eff_party={} eff_K={}".format(chosen_party, target_k_eff)
             print(msg)
+
+    # ---------------- interesting plan targets ----------------
+    interesting_defs = cfg.get("interesting_plans", [])
+    # Track which targets have been found: id -> True once saved
+    interesting_found = {d["id"]: False for d in interesting_defs}
 
     # ---------------- chain ----------------
     ideal_pop = sum(initial["population"].values()) / num_districts
@@ -228,8 +288,6 @@ def main():
         for i, part in enumerate(chain):
             rec = {"step": i}
 
-            # Keep plan-level metrics tied to the main VRA group if enabled,
-            # otherwise use the first configured boxwhisker group if available.
             metrics_group = None
             metrics_thr = None
             metrics_party = None
@@ -293,7 +351,6 @@ def main():
                 box_written += 1
 
             # ---- per-district effectiveness records ----
-            # Only write rows for groups that actually have a threshold.
             for bw_group in boxwhisker_group_keys:
                 bw_threshold = boxwhisker_thresholds.get(bw_group)
                 bw_party = boxwhisker_parties.get(bw_group)
@@ -315,6 +372,26 @@ def main():
 
             fout.write(json.dumps(rec) + "\n")
             plans_written += 1
+
+            # ---- check interesting plan criteria ----
+            step_metrics = dict(metrics)
+            step_metrics["step"] = i
+
+            for plan_def in interesting_defs:
+                pid = plan_def["id"]
+                if interesting_found[pid]:
+                    continue
+                criteria = plan_def.get("criteria", {})
+                if _plan_matches_criteria(step_metrics, criteria):
+                    save_interesting_plan(outdir, plan_def, i, step_metrics, part)
+                    interesting_found[pid] = True
+
+    # Report any targets not found
+    for plan_def in interesting_defs:
+        if not interesting_found[plan_def["id"]]:
+            print("[interesting] WARNING: '{}' was never found in {} steps.".format(
+                plan_def["id"], steps
+            ))
 
     summary = {
         "state": cfg.get("state"),
@@ -338,6 +415,9 @@ def main():
             "boxwhisker_parties_of_choice": boxwhisker_parties,
         },
         "cut_edges_hist": cut_hist,
+        "interesting_plans": {
+            pid: interesting_found[pid] for pid in interesting_found
+        },
     }
     summary["boxwhisker_raw_file"] = box_path
     summary["boxwhisker_plans_written"] = box_written

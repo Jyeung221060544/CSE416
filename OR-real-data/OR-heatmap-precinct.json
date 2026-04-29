@@ -4,32 +4,32 @@
   "bins": [
     {
       "binId": 1,
-      "rangeMin": 0,
-      "rangeMax": 20,
+      "rangeMin": 0.0,
+      "rangeMax": 10.0,
       "color": "#ccfbf1"
     },
     {
       "binId": 2,
-      "rangeMin": 20,
-      "rangeMax": 40,
+      "rangeMin": 10.0,
+      "rangeMax": 20.0,
       "color": "#5eead4"
     },
     {
       "binId": 3,
-      "rangeMin": 40,
-      "rangeMax": 60,
+      "rangeMin": 20.0,
+      "rangeMax": 30.0,
       "color": "#14b8a6"
     },
     {
       "binId": 4,
-      "rangeMin": 60,
-      "rangeMax": 80,
+      "rangeMin": 30.0,
+      "rangeMax": 40.0,
       "color": "#0f766e"
     },
     {
       "binId": 5,
-      "rangeMin": 80,
-      "rangeMax": 100,
+      "rangeMin": 40.0,
+      "rangeMax": 50.0,
       "color": "#134e4a"
     }
   ],
@@ -170,23 +170,23 @@
     {
       "idx": 19,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
-    },
-    {
-      "idx": 20,
-      "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
       "other": 2
     },
     {
+      "idx": 20,
+      "black": 1,
+      "white": 5,
+      "hispanic": 1,
+      "other": 3
+    },
+    {
       "idx": 21,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 22,
@@ -212,9 +212,9 @@
     {
       "idx": 25,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 26,
@@ -226,23 +226,23 @@
     {
       "idx": 27,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 28,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 29,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 30,
@@ -261,9 +261,9 @@
     {
       "idx": 32,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 33,
@@ -275,9 +275,9 @@
     {
       "idx": 34,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 35,
@@ -289,58 +289,58 @@
     {
       "idx": 36,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 37,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 38,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 3
     },
     {
       "idx": 39,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 40,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 41,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 42,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 43,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 44,
@@ -352,8 +352,8 @@
     {
       "idx": 45,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -366,23 +366,23 @@
     {
       "idx": 47,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 48,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 49,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 3
     },
     {
       "idx": 50,
@@ -394,36 +394,36 @@
     {
       "idx": 51,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 3,
       "other": 1
     },
     {
       "idx": 52,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 53,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 54,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 55,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -431,21 +431,21 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 57,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 58,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 59,
@@ -459,7 +459,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 61,
@@ -473,28 +473,28 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 63,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 64,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 65,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 66,
@@ -506,58 +506,58 @@
     {
       "idx": 67,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 68,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 69,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 70,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 71,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 72,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 73,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 74,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 75,
@@ -569,16 +569,16 @@
     {
       "idx": 76,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 77,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 78,
@@ -590,9 +590,9 @@
     {
       "idx": 79,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 80,
@@ -604,58 +604,58 @@
     {
       "idx": 81,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 82,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 83,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 84,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 3
+      "black": 2,
+      "white": 5,
+      "hispanic": 2,
+      "other": 5
     },
     {
       "idx": 85,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 86,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 87,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 88,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 89,
@@ -667,9 +667,9 @@
     {
       "idx": 90,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 91,
@@ -690,7 +690,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 94,
@@ -730,9 +730,9 @@
     {
       "idx": 99,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 4,
+      "other": 2
     },
     {
       "idx": 100,
@@ -753,7 +753,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 103,
@@ -814,36 +814,36 @@
     {
       "idx": 111,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 112,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 113,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 114,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 4,
+      "other": 2
     },
     {
       "idx": 115,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 3,
       "other": 1
     },
     {
@@ -856,15 +856,15 @@
     {
       "idx": 117,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 118,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -877,30 +877,30 @@
     {
       "idx": 120,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 121,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 122,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 123,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 124,
@@ -914,35 +914,35 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 126,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 127,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 128,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 129,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 130,
@@ -968,9 +968,9 @@
     {
       "idx": 133,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 134,
@@ -1012,7 +1012,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 140,
@@ -1031,23 +1031,23 @@
     {
       "idx": 142,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 143,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 144,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 145,
@@ -1061,13 +1061,13 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 147,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -1075,28 +1075,28 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 149,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 150,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 151,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 152,
@@ -1138,7 +1138,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 158,
@@ -1171,16 +1171,16 @@
     {
       "idx": 162,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 163,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 164,
@@ -1192,8 +1192,8 @@
     {
       "idx": 165,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -1214,7 +1214,7 @@
       "idx": 168,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -1236,7 +1236,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 172,
@@ -1248,15 +1248,15 @@
     {
       "idx": 173,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 174,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -1271,14 +1271,14 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 177,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 178,
@@ -1313,7 +1313,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 183,
@@ -1353,9 +1353,9 @@
     {
       "idx": 188,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "other": 2
+      "white": 5,
+      "hispanic": 4,
+      "other": 3
     },
     {
       "idx": 189,
@@ -1369,7 +1369,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 191,
@@ -1404,7 +1404,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 196,
@@ -1425,7 +1425,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 199,
@@ -1479,23 +1479,23 @@
     {
       "idx": 206,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 207,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 208,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 209,
@@ -1509,28 +1509,28 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 211,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 212,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 213,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 214,
@@ -1544,7 +1544,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 216,
@@ -1565,14 +1565,14 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 219,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 220,
@@ -1593,7 +1593,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 223,
@@ -1607,7 +1607,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 225,
@@ -1640,9 +1640,9 @@
     {
       "idx": 229,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 230,
@@ -1655,7 +1655,7 @@
       "idx": 231,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -1677,7 +1677,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 235,
@@ -1710,8 +1710,8 @@
     {
       "idx": 239,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -1725,7 +1725,7 @@
       "idx": 241,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -1752,9 +1752,9 @@
     {
       "idx": 245,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 246,
@@ -1780,9 +1780,9 @@
     {
       "idx": 249,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 250,
@@ -1824,14 +1824,14 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 256,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 257,
@@ -1873,28 +1873,28 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 263,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 264,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 265,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 266,
@@ -1915,7 +1915,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 269,
@@ -1929,13 +1929,13 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 271,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -1955,8 +1955,8 @@
     {
       "idx": 274,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -1977,7 +1977,7 @@
       "idx": 277,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -2005,7 +2005,7 @@
       "idx": 281,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -2081,15 +2081,15 @@
     {
       "idx": 292,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 293,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -2216,7 +2216,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 312,
@@ -2243,7 +2243,7 @@
       "idx": 315,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -2277,8 +2277,8 @@
     {
       "idx": 320,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -2291,9 +2291,9 @@
     {
       "idx": 322,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 323,
@@ -2321,14 +2321,14 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 327,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 328,
@@ -2349,14 +2349,14 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 331,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 332,
@@ -2440,7 +2440,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 344,
@@ -2468,7 +2468,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 348,
@@ -2571,92 +2571,92 @@
     {
       "idx": 362,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 363,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 4,
       "other": 1
     },
     {
       "idx": 364,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 365,
       "black": 1,
-      "white": 2,
-      "hispanic": 4,
+      "white": 4,
+      "hispanic": 5,
       "other": 1
     },
     {
       "idx": 366,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 367,
       "black": 1,
-      "white": 3,
-      "hispanic": 3,
+      "white": 5,
+      "hispanic": 5,
       "other": 1
     },
     {
       "idx": 368,
       "black": 1,
-      "white": 3,
-      "hispanic": 3,
+      "white": 5,
+      "hispanic": 5,
       "other": 1
     },
     {
       "idx": 369,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 3,
       "other": 1
     },
     {
       "idx": 370,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 371,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 3,
       "other": 1
     },
     {
       "idx": 372,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 373,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 3,
       "other": 1
     },
     {
       "idx": 374,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -2699,7 +2699,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 381,
@@ -2718,9 +2718,9 @@
     {
       "idx": 383,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 384,
@@ -2741,7 +2741,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 387,
@@ -2753,8 +2753,8 @@
     {
       "idx": 388,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 4,
       "other": 1
     },
     {
@@ -2788,15 +2788,15 @@
     {
       "idx": 393,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 394,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -2804,13 +2804,13 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 396,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -2818,20 +2818,20 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 398,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 399,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -2865,22 +2865,22 @@
     {
       "idx": 404,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 405,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 406,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -2907,9 +2907,9 @@
     {
       "idx": 410,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 411,
@@ -2937,7 +2937,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 415,
@@ -2949,15 +2949,15 @@
     {
       "idx": 416,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 417,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -2970,29 +2970,29 @@
     {
       "idx": 419,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 420,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 421,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 422,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 3,
       "other": 1
     },
     {
@@ -3005,9 +3005,9 @@
     {
       "idx": 424,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 425,
@@ -3019,37 +3019,37 @@
     {
       "idx": 426,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 427,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 428,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 4,
+      "other": 2
     },
     {
       "idx": 429,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 4,
       "other": 1
     },
     {
       "idx": 430,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 431,
@@ -3061,9 +3061,9 @@
     {
       "idx": 432,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 433,
@@ -3082,8 +3082,8 @@
     {
       "idx": 435,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 3,
       "other": 1
     },
     {
@@ -3091,7 +3091,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 437,
@@ -3124,8 +3124,8 @@
     {
       "idx": 441,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 3,
       "other": 1
     },
     {
@@ -3133,14 +3133,14 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 443,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 444,
@@ -3175,7 +3175,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 449,
@@ -3257,9 +3257,9 @@
     {
       "idx": 460,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 461,
@@ -3271,16 +3271,16 @@
     {
       "idx": 462,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 463,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 464,
@@ -3383,30 +3383,30 @@
     {
       "idx": 478,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 479,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 480,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 481,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 482,
@@ -3460,30 +3460,30 @@
     {
       "idx": 489,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 490,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 491,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 492,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 493,
@@ -3497,35 +3497,35 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 495,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 496,
       "black": 1,
-      "white": 3,
+      "white": 5,
       "hispanic": 1,
-      "other": 3
+      "other": 5
     },
     {
       "idx": 497,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 498,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 499,
@@ -3537,71 +3537,71 @@
     {
       "idx": 500,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 501,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 502,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 503,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 504,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 505,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 506,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 507,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 508,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 509,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -3609,7 +3609,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 511,
@@ -3621,23 +3621,23 @@
     {
       "idx": 512,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 513,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 514,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 515,
@@ -3649,23 +3649,23 @@
     {
       "idx": 516,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 517,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 518,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 519,
@@ -3693,77 +3693,77 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 523,
       "black": 1,
-      "white": 3,
-      "hispanic": 3,
+      "white": 5,
+      "hispanic": 5,
       "other": 1
     },
     {
       "idx": 524,
       "black": 1,
-      "white": 3,
-      "hispanic": 3,
+      "white": 5,
+      "hispanic": 5,
       "other": 1
     },
     {
       "idx": 525,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 526,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 527,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 528,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 529,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 530,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 531,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 532,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 533,
@@ -3812,7 +3812,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 540,
@@ -3824,15 +3824,15 @@
     {
       "idx": 541,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 542,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -3866,16 +3866,16 @@
     {
       "idx": 547,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 548,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 549,
@@ -3901,44 +3901,44 @@
     {
       "idx": 552,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 553,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 554,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 555,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 556,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 557,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 558,
@@ -3980,7 +3980,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 564,
@@ -3992,86 +3992,86 @@
     {
       "idx": 565,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 566,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 567,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 568,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 569,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 570,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 571,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 572,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 573,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 574,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 575,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 576,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 3
     },
     {
       "idx": 577,
@@ -4085,77 +4085,77 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 579,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 580,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 581,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 582,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 583,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 584,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 585,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 586,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 587,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 588,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 589,
@@ -4183,7 +4183,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 593,
@@ -4197,7 +4197,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 595,
@@ -4274,7 +4274,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 606,
@@ -4301,7 +4301,7 @@
       "idx": 609,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -4393,28 +4393,28 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 623,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 624,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 625,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 626,
@@ -4435,7 +4435,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 629,
@@ -4449,7 +4449,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 631,
@@ -4475,9 +4475,9 @@
     {
       "idx": 634,
       "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 4
     },
     {
       "idx": 635,
@@ -4489,22 +4489,22 @@
     {
       "idx": 636,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 637,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 638,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 3,
       "other": 1
     },
     {
@@ -4512,14 +4512,14 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 640,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 641,
@@ -4538,15 +4538,15 @@
     {
       "idx": 643,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 644,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -4554,14 +4554,14 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 646,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 647,
@@ -4582,28 +4582,28 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 650,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 651,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 652,
       "black": 1,
-      "white": 3,
+      "white": 5,
       "hispanic": 1,
-      "other": 3
+      "other": 5
     },
     {
       "idx": 653,
@@ -4622,8 +4622,8 @@
     {
       "idx": 655,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -4637,7 +4637,7 @@
       "idx": 657,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -4650,43 +4650,43 @@
     {
       "idx": 659,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 660,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 661,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 662,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 663,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 664,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -4700,7 +4700,7 @@
       "idx": 666,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -4715,7 +4715,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 669,
@@ -4743,7 +4743,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 673,
@@ -4755,9 +4755,9 @@
     {
       "idx": 674,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 675,
@@ -4827,7 +4827,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 685,
@@ -4855,7 +4855,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 689,
@@ -4867,8 +4867,8 @@
     {
       "idx": 690,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -4895,9 +4895,9 @@
     {
       "idx": 694,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 695,
@@ -4932,7 +4932,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 700,
@@ -4988,14 +4988,14 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 708,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 709,
@@ -5014,8 +5014,8 @@
     {
       "idx": 711,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -5023,13 +5023,13 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 713,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -5042,23 +5042,23 @@
     {
       "idx": 715,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 716,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 717,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 718,
@@ -5107,7 +5107,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 725,
@@ -5128,7 +5128,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 728,
@@ -5161,8 +5161,8 @@
     {
       "idx": 732,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -5189,15 +5189,15 @@
     {
       "idx": 736,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 737,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -5225,7 +5225,7 @@
       "idx": 741,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -5253,7 +5253,7 @@
       "idx": 745,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -5261,41 +5261,41 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 747,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 748,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 3,
       "other": 1
     },
     {
       "idx": 749,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 750,
       "black": 1,
-      "white": 2,
-      "hispanic": 3,
+      "white": 4,
+      "hispanic": 5,
       "other": 1
     },
     {
       "idx": 751,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -5309,50 +5309,50 @@
       "idx": 753,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 754,
       "black": 1,
-      "white": 3,
-      "hispanic": 3,
+      "white": 5,
+      "hispanic": 5,
       "other": 1
     },
     {
       "idx": 755,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 3,
       "other": 1
     },
     {
       "idx": 756,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 4,
       "other": 1
     },
     {
       "idx": 757,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 4,
+      "other": 2
     },
     {
       "idx": 758,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 3,
       "other": 1
     },
     {
       "idx": 759,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 760,
@@ -5364,37 +5364,37 @@
     {
       "idx": 761,
       "black": 1,
-      "white": 3,
-      "hispanic": 3,
+      "white": 5,
+      "hispanic": 5,
       "other": 1
     },
     {
       "idx": 762,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 4,
+      "other": 2
     },
     {
       "idx": 763,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 764,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 765,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "other": 2
+      "white": 5,
+      "hispanic": 3,
+      "other": 3
     },
     {
       "idx": 766,
@@ -5406,15 +5406,15 @@
     {
       "idx": 767,
       "black": 1,
-      "white": 3,
-      "hispanic": 3,
+      "white": 5,
+      "hispanic": 5,
       "other": 1
     },
     {
       "idx": 768,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -5427,30 +5427,30 @@
     {
       "idx": 770,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 771,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 772,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 773,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 774,
@@ -5462,30 +5462,30 @@
     {
       "idx": 775,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 3,
       "other": 1
     },
     {
       "idx": 776,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 777,
       "black": 1,
-      "white": 2,
-      "hispanic": 4,
+      "white": 4,
+      "hispanic": 5,
       "other": 1
     },
     {
       "idx": 778,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 779,
@@ -5497,23 +5497,23 @@
     {
       "idx": 780,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 781,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 782,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 4,
+      "other": 2
     },
     {
       "idx": 783,
@@ -5525,78 +5525,78 @@
     {
       "idx": 784,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 785,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 3,
       "other": 1
     },
     {
       "idx": 786,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 787,
       "black": 1,
-      "white": 2,
-      "hispanic": 4,
+      "white": 3,
+      "hispanic": 5,
       "other": 1
     },
     {
       "idx": 788,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 789,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 790,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 791,
       "black": 1,
-      "white": 3,
-      "hispanic": 3,
+      "white": 5,
+      "hispanic": 5,
       "other": 1
     },
     {
       "idx": 792,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 4,
+      "other": 2
     },
     {
       "idx": 793,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 4,
+      "other": 2
     },
     {
       "idx": 794,
       "black": 1,
-      "white": 3,
-      "hispanic": 3,
+      "white": 5,
+      "hispanic": 5,
       "other": 1
     },
     {
@@ -5616,36 +5616,36 @@
     {
       "idx": 797,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 4,
       "other": 1
     },
     {
       "idx": 798,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 799,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 800,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 801,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -5658,113 +5658,113 @@
     {
       "idx": 803,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
-    },
-    {
-      "idx": 804,
-      "black": 1,
-      "white": 3,
+      "white": 5,
       "hispanic": 2,
       "other": 2
     },
     {
+      "idx": 804,
+      "black": 1,
+      "white": 5,
+      "hispanic": 3,
+      "other": 3
+    },
+    {
       "idx": 805,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 4,
+      "other": 2
     },
     {
       "idx": 806,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 807,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 808,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 809,
       "black": 1,
-      "white": 3,
-      "hispanic": 3,
+      "white": 5,
+      "hispanic": 5,
       "other": 1
     },
     {
       "idx": 810,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 4,
+      "other": 2
     },
     {
       "idx": 811,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 4,
+      "other": 2
     },
     {
       "idx": 812,
       "black": 1,
-      "white": 2,
-      "hispanic": 4,
+      "white": 3,
+      "hispanic": 5,
       "other": 1
     },
     {
       "idx": 813,
       "black": 1,
-      "white": 2,
-      "hispanic": 4,
+      "white": 4,
+      "hispanic": 5,
       "other": 1
     },
     {
       "idx": 814,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 815,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 816,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 3,
       "other": 1
     },
     {
       "idx": 817,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 818,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -5777,9 +5777,9 @@
     {
       "idx": 820,
       "black": 1,
-      "white": 3,
-      "hispanic": 3,
-      "other": 1
+      "white": 5,
+      "hispanic": 5,
+      "other": 2
     },
     {
       "idx": 821,
@@ -5791,65 +5791,65 @@
     {
       "idx": 822,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 4,
+      "other": 2
     },
     {
       "idx": 823,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 824,
       "black": 1,
-      "white": 3,
-      "hispanic": 3,
-      "other": 1
+      "white": 5,
+      "hispanic": 5,
+      "other": 2
     },
     {
       "idx": 825,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 826,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 827,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 828,
       "black": 1,
-      "white": 2,
-      "hispanic": 3,
+      "white": 4,
+      "hispanic": 5,
       "other": 1
     },
     {
       "idx": 829,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 830,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 4,
+      "other": 2
     },
     {
       "idx": 831,
@@ -5863,7 +5863,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 833,
@@ -5875,29 +5875,29 @@
     {
       "idx": 834,
       "black": 1,
-      "white": 3,
-      "hispanic": 3,
-      "other": 1
+      "white": 5,
+      "hispanic": 5,
+      "other": 2
     },
     {
       "idx": 835,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 836,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 3,
       "other": 1
     },
     {
       "idx": 837,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -5905,35 +5905,35 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 839,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 840,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 841,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 842,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 4,
+      "other": 2
     },
     {
       "idx": 843,
@@ -5952,9 +5952,9 @@
     {
       "idx": 845,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 4,
+      "other": 2
     },
     {
       "idx": 846,
@@ -5981,14 +5981,14 @@
       "idx": 849,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 850,
       "black": 1,
-      "white": 3,
-      "hispanic": 3,
+      "white": 5,
+      "hispanic": 5,
       "other": 1
     },
     {
@@ -6001,15 +6001,15 @@
     {
       "idx": 852,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 853,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -6050,15 +6050,15 @@
     {
       "idx": 859,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 3,
       "other": 1
     },
     {
       "idx": 860,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -6078,8 +6078,8 @@
     {
       "idx": 863,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -6092,15 +6092,15 @@
     {
       "idx": 865,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 3,
       "other": 1
     },
     {
       "idx": 866,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 3,
       "other": 1
     },
     {
@@ -6120,8 +6120,8 @@
     {
       "idx": 869,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 4,
       "other": 1
     },
     {
@@ -6148,22 +6148,22 @@
     {
       "idx": 873,
       "black": 1,
-      "white": 2,
-      "hispanic": 4,
+      "white": 4,
+      "hispanic": 5,
       "other": 1
     },
     {
       "idx": 874,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 4,
       "other": 1
     },
     {
       "idx": 875,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -6176,233 +6176,233 @@
     {
       "idx": 877,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 878,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 879,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 880,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 881,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 3
     },
     {
       "idx": 882,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 883,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 884,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 885,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 886,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
-    },
-    {
-      "idx": 887,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
-    },
-    {
-      "idx": 888,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
-    },
-    {
-      "idx": 889,
-      "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
       "other": 2
     },
     {
+      "idx": 887,
+      "black": 1,
+      "white": 5,
+      "hispanic": 1,
+      "other": 2
+    },
+    {
+      "idx": 888,
+      "black": 1,
+      "white": 5,
+      "hispanic": 1,
+      "other": 2
+    },
+    {
+      "idx": 889,
+      "black": 2,
+      "white": 5,
+      "hispanic": 1,
+      "other": 3
+    },
+    {
       "idx": 890,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 891,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 892,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 893,
-      "black": 1,
-      "white": 4,
+      "black": 2,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 894,
-      "black": 1,
-      "white": 4,
+      "black": 2,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 895,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 896,
-      "black": 1,
-      "white": 4,
+      "black": 2,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 897,
-      "black": 1,
-      "white": 4,
+      "black": 2,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 898,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 899,
       "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 3
     },
     {
       "idx": 900,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 901,
       "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 3
     },
     {
       "idx": 902,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 903,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 904,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 905,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 906,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 907,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 908,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 909,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 910,
@@ -6413,157 +6413,157 @@
     },
     {
       "idx": 911,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 2
+      "black": 2,
+      "white": 5,
+      "hispanic": 2,
+      "other": 4
     },
     {
       "idx": 912,
-      "black": 2,
-      "white": 2,
-      "hispanic": 2,
-      "other": 3
+      "black": 3,
+      "white": 3,
+      "hispanic": 3,
+      "other": 5
     },
     {
       "idx": 913,
       "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 3
     },
     {
       "idx": 914,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 2
+      "black": 2,
+      "white": 5,
+      "hispanic": 2,
+      "other": 4
     },
     {
       "idx": 915,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 3
     },
     {
       "idx": 916,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 3
     },
     {
       "idx": 917,
       "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 3
     },
     {
       "idx": 918,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 2
+      "black": 2,
+      "white": 5,
+      "hispanic": 2,
+      "other": 4
     },
     {
       "idx": 919,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 3
     },
     {
       "idx": 920,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 921,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 3
     },
     {
       "idx": 922,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 3
     },
     {
       "idx": 923,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 924,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 925,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 926,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 927,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 4,
+      "other": 2
     },
     {
       "idx": 928,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
-    },
-    {
-      "idx": 929,
-      "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
       "other": 2
     },
     {
+      "idx": 929,
+      "black": 1,
+      "white": 5,
+      "hispanic": 1,
+      "other": 3
+    },
+    {
       "idx": 930,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 931,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 932,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 933,
@@ -6575,65 +6575,65 @@
     {
       "idx": 934,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 935,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 936,
-      "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "other": 2
+      "black": 2,
+      "white": 5,
+      "hispanic": 3,
+      "other": 4
     },
     {
       "idx": 937,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 938,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 939,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 940,
       "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 3
     },
     {
       "idx": 941,
       "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 3
     },
     {
       "idx": 942,
       "black": 1,
-      "white": 2,
-      "hispanic": 2,
-      "other": 2
+      "white": 4,
+      "hispanic": 3,
+      "other": 4
     },
     {
       "idx": 943,
@@ -6645,65 +6645,65 @@
     {
       "idx": 944,
       "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 3
     },
     {
       "idx": 945,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 2
+      "black": 2,
+      "white": 5,
+      "hispanic": 2,
+      "other": 4
     },
     {
       "idx": 946,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "other": 2
+      "white": 5,
+      "hispanic": 3,
+      "other": 3
     },
     {
       "idx": 947,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "other": 2
+      "white": 5,
+      "hispanic": 3,
+      "other": 3
     },
     {
       "idx": 948,
       "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 4
     },
     {
       "idx": 949,
       "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 4
     },
     {
       "idx": 950,
       "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 3
     },
     {
       "idx": 951,
       "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 4
     },
     {
       "idx": 952,
-      "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 2
+      "black": 2,
+      "white": 5,
+      "hispanic": 2,
+      "other": 3
     },
     {
       "idx": 953,
@@ -6717,210 +6717,210 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 955,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 956,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 957,
-      "black": 1,
-      "white": 3,
+      "black": 2,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 4
     },
     {
       "idx": 958,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 959,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 960,
       "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 4
     },
     {
       "idx": 961,
       "black": 1,
-      "white": 3,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 4
     },
     {
       "idx": 962,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 963,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
-    },
-    {
-      "idx": 964,
-      "black": 1,
-      "white": 3,
+      "white": 5,
       "hispanic": 1,
       "other": 2
     },
     {
+      "idx": 964,
+      "black": 1,
+      "white": 5,
+      "hispanic": 2,
+      "other": 4
+    },
+    {
       "idx": 965,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 966,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 967,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 968,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 969,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 970,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 971,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 972,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 973,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 974,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 975,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 976,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 977,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 978,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 979,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 980,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 981,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 982,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 983,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 984,
@@ -6934,14 +6934,14 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 986,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 4
     },
     {
       "idx": 987,
@@ -6953,37 +6953,37 @@
     {
       "idx": 988,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 989,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 990,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 991,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 992,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 993,
@@ -7004,7 +7004,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 996,
@@ -7018,27 +7018,27 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 998,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 999,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 3,
       "other": 1
     },
     {
       "idx": 1000,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -7072,29 +7072,29 @@
     {
       "idx": 1005,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 1006,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 1007,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 1008,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -7142,8 +7142,8 @@
     {
       "idx": 1015,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -7177,8 +7177,8 @@
     {
       "idx": 1020,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -7191,22 +7191,22 @@
     {
       "idx": 1022,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 3,
       "other": 1
     },
     {
       "idx": 1023,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 1024,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -7248,7 +7248,7 @@
       "idx": 1030,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -7270,20 +7270,20 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1034,
       "black": 1,
-      "white": 3,
-      "hispanic": 3,
+      "white": 5,
+      "hispanic": 5,
       "other": 1
     },
     {
       "idx": 1035,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -7291,34 +7291,34 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1037,
       "black": 1,
-      "white": 3,
-      "hispanic": 3,
+      "white": 5,
+      "hispanic": 5,
       "other": 1
     },
     {
       "idx": 1038,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 4,
       "other": 1
     },
     {
       "idx": 1039,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 4,
       "other": 1
     },
     {
       "idx": 1040,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 3,
       "other": 1
     },
     {
@@ -7331,8 +7331,8 @@
     {
       "idx": 1042,
       "black": 1,
-      "white": 3,
-      "hispanic": 3,
+      "white": 5,
+      "hispanic": 5,
       "other": 1
     },
     {
@@ -7352,8 +7352,8 @@
     {
       "idx": 1045,
       "black": 1,
-      "white": 3,
-      "hispanic": 3,
+      "white": 5,
+      "hispanic": 5,
       "other": 1
     },
     {
@@ -7366,16 +7366,16 @@
     {
       "idx": 1047,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 1048,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 1049,
@@ -7387,9 +7387,9 @@
     {
       "idx": 1050,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 1051,
@@ -7409,36 +7409,36 @@
       "idx": 1053,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 1054,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 4
     },
     {
       "idx": 1055,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 1056,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 1057,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1058,
@@ -7451,7 +7451,7 @@
       "idx": 1059,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -7464,36 +7464,36 @@
     {
       "idx": 1061,
       "black": 1,
-      "white": 3,
+      "white": 5,
       "hispanic": 1,
-      "other": 3
+      "other": 5
     },
     {
       "idx": 1062,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 1063,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 4,
       "other": 1
     },
     {
       "idx": 1064,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 1065,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 3,
       "other": 1
     },
     {
@@ -7508,7 +7508,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1068,
@@ -7521,7 +7521,7 @@
       "idx": 1069,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -7534,15 +7534,15 @@
     {
       "idx": 1071,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 3,
       "other": 1
     },
     {
       "idx": 1072,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 4,
       "other": 1
     },
     {
@@ -7578,13 +7578,13 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1078,
       "black": 1,
-      "white": 3,
-      "hispanic": 3,
+      "white": 5,
+      "hispanic": 5,
       "other": 1
     },
     {
@@ -7592,14 +7592,14 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1080,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1081,
@@ -7641,7 +7641,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1087,
@@ -7655,7 +7655,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1089,
@@ -7725,7 +7725,7 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1099,
@@ -7802,41 +7802,41 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1110,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 1111,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 1112,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 1113,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 1114,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 3,
       "other": 1
     },
     {
@@ -7856,9 +7856,9 @@
     {
       "idx": 1117,
       "black": 1,
-      "white": 3,
+      "white": 5,
       "hispanic": 1,
-      "other": 3
+      "other": 5
     },
     {
       "idx": 1118,
@@ -7870,22 +7870,22 @@
     {
       "idx": 1119,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 1120,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 3,
       "other": 1
     },
     {
       "idx": 1121,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -7900,105 +7900,105 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1124,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 1125,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1126,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 1127,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1128,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 1129,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 1130,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 1131,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 1132,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 1133,
       "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 3
     },
     {
       "idx": 1134,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 1135,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1136,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 1137,
       "black": 1,
-      "white": 3,
-      "hispanic": 3,
-      "other": 1
+      "white": 5,
+      "hispanic": 5,
+      "other": 2
     },
     {
       "idx": 1138,
@@ -8010,135 +8010,135 @@
     {
       "idx": 1139,
       "black": 1,
-      "white": 2,
-      "hispanic": 2,
-      "other": 3
+      "white": 4,
+      "hispanic": 3,
+      "other": 5
     },
     {
       "idx": 1140,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 3,
       "other": 1
     },
     {
       "idx": 1141,
       "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 3
+      "white": 5,
+      "hispanic": 2,
+      "other": 5
     },
     {
       "idx": 1142,
       "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 3
     },
     {
       "idx": 1143,
       "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 3
+      "white": 5,
+      "hispanic": 2,
+      "other": 5
     },
     {
       "idx": 1144,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "other": 2
+      "white": 5,
+      "hispanic": 3,
+      "other": 3
     },
     {
       "idx": 1145,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 1146,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 1147,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 1148,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 4
     },
     {
       "idx": 1149,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 2
-    },
-    {
-      "idx": 1150,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
-    },
-    {
-      "idx": 1151,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
-    },
-    {
-      "idx": 1152,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
-    },
-    {
-      "idx": 1153,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 2
-    },
-    {
-      "idx": 1154,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
-    },
-    {
-      "idx": 1155,
-      "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
-    },
-    {
-      "idx": 1156,
-      "black": 1,
-      "white": 3,
+      "white": 5,
       "hispanic": 1,
       "other": 3
     },
     {
+      "idx": 1150,
+      "black": 1,
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
+    },
+    {
+      "idx": 1151,
+      "black": 1,
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
+    },
+    {
+      "idx": 1152,
+      "black": 1,
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
+    },
+    {
+      "idx": 1153,
+      "black": 1,
+      "white": 5,
+      "hispanic": 1,
+      "other": 3
+    },
+    {
+      "idx": 1154,
+      "black": 1,
+      "white": 5,
+      "hispanic": 1,
+      "other": 2
+    },
+    {
+      "idx": 1155,
+      "black": 1,
+      "white": 5,
+      "hispanic": 1,
+      "other": 2
+    },
+    {
+      "idx": 1156,
+      "black": 1,
+      "white": 5,
+      "hispanic": 1,
+      "other": 5
+    },
+    {
       "idx": 1157,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 1158,
@@ -8150,65 +8150,65 @@
     {
       "idx": 1159,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 1160,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1161,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 1162,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 1163,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "other": 2
+      "white": 5,
+      "hispanic": 3,
+      "other": 3
     },
     {
       "idx": 1164,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1165,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1166,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 1167,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 1168,
@@ -8234,37 +8234,37 @@
     {
       "idx": 1171,
       "black": 1,
-      "white": 1,
-      "hispanic": 1,
-      "other": 4
+      "white": 2,
+      "hispanic": 2,
+      "other": 5
     },
     {
       "idx": 1172,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1173,
       "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 4
     },
     {
       "idx": 1174,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1175,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 1176,
@@ -8276,23 +8276,23 @@
     {
       "idx": 1177,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 1178,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 1179,
       "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 3
     },
     {
       "idx": 1180,
@@ -8304,100 +8304,100 @@
     {
       "idx": 1181,
       "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 3
     },
     {
       "idx": 1182,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 1183,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 1184,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1185,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 1186,
-      "black": 1,
+      "black": 2,
       "white": 1,
-      "hispanic": 2,
-      "other": 4
+      "hispanic": 3,
+      "other": 5
     },
     {
       "idx": 1187,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 3
     },
     {
       "idx": 1188,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 1189,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 3
     },
     {
       "idx": 1190,
       "black": 1,
-      "white": 2,
+      "white": 3,
       "hispanic": 1,
-      "other": 4
+      "other": 5
     },
     {
       "idx": 1191,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 1192,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 1193,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 1194,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1195,
@@ -8416,44 +8416,44 @@
     {
       "idx": 1197,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1198,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1199,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 1200,
       "black": 1,
       "white": 1,
-      "hispanic": 3,
-      "other": 3
+      "hispanic": 5,
+      "other": 5
     },
     {
       "idx": 1201,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1202,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 1203,
@@ -8465,43 +8465,43 @@
     {
       "idx": 1204,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 3
     },
     {
       "idx": 1205,
       "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 4
     },
     {
       "idx": 1206,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1207,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 1208,
       "black": 1,
-      "white": 3,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 4
     },
     {
       "idx": 1209,
       "black": 1,
-      "white": 2,
-      "hispanic": 3,
+      "white": 4,
+      "hispanic": 5,
       "other": 1
     },
     {
@@ -8509,14 +8509,14 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1211,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 3
     },
     {
       "idx": 1212,
@@ -8530,111 +8530,111 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1214,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 4
     },
     {
       "idx": 1215,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 1216,
       "black": 1,
-      "white": 3,
+      "white": 5,
       "hispanic": 1,
-      "other": 3
+      "other": 5
     },
     {
       "idx": 1217,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1218,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 1219,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 3
     },
     {
       "idx": 1220,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 1221,
       "black": 1,
-      "white": 2,
+      "white": 4,
       "hispanic": 1,
-      "other": 3
+      "other": 5
     },
     {
       "idx": 1222,
       "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 4
     },
     {
       "idx": 1223,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 1224,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 1225,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1226,
       "black": 1,
-      "white": 3,
+      "white": 5,
       "hispanic": 1,
-      "other": 3
+      "other": 5
     },
     {
       "idx": 1227,
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1228,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 3,
       "other": 1
     },
     {
@@ -8647,16 +8647,16 @@
     {
       "idx": 1230,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 1231,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1232,
@@ -8668,114 +8668,114 @@
     {
       "idx": 1233,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "other": 2
+      "white": 5,
+      "hispanic": 3,
+      "other": 3
     },
     {
       "idx": 1234,
       "black": 1,
-      "white": 3,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 4
     },
     {
       "idx": 1235,
       "black": 1,
-      "white": 2,
-      "hispanic": 4,
+      "white": 3,
+      "hispanic": 5,
       "other": 1
     },
     {
       "idx": 1236,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 1237,
       "black": 1,
-      "white": 3,
-      "hispanic": 3,
+      "white": 5,
+      "hispanic": 5,
       "other": 1
     },
     {
       "idx": 1238,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 3
     },
     {
       "idx": 1239,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 1240,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 1241,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 1242,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 1243,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 1244,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 3
     },
     {
       "idx": 1245,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 1246,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 1247,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 1248,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 1249,
@@ -8787,16 +8787,16 @@
     {
       "idx": 1250,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1251,
       "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 4
     },
     {
       "idx": 1252,
@@ -8808,51 +8808,51 @@
     {
       "idx": 1253,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 1254,
       "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 4
     },
     {
       "idx": 1255,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1256,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 1257,
       "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 4
     },
     {
       "idx": 1258,
       "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 3
     },
     {
       "idx": 1259,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1260,
@@ -8864,9 +8864,9 @@
     {
       "idx": 1261,
       "black": 1,
-      "white": 3,
-      "hispanic": 3,
-      "other": 1
+      "white": 5,
+      "hispanic": 5,
+      "other": 2
     },
     {
       "idx": 1262,
@@ -8878,16 +8878,16 @@
     {
       "idx": 1263,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 4
     },
     {
       "idx": 1264,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 3
     },
     {
       "idx": 1265,
@@ -8901,77 +8901,77 @@
       "black": 1,
       "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1267,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 1268,
       "black": 1,
-      "white": 3,
-      "hispanic": 2,
-      "other": 2
+      "white": 5,
+      "hispanic": 3,
+      "other": 3
     },
     {
       "idx": 1269,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 1270,
       "black": 1,
-      "white": 2,
-      "hispanic": 2,
-      "other": 2
+      "white": 4,
+      "hispanic": 4,
+      "other": 3
     },
     {
       "idx": 1271,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 1272,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1273,
       "black": 1,
-      "white": 3,
-      "hispanic": 1,
-      "other": 2
+      "white": 5,
+      "hispanic": 2,
+      "other": 3
     },
     {
       "idx": 1274,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 1275,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 2
+      "other": 3
     },
     {
       "idx": 1276,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 1277,
@@ -8997,65 +8997,65 @@
     {
       "idx": 1280,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 1281,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
-      "other": 1
+      "white": 5,
+      "hispanic": 3,
+      "other": 2
     },
     {
       "idx": 1282,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 1283,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 3,
       "other": 1
     },
     {
       "idx": 1284,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 1285,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 1286,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 1287,
       "black": 1,
       "white": 5,
-      "hispanic": 1,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 1288,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
-      "other": 1
+      "white": 5,
+      "hispanic": 2,
+      "other": 2
     },
     {
       "idx": 1289,
@@ -9067,15 +9067,15 @@
     {
       "idx": 1290,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 1291,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 3,
       "other": 1
     },
     {
@@ -9109,8 +9109,8 @@
     {
       "idx": 1296,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
@@ -9123,15 +9123,15 @@
     {
       "idx": 1298,
       "black": 1,
-      "white": 4,
-      "hispanic": 1,
+      "white": 5,
+      "hispanic": 2,
       "other": 1
     },
     {
       "idx": 1299,
       "black": 1,
-      "white": 4,
-      "hispanic": 2,
+      "white": 5,
+      "hispanic": 3,
       "other": 1
     },
     {
@@ -9144,9 +9144,9 @@
     {
       "idx": 1301,
       "black": 1,
-      "white": 4,
+      "white": 5,
       "hispanic": 1,
-      "other": 1
+      "other": 2
     },
     {
       "idx": 1302,

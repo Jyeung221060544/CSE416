@@ -1,4 +1,5 @@
 import json
+import math
 from pathlib import Path
 
 import geopandas as gpd
@@ -12,11 +13,13 @@ JOBS = [
         "state": "AL",
         "precincts": ROOT / "AL_data" / "AL_precincts_full.geojson",
         "out": ROOT / "AL-real-data" / "AL-heatmap-precinct.json",
+        "primary_minority_col": "NH_BLACK_ALONE_VAP",
     },
     {
         "state": "OR",
         "precincts": ROOT / "OR_data" / "OR_precincts_full.geojson",
         "out": ROOT / "OR-real-data" / "OR-heatmap-precinct.json",
+        "primary_minority_col": "LATINO_VAP",
     },
 ]
 
@@ -34,18 +37,31 @@ def safe_pct(numerator, denominator) -> float:
     return float(numerator) / float(denominator) * 100.0
 
 
-def build_equal_width_bins(num_bins: int = 5) -> list[dict]:
-    width = 100 // num_bins
-    bins = []
+def compute_minority_max_pct(gdf: gpd.GeoDataFrame, minority_col: str, percentile: float = 0.99) -> float:
+    """
+    Return the ceiling for heatmap bins: the *percentile*-th percentile of the
+    minority VAP share across all precincts, rounded up to the nearest 5 pp.
+    """
+    pcts = gdf.apply(
+        lambda r: safe_pct(r.get(minority_col, 0), r.get("VAP", 0)), axis=1
+    )
+    raw = float(pcts.quantile(percentile))
+    return max(5.0, math.ceil(raw / 5) * 5.0)
 
-    start = 0
+
+def build_equal_width_bins(num_bins: int = 5, max_pct: float = 100.0) -> list[dict]:
+    """Build *num_bins* equal-width bins spanning [0, max_pct]."""
+    width = max_pct / num_bins
+    bins = []
+    start = 0.0
+
     for i in range(num_bins):
-        end = 100 if i == num_bins - 1 else start + width
+        end = max_pct if i == num_bins - 1 else round(start + width, 4)
         bins.append(
             {
                 "binId": i + 1,
-                "rangeMin": start,
-                "rangeMax": end,
+                "rangeMin": round(start, 4),
+                "rangeMax": round(end, 4),
                 "color": COLORS[i],
             }
         )
@@ -97,7 +113,8 @@ def build_features(gdf: gpd.GeoDataFrame, bins: list[dict]) -> list[dict]:
 def export_state(job: dict) -> None:
     gdf = gpd.read_file(job["precincts"]).reset_index(drop=True)
 
-    bins = build_equal_width_bins(num_bins=5)
+    max_pct = compute_minority_max_pct(gdf, job["primary_minority_col"])
+    bins = build_equal_width_bins(num_bins=5, max_pct=max_pct)
     features = build_features(gdf, bins)
 
     payload = {

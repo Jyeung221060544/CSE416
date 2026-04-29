@@ -2,7 +2,9 @@
   "stateId": "OR",
   "numDistricts": 6,
   "totalPlans": 5000,
-  "feasibleGroups": ["latino"],
+  "feasibleGroups": [
+    "latino"
+  ],
   "effectivenessHistogram": {
     "enactedEffectiveByGroup": {
       "latino": 1
@@ -12,13 +14,18 @@
         "ensembleType": "race-blind",
         "groupCounts": {
           "latino": [
-            { "numEffective": 0, "frequency": 350 },
-            { "numEffective": 1, "frequency": 1600 },
-            { "numEffective": 2, "frequency": 1700 },
-            { "numEffective": 3, "frequency": 950 },
-            { "numEffective": 4, "frequency": 300 },
-            { "numEffective": 5, "frequency": 80 },
-            { "numEffective": 6, "frequency": 20 }
+            {
+              "numEffective": 0,
+              "frequency": 987
+            },
+            {
+              "numEffective": 1,
+              "frequency": 3962
+            },
+            {
+              "numEffective": 2,
+              "frequency": 51
+            }
           ]
         }
       },
@@ -26,13 +33,10 @@
         "ensembleType": "vra-constrained",
         "groupCounts": {
           "latino": [
-            { "numEffective": 0, "frequency": 10 },
-            { "numEffective": 1, "frequency": 80 },
-            { "numEffective": 2, "frequency": 390 },
-            { "numEffective": 3, "frequency": 1050 },
-            { "numEffective": 4, "frequency": 1620 },
-            { "numEffective": 5, "frequency": 1300 },
-            { "numEffective": 6, "frequency": 550 }
+            {
+              "numEffective": 1,
+              "frequency": 5000
+            }
           ]
         }
       }
@@ -46,13 +50,27 @@
       {
         "ensembleType": "race-blind",
         "groupStats": {
-          "latino": { "min": 0, "q1": 1, "median": 2, "mean": 1.9, "q3": 3, "max": 6 }
+          "latino": {
+            "min": 0,
+            "q1": 1,
+            "median": 1,
+            "mean": 0.81,
+            "q3": 1,
+            "max": 2
+          }
         }
       },
       {
         "ensembleType": "vra-constrained",
         "groupStats": {
-          "latino": { "min": 0, "q1": 3, "median": 4, "mean": 4.1, "q3": 5, "max": 6 }
+          "latino": {
+            "min": 1,
+            "q1": 1,
+            "median": 1,
+            "mean": 1.0,
+            "q3": 1,
+            "max": 1
+          }
         }
       }
     ]
@@ -63,20 +81,20 @@
         {
           "id": "satisfies-enacted",
           "label": "Satisfies Enacted Effectiveness",
-          "raceBlindPct": 0.284,
-          "vraConstrainedPct": 0.867
+          "raceBlindPct": 0.8026,
+          "vraConstrainedPct": 1.0
         },
         {
           "id": "satisfies-proportionality",
           "label": "Satisfies Rough Proportionality",
-          "raceBlindPct": 0.131,
-          "vraConstrainedPct": 0.741
+          "raceBlindPct": 0.8026,
+          "vraConstrainedPct": 1.0
         },
         {
           "id": "satisfies-both",
           "label": "Satisfies Both Conditions",
-          "raceBlindPct": 0.083,
-          "vraConstrainedPct": 0.698
+          "raceBlindPct": 0.8026,
+          "vraConstrainedPct": 1.0
         }
       ]
     }

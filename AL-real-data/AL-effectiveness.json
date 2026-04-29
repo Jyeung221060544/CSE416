@@ -2,7 +2,9 @@
   "stateId": "AL",
   "numDistricts": 7,
   "totalPlans": 5000,
-  "feasibleGroups": ["black"],
+  "feasibleGroups": [
+    "black"
+  ],
   "effectivenessHistogram": {
     "enactedEffectiveByGroup": {
       "black": 1
@@ -12,14 +14,14 @@
         "ensembleType": "race-blind",
         "groupCounts": {
           "black": [
-            { "numEffective": 0, "frequency": 250 },
-            { "numEffective": 1, "frequency": 1450 },
-            { "numEffective": 2, "frequency": 1850 },
-            { "numEffective": 3, "frequency": 1000 },
-            { "numEffective": 4, "frequency": 350 },
-            { "numEffective": 5, "frequency": 80 },
-            { "numEffective": 6, "frequency": 15 },
-            { "numEffective": 7, "frequency": 5 }
+            {
+              "numEffective": 0,
+              "frequency": 4985
+            },
+            {
+              "numEffective": 1,
+              "frequency": 15
+            }
           ]
         }
       },
@@ -27,14 +29,10 @@
         "ensembleType": "vra-constrained",
         "groupCounts": {
           "black": [
-            { "numEffective": 0, "frequency": 5 },
-            { "numEffective": 1, "frequency": 55 },
-            { "numEffective": 2, "frequency": 290 },
-            { "numEffective": 3, "frequency": 860 },
-            { "numEffective": 4, "frequency": 1570 },
-            { "numEffective": 5, "frequency": 1430 },
-            { "numEffective": 6, "frequency": 620 },
-            { "numEffective": 7, "frequency": 170 }
+            {
+              "numEffective": 2,
+              "frequency": 4822
+            }
           ]
         }
       }
@@ -48,13 +46,27 @@
       {
         "ensembleType": "race-blind",
         "groupStats": {
-          "black": { "min": 0, "q1": 1, "median": 2, "mean": 2.0, "q3": 3, "max": 6 }
+          "black": {
+            "min": 0,
+            "q1": 0,
+            "median": 0,
+            "mean": 0.0,
+            "q3": 0,
+            "max": 1
+          }
         }
       },
       {
         "ensembleType": "vra-constrained",
         "groupStats": {
-          "black": { "min": 0, "q1": 4, "median": 4, "mean": 4.3, "q3": 5, "max": 7 }
+          "black": {
+            "min": 2,
+            "q1": 2,
+            "median": 2,
+            "mean": 2.0,
+            "q3": 2,
+            "max": 2
+          }
         }
       }
     ]
@@ -65,20 +77,20 @@
         {
           "id": "satisfies-enacted",
           "label": "Satisfies Enacted Effectiveness",
-          "raceBlindPct": 0.312,
-          "vraConstrainedPct": 0.891
+          "raceBlindPct": 0.003,
+          "vraConstrainedPct": 1.0
         },
         {
           "id": "satisfies-proportionality",
           "label": "Satisfies Rough Proportionality",
-          "raceBlindPct": 0.148,
-          "vraConstrainedPct": 0.764
+          "raceBlindPct": 0.0,
+          "vraConstrainedPct": 1.0
         },
         {
           "id": "satisfies-both",
           "label": "Satisfies Both Conditions",
-          "raceBlindPct": 0.095,
-          "vraConstrainedPct": 0.712
+          "raceBlindPct": 0.0,
+          "vraConstrainedPct": 1.0
         }
       ]
     }

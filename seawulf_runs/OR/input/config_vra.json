@@ -33,5 +33,21 @@
       "party_of_choice": "D",
       "min_effective_districts": null
     }
-  }
+  },
+  "interesting_plans": [
+    {
+      "id": "extra_democratic",
+      "description": "One more Democratic seat than enacted OR plan (6D vs enacted 5D)",
+      "criteria": {
+        "dem_seats": {"gte": 6}
+      }
+    },
+    {
+      "id": "zero_effective",
+      "description": "Zero effective Latino minority districts",
+      "criteria": {
+        "eff_districts": {"eq": 0}
+      }
+    }
+  ]
 }

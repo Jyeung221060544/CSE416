@@ -16,12 +16,13 @@ Stages
 5. attach_baseline_with_geojson — Attach baseline stats to official district GeoJSONs
 
 Analytics (run after seawulf ensemble is generated):
-6. compute_boxwhisker         — Compute box-and-whisker percentile data from JSONL plans
-7. generate_seat_vote_curves  — Compute seat–vote curves from ensemble plans
-8. gingles_regression         — Fit Gingles non-linear regression curves
-9. ei_rxc_al                  — Run RxC ecological inference for Alabama (MCMC, slow)
-10. ei_rxc_or                 — Run RxC ecological inference for Oregon (MCMC, slow)
-11. export_*                  — Export all JSON payloads for the backend (10 scripts)
+6. generate_effectiveness      — Build AL/OR-effectiveness.json from seawulf plans
+7. compute_boxwhisker          — Compute box-and-whisker percentile data from JSONL plans
+8. generate_seat_vote_curves   — Compute seat–vote curves from ensemble plans
+9. gingles_regression          — Fit Gingles non-linear regression curves
+10. ei_rxc_al                  — Run RxC ecological inference for Alabama (MCMC, slow)
+11. ei_rxc_or                  — Run RxC ecological inference for Oregon (MCMC, slow)
+12. export_*                   — Export all JSON payloads for the backend (10 scripts)
 
 Usage
 -----
@@ -61,6 +62,7 @@ PREPROCESSING_STAGES = [
 ]
 
 ANALYTICS_STAGES = [
+    ("generate_effectiveness",           "analytics.generate_effectiveness_json"),
     ("compute_boxwhisker",               "analytics.compute_boxwhisker"),
     ("generate_seat_vote_curves",        "analytics.generate_seat_vote_curves"),
     ("gingles_regression",               "analytics.gingles_regression"),
