@@ -134,6 +134,17 @@ def main():
     box_written = concat_jsonl(box_files, merged_box)
     district_eff_written = concat_jsonl(eff_files, merged_eff)
 
+    # Collect interesting plan files from workers (first found wins per plan_id).
+    interesting_found = {}
+    for w in worker_outdirs:
+        for src in sorted(w.glob("interesting_plan_*.json")):
+            plan_id = src.stem[len("interesting_plan_"):]
+            if plan_id not in interesting_found:
+                dst = original_outdir / src.name
+                shutil.copy2(src, dst)
+                interesting_found[plan_id] = True
+                print("[parallel] Collected interesting plan '{}' from {}".format(plan_id, w.name))
+
     # Merge summaries/histograms from each worker.
     seat_splits = {}
     opp_hist = {}
@@ -186,6 +197,7 @@ def main():
         },
         "analysis": first_summary.get("analysis", {}),
         "cut_edges_hist": cut_hist,
+        "interesting_plans": interesting_found,
         "boxwhisker_raw_file": str(merged_box),
         "boxwhisker_plans_written": box_written,
         "district_effectiveness_file": str(merged_eff),
