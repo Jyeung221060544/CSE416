@@ -37,7 +37,7 @@ def safe_pct(numerator, denominator) -> float:
     return float(numerator) / float(denominator) * 100.0
 
 
-def compute_minority_max_pct(gdf: gpd.GeoDataFrame, minority_col: str, percentile: float = 0.99) -> float:
+def compute_minority_max_pct(gdf: gpd.GeoDataFrame, minority_col: str, percentile: float = 0.90) -> float:
     """
     Return the ceiling for heatmap bins: the *percentile*-th percentile of the
     minority VAP share across all precincts, rounded up to the nearest 5 pp.

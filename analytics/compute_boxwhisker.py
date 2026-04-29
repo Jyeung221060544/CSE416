@@ -128,7 +128,10 @@ def load_boxwhisker_raw(raw_path: Path, target_group_key: str):
             if not line:
                 continue
 
-            row = json.loads(line)
+            try:
+                row = json.loads(line)
+            except json.JSONDecodeError:
+                continue
 
             if row.get("group_key") != target_group_key:
                 continue
