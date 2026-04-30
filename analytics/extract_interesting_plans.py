@@ -32,6 +32,11 @@ JOBS = [
         "outdir": ROOT / "cse416_seawulf_results" / "OR_output_raceblind",
         "interesting_plans": [
             {
+                "id": "high_effectiveness",
+                "description": "Two or more effective Latino minority districts",
+                "criteria": {"eff_districts": {"gte": 2}},
+            },
+            {
                 "id": "zero_effective",
                 "description": "Zero effective Latino minority districts",
                 "criteria": {"eff_districts": {"eq": 0}},

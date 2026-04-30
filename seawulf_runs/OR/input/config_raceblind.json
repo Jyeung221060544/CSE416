@@ -13,7 +13,7 @@
     "NH_WHITE_ALONE_VAP"
   ],
   "boxwhisker_thresholds": {
-    "LATINO_VAP": 0.15,
+    "LATINO_VAP": 0.17,
     "NH_WHITE_ALONE_VAP": null
   },
   "boxwhisker_parties_of_choice": {
@@ -22,10 +22,10 @@
   },
   "interesting_plans": [
     {
-      "id": "extra_democratic",
-      "description": "One more Democratic seat than enacted OR plan (6D vs enacted 5D)",
+      "id": "high_effectiveness",
+      "description": "Two or more effective Latino minority districts",
       "criteria": {
-        "dem_seats": {"gte": 6}
+        "eff_districts": {"gte": 2}
       }
     },
     {

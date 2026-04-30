@@ -7,7 +7,7 @@
   "num_districts": 6,
   "pop_tolerance": 0.035,
   "steps_test": 250,
-  "steps_final": 15000,
+  "steps_final": 5000,
   "output_dir": "output_vra",
   "save_assignments_first_n": 10,
   "save_assignments_every": 1000,
