@@ -16,15 +16,11 @@
           "latino": [
             {
               "numEffective": 0,
-              "frequency": 1441
+              "frequency": 4651
             },
             {
               "numEffective": 1,
-              "frequency": 3416
-            },
-            {
-              "numEffective": 2,
-              "frequency": 143
+              "frequency": 349
             }
           ]
         }
@@ -53,10 +49,10 @@
           "latino": {
             "min": 0,
             "q1": 0,
-            "median": 1,
-            "mean": 0.74,
-            "q3": 1,
-            "max": 2
+            "median": 0,
+            "mean": 0.07,
+            "q3": 0,
+            "max": 1
           }
         }
       },
@@ -81,19 +77,19 @@
         {
           "id": "satisfies-enacted",
           "label": "Satisfies Enacted Effectiveness",
-          "raceBlindPct": 0.7118,
+          "raceBlindPct": 0.0698,
           "vraConstrainedPct": 1.0
         },
         {
           "id": "satisfies-proportionality",
           "label": "Satisfies Rough Proportionality",
-          "raceBlindPct": 0.7118,
+          "raceBlindPct": 0.0698,
           "vraConstrainedPct": 1.0
         },
         {
           "id": "satisfies-both",
           "label": "Satisfies Both Conditions",
-          "raceBlindPct": 0.7118,
+          "raceBlindPct": 0.0698,
           "vraConstrainedPct": 1.0
         }
       ]
