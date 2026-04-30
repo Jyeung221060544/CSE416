@@ -94,5 +94,49 @@
         }
       ]
     }
-  }
+  },
+  "enactedDistricts": [
+    {
+      "district": 1,
+      "isEffective": false,
+      "minority_pct": 0.157617,
+      "winner": "R"
+    },
+    {
+      "district": 2,
+      "isEffective": false,
+      "minority_pct": 0.469608,
+      "winner": "D"
+    },
+    {
+      "district": 3,
+      "isEffective": false,
+      "minority_pct": 0.198244,
+      "winner": "R"
+    },
+    {
+      "district": 4,
+      "isEffective": false,
+      "minority_pct": 0.070318,
+      "winner": "R"
+    },
+    {
+      "district": 5,
+      "isEffective": false,
+      "minority_pct": 0.171847,
+      "winner": "R"
+    },
+    {
+      "district": 6,
+      "isEffective": false,
+      "minority_pct": 0.167685,
+      "winner": "R"
+    },
+    {
+      "district": 7,
+      "isEffective": true,
+      "minority_pct": 0.504301,
+      "winner": "D"
+    }
+  ]
 }

@@ -63,6 +63,7 @@ PREPROCESSING_STAGES = [
 
 ANALYTICS_STAGES = [
     ("generate_effectiveness",           "analytics.generate_effectiveness_json"),
+    ("annotate_enacted_districts",       "analytics.annotate_enacted_districts"),
     ("extract_interesting_plans",        "analytics.extract_interesting_plans"),
     ("generate_plan_geojson",            "analytics.generate_plan_geojson"),
     ("compute_boxwhisker",               "analytics.compute_boxwhisker"),

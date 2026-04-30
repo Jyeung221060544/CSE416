@@ -109,7 +109,7 @@ def find_precinct_id_column(gdf, assignment_keys):
     return None
 
 
-def build_district_geojson(plan_data, precincts_gdf, state):
+def build_district_geojson(plan_data, precincts_gdf, state, vra_cfg=None):
     """
     Dissolve precinct geometries by district assignment and compute
     per-district vote tallies. Returns a GeoDataFrame of districts.
@@ -179,6 +179,25 @@ def build_district_geojson(plan_data, precincts_gdf, state):
     dissolved["eff_districts"] = metrics.get("eff_districts")
     dissolved["step"] = plan_data.get("step")
 
+    # Compute isEffective per district using precinct-level minority VAP aggregation
+    if vra_cfg and vra_cfg.get("col") in precincts_gdf.columns:
+        minority_col = vra_cfg["col"]
+        threshold = vra_cfg["threshold"]
+        party = vra_cfg["party"]
+        vap_agg = (
+            precincts_gdf.groupby("_district")[[minority_col, "VAP"]]
+            .sum()
+            .reset_index()
+        )
+        vap_agg["_minority_pct"] = vap_agg[minority_col] / vap_agg["VAP"].where(vap_agg["VAP"] > 0, 1)
+        dissolved = dissolved.merge(vap_agg[["_district", "_minority_pct"]], left_on="district", right_on="_district", how="left")
+        dissolved["isEffective"] = dissolved.apply(
+            lambda r: bool(r["_minority_pct"] >= threshold and r.get("winner") == party), axis=1
+        )
+        dissolved = dissolved.drop(columns=["_district", "_minority_pct"])
+    else:
+        dissolved["isEffective"] = None
+
     return dissolved
 
 
@@ -214,7 +233,7 @@ def process_plan(plan_path, precincts_path, outdir, state):
     precincts_gdf = load_precincts(precincts_path)
 
     print(f"  Dissolving precincts for plan '{plan_id}' …")
-    district_gdf = build_district_geojson(plan_data, precincts_gdf, state)
+    district_gdf = build_district_geojson(plan_data, precincts_gdf, state, vra_cfg=VRA_CONFIG.get(state))
 
     os.makedirs(outdir, exist_ok=True)
     outfile = os.path.join(outdir, f"{state}_{plan_id}_districts.json")
@@ -232,6 +251,12 @@ def process_plan(plan_path, precincts_path, outdir, state):
 
 _ROOT = Path(__file__).resolve().parent.parent
 _OUTDIR = str(_ROOT / "frontend" / "src" / "assets" / "interesting_plans")
+
+# VRA effectiveness config per state: minority column, VAP threshold, party of choice
+VRA_CONFIG = {
+    "AL": {"col": "NH_BLACK_ALONE_VAP", "threshold": 0.50, "party": "D"},
+    "OR": {"col": "LATINO_VAP",          "threshold": 0.17, "party": "D"},
+}
 
 JOBS = [
     {
