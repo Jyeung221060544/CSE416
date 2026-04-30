@@ -254,7 +254,7 @@ _OUTDIR = str(_ROOT / "frontend" / "src" / "assets" / "interesting_plans")
 
 # VRA effectiveness config per state: minority column, VAP threshold, party of choice
 VRA_CONFIG = {
-    "AL": {"col": "NH_BLACK_ALONE_VAP", "threshold": 0.50, "party": "D"},
+    "AL": {"col": "NH_BLACK_ALONE_VAP", "threshold": 0.45, "party": "D"},
     "OR": {"col": "LATINO_VAP",          "threshold": 0.17, "party": "D"},
 }
 

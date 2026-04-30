@@ -201,7 +201,7 @@ def main():
             "num_districts": 7,
             "group_label": "black",
             "group_col": "NH_BLACK_ALONE_VAP",
-            "enacted_effective": 1,
+            "enacted_effective": 2,
             "rb_plans": RESULTS / "AL_output_raceblind" / "plans_final.jsonl",
             "vra_plans": RESULTS / "AL_output_vra" / "plans_final.jsonl",
             "graph": ROOT / "seawulf_runs" / "AL" / "input" / "AL_graph.json",

@@ -18,7 +18,7 @@ JOBS = [
         "districts_geojson": ROOT / "frontend" / "src" / "assets" / "ALCongressionalDistricts.json",
         "effectiveness_json": ROOT / "AL-real-data" / "AL-effectiveness.json",
         "minority_col": "NH_BLACK_ALONE_VAP",
-        "threshold": 0.50,
+        "threshold": 0.45,
         "party": "D",
         "cd_key": "CD119FP",
     },

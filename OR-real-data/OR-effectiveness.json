@@ -1,7 +1,7 @@
 {
   "stateId": "OR",
   "numDistricts": 6,
-  "totalPlans": 5000,
+  "totalPlans": 15000,
   "feasibleGroups": [
     "latino"
   ],
@@ -16,15 +16,15 @@
           "latino": [
             {
               "numEffective": 0,
-              "frequency": 987
+              "frequency": 1441
             },
             {
               "numEffective": 1,
-              "frequency": 3962
+              "frequency": 3416
             },
             {
               "numEffective": 2,
-              "frequency": 51
+              "frequency": 143
             }
           ]
         }
@@ -35,7 +35,7 @@
           "latino": [
             {
               "numEffective": 1,
-              "frequency": 5000
+              "frequency": 15000
             }
           ]
         }
@@ -52,9 +52,9 @@
         "groupStats": {
           "latino": {
             "min": 0,
-            "q1": 1,
+            "q1": 0,
             "median": 1,
-            "mean": 0.81,
+            "mean": 0.74,
             "q3": 1,
             "max": 2
           }
@@ -81,19 +81,19 @@
         {
           "id": "satisfies-enacted",
           "label": "Satisfies Enacted Effectiveness",
-          "raceBlindPct": 0.8026,
+          "raceBlindPct": 0.7118,
           "vraConstrainedPct": 1.0
         },
         {
           "id": "satisfies-proportionality",
           "label": "Satisfies Rough Proportionality",
-          "raceBlindPct": 0.8026,
+          "raceBlindPct": 0.7118,
           "vraConstrainedPct": 1.0
         },
         {
           "id": "satisfies-both",
           "label": "Satisfies Both Conditions",
-          "raceBlindPct": 0.8026,
+          "raceBlindPct": 0.7118,
           "vraConstrainedPct": 1.0
         }
       ]
