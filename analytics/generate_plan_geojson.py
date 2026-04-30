@@ -54,6 +54,7 @@ from pathlib import Path
 try:
     import geopandas as gpd
     import pandas as pd
+    from shapely.geometry import mapping, MultiPolygon, Polygon
     from shapely.ops import unary_union
 except ImportError:
     print("ERROR: geopandas and shapely are required.")
@@ -62,6 +63,15 @@ except ImportError:
 
 
 # ── helpers ──────────────────────────────────────────────────────────────────
+
+def fill_holes(geom):
+    """Remove all interior holes from a Polygon or MultiPolygon."""
+    if geom.geom_type == "Polygon":
+        return Polygon(geom.exterior)
+    elif geom.geom_type == "MultiPolygon":
+        return MultiPolygon([Polygon(p.exterior) for p in geom.geoms])
+    return geom
+
 
 def load_plan(plan_path):
     with open(plan_path, encoding="utf-8") as f:
@@ -141,8 +151,10 @@ def build_district_geojson(plan_data, precincts_gdf, state):
     else:
         agg = precincts_gdf[["_district"]].drop_duplicates().reset_index(drop=True)
 
-    # Dissolve geometries by district
+    # Dissolve geometries by district, fill interior holes, then simplify
     dissolved = precincts_gdf.dissolve(by="_district", as_index=False)[["_district", "geometry"]]
+    dissolved["geometry"] = dissolved.geometry.apply(fill_holes)
+    dissolved["geometry"] = dissolved.geometry.simplify(tolerance=0.001, preserve_topology=True)
     dissolved = dissolved.merge(agg, on="_district", how="left")
 
     # Compute winner and dem_share
@@ -188,7 +200,7 @@ def to_geojson_dict(gdf):
                 props[k] = v.item()
         features.append({
             "type": "Feature",
-            "geometry": json.loads(gpd.GeoSeries([geom]).to_json())["features"][0]["geometry"],
+            "geometry": mapping(geom),
             "properties": props,
         })
     return {"type": "FeatureCollection", "features": features}
