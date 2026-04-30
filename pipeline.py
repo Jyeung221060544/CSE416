@@ -64,6 +64,7 @@ PREPROCESSING_STAGES = [
 ANALYTICS_STAGES = [
     ("generate_effectiveness",           "analytics.generate_effectiveness_json"),
     ("extract_interesting_plans",        "analytics.extract_interesting_plans"),
+    ("generate_plan_geojson",            "analytics.generate_plan_geojson"),
     ("compute_boxwhisker",               "analytics.compute_boxwhisker"),
     ("generate_seat_vote_curves",        "analytics.generate_seat_vote_curves"),
     ("gingles_regression",               "analytics.gingles_regression"),

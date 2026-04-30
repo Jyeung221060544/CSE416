@@ -216,24 +216,60 @@ def process_plan(plan_path, precincts_path, outdir, state):
     return outfile
 
 
-# ── CLI ───────────────────────────────────────────────────────────────────────
+# ── Pipeline jobs ─────────────────────────────────────────────────────────────
 
-def parse_args():
-    p = argparse.ArgumentParser(description="Generate district GeoJSON from interesting plan assignments.")
-    p.add_argument("--state", required=True, choices=["AL", "OR"], help="State abbreviation")
-    p.add_argument("--precincts", required=True, help="Path to precinct GeoJSON file")
-    p.add_argument("--outdir", required=True, help="Output directory for district GeoJSON files")
+_ROOT = Path(__file__).resolve().parent.parent
+_OUTDIR = str(_ROOT / "frontend" / "src" / "assets" / "interesting_plans")
 
-    group = p.add_mutually_exclusive_group(required=True)
-    group.add_argument("--plan", help="Path to a single interesting_plan_*.json file")
-    group.add_argument("--all", action="store_true", help="Process all interesting_plan_*.json in --plan-dir")
-
-    p.add_argument("--plan-dir", help="Directory containing interesting_plan_*.json files (used with --all)")
-    return p.parse_args()
+JOBS = [
+    {
+        "state": "AL",
+        "plan_dir": _ROOT / "cse416_seawulf_results" / "AL_output_raceblind",
+        "precincts": str(_ROOT / "AL_data" / "AL_precincts_full.geojson"),
+    },
+    {
+        "state": "AL",
+        "plan_dir": _ROOT / "cse416_seawulf_results" / "AL_output_vra",
+        "precincts": str(_ROOT / "AL_data" / "AL_precincts_full.geojson"),
+    },
+    {
+        "state": "OR",
+        "plan_dir": _ROOT / "cse416_seawulf_results" / "OR_output_raceblind",
+        "precincts": str(_ROOT / "OR_data" / "OR_precincts_full.geojson"),
+    },
+    {
+        "state": "OR",
+        "plan_dir": _ROOT / "cse416_seawulf_results" / "OR_output_vra",
+        "precincts": str(_ROOT / "OR_data" / "OR_precincts_full.geojson"),
+    },
+]
 
 
 def main():
-    args = parse_args()
+    for job in JOBS:
+        plan_files = sorted(Path(job["plan_dir"]).glob("interesting_plan_*.json"))
+        if not plan_files:
+            print(f"  No interesting plans found in {job['plan_dir']}, skipping.")
+            continue
+        for pf in plan_files:
+            process_plan(str(pf), job["precincts"], _OUTDIR, job["state"])
+    print("Done.")
+
+
+# ── CLI ───────────────────────────────────────────────────────────────────────
+
+def _cli():
+    p = argparse.ArgumentParser(description="Generate district GeoJSON from interesting plan assignments.")
+    p.add_argument("--state", required=True, choices=["AL", "OR"])
+    p.add_argument("--precincts", required=True)
+    p.add_argument("--outdir", required=True)
+
+    group = p.add_mutually_exclusive_group(required=True)
+    group.add_argument("--plan")
+    group.add_argument("--all", action="store_true")
+
+    p.add_argument("--plan-dir")
+    args = p.parse_args()
 
     if args.all:
         if not args.plan_dir:
@@ -253,4 +289,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    _cli()
