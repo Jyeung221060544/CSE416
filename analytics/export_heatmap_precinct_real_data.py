@@ -13,13 +13,11 @@ JOBS = [
         "state": "AL",
         "precincts": ROOT / "AL_data" / "AL_precincts_full.geojson",
         "out": ROOT / "AL-real-data" / "AL-heatmap-precinct.json",
-        "primary_minority_col": "NH_BLACK_ALONE_VAP",
     },
     {
         "state": "OR",
         "precincts": ROOT / "OR_data" / "OR_precincts_full.geojson",
         "out": ROOT / "OR-real-data" / "OR-heatmap-precinct.json",
-        "primary_minority_col": "LATINO_VAP",
     },
 ]
 
@@ -37,90 +35,65 @@ def safe_pct(numerator, denominator) -> float:
     return float(numerator) / float(denominator) * 100.0
 
 
-def compute_minority_max_pct(gdf: gpd.GeoDataFrame, minority_col: str, percentile: float = 0.90) -> float:
-    """
-    Return the ceiling for heatmap bins: the *percentile*-th percentile of the
-    minority VAP share across all precincts, rounded up to the nearest 5 pp.
-    """
-    pcts = gdf.apply(
-        lambda r: safe_pct(r.get(minority_col, 0), r.get("VAP", 0)), axis=1
-    )
+def compute_max_pct(gdf: gpd.GeoDataFrame, col: str, percentile: float = 0.90) -> float:
+    pcts = gdf.apply(lambda r: safe_pct(r.get(col, 0), r.get("VAP", 0)), axis=1)
     raw = float(pcts.quantile(percentile))
     return max(5.0, math.ceil(raw / 5) * 5.0)
 
 
-def build_equal_width_bins(num_bins: int = 5, max_pct: float = 100.0) -> list[dict]:
-    """Build *num_bins* equal-width bins spanning [0, max_pct]."""
+def build_bins(max_pct: float, num_bins: int = 5) -> list[dict]:
     width = max_pct / num_bins
     bins = []
     start = 0.0
-
     for i in range(num_bins):
         end = max_pct if i == num_bins - 1 else round(start + width, 4)
-        bins.append(
-            {
-                "binId": i + 1,
-                "rangeMin": round(start, 4),
-                "rangeMax": round(end, 4),
-                "color": COLORS[i],
-            }
-        )
+        bins.append({
+            "binId": i + 1,
+            "rangeMin": round(start, 4),
+            "rangeMax": round(end, 4),
+            "color": COLORS[i],
+        })
         start = end
-
     return bins
 
 
-def pct_to_bin_id(pct_0_to_100: float, bins: list[dict]) -> int:
+def pct_to_bin_id(pct: float, bins: list[dict]) -> int:
     for i, b in enumerate(bins):
-        lo = b["rangeMin"]
-        hi = b["rangeMax"]
-        is_last = i == len(bins) - 1
-
-        if is_last:
-            if lo <= pct_0_to_100 <= hi:
+        lo, hi = b["rangeMin"], b["rangeMax"]
+        if i == len(bins) - 1:
+            if lo <= pct <= hi:
                 return b["binId"]
         else:
-            if lo <= pct_0_to_100 < hi:
+            if lo <= pct < hi:
                 return b["binId"]
-
     return bins[-1]["binId"]
 
 
-def build_features(gdf: gpd.GeoDataFrame, bins: list[dict]) -> list[dict]:
+def build_features(gdf: gpd.GeoDataFrame, bins_per_group: dict) -> list[dict]:
     features = []
-
     for idx, row in gdf.iterrows():
         vap = float(row["VAP"]) if "VAP" in row and row["VAP"] is not None else 0.0
-
-        black_pct = safe_pct(row.get("NH_BLACK_ALONE_VAP", 0), vap)
-        white_pct = safe_pct(row.get("NH_WHITE_ALONE_VAP", 0), vap)
-        hispanic_pct = safe_pct(row.get("LATINO_VAP", 0), vap)
-        other_pct = safe_pct(row.get("OTHER_VAP", 0), vap)
-
-        features.append(
-            {
-                "idx": int(idx),
-                "black": pct_to_bin_id(black_pct, bins),
-                "white": pct_to_bin_id(white_pct, bins),
-                "hispanic": pct_to_bin_id(hispanic_pct, bins),
-                "other": pct_to_bin_id(other_pct, bins),
-            }
-        )
-
+        feature = {"idx": int(idx)}
+        for group, col in GROUP_COLS.items():
+            pct = safe_pct(row.get(col, 0), vap)
+            feature[group] = pct_to_bin_id(pct, bins_per_group[group])
+        features.append(feature)
     return features
 
 
 def export_state(job: dict) -> None:
     gdf = gpd.read_file(job["precincts"]).reset_index(drop=True)
 
-    max_pct = compute_minority_max_pct(gdf, job["primary_minority_col"])
-    bins = build_equal_width_bins(num_bins=5, max_pct=max_pct)
-    features = build_features(gdf, bins)
+    bins_per_group = {
+        group: build_bins(compute_max_pct(gdf, col))
+        for group, col in GROUP_COLS.items()
+    }
+    features = build_features(gdf, bins_per_group)
 
     payload = {
         "stateId": job["state"],
         "granularity": "precinct",
-        "bins": bins,
+        "bins": bins_per_group,
         "features": features,
     }
 
@@ -130,7 +103,8 @@ def export_state(job: dict) -> None:
         json.dump(payload, f, indent=2)
 
     print(f"Wrote: {out_path}")
-    print(f"Num bins: {len(bins)}")
+    for group, bins in bins_per_group.items():
+        print(f"  {group}: [{bins[0]['rangeMin']}–{bins[-1]['rangeMax']}%]")
     print(f"Num features: {len(features)}")
 
 

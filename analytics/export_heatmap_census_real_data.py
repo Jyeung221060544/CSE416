@@ -15,17 +15,22 @@ JOBS = [
         "blocks_shp": ROOT / "BASE_FILES" / "AL-shapefile" / "tl_2025_01_tabblock20.shp",
         "vap_csv": ROOT / "BASE_FILES" / "AL-VAP-population.csv",
         "out": ROOT / "AL-real-data" / "AL-heatmap-census.json",
-        # Column used to set the bin ceiling for this state's primary minority group
-        "primary_minority_col": "NH_BLACK_ALONE_VAP",
     },
     {
         "state": "OR",
         "blocks_shp": ROOT / "BASE_FILES" / "OR-shapefile" / "tl_2025_41_tabblock20.shp",
         "vap_csv": ROOT / "BASE_FILES" / "OR-VAP-population.csv",
         "out": ROOT / "OR-real-data" / "OR-heatmap-census.json",
-        "primary_minority_col": "LATINO_VAP",
     },
 ]
+
+GROUP_COLS = {
+    "black": "NH_BLACK_ALONE_VAP",
+    "white": "NH_WHITE_ALONE_VAP",
+    "hispanic": "LATINO_VAP",
+    "asian": "NH_ASIAN_ALONE_VAP",
+    "other": "OTHER_VAP",
+}
 
 
 def safe_pct(numerator, denominator) -> float:
@@ -34,55 +39,37 @@ def safe_pct(numerator, denominator) -> float:
     return float(numerator) / float(denominator) * 100.0
 
 
-def compute_minority_max_pct(merged: pd.DataFrame, minority_col: str, percentile: float = 0.90) -> float:
-    """
-    Return the ceiling for heatmap bins: the *percentile*-th percentile of the
-    minority VAP share across all blocks, rounded up to the nearest 5 pp.
-    Using a high percentile rather than the absolute max avoids a single
-    outlier block blowing out the color scale.
-    """
-    pcts = merged.apply(
-        lambda r: safe_pct(r[minority_col], r["VAP"]), axis=1
-    )
+def compute_max_pct(df: pd.DataFrame, col: str, percentile: float = 0.90) -> float:
+    pcts = df.apply(lambda r: safe_pct(r[col], r["VAP"]), axis=1)
     raw = float(pcts.quantile(percentile))
-    # Round up to nearest 5, minimum 5
     return max(5.0, math.ceil(raw / 5) * 5.0)
 
 
-def build_equal_width_bins(num_bins: int = 5, max_pct: float = 100.0) -> list[dict]:
-    """Build *num_bins* equal-width bins spanning [0, max_pct]."""
+def build_bins(max_pct: float, num_bins: int = 5) -> list[dict]:
     width = max_pct / num_bins
     bins = []
     start = 0.0
-
     for i in range(num_bins):
         end = max_pct if i == num_bins - 1 else round(start + width, 4)
-        bins.append(
-            {
-                "binId": i + 1,
-                "rangeMin": round(start, 4),
-                "rangeMax": round(end, 4),
-                "color": COLORS[i],
-            }
-        )
+        bins.append({
+            "binId": i + 1,
+            "rangeMin": round(start, 4),
+            "rangeMax": round(end, 4),
+            "color": COLORS[i],
+        })
         start = end
-
     return bins
 
 
-def pct_to_bin_id(pct_0_to_100: float, bins: list[dict]) -> int:
+def pct_to_bin_id(pct: float, bins: list[dict]) -> int:
     for i, b in enumerate(bins):
-        lo = b["rangeMin"]
-        hi = b["rangeMax"]
-        is_last = i == len(bins) - 1
-
-        if is_last:
-            if lo <= pct_0_to_100 <= hi:
+        lo, hi = b["rangeMin"], b["rangeMax"]
+        if i == len(bins) - 1:
+            if lo <= pct <= hi:
                 return b["binId"]
         else:
-            if lo <= pct_0_to_100 < hi:
+            if lo <= pct < hi:
                 return b["binId"]
-
     return bins[-1]["binId"]
 
 
@@ -121,29 +108,15 @@ def load_block_vap(vap_csv_path: Path) -> pd.DataFrame:
     return out
 
 
-def build_features(merged: gpd.GeoDataFrame, bins: list[dict]) -> list[dict]:
+def build_features(merged: gpd.GeoDataFrame, bins_per_group: dict) -> list[dict]:
     features = []
-
     for idx, row in merged.reset_index(drop=True).iterrows():
-        vap_total = int(row["VAP"])
-
-        black_pct = safe_pct(row["NH_BLACK_ALONE_VAP"], vap_total)
-        white_pct = safe_pct(row["NH_WHITE_ALONE_VAP"], vap_total)
-        hispanic_pct = safe_pct(row["LATINO_VAP"], vap_total)
-        asian_pct = safe_pct(row["NH_ASIAN_ALONE_VAP"], vap_total)
-        other_pct = safe_pct(row["OTHER_VAP"], vap_total)
-
-        features.append(
-            {
-                "idx": int(idx),
-                "black": pct_to_bin_id(black_pct, bins),
-                "white": pct_to_bin_id(white_pct, bins),
-                "hispanic": pct_to_bin_id(hispanic_pct, bins),
-                "asian": pct_to_bin_id(asian_pct, bins),
-                "other": pct_to_bin_id(other_pct, bins),
-            }
-        )
-
+        vap = int(row["VAP"])
+        feature = {"idx": int(idx)}
+        for group, col in GROUP_COLS.items():
+            pct = safe_pct(row[col], vap)
+            feature[group] = pct_to_bin_id(pct, bins_per_group[group])
+        features.append(feature)
     return features
 
 
@@ -154,24 +127,20 @@ def export_state(job: dict) -> None:
     vap = load_block_vap(job["vap_csv"])
     merged = blocks.merge(vap, on="GEOID_BLOCK", how="left")
 
-    for col in [
-        "VAP",
-        "LATINO_VAP",
-        "NH_WHITE_ALONE_VAP",
-        "NH_BLACK_ALONE_VAP",
-        "NH_ASIAN_ALONE_VAP",
-        "OTHER_VAP",
-    ]:
+    for col in GROUP_COLS.values():
         merged[col] = pd.to_numeric(merged[col], errors="coerce").fillna(0).astype(int)
+    merged["VAP"] = pd.to_numeric(merged["VAP"], errors="coerce").fillna(0).astype(int)
 
-    max_pct = compute_minority_max_pct(merged, job["primary_minority_col"])
-    bins = build_equal_width_bins(num_bins=5, max_pct=max_pct)
-    features = build_features(merged, bins)
+    bins_per_group = {
+        group: build_bins(compute_max_pct(merged, col))
+        for group, col in GROUP_COLS.items()
+    }
+    features = build_features(merged, bins_per_group)
 
     payload = {
         "stateId": job["state"],
         "granularity": "census_block",
-        "bins": bins,
+        "bins": bins_per_group,
         "features": features,
     }
 
@@ -181,7 +150,8 @@ def export_state(job: dict) -> None:
         json.dump(payload, f, indent=2)
 
     print(f"Wrote: {out_path}")
-    print(f"Num bins: {len(bins)}")
+    for group, bins in bins_per_group.items():
+        print(f"  {group}: [{bins[0]['rangeMin']}–{bins[-1]['rangeMax']}%]")
     print(f"Num features: {len(features)}")
 
 
