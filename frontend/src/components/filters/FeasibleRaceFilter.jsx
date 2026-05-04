@@ -59,7 +59,7 @@ export default function FeasibleRaceFilter() {
     // Groups where isFeasible === true are the only ones eligible for Gingles analysis.
     const feasibleRaces = demographicGroups
         .filter(g => g.isFeasible)
-        .map(g => ({ value: g.group.toLowerCase(), label: g.group }))
+        .map(g => ({ value: g.group.toLowerCase(), label: g.group.charAt(0).toUpperCase() + g.group.slice(1) }))
 
 
     /* ── Step 3: Render ──────────────────────────────────────────────────── */

@@ -84,27 +84,28 @@ export default function CongressionalTable({ districtSummary }) {
           <div className="min-w-0">
 
             {/* ── COLUMN HEADER ──────────────────────────────────────── */}
-            <div className="grid grid-cols-[80px_1fr_100px_80px_90px] gap-x-3 items-center px-4 py-3 bg-brand-darkest text-brand-surface text-sm font-semibold">
-                <span>District</span>
-                <span>Representative</span>
-                <span>Party</span>
-                <span>Racial Group</span>
-                <span className="text-right">{electionYear} Margin</span>
+            <div className="grid grid-cols-[44px_2fr_90px_68px_68px_1fr] gap-x-1 items-end px-3 py-3 bg-brand-darkest text-brand-surface text-sm font-semibold">
+                <span className="whitespace-nowrap">Dist.</span>
+                <span className="whitespace-nowrap">Representative</span>
+                <span className="whitespace-nowrap">Party</span>
+                <span className="whitespace-nowrap">Race</span>
+                <span className="text-center leading-tight">{electionYear}<br/>Margin</span>
+                <span className="text-center leading-tight">Effective-<br/>ness</span>
             </div>
 
             {/* ── DATA ROWS ──────────────────────────────────────────── */}
-            {/* Rows — clicking a row highlights that district on the map (GUI-7) */}
             {districts.map((d, i) => {
-                const p         = PARTY_BADGE[d.party] ?? PARTY_BADGE.Republican
-                const isActive  = d.districtNumber === selectedDistrict
+                const p           = PARTY_BADGE[d.party] ?? PARTY_BADGE.Republican
+                const isActive    = d.districtNumber === selectedDistrict
+                const isEffective = d.isEffective ?? false
 
                 return (
                     <div
                         key={d.districtId}
                         onClick={() => handleRowClick(d.districtNumber)}
                         className={[
-                            'grid grid-cols-[80px_1fr_100px_80px_90px] gap-x-3 items-center',
-                            'px-4 py-3 cursor-pointer select-none transition-colors',
+                            'grid grid-cols-[44px_2fr_90px_68px_68px_1fr] gap-x-1 items-center',
+                            'px-3 py-2.5 cursor-pointer select-none transition-colors',
                             ROW_BORDER,
                             rowBg(i, isActive),
                         ].join(' ')}
@@ -118,7 +119,7 @@ export default function CongressionalTable({ districtSummary }) {
                         <span className="text-gray-800 font-semibold text-sm">{d.representative}</span>
 
                         {/* Party badge */}
-                        <Badge variant="outline" className={`w-fit text-sm font-semibold px-2.5 ${p}`}>
+                        <Badge variant="outline" className={`w-fit text-xs font-semibold px-2 ${p}`}>
                             {d.party}
                         </Badge>
 
@@ -126,8 +127,15 @@ export default function CongressionalTable({ districtSummary }) {
                         <span className="text-gray-600 text-sm">{d.racialGroup}</span>
 
                         {/* Election vote margin */}
-                        <div className="text-right">
+                        <div className="text-center">
                             <VoteMargin pct={d.voteMarginPercentage} dir={d.voteMarginDirection} />
+                        </div>
+
+                        {/* Effectiveness score */}
+                        <div className="text-center">
+                            <span className={`text-sm font-bold tabular-nums ${isEffective ? 'text-green-600' : 'text-brand-muted/40'}`}>
+                                {isEffective ? '1' : '0'}
+                            </span>
                         </div>
                     </div>
                 )

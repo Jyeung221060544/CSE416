@@ -50,13 +50,20 @@ function groupKey(g) { return g.toLowerCase() }
  * @param {boolean}  [props.fillHeight]      - Expand panel to fill parent height.
  * @returns {JSX.Element|JSX.Element} Table panel, or italic "no data" text.
  */
-export default function DemographicPopulationTable({ demographicGroups, raceFilter, setRaceFilter, fillHeight = false, readOnly = false }) {
-    /* ── Step 2a: Guard — no data means nothing to render ── */
+export default function DemographicPopulationTable({ demographicGroups, raceFilter, setRaceFilter, fillHeight = false, readOnly = false, districtSummary = null, numDistricts = null }) {
     if (!demographicGroups?.length) {
         return <p className="text-brand-muted/50 text-sm italic">No demographic data available.</p>
     }
 
-    /* ── Step 2b: Render ── */
+    /* ── Derive effective district counts per group from districtSummary ── */
+    const districts    = districtSummary?.districts ?? []
+    const totalDist    = numDistricts ?? districts.length ?? 0
+    const effectiveMap = {}
+    districts.forEach(d => {
+        const k = d.racialGroup?.toLowerCase()
+        if (k) effectiveMap[k] = (effectiveMap[k] ?? 0) + 1
+    })
+
     return (
         <SurfacePanel className={cn('overflow-auto border-brand-muted/20', fillHeight && 'h-full')}>
             <table className="w-full text-sm border-collapse">
@@ -67,6 +74,7 @@ export default function DemographicPopulationTable({ demographicGroups, raceFilt
                         <th className="px-4 py-3 text-left font-bold">Group</th>
                         <th className="px-4 py-3 text-right font-bold">VAP</th>
                         <th className="px-4 py-3 text-right font-bold">% VAP</th>
+                        {totalDist > 0 && <th className="px-4 py-3 text-center font-bold">Rough Proportionality</th>}
                         <th className="px-4 py-3 text-center font-bold">Opportunity</th>
                     </tr>
                 </thead>
@@ -74,9 +82,18 @@ export default function DemographicPopulationTable({ demographicGroups, raceFilt
                 {/* ── DATA ROWS ──────────────────────────────────────── */}
                 <tbody>
                     {demographicGroups.map((row, i) => {
-                        /* Step 2b-i: Derive row key and active state */
-                        const key = groupKey(row.group)
+                        const key      = groupKey(row.group)
                         const isActive = raceFilter === key
+
+                        const effCount  = effectiveMap[key] ?? 0
+                        const distShare = totalDist > 0 ? effCount / totalDist : null
+                        const ratio     = (distShare != null && row.vapPercentage > 0)
+                            ? distShare / row.vapPercentage
+                            : null
+                        const ratioColor = ratio == null ? 'text-brand-muted/40'
+                            : ratio >= 0.9  ? 'text-green-600'
+                            : ratio >= 0.5  ? 'text-amber-600'
+                            :                 'text-red-600'
 
                         return (
                             <tr
@@ -88,26 +105,35 @@ export default function DemographicPopulationTable({ demographicGroups, raceFilt
                                     rowBg(i, !readOnly && isActive),
                                 ].join(' ')}
                             >
-                                {/* Group name — highlighted when active */}
+                                {/* Group name */}
                                 <td className="px-4 py-3">
                                     <span className={`font-bold text-sm ${!readOnly && isActive ? ACTIVE_LABEL : INACTIVE_LABEL}`}>
-                                        {row.group}
+                                        {row.group.charAt(0).toUpperCase() + row.group.slice(1)}
                                     </span>
                                 </td>
 
-                                {/* Voting age population count */}
+                                {/* VAP count */}
                                 <td className="px-4 py-3 text-right tabular-nums text-brand-darkest font-medium">
                                     {row.vap?.toLocaleString() ?? '-'}
                                 </td>
 
-                                {/* VAP percentage — highlighted when active */}
+                                {/* % VAP */}
                                 <td className="px-4 py-3 text-right">
                                     <span className={`tabular-nums font-bold text-base ${!readOnly && isActive ? ACTIVE_LABEL : INACTIVE_LABEL}`}>
                                         {row.vapPercentage != null ? `${(row.vapPercentage * 100).toFixed(1)}%` : '-'}
                                     </span>
                                 </td>
 
-                                {/* Gingles feasibility badge */}
+                                {/* Rough proportionality: effective districts / total */}
+                                {totalDist > 0 && (
+                                    <td className="px-4 py-3 text-center">
+                                        <span className="tabular-nums font-semibold text-brand-darkest">
+                                            {effCount}/{totalDist}
+                                        </span>
+                                    </td>
+                                )}
+
+                                {/* Feasibility badge */}
                                 <td className="px-4 py-3 text-center">
                                     {row.isFeasible
                                         ? <Badge className={FEASIBLE_CLS}>Feasible</Badge>

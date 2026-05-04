@@ -30,7 +30,7 @@ export default function EffRaceFilter() {
     /* ── Step 2: Derive non-white feasible race options ──────────────────── */
     const options = demographicGroups
         .filter(g => g.isFeasible && g.group.toLowerCase() !== 'white')
-        .map(g => ({ value: g.group.toLowerCase(), label: g.group }))
+        .map(g => ({ value: g.group.toLowerCase(), label: g.group.charAt(0).toUpperCase() + g.group.slice(1) }))
 
 
     /* ── Step 3: Render ──────────────────────────────────────────────────── */

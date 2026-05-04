@@ -35,7 +35,7 @@ export default function EIRaceFilter() {
 
     const eiRaceOptions = demographicGroups.map(g => ({
         value: g.group.toLowerCase(),
-        label: g.group,
+        label: g.group.charAt(0).toUpperCase() + g.group.slice(1),
     }))
 
     /* ── Step 2: Render ──────────────────────────────────────────────────── */

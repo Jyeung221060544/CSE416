@@ -1,68 +1,48 @@
 /**
  * @file RepresentationGapMap.jsx
- * @description Leaflet district map used in the Representation Gap section.
- *   Shares the exact same base (CartoDB tiles, FitBounds, MapResizeHandler,
- *   party-color styling) as DistrictMap2024.
+ *
+ * LAYER STACK (bottom to top)
+ *   1. CartoDB light tiles
+ *   2. Precinct heatmap — choropleth by selected minority race's population concentration
+ *   3. District boundaries — coloring depends on plan:
+ *        · current plan  → enacted GeoJSON geometry; green (effective) / black outline (not)
+ *        · high/low plan → interesting plan geometry; green (is_effective=true) / black outline
  *
  * PROPS
- * @prop {string} stateId          - Two-letter state abbreviation ("AL" | "OR").
- * @prop {string} plan             - Which plan to display: 'current' | 'high' | 'low'.
- * @prop {object} districtSummary  - District metadata (used for party coloring on current plan).
- * @prop {string} feasibleRace     - Selected feasible race key (reserved for future
- *                                   effective-district highlighting — no data yet).
- *
- * PLAN BEHAVIOR
- *   'current' — fetches the same district GeoJSON as DistrictMap2024 via fetchDistricts.
- *               Districts are colored by party (same getStyle logic).
- *   'high'    — same map shell; shows a "data not yet available" overlay until SeaWulf
- *               boundaries are provided.
- *   'low'     — same map shell; shows a "data not yet available" overlay until SeaWulf
- *               boundaries are provided.
- *
- * NOTE: Click/hover interaction is intentionally omitted — this is a read-only
- * comparison view, not the primary district table.
+ * @prop {string} stateId         - "AL" | "OR"
+ * @prop {string} plan            - 'current' | 'high' | 'low'
+ * @prop {object} districtSummary - District metadata (racialGroup per district for current plan).
+ * @prop {string} feasibleRace    - Minority race key driving heatmap + effectiveness overlay.
  */
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { MapContainer, GeoJSON, TileLayer, useMap } from 'react-leaflet'
 import L from 'leaflet'
-import { fetchDistricts } from '../../api'
-import {
-    EFFECTIVE_FILL, EFFECTIVE_BORDER,
-    NOT_EFFECTIVE_FILL, NOT_EFFECTIVE_BORDER,
-} from '../../lib/partyColors'
+import { fetchDistricts, fetchInterestingPlan, fetchPrecincts, fetchHeatmap } from '../../api'
+import { EFFECTIVE_FILL, EFFECTIVE_BORDER } from '../../lib/partyColors'
 
-/* ── Module-level cache shared with DistrictMap2024 ──────────────────────── */
-const districtGeoCache = {} // keyed by stateId
+/* ── Module-level caches ─────────────────────────────────────────────────── */
+const enactedGeoCache      = {}  // stateId → enacted district GeoJSON (clean boundaries)
+const interestingPlanCache = {}  // `${stateId}_${plan}` → interesting plan feature data
+const precinctGeoCache     = {}  // stateId → precinct GeoJSON
+const heatmapDataCache     = {}  // `${stateId}_${race}` → { bins, features }
+const _heatmapInFlight     = {}  // dedup in-flight heatmap requests
 
-/* ── Effectiveness style resolver ────────────────────────────────────────── */
-/**
- * Colors each district green (effective) or grey (not effective) for the
- * currently selected feasible race.
- *
- * Effectiveness is derived from districtSummary.districts[].racialGroup:
- * a district is "effective" for race X when its racialGroup matches X.
- * This proxy will be replaced with an explicit effectiveness flag once
- * the backend serves that field.
- *
- * @param {object} feature          - GeoJSON feature (properties.CD119FP = district number).
- * @param {object} districtByNumber - Map: districtNumber (int) → district summary object.
- * @param {string|null} feasibleRace - Lowercase race key selected in FeasibleRaceFilter.
- */
-function getEffectivenessStyle(feature, districtByNumber, feasibleRace) {
-    const distNum  = parseInt(feature.properties.CD119FP, 10)
-    const distData = districtByNumber[distNum]
-
-    const isEffective = feasibleRace && distData?.racialGroup
-        ? distData.racialGroup.toLowerCase() === feasibleRace.toLowerCase()
-        : false
-
+/* ── Shared effectiveness style ──────────────────────────────────────────── */
+// effective   → green fill + bright white border with green glow
+// not effective → transparent fill + white border with white glow (visible over teal heatmap)
+function effectivenessStyle(isEffective) {
     return isEffective
-        ? { fillColor: EFFECTIVE_FILL,     fillOpacity: 0.60, color: EFFECTIVE_BORDER,     weight: 1.5 }
-        : { fillColor: NOT_EFFECTIVE_FILL, fillOpacity: 0.35, color: NOT_EFFECTIVE_BORDER, weight: 1   }
+        ? { fillColor: EFFECTIVE_FILL, fillOpacity: 0.28, color: '#fef08a', weight: 4, opacity: 0.45, className: 'rg-district-effective' }
+        : { fillOpacity: 0, fillColor: 'none',            color: '#fef08a', weight: 4, opacity: 0.45, className: 'rg-district-outline'    }
 }
 
-/* ── FitBounds helper (identical to DistrictMap2024) ─────────────────────── */
+/* ── Unified district style — reads isEffective directly from feature properties ── */
+function getDistrictStyle(feature) {
+    return effectivenessStyle(feature.properties?.isEffective ?? false)
+}
+
+/* ── FitBounds helper ─────────────────────────────────────────────────────── */
 function FitBounds({ geoData }) {
     const map = useMap()
     useEffect(() => {
@@ -75,7 +55,7 @@ function FitBounds({ geoData }) {
     return null
 }
 
-/* ── MapResizeHandler helper (identical to DistrictMap2024) ──────────────── */
+/* ── MapResizeHandler helper ──────────────────────────────────────────────── */
 function MapResizeHandler({ geoData }) {
     const map = useMap()
     useEffect(() => {
@@ -96,43 +76,134 @@ function MapResizeHandler({ geoData }) {
     return null
 }
 
-/* ── Main component ───────────────────────────────────────────────────────── */
-/**
- * @param {object} props
- * @param {string} props.stateId
- * @param {'current'|'high'|'low'} props.plan
- * @param {object} props.districtSummary
- * @param {string} props.feasibleRace  - Reserved for future effective-district highlighting.
- */
-export default function RepresentationGapMap({ stateId, plan, districtSummary, feasibleRace }) {
-
-    /* ── Fetch GeoJSON for current plan (same source as DistrictMap2024) ─── */
-    const [geoData, setGeoData] = useState(
-        plan === 'current' ? (districtGeoCache[stateId] ?? null) : null
+/* ── Heatmap legend ───────────────────────────────────────────────────────── */
+function HeatmapLegend({ bins, raceName }) {
+    if (!bins?.length || !raceName) return null
+    return (
+        <div style={{ position: 'absolute', bottom: 24, left: 10, zIndex: 1000, pointerEvents: 'none' }}>
+            <div className="bg-white/92 backdrop-blur-sm rounded-lg px-3 py-2 shadow-md text-[10px] text-brand-darkest leading-tight">
+                <p className="font-semibold mb-1.5 capitalize tracking-wide">{raceName} Population</p>
+                <div className="flex flex-col gap-[3px]">
+                    {bins.map(bin => (
+                        <div key={bin.binId} className="flex items-center gap-1.5">
+                            <div style={{
+                                width: 13, height: 13, borderRadius: 2, flexShrink: 0,
+                                backgroundColor: bin.color,
+                                border: '1px solid rgba(0,0,0,0.18)',
+                            }} />
+                            <span>{bin.rangeMin}–{bin.rangeMax}%</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
     )
+}
 
+/* ── Main component ───────────────────────────────────────────────────────── */
+export default function RepresentationGapMap({ stateId, plan, districtSummary, feasibleRace, onEffectiveCount }) {
+
+    const [enactedGeoData,    setEnactedGeoData]    = useState(null)  // enacted plan (clean boundaries)
+    const [interestingGeoData, setInterestingGeoData] = useState(null)  // interesting plan GeoJSON
+    const [precinctData,      setPrecinctData]      = useState(null)
+    const [heatmapData,     setHeatmapData]      = useState(null)
+    const [notFound,        setNotFound]         = useState(false)
+
+    const precinctLayerRef = useRef(null)
+    const districtLayerRef = useRef(null)
+
+    /* ── Always fetch the enacted district GeoJSON (clean boundaries) ─────── */
     useEffect(() => {
-        if (plan !== 'current') return
-        if (districtGeoCache[stateId]) { setGeoData(districtGeoCache[stateId]); return }
-        setGeoData(null)
+        if (enactedGeoCache[stateId]) { setEnactedGeoData(enactedGeoCache[stateId]); return }
+        setEnactedGeoData(null)
         fetchDistricts(stateId)
-            .then(data => { districtGeoCache[stateId] = data; setGeoData(data) })
+            .then(data => { enactedGeoCache[stateId] = data; setEnactedGeoData(data) })
             .catch(err => console.error('[RepresentationGapMap] fetchDistricts error:', err))
+    }, [stateId])
+
+    /* ── Report effective district count when enacted GeoJSON loads ──────── */
+    useEffect(() => {
+        if (plan !== 'current' || !enactedGeoData || !onEffectiveCount) return
+        const count = enactedGeoData.features?.filter(f => f.properties?.isEffective).length ?? 0
+        onEffectiveCount(count)
+    }, [plan, enactedGeoData, onEffectiveCount])
+
+    /* ── For interesting plans: fetch the full GeoJSON (geometry + properties) */
+    useEffect(() => {
+        setNotFound(false)
+        if (plan === 'current') { setInterestingGeoData(null); return }
+
+        const cacheKey = `${stateId}_${plan}`
+        if (interestingPlanCache[cacheKey]) { setInterestingGeoData(interestingPlanCache[cacheKey]); return }
+        setInterestingGeoData(null)
+        fetchInterestingPlan(stateId, plan)
+            .then(data => { interestingPlanCache[cacheKey] = data; setInterestingGeoData(data) })
+            .catch(err => {
+                console.error('[RepresentationGapMap] fetchInterestingPlan error:', err)
+                setNotFound(true)
+            })
     }, [stateId, plan])
 
-    /* ── District lookup for party coloring ──────────────────────────────── */
-    const districtByNumber = Object.fromEntries(
-        (districtSummary?.districts ?? []).map(d => [d.districtNumber, d])
-    )
+    /* ── Report effective district count when interesting GeoJSON loads ──── */
+    useEffect(() => {
+        if (plan === 'current' || !interestingGeoData || !onEffectiveCount) return
+        const count = interestingGeoData.features?.filter(f => f.properties?.isEffective).length ?? 0
+        onEffectiveCount(count)
+    }, [plan, interestingGeoData, onEffectiveCount])
 
-    /* ── Placeholder for high/low plans (no SeaWulf data yet) ───────────── */
-    const isPending = plan !== 'current'
+    /* ── Fetch precinct GeoJSON (heatmap base layer) ─────────────────────── */
+    useEffect(() => {
+        if (precinctGeoCache[stateId]) { setPrecinctData(precinctGeoCache[stateId]); return }
+        setPrecinctData(null)
+        fetchPrecincts(stateId)
+            .then(data => { precinctGeoCache[stateId] = data; setPrecinctData(data) })
+            .catch(err => console.error('[RepresentationGapMap] fetchPrecincts error:', err))
+    }, [stateId])
 
-    /* ── Shared center fallback (will be overridden by FitBounds) ────────── */
+    /* ── Fetch heatmap bin colors for the selected race ──────────────────── */
+    useEffect(() => {
+        if (!feasibleRace) { setHeatmapData(null); return }
+        const key = `${stateId}_${feasibleRace}`
+        if (heatmapDataCache[key]) { setHeatmapData(heatmapDataCache[key]); return }
+        if (!_heatmapInFlight[key]) {
+            _heatmapInFlight[key] = fetchHeatmap(stateId, feasibleRace)
+                .then(data  => { heatmapDataCache[key] = data; return data })
+                .catch(err  => { console.error('[RepresentationGapMap] fetchHeatmap error:', err); delete _heatmapInFlight[key]; return null })
+        }
+        _heatmapInFlight[key].then(data => { if (data) setHeatmapData(data) })
+    }, [stateId, feasibleRace])
+
+    /* ── Imperatively re-style precinct layer when heatmap colors change ──── */
+    useEffect(() => {
+        if (!precinctLayerRef.current || !heatmapData) return
+        const binColor = {}
+        heatmapData.bins?.forEach(b => { binColor[b.binId] = b.color })
+        const colorByIdx = {}
+        heatmapData.features?.forEach(f => { colorByIdx[f.idx] = binColor[f.binId] ?? '#f0fdfa' })
+        let counter = 0
+        precinctLayerRef.current.eachLayer(layer => {
+            const idx = layer.feature?.properties?.idx ?? counter++
+            layer.setStyle({ fillColor: colorByIdx[idx] ?? '#f0fdfa', fillOpacity: 0.80, color: '#134e4a', weight: 0.5 })
+        })
+    }, [heatmapData]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    /* ── Build initial colorByIdx for first precinct render ─────────────── */
+    const colorByIdx = {}
+    if (heatmapData?.features && heatmapData?.bins) {
+        const binColor = {}
+        heatmapData.bins.forEach(b => { binColor[b.binId] = b.color })
+        heatmapData.features.forEach(f => { colorByIdx[f.idx] = binColor[f.binId] ?? '#f0fdfa' })
+    }
+
+    let precinctCounter = 0
     const center = [39.5, -98.35]
 
     return (
         <div style={{ position: 'relative', height: '100%', width: '100%' }}>
+            <style>{`
+                .rg-district-effective { filter: drop-shadow(0 0 4px rgba(254,240,138,0.85)) drop-shadow(0 0 2px rgba(254,240,138,0.7)); }
+                .rg-district-outline   { filter: drop-shadow(0 0 3px rgba(254,240,138,0.75)); }
+            `}</style>
             <MapContainer
                 key={`rg-${stateId}-${plan}`}
                 center={center}
@@ -144,24 +215,59 @@ export default function RepresentationGapMap({ stateId, plan, districtSummary, f
                 attributionControl={false}
                 style={{ height: '100%', width: '100%' }}
             >
-                <FitBounds geoData={geoData} />
-                <MapResizeHandler geoData={geoData} />
-
-                {/* ── BASE TILE LAYER ────────────────────────────────────── */}
+                <FitBounds geoData={enactedGeoData} />
+                <MapResizeHandler geoData={enactedGeoData} />
                 <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
 
-                {/* ── DISTRICT LAYER (current plan only) ────────────────── */}
-                {plan === 'current' && geoData && (
+                {/* ── PRECINCT HEATMAP (base layer) ──────────────────────────
+                    Keyed only on stateId — re-styles imperatively on race change
+                    to avoid remounting the 100+ MB precinct geometry layer.
+                    add event fires when precincts join the map, pushing the
+                    district layer back on top via bringToFront(). ─────────── */}
+                {precinctData && (
                     <GeoJSON
-                        key={`rg-districts-${stateId}-${feasibleRace ?? 'none'}`}
-                        data={geoData}
-                        style={feature => getEffectivenessStyle(feature, districtByNumber, feasibleRace)}
+                        key={`rg-precincts-${stateId}`}
+                        ref={precinctLayerRef}
+                        data={precinctData}
+                        eventHandlers={{ add: () => districtLayerRef.current?.bringToFront() }}
+                        style={feature => {
+                            const idx = feature?.properties?.idx ?? precinctCounter++
+                            return {
+                                fillColor:   colorByIdx[idx] ?? '#f0fdfa',
+                                fillOpacity: heatmapData ? 0.80 : 0,
+                                color:       '#134e4a',
+                                weight:      0.5,
+                            }
+                        }}
+                    />
+                )}
+
+                {/* ── CURRENT PLAN: enacted boundaries, isEffective from feature properties ── */}
+                {plan === 'current' && enactedGeoData && (
+                    <GeoJSON
+                        key={`rg-current-${stateId}`}
+                        ref={districtLayerRef}
+                        data={enactedGeoData}
+                        style={getDistrictStyle}
+                    />
+                )}
+
+                {/* ── INTERESTING PLAN: own geometry, isEffective from feature properties ── */}
+                {plan !== 'current' && interestingGeoData && (
+                    <GeoJSON
+                        key={`rg-interesting-${stateId}-${plan}`}
+                        ref={districtLayerRef}
+                        data={interestingGeoData}
+                        style={getDistrictStyle}
                     />
                 )}
             </MapContainer>
 
-            {/* ── "DATA NOT YET AVAILABLE" OVERLAY (high / low plans) ──── */}
-            {isPending && (
+            {/* ── HEATMAP LEGEND ────────────────────────────────────────────── */}
+            <HeatmapLegend bins={heatmapData?.bins} raceName={feasibleRace} />
+
+            {/* ── "NOT AVAILABLE" OVERLAY (404 from backend) ───────────────── */}
+            {notFound && (
                 <div style={{
                     position: 'absolute', inset: 0, pointerEvents: 'none',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',

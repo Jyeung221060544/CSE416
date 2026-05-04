@@ -10,7 +10,8 @@
       "party": "Republican",
       "racialGroup": "White",
       "voteMarginPercentage": 0.5538616930603876,
-      "voteMarginDirection": "R"
+      "voteMarginDirection": "R",
+      "isEffective": false
     },
     {
       "districtId": "AL-02",
@@ -19,7 +20,8 @@
       "party": "Democratic",
       "racialGroup": "Black",
       "voteMarginPercentage": 0.07817136820743768,
-      "voteMarginDirection": "D"
+      "voteMarginDirection": "D",
+      "isEffective": true
     },
     {
       "districtId": "AL-03",
@@ -28,7 +30,8 @@
       "party": "Republican",
       "racialGroup": "White",
       "voteMarginPercentage": 0.4705243522256861,
-      "voteMarginDirection": "R"
+      "voteMarginDirection": "R",
+      "isEffective": false
     },
     {
       "districtId": "AL-04",
@@ -37,7 +40,8 @@
       "party": "Republican",
       "racialGroup": "White",
       "voteMarginPercentage": 0.6657865807251783,
-      "voteMarginDirection": "R"
+      "voteMarginDirection": "R",
+      "isEffective": false
     },
     {
       "districtId": "AL-05",
@@ -46,7 +50,8 @@
       "party": "Republican",
       "racialGroup": "White",
       "voteMarginPercentage": 0.29542923413843813,
-      "voteMarginDirection": "R"
+      "voteMarginDirection": "R",
+      "isEffective": false
     },
     {
       "districtId": "AL-06",
@@ -55,7 +60,8 @@
       "party": "Republican",
       "racialGroup": "White",
       "voteMarginPercentage": 0.3965780682643428,
-      "voteMarginDirection": "R"
+      "voteMarginDirection": "R",
+      "isEffective": false
     },
     {
       "districtId": "AL-07",
@@ -64,7 +70,8 @@
       "party": "Democratic",
       "racialGroup": "Black",
       "voteMarginPercentage": 0.23913504491007723,
-      "voteMarginDirection": "D"
+      "voteMarginDirection": "D",
+      "isEffective": true
     }
   ]
 }

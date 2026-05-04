@@ -31,7 +31,7 @@ export default function Select2RaceFilter() {
     const options = useMemo(() =>
         demographicGroups.map(g => ({
             value: g.group.toLowerCase(),
-            label: g.group,
+            label: g.group.charAt(0).toUpperCase() + g.group.slice(1),
         })),
     [demographicGroups])
 

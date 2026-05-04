@@ -93,7 +93,7 @@ export default function EffectivenessSection({ data, stateId }) {
                     {stateName && <span className="text-brand-primary">{stateName} — </span>}Effectiveness Analysis
                 </h2>
                 <span className="hidden sm:inline-flex items-center gap-1.5 text-sm italic font-medium text-brand-primary bg-brand-primary/10 border border-brand-primary/20 px-3 py-0.5 rounded-full">
-                    &ldquo;How often do ensemble plans meet minority effectiveness thresholds?&rdquo;
+                    &ldquo;What is the impact of gutting the VRA on minority political representation?&rdquo;
                 </span>
             </div>
 

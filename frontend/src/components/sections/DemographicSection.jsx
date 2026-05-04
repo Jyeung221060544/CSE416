@@ -94,7 +94,7 @@ export default function DemographicSection({ data, stateId }) {
     return (
         <section id="demographic" className="p-2 sm:p-3 lg:p-4 border-b border-brand-muted/30 h-[calc(100vh-3.5rem)] flex flex-col overflow-hidden">
 
-            <div className="flex items-baseline justify-between mb-6 shrink-0">
+            <div className="flex items-baseline justify-between mb-4 shrink-0">
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-brand-darkest tracking-tight">
                     {s?.stateName && <span className="text-brand-primary">{s.stateName} — </span>}Demographic Analysis
                 </h2>
@@ -133,6 +133,8 @@ export default function DemographicSection({ data, stateId }) {
                             demographicGroups={demographicGroups}
                             raceFilter={raceFilter}
                             setRaceFilter={setRaceFilter}
+                            districtSummary={data?.districtSummary}
+                            numDistricts={s?.numDistricts}
                         />
                     </div>
                 </div>

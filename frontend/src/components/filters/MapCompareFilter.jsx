@@ -22,31 +22,26 @@ import useAppStore from '@/store/useAppStore'
 
 
 const PLAN_OPTIONS = [
-    { value: 'current', label: 'Current Plan'           },
-    { value: 'high',    label: 'High Effectiveness Plan' },
-    { value: 'low',     label: 'Low Effectiveness Plan'  },
+    { value: 'current', label: 'Current Plan'                },
+    { value: 'low',     label: 'Post-VRA Decision Scenario'  },
 ]
 
 
 /**
  * MapCompareFilter — Checkbox group for selecting the two comparison plans.
+ * High Effectiveness Plan is OR-only: greyed out and unchecked for other states.
  *
  * @returns {JSX.Element}
  */
 export default function MapCompareFilter() {
 
-    /* ── Step 1: Read filter state from Zustand ──────────────────────────── */
-    const mapCompareFilter     = useAppStore(s => s.mapCompareFilter)
+    const mapCompareFilter       = useAppStore(s => s.mapCompareFilter)
     const toggleMapCompareFilter = useAppStore(s => s.toggleMapCompareFilter)
 
-    /* ── Step 2: Render ──────────────────────────────────────────────────── */
     return (
         <CollapsibleGroup label="Compare Plans">
             {PLAN_OPTIONS.map((opt) => {
-                const checked = mapCompareFilter.includes(opt.value)
-
-                /* Disable if: this is the last checked item (min 1 guard),
-                   OR: already 2 are checked and this one is not among them (max 2 guard). */
+                const checked    = mapCompareFilter.includes(opt.value)
                 const isLast     = checked && mapCompareFilter.length === 1
                 const isMaxedOut = !checked && mapCompareFilter.length >= 2
                 const disabled   = isLast || isMaxedOut

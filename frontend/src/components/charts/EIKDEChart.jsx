@@ -21,6 +21,7 @@
 import { useMemo, useCallback } from 'react'
 import { ResponsiveLine } from '@nivo/line'
 import { DEM_COLOR, REP_COLOR, RACE_COLORS, RACE_LABELS, AXIS_COLOR, LABEL_COLOR } from '@/lib/partyColors'
+import PortalTooltip from '@/components/ui/PortalTooltip'
 
 
 /* ── Step 0: Nivo theme ──────────────────────────────────────────────────── */
@@ -56,26 +57,28 @@ function makeSliceTooltip(candidate) {
         const x   = slice.points[0]?.data.x
         const pts = [...slice.points].sort((a,b) => b.data.y - a.data.y)
         return (
-            <div style={{ background:'white', border:`2px solid ${partyColor}`, borderRadius:8, padding:'8px 12px', boxShadow:'0 4px 16px rgba(0,0,0,0.13)', fontSize:12, minWidth:200, lineHeight:1.6 }}>
-                <div style={{ color:partyColor, fontWeight:700, fontSize:11, textTransform:'uppercase', letterSpacing:'0.07em', marginBottom:3 }}>{candidateName}</div>
-                <div style={{ color:'#475569', marginBottom:5 }}>Vote share: <strong style={{ color:LABEL_COLOR }}>{(x*100).toFixed(1)}%</strong></div>
-                {pts.map(pt => {
-                    const sid    = pt.seriesId ?? pt.serieId
-                    const color  = pt.seriesColor ?? pt.serieColor ?? RACE_COLORS[sid] ?? '#94a3b8'
-                    const peak   = peakMap[sid]
-                    const atPeak = peak != null && Math.abs(x - peak) < 0.026
-                    return (
-                        <div key={sid} style={{ display:'flex', alignItems:'center', gap:6, marginBottom:1, color:'#475569' }}>
-                            <span style={{ width:8, height:8, borderRadius:'50%', background:color, display:'inline-block', flexShrink:0 }} />
-                            <span style={{ flex:1 }}>
-                                {RACE_LABELS[sid] ?? sid}
-                                {atPeak && <span style={{ marginLeft:5, color, fontWeight:700, fontSize:10, background:`${color}18`, borderRadius:4, padding:'1px 5px', letterSpacing:'0.04em' }}>Peak</span>}
-                            </span>
-                            <strong style={{ color:LABEL_COLOR }}>Density: {Number(pt.data.y).toFixed(2)}</strong>
-                        </div>
-                    )
-                })}
-            </div>
+            <PortalTooltip>
+                <div style={{ background:'white', border:`2px solid ${partyColor}`, borderRadius:8, padding:'8px 12px', boxShadow:'0 4px 16px rgba(0,0,0,0.13)', fontSize:12, minWidth:200, lineHeight:1.6 }}>
+                    <div style={{ color:partyColor, fontWeight:700, fontSize:11, textTransform:'uppercase', letterSpacing:'0.07em', marginBottom:3 }}>{candidateName}</div>
+                    <div style={{ color:'#475569', marginBottom:5 }}>Vote share: <strong style={{ color:LABEL_COLOR }}>{(x*100).toFixed(1)}%</strong></div>
+                    {pts.map(pt => {
+                        const sid    = pt.seriesId ?? pt.serieId
+                        const color  = pt.seriesColor ?? pt.serieColor ?? RACE_COLORS[sid] ?? '#94a3b8'
+                        const peak   = peakMap[sid]
+                        const atPeak = peak != null && Math.abs(x - peak) < 0.026
+                        return (
+                            <div key={sid} style={{ display:'flex', alignItems:'center', gap:6, marginBottom:1, color:'#475569' }}>
+                                <span style={{ width:8, height:8, borderRadius:'50%', background:color, display:'inline-block', flexShrink:0 }} />
+                                <span style={{ flex:1 }}>
+                                    {RACE_LABELS[sid] ?? sid}
+                                    {atPeak && <span style={{ marginLeft:5, color, fontWeight:700, fontSize:10, background:`${color}18`, borderRadius:4, padding:'1px 5px', letterSpacing:'0.04em' }}>Peak</span>}
+                                </span>
+                                <strong style={{ color:LABEL_COLOR }}>Density: {Number(pt.data.y).toFixed(2)}</strong>
+                            </div>
+                        )
+                    })}
+                </div>
+            </PortalTooltip>
         )
     }
 }

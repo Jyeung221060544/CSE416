@@ -64,4 +64,23 @@ public class GeoController {
         if (geo == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok().cacheControl(CACHE).body(geo);
     }
+
+    /**
+     * Returns the GeoJSON for a pre-selected interesting ensemble plan.
+     * Each feature has properties: {@code district, dem_votes, rep_votes,
+     * winner, dem_share, plan_id, dem_seats, eff_districts, step}.
+     *
+     * @param stateId  two-letter state abbreviation
+     * @param planType "low" (zero effective minority districts) or
+     *                 "high" (extra democratic / high effective; OR only)
+     * @return 200 with GeoJSON; 404 if this state+planType has no data
+     */
+    @GetMapping("/api/states/{stateId}/geo/interesting-plans/{planType}")
+    public ResponseEntity<Map<String, Object>> getInterestingPlan(
+            @PathVariable State stateId,
+            @PathVariable String planType) {
+        Map<String, Object> geo = geoService.getInterestingPlan(stateId, planType);
+        if (geo == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().cacheControl(CACHE).body(geo);
+    }
 }

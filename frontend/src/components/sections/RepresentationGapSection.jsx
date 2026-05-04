@@ -23,6 +23,7 @@
  *   When no plan is assigned (fallback)   → "Plan A" / "Plan B".
  */
 
+import { useState, useCallback } from 'react'
 import MapFrame          from '@/components/ui/map-frame'
 import SectionHeader     from '@/components/ui/section-header'
 import useAppStore       from '@/store/useAppStore'
@@ -38,11 +39,44 @@ import OR_DISTRICTS from '@/dummy/OR-district-summary.json'
 const DISTRICT_DUMMY = { AL: AL_DISTRICTS, OR: OR_DISTRICTS }
 
 
-/* ── Plan label lookup ───────────────────────────────────────────────────── */
+/* ── Plan label + rationale lookup ──────────────────────────────────────── */
 const PLAN_LABELS = {
-    current: 'Current Plan',
+    current: 'Current Enacted Plan',
     high:    'High Effectiveness Plan',
-    low:     'Low Effectiveness Plan',
+    low:     'Post-VRA Decision Scenario',
+}
+
+function PlanStat({ plan, countsByPlan }) {
+    if (plan === 'current') {
+        const n = countsByPlan['current']
+        if (n == null) return null
+        return (
+            <p className="text-center text-base font-semibold text-brand-darkest mb-0.5">
+                <span className="text-2xl font-bold text-green-600">{n}</span> effective {n === 1 ? 'district' : 'districts'}
+            </p>
+        )
+    }
+
+    if (plan === 'low') {
+        const lowCount     = countsByPlan['low']
+        const currentCount = countsByPlan['current']
+        if (lowCount == null) return null
+        const delta = currentCount != null ? lowCount - currentCount : null
+        const countColor = lowCount === 0 ? 'text-slate-400' : 'text-green-600'
+        const deltaColor = 'text-slate-400'
+        return (
+            <p className="text-center text-base font-semibold text-brand-darkest mb-0.5">
+                <span className={`text-2xl font-bold ${countColor}`}>{lowCount}</span> effective {lowCount === 1 ? 'district' : 'districts'}
+                {delta != null && delta !== 0 && (
+                    <span className={`ml-1.5 text-sm font-medium ${deltaColor}`}>
+                        ({delta > 0 ? '+' : ''}{delta} vs. enacted)
+                    </span>
+                )}
+            </p>
+        )
+    }
+
+    return null
 }
 
 
@@ -76,6 +110,16 @@ export default function RepresentationGapSection({ data, stateId }) {
 
     const hasTwo = mapCompareFilter.length >= 2
 
+    /* ── Effective district counts keyed by plan key ────────────────────── */
+    const [countsByPlan, setCountsByPlan] = useState({})
+    const onCountCurrent = useCallback(n => setCountsByPlan(p => ({ ...p, current: n })), [])
+    const onCountHigh    = useCallback(n => setCountsByPlan(p => ({ ...p, high:    n })), [])
+    const onCountLow     = useCallback(n => setCountsByPlan(p => ({ ...p, low:     n })), [])
+    const getCountHandler = (planKey) =>
+        planKey === 'current' ? onCountCurrent :
+        planKey === 'high'    ? onCountHigh    :
+        planKey === 'low'     ? onCountLow     : undefined
+
     /* ── Render ──────────────────────────────────────────────────────────── */
     return (
         <section
@@ -84,13 +128,21 @@ export default function RepresentationGapSection({ data, stateId }) {
         >
 
             {/* ── SECTION TITLE ──────────────────────────────────────────── */}
-            <div className="flex items-baseline justify-between mb-6 shrink-0">
+            <div className="flex items-baseline justify-between mb-2 shrink-0">
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-brand-darkest tracking-tight">
                     {stateName && <span className="text-brand-primary">{stateName} — </span>}Representation Gap
                 </h2>
                 <span className="hidden sm:inline-flex items-center gap-1.5 text-sm italic font-medium text-brand-primary bg-brand-primary/10 border border-brand-primary/20 px-3 py-0.5 rounded-full">
                     &ldquo;How does minority representation compare across district plans?&rdquo;
                 </span>
+            </div>
+
+            {/* ── EFFECTIVENESS LEGEND ───────────────────────────────────── */}
+            <div className="flex items-center gap-4 mb-2 shrink-0">
+                <div className="flex items-center gap-1.5">
+                    <div className="w-4 h-4 rounded-sm" style={{ backgroundColor: 'rgba(134,239,172,0.28)', border: '2.5px solid rgba(254,240,138,0.45)' }} />
+                    <span className="text-xs font-medium text-brand-darkest">Effective District</span>
+                </div>
             </div>
 
             {/* ── MAP CONTENT ────────────────────────────────────────────── */}
@@ -102,12 +154,14 @@ export default function RepresentationGapSection({ data, stateId }) {
                     {/* ── LEFT PANEL ─────────────────────────────────────── */}
                     <div className="flex flex-col gap-1 min-h-0">
                         <SectionHeader title={titleA} />
+                        <PlanStat plan={planA} countsByPlan={countsByPlan} />
                         <MapFrame className="flex-1 min-h-0">
                             <RepresentationGapMap
                                 stateId={stateId}
                                 plan={planA}
                                 districtSummary={districtSummary}
                                 feasibleRace={effRaceFilter}
+                                onEffectiveCount={getCountHandler(planA)}
                             />
                         </MapFrame>
                     </div>
@@ -115,12 +169,14 @@ export default function RepresentationGapSection({ data, stateId }) {
                     {/* ── RIGHT PANEL ────────────────────────────────────── */}
                     <div className="flex flex-col gap-1 min-h-0">
                         <SectionHeader title={titleB} />
+                        <PlanStat plan={planB} countsByPlan={countsByPlan} />
                         <MapFrame className="flex-1 min-h-0">
                             <RepresentationGapMap
                                 stateId={stateId}
                                 plan={planB}
                                 districtSummary={districtSummary}
                                 feasibleRace={effRaceFilter}
+                                onEffectiveCount={getCountHandler(planB)}
                             />
                         </MapFrame>
                     </div>
@@ -135,6 +191,7 @@ export default function RepresentationGapSection({ data, stateId }) {
                     {/* ── SINGLE MAP ─────────────────────────────────────── */}
                     <div className="flex flex-col gap-1 min-h-0">
                         <SectionHeader title={titleA} />
+                        <PlanStat plan={planA} countsByPlan={countsByPlan} />
                         <MapFrame className="flex-1 min-h-0">
                             {planA ? (
                                 <RepresentationGapMap
@@ -142,6 +199,7 @@ export default function RepresentationGapSection({ data, stateId }) {
                                     plan={planA}
                                     districtSummary={districtSummary}
                                     feasibleRace={effRaceFilter}
+                                    onEffectiveCount={getCountHandler(planA)}
                                 />
                             ) : (
                                 <div className="h-full flex items-center justify-center text-brand-muted/50 text-sm italic">

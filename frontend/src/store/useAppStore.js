@@ -87,8 +87,9 @@ const useAppStore = create((set) => ({
     ensembleFilter: 'race_blind',
 
     // Which district plans to show side-by-side in RepresentationGapSection.
-    // Multi-select: 'current' | 'high' | 'low'. Min 1, max 2. Default: current + high.
-    mapCompareFilter: ['current', 'high'],
+    // Multi-select: 'current' | 'high' | 'low'. Min 1, max 2. Default: current + low.
+    // 'low' (zero effective) exists for both AL and OR; 'high' is OR-only.
+    mapCompareFilter: ['current', 'low'],
 
     // Array of race keys to show on the EI KDE + bar charts.
     // Multi-select; always contains at least one item (enforced in toggleEiRaceFilter).
@@ -298,7 +299,7 @@ const useAppStore = create((set) => ({
         return {
             raceFilter:           primary,
             feasibleRaceFilter:   preferredFeasible,
-            mapCompareFilter:     ['current', 'high'],
+            mapCompareFilter:     ['current', 'low'],
             ensembleFilter:       'race_blind',
             eiRaceFilter:         eiDefaults,
             eiKdeCompareRaces:    primary && secondKey ? [primary, secondKey] : [],

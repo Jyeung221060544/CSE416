@@ -202,10 +202,7 @@ export default function EnsembleAnalysisSection({ data, stateId }) {
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-brand-darkest tracking-tight">
                     {stateName && <span className="text-brand-primary">{stateName} — </span>}Ensemble Analysis
                 </h2>
-                <div className="hidden sm:flex flex-col items-end gap-1.5">
-                    <span className="inline-flex items-center gap-1.5 text-sm italic font-medium text-brand-primary bg-brand-primary/10 border border-brand-primary/20 px-3 py-0.5 rounded-full">&ldquo;What is the impact of gutting the VRA on minority political representation?&rdquo;</span>
-                    <span className="inline-flex items-center gap-1.5 text-sm italic font-medium text-brand-primary bg-brand-primary/10 border border-brand-primary/20 px-3 py-0.5 rounded-full">&ldquo;Is the enacted plan fair?&rdquo;</span>
-                </div>
+                <span className="hidden sm:inline-flex items-center gap-1.5 text-sm italic font-medium text-brand-primary bg-brand-primary/10 border border-brand-primary/20 px-3 py-0.5 rounded-full">&ldquo;Is the enacted plan fair?&rdquo;</span>
             </div>
 
             {/* ── BROWSER TABS + CONTENT PANEL ───────────────────────────── */}

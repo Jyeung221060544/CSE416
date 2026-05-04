@@ -23,8 +23,9 @@ import org.springframework.context.annotation.Configuration;
  *   <li>{@code ei_kde}         — GET /api/states/{id}/ei?race=</li>
  *   <li>{@code ei_compare}     — GET /api/states/{id}/ei-compare?race1=&race2=</li>
  *   <li>{@code vote_seat_share}— GET /api/states/{id}/vote-seat-share</li>
- *   <li>{@code geo_us_states} — GET /api/geo/us-states</li>
- *   <li>{@code geo_districts} — GET /api/states/{id}/districts</li>
+ *   <li>{@code geo_us_states}        — GET /api/geo/us-states</li>
+ *   <li>{@code geo_districts}        — GET /api/states/{id}/geo/districts</li>
+ *   <li>{@code geo_interesting_plans}— GET /api/states/{id}/geo/interesting-plans/{planType}</li>
  * </ul>
  *
  * <p>All analytics data is static (computed offline); cache entries are evicted

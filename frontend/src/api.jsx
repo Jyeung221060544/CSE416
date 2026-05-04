@@ -132,6 +132,21 @@ export function fetchPrecincts(stateId) {
     return _precinctPromise[stateId]
 }
 
+/** GET /api/states/:stateId/geo/interesting-plans/:planType
+ *  Returns GeoJSON FeatureCollection of a pre-selected interesting ensemble plan.
+ *  planType: 'low' (zero effective) | 'high' (extra democratic; OR only).
+ *  Promise-cached: concurrent calls share one in-flight request per state+plan. */
+const _interestingPlanPromise = {}
+export function fetchInterestingPlan(stateId, planType) {
+    const key = `${stateId}_${planType}`
+    if (!_interestingPlanPromise[key]) {
+        _interestingPlanPromise[key] = fetch(`${BASE}/api/states/${stateId}/geo/interesting-plans/${planType}`)
+            .then(res => { if (!res.ok) throw new Error(`GET /api/states/${stateId}/geo/interesting-plans/${planType} failed: ${res.status}`); return res.json() })
+            .catch(err => { delete _interestingPlanPromise[key]; throw err })
+    }
+    return _interestingPlanPromise[key]
+}
+
 /** GET /api/geo/us-states
  *  Returns GeoJSON FeatureCollection of the 48 contiguous US state outlines.
  *  Used by USMap for the splash-screen choropleth. */

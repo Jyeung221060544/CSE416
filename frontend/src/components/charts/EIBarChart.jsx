@@ -20,6 +20,7 @@
 import { useMemo } from 'react'
 import { ResponsiveBar } from '@nivo/bar'
 import { DEM_COLOR, REP_COLOR, AXIS_COLOR, LABEL_COLOR, THRESH_COLOR, RACE_LABELS, RACE_COLORS } from '@/lib/partyColors'
+import PortalTooltip from '@/components/ui/PortalTooltip'
 
 
 /* ── Step 0: Nivo theme ──────────────────────────────────────────────────── */
@@ -103,11 +104,13 @@ function makeBarTooltip(nameMap) {
         const ciHigh = data[`${id}CIHigh`]
         const pct    = v => `${(v*100).toFixed(1)}%`
         return (
-            <div style={{ background:'white', border:`2px solid ${color}`, borderRadius:8, padding:'8px 12px', boxShadow:'0 4px 16px rgba(0,0,0,0.13)', fontSize:12, minWidth:230, lineHeight:1.6, whiteSpace:'nowrap' }}>
-                <div style={{ color, fontWeight:700, fontSize:11, textTransform:'uppercase', letterSpacing:'0.07em', marginBottom:4 }}>{name} · {data.race}</div>
-                <div style={{ color:'#475569' }}>Peak estimate: <strong style={{ color:LABEL_COLOR }}>{pct(value)}</strong></div>
-                {ciLow != null && <div style={{ color:'#475569' }}>95% CI: <strong style={{ color:LABEL_COLOR }}>{pct(ciLow)} – {pct(ciHigh)}</strong></div>}
-            </div>
+            <PortalTooltip>
+                <div style={{ background:'white', border:`2px solid ${color}`, borderRadius:8, padding:'8px 12px', boxShadow:'0 4px 16px rgba(0,0,0,0.13)', fontSize:12, minWidth:230, lineHeight:1.6, whiteSpace:'nowrap' }}>
+                    <div style={{ color, fontWeight:700, fontSize:11, textTransform:'uppercase', letterSpacing:'0.07em', marginBottom:4 }}>{name} · {data.race}</div>
+                    <div style={{ color:'#475569' }}>Peak estimate: <strong style={{ color:LABEL_COLOR }}>{pct(value)}</strong></div>
+                    {ciLow != null && <div style={{ color:'#475569' }}>95% CI: <strong style={{ color:LABEL_COLOR }}>{pct(ciLow)} – {pct(ciHigh)}</strong></div>}
+                </div>
+            </PortalTooltip>
         )
     }
 }

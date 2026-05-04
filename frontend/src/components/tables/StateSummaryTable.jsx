@@ -58,7 +58,7 @@ export default function StateSummaryTable({ stateSummary }) {
                     className={`grid grid-cols-[1fr_140px_100px_140px] gap-x-4 items-center px-5 py-3 text-sm transition-colors ${ROW_BORDER} ${rowBg(i)}`}
                 >
                     {/* Racial/ethnic group name */}
-                    <span className={`font-bold text-sm ${INACTIVE_LABEL}`}>{g.group}</span>
+                    <span className={`font-bold text-sm ${INACTIVE_LABEL}`}>{g.group.charAt(0).toUpperCase() + g.group.slice(1)}</span>
 
                     {/* Voting age population count */}
                     <span className={`tabular-nums text-sm ${INACTIVE_LABEL} text-right`}>{g.vap.toLocaleString()}</span>

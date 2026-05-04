@@ -42,6 +42,18 @@ public class GeoAssetService {
         return fetch(stateId.name() + "_districts");
     }
 
+    /**
+     * Returns the GeoJSON for a pre-selected interesting ensemble plan, or
+     * {@code null} if this state/planType combination has no data.
+     *
+     * @param stateId  two-letter state abbreviation
+     * @param planType "low" (zero effective) or "high" (extra democratic)
+     */
+    @Cacheable(value = "geo_interesting_plans", key = "#stateId + '_' + #planType")
+    public Map<String, Object> getInterestingPlan(State stateId, String planType) {
+        return fetch(stateId.name() + "_interesting_" + planType);
+    }
+
     private Map<String, Object> fetch(String id) {
         Optional<GeoAssetDoc> opt = geoRepo.findById(id);
         return opt.map(GeoAssetDoc::getGeojson).orElse(null);

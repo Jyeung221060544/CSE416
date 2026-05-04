@@ -18,6 +18,7 @@
 import { useMemo }        from 'react'
 import { ResponsiveLine } from '@nivo/line'
 import { DEM_COLOR, RACE_LABELS, AXIS_COLOR, LABEL_COLOR } from '@/lib/partyColors'
+import PortalTooltip from '@/components/ui/PortalTooltip'
 
 
 /* ── Step 0: Nivo theme ──────────────────────────────────────────────────── */
@@ -68,14 +69,16 @@ function makeSliceTooltip(r0Label, r1Label) {
         const pt = slice.points[0]
         if (x == null || !pt) return null
         return (
-            <div style={{ background: 'white', border: `2px solid ${DEM_COLOR}`, borderRadius: 8, padding: '8px 12px', boxShadow: '0 4px 16px rgba(0,0,0,0.10)', fontSize: 12, lineHeight: 1.6 }}>
-                <div style={{ color: '#475569', marginBottom: 2 }}>
-                    {r0Label} | {r1Label}: <strong style={{ color: LABEL_COLOR }}>{(x * 100).toFixed(1)}%</strong>
+            <PortalTooltip>
+                <div style={{ background: 'white', border: `2px solid ${DEM_COLOR}`, borderRadius: 8, padding: '8px 12px', boxShadow: '0 4px 16px rgba(0,0,0,0.10)', fontSize: 12, lineHeight: 1.6 }}>
+                    <div style={{ color: '#475569', marginBottom: 2 }}>
+                        {r0Label} | {r1Label}: <strong style={{ color: LABEL_COLOR }}>{(x * 100).toFixed(1)}%</strong>
+                    </div>
+                    <div style={{ color: '#475569' }}>
+                        Density: <strong style={{ color: LABEL_COLOR }}>{Number(pt.data.y).toFixed(2)}</strong>
+                    </div>
                 </div>
-                <div style={{ color: '#475569' }}>
-                    Density: <strong style={{ color: LABEL_COLOR }}>{Number(pt.data.y).toFixed(2)}</strong>
-                </div>
-            </div>
+            </PortalTooltip>
         )
     }
 }

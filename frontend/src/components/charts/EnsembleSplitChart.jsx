@@ -151,6 +151,13 @@ export default function EnsembleSplitChart({ ensembleData, enactedSplit, yMax, c
     const bgLayer      = useMemo(() => makeBgLayer(chartId), [chartId])
     const enactedLayer = useMemo(() => makeEnactedLayer(enactedLabel), [enactedLabel])
 
+    /* Scale padding so bars stay narrow when only a few splits exist.
+       1 bar → ~0.85, 2 → 0.76, 3 → 0.64, 4 → 0.52, 5 → 0.40, 6+ → 0.28 */
+    const barPadding = useMemo(
+        () => Math.max(0.28, Math.min(0.85, 1 - nivoData.length * 0.12)),
+        [nivoData.length]
+    )
+
     /* Bar color by majority party */
     const getBarColor = bar => { const r=bar.data.r??0, d=bar.data.d??0; return r>d?REP_COLOR:d>r?DEM_COLOR:TIE_COLOR }
 
@@ -175,7 +182,7 @@ export default function EnsembleSplitChart({ ensembleData, enactedSplit, yMax, c
             <div className="flex-1 min-h-0">
                 <ResponsiveBar
                     data={nivoData} keys={['plans']} indexBy="split"
-                    margin={{ top:28, right:24, bottom:64, left:72 }} padding={0.28}
+                    margin={{ top:28, right:24, bottom:64, left:72 }} padding={barPadding}
                     valueScale={{ type:'linear', min:0, max:yMax??'auto' }}
                     indexScale={{ type:'band', round:true }}
                     colors={getBarColor} borderRadius={4} borderWidth={0}

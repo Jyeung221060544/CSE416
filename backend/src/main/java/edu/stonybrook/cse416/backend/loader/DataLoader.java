@@ -172,6 +172,11 @@ public class DataLoader implements CommandLineRunner {
         // Congressional district boundaries per state
         loadDistrictGeo("AL");
         loadDistrictGeo("OR");
+
+        // Pre-selected interesting ensemble plans (coordinate precision already reduced to 6 dp)
+        loadInterestingPlanGeo("AL", "low",  "AL_zero_effective_districts.json");
+        loadInterestingPlanGeo("OR", "low",  "OR_zero_effective_districts.json");
+        loadInterestingPlanGeo("OR", "high", "OR_extra_democratic_districts.json");
     }
 
     /**
@@ -194,6 +199,28 @@ public class DataLoader implements CommandLineRunner {
         doc.setGeojson(geojson);
         geoRepo.save(doc);
         System.out.println("[DataLoader] geo_assets: saved " + state + "_districts");
+    }
+
+    /**
+     * Seeds one interesting-plan GeoJSON into {@code geo_assets}.
+     * ID format: {@code {STATE}_interesting_{planType}} (e.g. "AL_interesting_low").
+     *
+     * <p>Files live in {@code frontend/src/assets/interesting_plans/} and have
+     * coordinate precision already reduced to 6 decimal places (~8–10 MB each).
+     */
+    private void loadInterestingPlanGeo(String state, String planType, String filename) throws Exception {
+        File file = new File(geoBase, "frontend/src/assets/interesting_plans/" + filename);
+        if (!file.exists()) {
+            System.out.println("[DataLoader] geo_assets: interesting plan not found: "
+                    + filename + " at " + file.getAbsolutePath() + ", skipping");
+            return;
+        }
+        Map<String, Object> geojson = mapper.readValue(file, mapType());
+        GeoAssetDoc doc = new GeoAssetDoc();
+        doc.setId(state + "_interesting_" + planType);
+        doc.setGeojson(geojson);
+        geoRepo.save(doc);
+        System.out.println("[DataLoader] geo_assets: saved " + state + "_interesting_" + planType);
     }
 
     // ── Per-state seeding ─────────────────────────────────────────────────────
@@ -306,7 +333,16 @@ public class DataLoader implements CommandLineRunner {
             return Collections.emptyList();
         }
 
-        List<Map<String, Object>> bins     = (List<Map<String, Object>>) raw.get("bins");
+        // bins: either a shared List (old format) or a per-race Map (new format)
+        Object binsRaw = raw.get("bins");
+        Map<String, List<Map<String, Object>>> binsMap    = null;
+        List<Map<String, Object>>             binsShared  = null;
+        if (binsRaw instanceof Map) {
+            binsMap    = (Map<String, List<Map<String, Object>>>) binsRaw;
+        } else {
+            binsShared = (List<Map<String, Object>>) binsRaw;
+        }
+
         List<Map<String, Object>> features = (List<Map<String, Object>>) raw.get("features");
 
         // Discover races from the first feature's key set — every key except "idx" is a race.
@@ -320,6 +356,13 @@ public class DataLoader implements CommandLineRunner {
         List<String> normalizedRaces = new ArrayList<>();
         for (String rawRace : discoveredRaces) {
             String race = normalizeRaceKey(rawRace);  // e.g. "hispanic" → "latino"
+
+            // Get race-specific bins (new format) or shared bins (old format)
+            List<Map<String, Object>> raceBins = binsMap != null ? binsMap.get(rawRace) : binsShared;
+            if (raceBins == null) {
+                System.out.println("[DataLoader] heatmaps: no bins for race " + rawRace + ", skipping");
+                continue;
+            }
 
             // Slice features to {idx, binId} for this race using the original key
             List<Map<String, Object>> raceFeatures = new ArrayList<>(features.size());
@@ -335,7 +378,7 @@ public class DataLoader implements CommandLineRunner {
             doc.setId(state + "_" + race);
             doc.setStateId(State.valueOf(state));
             doc.setRace(race);
-            doc.setBins(bins);
+            doc.setBins(raceBins);
             doc.setFeatures(raceFeatures);
             heatmapRepo.save(doc);
             System.out.println("[DataLoader] heatmaps: saved " + doc.getId()

@@ -10,6 +10,7 @@
  *   raceKey {string|null} — Race key to look up in data (e.g. 'black', 'latino').
  */
 
+import { useEffect, useRef } from 'react'
 import { COMPARE_RB_COLOR, COMPARE_VRA_COLOR } from '@/lib/partyColors'
 
 const RB_COLOR     = COMPARE_RB_COLOR
@@ -25,25 +26,38 @@ const DONUT_SIZE   = 110
 /* ── Donut gauge ─────────────────────────────────────────────────────────── */
 
 function DonutGauge({ pct, color }) {
-    const filled = Math.min(pct, 1) * DONUT_CIRC
+    const arcRef  = useRef(null)
+    const filled  = Math.min(Math.max(pct, 0), 1) * DONUT_CIRC
+
+    useEffect(() => {
+        const el = arcRef.current
+        if (!el) return
+        // Reset to empty, then animate to target on next frame
+        el.style.transition = 'none'
+        el.style.strokeDasharray = `0 ${DONUT_CIRC}`
+        const id = requestAnimationFrame(() => {
+            el.style.transition = 'stroke-dasharray 1.1s cubic-bezier(0.4, 0, 0.2, 1)'
+            el.style.strokeDasharray = `${filled} ${DONUT_CIRC}`
+        })
+        return () => cancelAnimationFrame(id)
+    }, [filled])
+
     return (
         <svg width={DONUT_SIZE} height={DONUT_SIZE} viewBox="0 0 100 100" style={{ display: 'block' }}>
             <circle cx={50} cy={50} r={DONUT_R} fill="none" stroke={TRACK_CLR} strokeWidth={DONUT_SW} />
-            {pct > 0 && (
-                <circle
-                    cx={50} cy={50} r={DONUT_R}
-                    fill="none" stroke={color} strokeWidth={DONUT_SW}
-                    strokeLinecap="round"
-                    strokeDasharray={`${filled} ${DONUT_CIRC}`}
-                    strokeDashoffset={DONUT_CIRC * 0.25}
-                    transform="rotate(-90 50 50)"
-                    style={{ filter: `drop-shadow(0 0 4px ${color}55)` }}
-                />
-            )}
+            <circle
+                ref={arcRef}
+                cx={50} cy={50} r={DONUT_R}
+                fill="none" stroke={color} strokeWidth={DONUT_SW}
+                strokeLinecap="round"
+                strokeDasharray={`0 ${DONUT_CIRC}`}
+                transform="rotate(-90 50 50)"
+                style={{ filter: `drop-shadow(0 0 4px ${color}55)` }}
+            />
             <text x={50} y={53} textAnchor="middle" dominantBaseline="middle"
                 fontSize={13} fontWeight={800} fill={color}
                 style={{ fontVariantNumeric: 'tabular-nums' }}>
-                {(pct * 100).toFixed(1)}%
+                {Math.round(pct * 100)}%
             </text>
         </svg>
     )
@@ -83,7 +97,7 @@ export default function VRAImpactTable({ data, raceKey }) {
             {/* ── ROWS 1-3: Data ──────────────────────────────────────────── */}
             {rows.map(row => {
                 const delta    = row.vraConstrainedPct - row.raceBlindPct
-                const deltaStr = `+${(delta * 100).toFixed(1)}%`
+                const deltaStr = `+${Math.round(delta * 100)}%`
                 return [
                     /* Label card */
                     <div key={`lbl-${row.id}`}

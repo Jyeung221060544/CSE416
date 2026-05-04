@@ -133,6 +133,7 @@ function DistrictDetailCard({ district }) {
     const isUncontested = district.voteMarginPercentage >= 1.0
     const marginCls     = district.voteMarginDirection === 'D' ? DEM_TEXT : REP_TEXT
     const marginLabel   = `${district.voteMarginDirection}+${isUncontested ? '100' : (district.voteMarginPercentage * 100).toFixed(1)}%`
+    const isEffective   = district.isEffective ?? false
 
     /* ── Populated district card ── */
     return (
@@ -165,6 +166,12 @@ function DistrictDetailCard({ district }) {
                 <div className="flex items-center justify-between">
                     <span className="text-brand-muted font-medium text-sm">Racial Group</span>
                     <span className="text-brand-darkest font-semibold text-base">{district.racialGroup}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                    <span className="text-brand-muted font-medium text-sm">Effectiveness Score</span>
+                    <span className={`text-xl font-bold tabular-nums ${isEffective ? 'text-green-600' : 'text-brand-muted/40'}`}>
+                        {isEffective ? '1' : '0'}
+                    </span>
                 </div>
                 <div className="flex items-center justify-between">
                     <span className="text-brand-muted font-medium text-sm">Vote Margin</span>
@@ -439,6 +446,8 @@ export default function StateOverviewSection({ data, stateId }) {
                                             demographicGroups={demographicGroups}
                                             raceFilter={raceFilter}
                                             setRaceFilter={setRaceFilter}
+                                            districtSummary={districtData}
+                                            numDistricts={stateData?.numDistricts}
                                             readOnly
                                         />
                                     </div>
