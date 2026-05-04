@@ -161,27 +161,17 @@ def build_district_geojson(plan_data, precincts_gdf, state, vra_cfg=None):
     else:
         agg = precincts_gdf[["_district"]].drop_duplicates().reset_index(drop=True)
 
-    # Dissolve geometries by district, repair topology, fill holes, then simplify.
-    # buffer(0) fixes self-intersections and sliver artifacts that dissolve() produces
-    # when precinct borders have floating-point micro-gaps or overlaps.
+    # Dissolve precinct geometries into districts. buffer(0) repairs topology.
+    # fill_holes removes internal voids from enclosed precincts of other districts.
+    # simplify collapses tiny island precincts into their surrounding district.
+    # keep_largest_part then removes any remaining disconnected pieces so each
+    # district renders as one contiguous shape.
     dissolved = precincts_gdf.dissolve(by="_district", as_index=False)[["_district", "geometry"]]
     dissolved["geometry"] = dissolved.geometry.buffer(0)
     dissolved["geometry"] = dissolved.geometry.apply(fill_holes)
-    dissolved["geometry"] = dissolved.geometry.simplify(tolerance=0.001, preserve_topology=True)
+    dissolved["geometry"] = dissolved.geometry.simplify(tolerance=0.005, preserve_topology=True)
     dissolved["geometry"] = dissolved.geometry.apply(keep_largest_part)
-
-    # Remove micro-overlaps from independent simplification: subtract previously
-    # processed districts so shared boundaries are exactly non-overlapping.
-    geom_list = list(dissolved["geometry"])
-    for i in range(1, len(geom_list)):
-        for j in range(i):
-            try:
-                overlap = geom_list[i].intersection(geom_list[j])
-                if not overlap.is_empty and overlap.area > 1e-12:
-                    geom_list[i] = geom_list[i].difference(geom_list[j]).buffer(0)
-            except Exception:
-                pass
-    dissolved["geometry"] = geom_list
+    dissolved["geometry"] = [g.buffer(0) for g in dissolved["geometry"]]
 
     dissolved = dissolved.merge(agg, on="_district", how="left")
 
