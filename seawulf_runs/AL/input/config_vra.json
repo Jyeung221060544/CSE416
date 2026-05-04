@@ -41,20 +41,11 @@
   },
   "interesting_plans": [
     {
-      "id": "extra_democratic",
-      "description": "One more Democratic seat than enacted AL plan (3D vs enacted 2D)",
-      "criteria": {
-        "dem_seats": {
-          "gte": 3
-        }
-      }
-    },
-    {
-      "id": "zero_effective",
-      "description": "Zero effective Black minority districts",
+      "id": "two_effective",
+      "description": "Two effective Black minority districts (VRA-compliant plan)",
       "criteria": {
         "eff_districts": {
-          "eq": 0
+          "gte": 2
         }
       }
     }

@@ -187,7 +187,7 @@ def main():
 
     pop_constraint = within_percent_of_ideal_population(initial, eps, pop_key="population")
     initial_cut_edges = len(initial["cut_edges"])
-    compactness_bound = UpperBound(lambda p: len(p["cut_edges"]), 2.0 * initial_cut_edges)
+    compactness_bound = UpperBound(lambda p: len(p["cut_edges"]), 1.5 * initial_cut_edges)
     constraints = [pop_constraint, compactness_bound]
 
     # ---------------- VRA constraints (if enabled) ----------------

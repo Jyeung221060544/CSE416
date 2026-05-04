@@ -24,10 +24,10 @@
   },
   "interesting_plans": [
     {
-      "id": "high_effectiveness",
-      "description": "Two or more effective Latino minority districts",
+      "id": "extra_democratic",
+      "description": "All 6 OR seats go Democratic",
       "criteria": {
-        "eff_districts": {"gte": 2}
+        "dem_seats": {"gte": 6}
       }
     },
     {
