@@ -177,6 +177,20 @@ def build_district_geojson(plan_data, precincts_gdf, state, vra_cfg=None):
     dissolved["geometry"] = dissolved.geometry.apply(fill_holes)
     dissolved["geometry"] = dissolved.geometry.simplify(tolerance=0.001, preserve_topology=True)
     dissolved["geometry"] = dissolved.geometry.apply(drop_sliver_parts)
+
+    # Remove micro-overlaps from independent simplification: subtract previously
+    # processed districts so shared boundaries are exactly non-overlapping.
+    geom_list = list(dissolved["geometry"])
+    for i in range(1, len(geom_list)):
+        for j in range(i):
+            try:
+                overlap = geom_list[i].intersection(geom_list[j])
+                if not overlap.is_empty and overlap.area > 1e-12:
+                    geom_list[i] = geom_list[i].difference(geom_list[j]).buffer(0)
+            except Exception:
+                pass
+    dissolved["geometry"] = geom_list
+
     dissolved = dissolved.merge(agg, on="_district", how="left")
 
     # Compute winner and dem_share
