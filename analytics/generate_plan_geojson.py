@@ -151,8 +151,11 @@ def build_district_geojson(plan_data, precincts_gdf, state, vra_cfg=None):
     else:
         agg = precincts_gdf[["_district"]].drop_duplicates().reset_index(drop=True)
 
-    # Dissolve geometries by district, fill interior holes, then simplify
+    # Dissolve geometries by district, repair topology, fill holes, then simplify.
+    # buffer(0) fixes self-intersections and sliver artifacts that dissolve() produces
+    # when precinct borders have floating-point micro-gaps or overlaps.
     dissolved = precincts_gdf.dissolve(by="_district", as_index=False)[["_district", "geometry"]]
+    dissolved["geometry"] = dissolved.geometry.buffer(0)
     dissolved["geometry"] = dissolved.geometry.apply(fill_holes)
     dissolved["geometry"] = dissolved.geometry.simplify(tolerance=0.001, preserve_topology=True)
     dissolved = dissolved.merge(agg, on="_district", how="left")
