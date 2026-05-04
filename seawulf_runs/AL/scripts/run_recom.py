@@ -9,7 +9,8 @@ from gerrychain.constraints import UpperBound, within_percent_of_ideal_populatio
 from gerrychain.constraints.compactness import L1_reciprocal_polsby_popper
 from gerrychain.proposals import recom
 from gerrychain.tree import bipartition_tree
-from gerrychain.updaters import Tally, cut_edges, polsby_popper
+from gerrychain.updaters import Tally, cut_edges
+from gerrychain.metrics import polsby_popper
 
 # ── Shared helpers ────────────────────────────────────────────────────────
 _SHARED = Path(__file__).resolve().parents[2] / "shared"
