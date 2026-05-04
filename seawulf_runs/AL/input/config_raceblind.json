@@ -13,7 +13,7 @@
     "NH_WHITE_ALONE_VAP"
   ],
   "boxwhisker_thresholds": {
-    "NH_BLACK_ALONE_VAP": 0.5,
+    "NH_BLACK_ALONE_VAP": 0.45,
     "NH_WHITE_ALONE_VAP": null
   },
   "boxwhisker_parties_of_choice": {

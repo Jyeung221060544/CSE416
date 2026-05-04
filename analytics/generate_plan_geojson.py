@@ -73,6 +73,24 @@ def fill_holes(geom):
     return geom
 
 
+def drop_sliver_parts(geom, min_fraction=0.01):
+    """
+    Remove polygon parts whose area is below min_fraction of the total geometry area.
+    Eliminates degenerate near-zero-area slivers that simplify() can produce.
+    """
+    if geom.geom_type == "Polygon":
+        return geom
+    if geom.geom_type != "MultiPolygon":
+        return geom
+    total = geom.area
+    if total == 0:
+        return geom
+    kept = [p for p in geom.geoms if p.area / total >= min_fraction]
+    if not kept:
+        return max(geom.geoms, key=lambda p: p.area)
+    return kept[0] if len(kept) == 1 else MultiPolygon(kept)
+
+
 def load_plan(plan_path):
     with open(plan_path, encoding="utf-8") as f:
         return json.load(f)
@@ -158,6 +176,7 @@ def build_district_geojson(plan_data, precincts_gdf, state, vra_cfg=None):
     dissolved["geometry"] = dissolved.geometry.buffer(0)
     dissolved["geometry"] = dissolved.geometry.apply(fill_holes)
     dissolved["geometry"] = dissolved.geometry.simplify(tolerance=0.001, preserve_topology=True)
+    dissolved["geometry"] = dissolved.geometry.apply(drop_sliver_parts)
     dissolved = dissolved.merge(agg, on="_district", how="left")
 
     # Compute winner and dem_share
