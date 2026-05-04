@@ -9,7 +9,7 @@ from gerrychain.constraints import UpperBound, within_percent_of_ideal_populatio
 from gerrychain.constraints.compactness import L1_reciprocal_polsby_popper
 from gerrychain.proposals import recom
 from gerrychain.tree import bipartition_tree
-from gerrychain.updaters import Tally, cut_edges, area, perimeter
+from gerrychain.updaters import Tally, cut_edges
 from gerrychain.metrics import polsby_popper
 
 # ── Shared helpers ────────────────────────────────────────────────────────
@@ -144,8 +144,6 @@ def main():
     updaters = {
         "population": Tally(pop_col, alias="population"),
         "cut_edges": cut_edges,
-        "area": area,
-        "perimeter": perimeter,
         "polsby_popper": polsby_popper,
     }
 
@@ -189,7 +187,7 @@ def main():
             updaters[updater_name] = Tally(gk, alias=updater_name)
 
     initial = GeographicPartition(G, assignment=assignment_col, updaters=updaters)
-
+    
     pop_constraint = within_percent_of_ideal_population(initial, eps, pop_key="population")
     initial_l1 = L1_reciprocal_polsby_popper(initial)
     compactness_bound = UpperBound(L1_reciprocal_polsby_popper, 1.5 * initial_l1)
