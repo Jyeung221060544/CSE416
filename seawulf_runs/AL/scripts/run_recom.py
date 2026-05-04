@@ -5,7 +5,8 @@ from functools import partial
 from pathlib import Path
 
 from gerrychain import Graph, MarkovChain, Partition, accept
-from gerrychain.constraints import within_percent_of_ideal_population
+from gerrychain.constraints import UpperBound, within_percent_of_ideal_population
+from gerrychain.constraints.compactness import L1_reciprocal_polsby_popper
 from gerrychain.proposals import recom
 from gerrychain.tree import bipartition_tree
 from gerrychain.updaters import Tally, cut_edges
@@ -186,7 +187,9 @@ def main():
     initial = Partition(G, assignment=assignment_col, updaters=updaters)
 
     pop_constraint = within_percent_of_ideal_population(initial, eps, pop_key="population")
-    constraints = [pop_constraint]
+    initial_l1 = L1_reciprocal_polsby_popper(initial)
+    compactness_bound = UpperBound(L1_reciprocal_polsby_popper, 1.5 * initial_l1)
+    constraints = [pop_constraint, compactness_bound]
 
     # ---------------- VRA constraints (if enabled) ----------------
     if vra_enabled:
