@@ -148,13 +148,14 @@ def build_district_geojson(plan_data, precincts_gdf, state, vra_cfg=None):
     """
     Dissolve precinct geometries by district assignment and compute
     per-district vote tallies. Returns a GeoDataFrame of districts.
+    Uses county-level dissolution for clean, natural-looking boundaries.
     """
+    import re
+
     assignment = plan_data["assignment"]
     plan_id = plan_data["plan_id"]
     metrics = plan_data.get("metrics", {})
 
-    # Map assignment keys to district labels
-    # Keys are precinct node IDs (may be ints or strings in JSON)
     id_col = find_precinct_id_column(precincts_gdf, assignment.keys())
 
     if id_col is not None:
@@ -164,7 +165,6 @@ def build_district_geojson(plan_data, precincts_gdf, state, vra_cfg=None):
         precincts_gdf = precincts_gdf.copy()
         precincts_gdf["_node_id"] = precincts_gdf.index.astype(str)
 
-    # Build assignment series (node_id → district)
     assignment_str = {str(k): v for k, v in assignment.items()}
     precincts_gdf["_district"] = precincts_gdf["_node_id"].map(assignment_str)
 
@@ -175,7 +175,7 @@ def build_district_geojson(plan_data, precincts_gdf, state, vra_cfg=None):
     precincts_gdf = precincts_gdf.dropna(subset=["_district"])
     precincts_gdf["_district"] = precincts_gdf["_district"].astype(int)
 
-    # Aggregate vote tallies per district
+    # Aggregate vote tallies per district at precinct level (accurate counts)
     vote_cols = {}
     for col in ["votes_dem", "votes_rep"]:
         if col in precincts_gdf.columns:
@@ -186,18 +186,36 @@ def build_district_geojson(plan_data, precincts_gdf, state, vra_cfg=None):
     else:
         agg = precincts_gdf[["_district"]].drop_duplicates().reset_index(drop=True)
 
-    # Dissolve precinct geometries into districts. buffer(0) repairs topology.
-    # fill_holes removes internal voids from enclosed precincts of other districts.
-    # simplify collapses tiny island precincts into their surrounding district.
-    # keep_largest_part then removes any remaining disconnected pieces so each
-    # district renders as one contiguous shape.
-    dissolved = precincts_gdf.dissolve(by="_district", as_index=False)[["_district", "geometry"]]
+    # Extract 5-digit county FIPS from precinct GEOID (first 5 digits)
+    def _county_fips(node_id):
+        m = re.match(r"(\d{5})", str(node_id))
+        return m.group(1) if m else str(node_id)[:5]
+
+    precincts_gdf["_county"] = precincts_gdf["_node_id"].apply(_county_fips)
+
+    # Assign each county to the district that holds the majority of its precincts
+    county_counts = (
+        precincts_gdf.groupby(["_county", "_district"])
+        .size()
+        .reset_index(name="_n")
+        .sort_values("_n", ascending=False)
+        .drop_duplicates("_county")
+        .set_index("_county")["_district"]
+    )
+
+    # Dissolve precincts → county geometries (clean county-level shapes)
+    county_geoms = precincts_gdf.dissolve(by="_county", as_index=False)[["_county", "geometry"]]
+    county_geoms["geometry"] = county_geoms.geometry.buffer(0)
+    county_geoms["_district"] = county_geoms["_county"].map(county_counts)
+    county_geoms = county_geoms.dropna(subset=["_district"])
+    county_geoms["_district"] = county_geoms["_district"].astype(int)
+
+    # Dissolve county geometries → district geometries (county-following boundaries)
+    dissolved = county_geoms.dissolve(by="_district", as_index=False)[["_district", "geometry"]]
     dissolved["geometry"] = dissolved.geometry.buffer(0)
     dissolved["geometry"] = dissolved.geometry.apply(fill_holes)
-    dissolved["geometry"] = dissolved.geometry.simplify(tolerance=0.02, preserve_topology=True)
     dissolved["geometry"] = dissolved.geometry.apply(keep_largest_part)
-    dissolved["geometry"] = dissolved.geometry.apply(smooth_geom)
-    dissolved["geometry"] = dissolved.geometry.simplify(tolerance=0.008, preserve_topology=True)
+    dissolved["geometry"] = dissolved.geometry.simplify(tolerance=0.02, preserve_topology=True)
     dissolved["geometry"] = [g.buffer(0) for g in dissolved["geometry"]]
 
     dissolved = dissolved.merge(agg, on="_district", how="left")
