@@ -1,5 +1,5 @@
 {
-  "_comment_threshold": "Opportunity threshold = Black VAP share of enacted District 7 (the single Black opportunity district in the enacted AL plan). District 7 has 50.4% Black VAP, so 0.50 is the benchmark floor. The chain requires every proposed plan to preserve at least 1 district at or above this share where the Black party-of-choice (D) wins — matching what the enacted map already achieves. This is the correct single-election simplification of the Becker et al. group-control-factor approach: with one binary election outcome, the GC factor min(2k,1) reduces to a hard VAP floor, and we anchor that floor to the enacted plan rather than choosing it arbitrarily.",
+  "_comment_threshold": "Opportunity threshold = Black VAP share of enacted District 7 (the single Black opportunity district in the enacted AL plan). District 7 has 50.4% Black VAP, so 0.50 is the benchmark floor. The chain requires every proposed plan to preserve at least 1 district at or above this share where the Black party-of-choice (D) wins \u2014 matching what the enacted map already achieves. This is the correct single-election simplification of the Becker et al. group-control-factor approach: with one binary election outcome, the GC factor min(2k,1) reduces to a hard VAP floor, and we anchor that floor to the enacted plan rather than choosing it arbitrarily.",
   "state": "AL",
   "graph_path": "input/AL_graph.json",
   "assignment_col": "enacted_cd",
@@ -9,14 +9,14 @@
   "steps_test": 250,
   "steps_final": 5000,
   "output_dir": "output_vra",
-  "save_assignments_first_n": 10,
-  "save_assignments_every": 1000,
+  "save_assignments_first_n": 0,
+  "save_assignments_every": 500,
   "boxwhisker_group_keys": [
     "NH_BLACK_ALONE_VAP",
     "NH_WHITE_ALONE_VAP"
   ],
   "boxwhisker_thresholds": {
-    "NH_BLACK_ALONE_VAP": 0.50,
+    "NH_BLACK_ALONE_VAP": 0.5,
     "NH_WHITE_ALONE_VAP": null
   },
   "boxwhisker_parties_of_choice": {
@@ -26,7 +26,12 @@
   "vra": {
     "enabled": true,
     "group_key": "NH_BLACK_ALONE_VAP",
-    "auto_thresholds": [0.45, 0.40, 0.35, 0.30],
+    "auto_thresholds": [
+      0.45,
+      0.4,
+      0.35,
+      0.3
+    ],
     "min_opportunity_districts": null,
     "effectiveness": {
       "enabled": true,
@@ -39,14 +44,18 @@
       "id": "extra_democratic",
       "description": "One more Democratic seat than enacted AL plan (3D vs enacted 2D)",
       "criteria": {
-        "dem_seats": {"gte": 3}
+        "dem_seats": {
+          "gte": 3
+        }
       }
     },
     {
       "id": "zero_effective",
       "description": "Zero effective Black minority districts",
       "criteria": {
-        "eff_districts": {"eq": 0}
+        "eff_districts": {
+          "eq": 0
+        }
       }
     }
   ]

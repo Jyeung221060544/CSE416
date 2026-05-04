@@ -1,5 +1,5 @@
 {
-  "_comment_threshold": "Opportunity threshold = Latino VAP share of enacted District 6 (the most Latino-concentrated district in the enacted OR plan). District 6 has 17.4% Latino VAP — the highest in the state. Oregon has no majority-Latino district, so this is the realistic demographic ceiling the enacted map achieves for Latino electoral opportunity. The chain requires every proposed plan to preserve at least 1 district at or above this share where the Latino party-of-choice (D) wins. This is the correct single-election simplification of the Becker et al. group-control-factor approach: with one binary election outcome, the GC factor min(2k,1) reduces to a hard VAP floor anchored to the enacted benchmark.",
+  "_comment_threshold": "Opportunity threshold = Latino VAP share of enacted District 6 (the most Latino-concentrated district in the enacted OR plan). District 6 has 17.4% Latino VAP \u2014 the highest in the state. Oregon has no majority-Latino district, so this is the realistic demographic ceiling the enacted map achieves for Latino electoral opportunity. The chain requires every proposed plan to preserve at least 1 district at or above this share where the Latino party-of-choice (D) wins. This is the correct single-election simplification of the Becker et al. group-control-factor approach: with one binary election outcome, the GC factor min(2k,1) reduces to a hard VAP floor anchored to the enacted benchmark.",
   "state": "OR",
   "graph_path": "input/OR_graph.json",
   "assignment_col": "enacted_cd",
@@ -9,8 +9,8 @@
   "steps_test": 250,
   "steps_final": 5000,
   "output_dir": "output_vra",
-  "save_assignments_first_n": 10,
-  "save_assignments_every": 1000,
+  "save_assignments_first_n": 0,
+  "save_assignments_every": 500,
   "boxwhisker_group_keys": [
     "LATINO_VAP",
     "NH_WHITE_ALONE_VAP"
@@ -26,7 +26,12 @@
   "vra": {
     "enabled": true,
     "group_key": "LATINO_VAP",
-    "auto_thresholds": [0.17, 0.15, 0.12, 0.10],
+    "auto_thresholds": [
+      0.17,
+      0.15,
+      0.12,
+      0.1
+    ],
     "min_opportunity_districts": null,
     "effectiveness": {
       "enabled": true,
@@ -39,14 +44,18 @@
       "id": "extra_democratic",
       "description": "One more Democratic seat than enacted OR plan (6D vs enacted 5D)",
       "criteria": {
-        "dem_seats": {"gte": 6}
+        "dem_seats": {
+          "gte": 6
+        }
       }
     },
     {
       "id": "zero_effective",
       "description": "Zero effective Latino minority districts",
       "criteria": {
-        "eff_districts": {"eq": 0}
+        "eff_districts": {
+          "eq": 0
+        }
       }
     }
   ]

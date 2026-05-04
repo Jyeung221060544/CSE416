@@ -7,6 +7,8 @@
   "pop_tolerance": 0.035,
   "steps_test": 250,
   "steps_final": 5000,
+  "save_assignments_first_n": 0,
+  "save_assignments_every": 500,
   "output_dir": "output_raceblind",
   "boxwhisker_group_keys": [
     "NH_BLACK_ALONE_VAP",

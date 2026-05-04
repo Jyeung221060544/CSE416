@@ -379,10 +379,11 @@ def main():
 
             for plan_def in interesting_defs:
                 pid = plan_def["id"]
-                if interesting_found[pid]:
-                    continue
                 criteria = plan_def.get("criteria", {})
                 if _plan_matches_criteria(step_metrics, criteria):
+                    # Always overwrite — keeps the LAST matching plan in the chain
+                    # so the saved plan comes from as far into the run as possible,
+                    # producing more natural-looking district shapes.
                     save_interesting_plan(outdir, plan_def, i, step_metrics, part)
                     interesting_found[pid] = True
 
