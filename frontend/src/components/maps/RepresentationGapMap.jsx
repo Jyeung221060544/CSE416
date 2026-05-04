@@ -28,22 +28,6 @@ const precinctGeoCache     = {}  // stateId → precinct GeoJSON
 const heatmapDataCache     = {}  // `${stateId}_${race}` → { bins, features }
 const _heatmapInFlight     = {}  // dedup in-flight heatmap requests
 
-/* ── Flatten MultiPolygon → Polygon (keep largest part only) ─────────────── */
-// Ensemble plan GeoJSONs can contain non-contiguous MultiPolygon features with
-// artifact slivers. For a clean district-boundary display, keep only the
-// largest ring (by point count) and convert to a simple Polygon.
-function cleanGeoJson(geoJson) {
-    if (!geoJson?.features) return geoJson
-    const features = geoJson.features.map(f => {
-        if (f.geometry?.type !== 'MultiPolygon') return f
-        const largest = f.geometry.coordinates.reduce((best, poly) =>
-            (poly[0]?.length ?? 0) > (best[0]?.length ?? 0) ? poly : best
-        )
-        return { ...f, geometry: { type: 'Polygon', coordinates: largest } }
-    })
-    return { ...geoJson, features }
-}
-
 /* ── Shared effectiveness style ──────────────────────────────────────────── */
 // effective   → green fill + bright white border with green glow
 // not effective → transparent fill + white border with white glow (visible over teal heatmap)
@@ -153,7 +137,7 @@ export default function RepresentationGapMap({ stateId, plan, districtSummary, f
         if (interestingPlanCache[cacheKey]) { setInterestingGeoData(interestingPlanCache[cacheKey]); return }
         setInterestingGeoData(null)
         fetchInterestingPlan(stateId, plan)
-            .then(data => { const clean = cleanGeoJson(data); interestingPlanCache[cacheKey] = clean; setInterestingGeoData(clean) })
+            .then(data => { interestingPlanCache[cacheKey] = data; setInterestingGeoData(data) })
             .catch(err => {
                 console.error('[RepresentationGapMap] fetchInterestingPlan error:', err)
                 setNotFound(true)
