@@ -4,12 +4,12 @@ import sys
 from functools import partial
 from pathlib import Path
 
-from gerrychain import Graph, MarkovChain, Partition, accept
+from gerrychain import Graph, MarkovChain, GeographicPartition, accept
 from gerrychain.constraints import UpperBound, within_percent_of_ideal_population
 from gerrychain.constraints.compactness import L1_reciprocal_polsby_popper
 from gerrychain.proposals import recom
 from gerrychain.tree import bipartition_tree
-from gerrychain.updaters import Tally, cut_edges
+from gerrychain.updaters import Tally, cut_edges, area, perimeter
 from gerrychain.metrics import polsby_popper
 
 # ── Shared helpers ────────────────────────────────────────────────────────
@@ -144,6 +144,8 @@ def main():
     updaters = {
         "population": Tally(pop_col, alias="population"),
         "cut_edges": cut_edges,
+        "area": area,
+        "perimeter": perimeter,
         "polsby_popper": polsby_popper,
     }
 
@@ -186,7 +188,7 @@ def main():
         if updater_name not in updaters:
             updaters[updater_name] = Tally(gk, alias=updater_name)
 
-    initial = Partition(G, assignment=assignment_col, updaters=updaters)
+    initial = GeographicPartition(G, assignment=assignment_col, updaters=updaters)
 
     pop_constraint = within_percent_of_ideal_population(initial, eps, pop_key="population")
     initial_l1 = L1_reciprocal_polsby_popper(initial)
