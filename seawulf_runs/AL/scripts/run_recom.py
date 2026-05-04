@@ -4,13 +4,11 @@ import sys
 from functools import partial
 from pathlib import Path
 
-from gerrychain import Graph, MarkovChain, GeographicPartition, accept
+from gerrychain import Graph, MarkovChain, Partition, accept
 from gerrychain.constraints import UpperBound, within_percent_of_ideal_population
-from gerrychain.constraints.compactness import L1_reciprocal_polsby_popper
 from gerrychain.proposals import recom
 from gerrychain.tree import bipartition_tree
 from gerrychain.updaters import Tally, cut_edges
-from gerrychain.metrics import polsby_popper
 
 # ── Shared helpers ────────────────────────────────────────────────────────
 _SHARED = Path(__file__).resolve().parents[2] / "shared"
@@ -144,7 +142,6 @@ def main():
     updaters = {
         "population": Tally(pop_col, alias="population"),
         "cut_edges": cut_edges,
-        "polsby_popper": polsby_popper,
     }
 
     # Optional election tallies if present
@@ -186,11 +183,11 @@ def main():
         if updater_name not in updaters:
             updaters[updater_name] = Tally(gk, alias=updater_name)
 
-    initial = GeographicPartition(G, assignment=assignment_col, updaters=updaters)
-    
+    initial = Partition(G, assignment=assignment_col, updaters=updaters)
+
     pop_constraint = within_percent_of_ideal_population(initial, eps, pop_key="population")
-    initial_l1 = L1_reciprocal_polsby_popper(initial)
-    compactness_bound = UpperBound(L1_reciprocal_polsby_popper, 1.5 * initial_l1)
+    initial_cut_edges = len(initial["cut_edges"])
+    compactness_bound = UpperBound(lambda p: len(p["cut_edges"]), 2.0 * initial_cut_edges)
     constraints = [pop_constraint, compactness_bound]
 
     # ---------------- VRA constraints (if enabled) ----------------
