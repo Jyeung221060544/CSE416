@@ -83,6 +83,31 @@ def keep_largest_part(geom):
     return max(geom.geoms, key=lambda p: p.area)
 
 
+def chaikin_smooth(coords, iterations=3):
+    """Chaikin corner-cutting: progressively rounds polygon corners."""
+    pts = list(coords)
+    if pts[0] != pts[-1]:
+        pts.append(pts[0])
+    for _ in range(iterations):
+        new_pts = []
+        for i in range(len(pts) - 1):
+            p0, p1 = pts[i], pts[i + 1]
+            new_pts.append((0.75 * p0[0] + 0.25 * p1[0], 0.75 * p0[1] + 0.25 * p1[1]))
+            new_pts.append((0.25 * p0[0] + 0.75 * p1[0], 0.25 * p0[1] + 0.75 * p1[1]))
+        new_pts.append(new_pts[0])
+        pts = new_pts
+    return pts
+
+
+def smooth_geom(geom):
+    """Apply Chaikin smoothing to a Polygon (exterior ring only, holes already removed)."""
+    if geom.geom_type == "Polygon":
+        return Polygon(chaikin_smooth(list(geom.exterior.coords)))
+    elif geom.geom_type == "MultiPolygon":
+        return MultiPolygon([Polygon(chaikin_smooth(list(p.exterior.coords))) for p in geom.geoms])
+    return geom
+
+
 def load_plan(plan_path):
     with open(plan_path, encoding="utf-8") as f:
         return json.load(f)
@@ -169,8 +194,10 @@ def build_district_geojson(plan_data, precincts_gdf, state, vra_cfg=None):
     dissolved = precincts_gdf.dissolve(by="_district", as_index=False)[["_district", "geometry"]]
     dissolved["geometry"] = dissolved.geometry.buffer(0)
     dissolved["geometry"] = dissolved.geometry.apply(fill_holes)
-    dissolved["geometry"] = dissolved.geometry.simplify(tolerance=0.005, preserve_topology=True)
+    dissolved["geometry"] = dissolved.geometry.simplify(tolerance=0.02, preserve_topology=True)
     dissolved["geometry"] = dissolved.geometry.apply(keep_largest_part)
+    dissolved["geometry"] = dissolved.geometry.apply(smooth_geom)
+    dissolved["geometry"] = dissolved.geometry.simplify(tolerance=0.008, preserve_topology=True)
     dissolved["geometry"] = [g.buffer(0) for g in dissolved["geometry"]]
 
     dissolved = dissolved.merge(agg, on="_district", how="left")
