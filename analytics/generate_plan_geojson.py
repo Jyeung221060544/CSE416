@@ -73,22 +73,14 @@ def fill_holes(geom):
     return geom
 
 
-def drop_sliver_parts(geom, min_fraction=0.01):
+def keep_largest_part(geom):
     """
-    Remove polygon parts whose area is below min_fraction of the total geometry area.
-    Eliminates degenerate near-zero-area slivers that simplify() can produce.
+    For MultiPolygon geometries, keep only the single largest polygon part.
+    This ensures every district renders as one contiguous shape with no island pieces.
     """
-    if geom.geom_type == "Polygon":
-        return geom
     if geom.geom_type != "MultiPolygon":
         return geom
-    total = geom.area
-    if total == 0:
-        return geom
-    kept = [p for p in geom.geoms if p.area / total >= min_fraction]
-    if not kept:
-        return max(geom.geoms, key=lambda p: p.area)
-    return kept[0] if len(kept) == 1 else MultiPolygon(kept)
+    return max(geom.geoms, key=lambda p: p.area)
 
 
 def load_plan(plan_path):
@@ -176,7 +168,7 @@ def build_district_geojson(plan_data, precincts_gdf, state, vra_cfg=None):
     dissolved["geometry"] = dissolved.geometry.buffer(0)
     dissolved["geometry"] = dissolved.geometry.apply(fill_holes)
     dissolved["geometry"] = dissolved.geometry.simplify(tolerance=0.001, preserve_topology=True)
-    dissolved["geometry"] = dissolved.geometry.apply(drop_sliver_parts)
+    dissolved["geometry"] = dissolved.geometry.apply(keep_largest_part)
 
     # Remove micro-overlaps from independent simplification: subtract previously
     # processed districts so shared boundaries are exactly non-overlapping.
