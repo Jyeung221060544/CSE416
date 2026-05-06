@@ -12,7 +12,7 @@ import java.util.Optional;
  * VoteSeatShareService — serves
  * {@code GET /api/states/{stateId}/vote-seat-share}.
  *
- * <p>Cached under {@code "vote_seat_share"} keyed by {@code stateId}.
+ * Cached under {@code "vote_seat_share"} keyed by {@code stateId}.
  */
 @Service
 public class VoteSeatShareService {
@@ -27,7 +27,7 @@ public class VoteSeatShareService {
      * Returns the vote-seat share document for the given state,
      * or {@code null} if not found.
      *
-     * @param stateId two-letter state abbreviation (e.g. "AL")
+     * @param stateId 
      */
     @Cacheable(value = "vote_seat_share", key = "#stateId")
     public VoteSeatShareDoc getVoteSeatShare(State stateId) {

@@ -10,15 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
-/**
- * OverviewService — serves the split overview endpoints:
- * <ul>
- *   <li>{@code GET /api/states/{stateId}/overview/state-stats} — fetched on
- *       state-overview section entry; contains everything needed immediately.</li>
- *   <li>{@code GET /api/states/{stateId}/overview/ensemble-demo} — fetched lazily
- *       when the user first opens the Ensemble/Pop Stats tab.</li>
- * </ul>
- */
+
 @Service
 public class OverviewService {
 
@@ -32,8 +24,6 @@ public class OverviewService {
      * Returns the state-stats bundle: everything needed immediately when the
      * state page loads (stateSummary for filter defaults + districtSummary for
      * the map party colors and seat-distribution panel).
-     *
-     * <p>Response shape: {@code { stateSummary, districtSummary }}
      */
     @Cacheable(value = "overview_state_stats", key = "#stateId")
     public Map<String, Object> getStateStats(State stateId) {

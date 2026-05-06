@@ -10,10 +10,6 @@ import java.util.Optional;
 
 /**
  * EiService — serves {@code GET /api/states/{stateId}/ei}.
- *
- * <p>Returns the full EI KDE document for the given state in one response.
- * The document is candidate-first; race filtering is done on the frontend
- * via {@code eiRaceFilter}.  Cached per stateId.
  */
 @Service
 public class EiService {
@@ -26,8 +22,6 @@ public class EiService {
 
     /**
      * Returns the EI KDE document for the given state, or {@code null} if not found.
-     *
-     * @param stateId two-letter state abbreviation (e.g. "AL")
      */
     @Cacheable(value = "ei_kde", key = "#stateId")
     public EiKdeDoc getEiKde(State stateId) {

@@ -10,12 +10,6 @@ import java.util.Optional;
 
 /**
  * GinglesService — serves {@code GET /api/states/{stateId}/gingles?race=}.
- *
- * <p>Gingles precinct data is the largest payload (~500 KB per race).  Splitting
- * by race and caching per (stateId, race) means a user who stays on "Black" for
- * the whole session never downloads "White" data, and vice versa.
- *
- * <p>Cached under {@code "gingles"} keyed by {@code stateId + "_" + race}.
  */
 @Service
 public class GinglesService {
@@ -30,8 +24,8 @@ public class GinglesService {
      * Returns the Gingles document for the given state and racial group,
      * or {@code null} if not found.
      *
-     * @param stateId two-letter state abbreviation (e.g. "AL")
-     * @param race    lowercase racial group key (e.g. "black")
+     * @param stateId 
+     * @param race    
      */
     @Cacheable(value = "gingles", key = "#stateId + '_' + #race")
     public GinglesDoc getGingles(State stateId, String race) {

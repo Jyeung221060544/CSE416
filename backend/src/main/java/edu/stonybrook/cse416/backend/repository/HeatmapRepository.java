@@ -6,7 +6,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;
 
-/** Spring Data repository for the {@code heatmaps} collection. */
 public interface HeatmapRepository extends MongoRepository<HeatmapDoc, String> {
 
     /**

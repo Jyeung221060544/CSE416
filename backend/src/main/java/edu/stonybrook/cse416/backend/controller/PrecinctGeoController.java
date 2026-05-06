@@ -19,28 +19,17 @@ import java.util.concurrent.TimeUnit;
  * PrecinctGeoController —
  * {@code GET /api/states/{stateId}/precincts}
  *
- * <p>Streams the precinct GeoJSON file directly from disk.  Precinct files
+ * Streams the precinct GeoJSON file directly from disk.  Precinct files
  * are too large (~100–140 MB of geometry) to store in MongoDB's 16 MB
  * per-document limit, so they are served as static file streams.
- *
- * <p>Spring Boot's gzip compression (configured in {@code application.properties})
- * compresses responses ≥ 1 KB automatically, reducing the wire size to roughly
- * 20–30 MB for the AL precinct file.
- *
- * <p>File locations are resolved relative to {@code app.geodata.base-path}
- * using the pattern {@code {stateId}_data/{stateId}_precincts_full.geojson}.
+
  */
 @RestController
 @RequestMapping("/api/states/{stateId}/geo/precincts")
 public class PrecinctGeoController {
 
     private static final CacheControl CACHE = CacheControl.maxAge(24, TimeUnit.HOURS).cachePublic();
-
-    /**
-     * Root directory that contains the {@code AL_data/} and {@code OR_data/}
-     * subdirectories.  Defaults to the project root (one level above the
-     * backend working directory).
-     */
+    
     @Value("${app.geodata.base-path:..}")
     private String geoBasePath;
 

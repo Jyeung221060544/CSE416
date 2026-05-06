@@ -7,15 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * BackendApplication — Spring Boot entry point for the CSE 416 redistricting
  * analysis server.
  *
- * <p>Annotated with {@code @SpringBootApplication}, which enables:
- * <ul>
- *   <li>Auto-configuration of Spring components (MongoDB, MVC, etc.)</li>
- *   <li>Component scanning of all classes in the {@code edu.stonybrook.cse416.backend}
- *       package and its sub-packages.</li>
- * </ul>
- *
- * <p>Run this class's {@link #main(String[])} method to start the embedded
- * Tomcat server on the configured port (default: 8080).
+ * Annotated with {@code @SpringBootApplication}, which enables:
+ *   -Auto-configuration of Spring components (MongoDB, MVC, etc.)
+ *   -Component scanning of all classes in the {@code edu.stonybrook.cse416.backend}
+ *    package and its sub-packages.
  */
 @SpringBootApplication
 public class BackendApplication {

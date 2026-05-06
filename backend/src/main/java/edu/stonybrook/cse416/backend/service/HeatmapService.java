@@ -10,11 +10,6 @@ import java.util.Optional;
 
 /**
  * HeatmapService — serves {@code GET /api/states/{stateId}/heatmap?race=}.
- *
- * <p>Documents are stored one-per-race so payloads stay small even for large
- * real-world datasets with tens of thousands of precincts.
- * Cached under {@code "heatmaps"} keyed by (stateId, race), so switching back
- * to a previously viewed race is instant.
  */
 @Service
 public class HeatmapService {
@@ -29,8 +24,8 @@ public class HeatmapService {
      * Returns the heatmap document for the given state and race,
      * or {@code null} if not found.
      *
-     * @param stateId two-letter state abbreviation (e.g. "AL")
-     * @param race    lowercase racial group key (e.g. "black")
+     * @param stateId 
+     * @param race    
      */
     @Cacheable(value = "heatmaps", key = "#stateId + '_' + #race")
     public HeatmapDoc getHeatmap(State stateId, String race) {

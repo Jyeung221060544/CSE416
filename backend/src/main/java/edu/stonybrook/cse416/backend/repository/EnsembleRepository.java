@@ -6,7 +6,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;
 
-/** Spring Data repository for the {@code ensemble_analysis} collection. */
 public interface EnsembleRepository extends MongoRepository<EnsembleDoc, String> {
     Optional<EnsembleDoc> findByStateId(State stateId);
 }

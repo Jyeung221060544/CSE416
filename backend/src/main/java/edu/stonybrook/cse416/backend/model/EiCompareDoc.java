@@ -8,58 +8,17 @@ import java.util.Map;
 
 /**
  * EiCompareDoc — MongoDB document for the {@code ei_compare} collection.
- *
- * <p><b>One document per (state, race-pair) combination.</b>  The raw EI-compare
- * data contains 10 race pairs (all C(5,2) combinations of 5 racial groups).
- * Splitting by pair means the client only fetches the pair currently selected
- * via {@code eiKdeCompareRaces}, saving the transfer of 9 unused pairs.
- *
- * <p>The {@code _id} follows the pattern
- * {@code "{stateId}_eicompare_{race1}_{race2}"} where race1 < race2
- * alphabetically (e.g. {@code "AL_eicompare_black_white"}).  The sort is applied
- * at seed time so the endpoint can construct a deterministic key regardless of
- * query param order.
- *
- * <p>Served by:
- * {@code GET /api/states/{stateId}/ei-compare?race1={r1}&race2={r2}}
- * (called when the user changes the polarisation comparison pair).
  */
 @Document(collection = "ei_compare")
 public class EiCompareDoc {
 
-    /**
-     * MongoDB {@code _id} — composite key:
-     * {@code "{stateId}_eicompare_{race1}_{race2}"} (races sorted alphabetically).
-     */
     @Id
     private String id;
-
-    /** State this document belongs to. */
     private State stateId;
-
-    /**
-     * The two races being compared, sorted alphabetically.
-     * Example: {@code ["black", "white"]}.
-     */
     private List<String> races;
-
-    /** Human-readable pair label (e.g. "Black vs White"). */
     private String label;
-
-    /** Election year the EI was computed for. */
     private Integer electionYear;
-
-    /**
-     * Minimum absolute difference threshold used in the probability calculation.
-     * Example: {@code 0.1} means P(|diff| > 0.1).
-     */
     private Double differenceThreshold;
-
-    /**
-     * Per-candidate comparison KDE data for this race pair.
-     * Each entry: {@code { candidateId, candidateName, party,
-     * peakDifference, probDifferenceGT, kdePoints: [{ x, y }] }}.
-     */
     private List<Map<String, Object>> candidates;
 
     public EiCompareDoc() {}

@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;
 
-/** Spring Data repository for the {@code state_overview} collection. */
+
 public interface StateOverviewRepository extends MongoRepository<StateOverviewDoc, String> {
     Optional<StateOverviewDoc> findByStateId(State stateId);
 }

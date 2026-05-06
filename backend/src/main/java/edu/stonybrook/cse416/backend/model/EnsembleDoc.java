@@ -7,40 +7,14 @@ import java.util.Map;
 
 /**
  * EnsembleDoc — MongoDB document for the {@code ensemble_analysis} collection.
- *
- * <p>Combines the two ensemble-analysis payloads into a single document so the
- * {@code GET /api/states/{stateId}/ensemble} endpoint is a single MongoDB read
- * (~6 KB total).
- *
- * <p>Served by: {@code GET /api/states/{stateId}/ensemble}
  */
 @Document(collection = "ensemble_analysis")
 public class EnsembleDoc {
 
-    /** MongoDB {@code _id} — two-letter state abbreviation (e.g. "AL"). */
     @Id
     private String id;
-
-    /** State this document belongs to. */
     private State stateId;
-
-    /**
-     * Seat-split histogram payload.
-     * Shape: {@code { stateId, numDistricts, totalPlans,
-     * enactedPlanSplit: { republican, democratic },
-     * ensembles: [{ ensembleId, ensembleType,
-     *               splits: [{ republican, democratic, frequency }] }] }}.
-     */
     private Map<String, Object> splits;
-
-    /**
-     * Box-and-whisker distribution payload.
-     * Shape: {@code { stateId, numDistricts, totalPlans, feasibleGroups,
-     * ensembles: [{ ensembleId, ensembleType,
-     *               groupDistricts: { [race]: [{ index, min, q1, median, mean, q3, max }] } }],
-     * enactedPlan: { planId, planType,
-     *                groupDistricts: { [race]: [{ index, districtId, groupVapPercentage }] } } }}.
-     */
     private Map<String, Object> boxWhisker;
 
     private Map<String, Object> minorityEffectiveHistogram;

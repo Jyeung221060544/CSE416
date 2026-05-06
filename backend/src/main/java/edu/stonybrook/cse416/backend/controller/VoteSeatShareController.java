@@ -12,11 +12,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * VoteSeatShareController —
  * {@code GET /api/states/{stateId}/vote-seat-share}
- *
- * <p>Fetched when the user first enters the VS-SS tab in the Racial
- * Polarization section.  The VS-SS tab may be disabled if
- * {@code raciallyPolarized === false}; the frontend can check this by
- * fetching this endpoint and inspecting the flag before enabling the tab.
  */
 @RestController
 @RequestMapping("/api/states/{stateId}/vote-seat-share")

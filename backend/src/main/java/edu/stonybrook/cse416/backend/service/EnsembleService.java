@@ -11,14 +11,8 @@ import java.util.Optional;
 
 /**
  * EnsembleService — serves the split ensemble endpoints:
- * <ul>
- *   <li>{@code GET /api/states/{stateId}/ensemble/splits}</li>
- *   <li>{@code GET /api/states/{stateId}/ensemble/box-whisker}</li>
- * </ul>
- *
- * <p>Each method returns only the payload needed for its tab, supporting
- * lazy loading: splits data is fetched when the user enters the
- * Ensemble Splits tab; box-whisker data when they enter Box &amp; Whisker.
+ *   {@code GET /api/states/{stateId}/ensemble/splits}</li>
+ *   {@code GET /api/states/{stateId}/ensemble/box-whisker}</li>
  */
 @Service
 public class EnsembleService {

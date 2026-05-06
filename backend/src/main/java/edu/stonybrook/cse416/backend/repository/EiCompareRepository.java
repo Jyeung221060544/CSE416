@@ -5,7 +5,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;
 
-/** Spring Data repository for the {@code ei_compare} collection. */
 public interface EiCompareRepository extends MongoRepository<EiCompareDoc, String> {
 
     /**

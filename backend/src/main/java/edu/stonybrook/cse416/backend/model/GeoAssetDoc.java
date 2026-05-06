@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * GeoAssetDoc — MongoDB document for the {@code geo_assets} collection.
  *
- * <p>Stores GeoJSON FeatureCollections that are small enough to fit within
+ * Stores GeoJSON FeatureCollections that are small enough to fit within
  * MongoDB's 16 MB document limit:
  * <ul>
  *   <li>{@code _id = "us_states"} — the 48 contiguous US states (~414 KB)</li>

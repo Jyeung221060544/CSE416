@@ -21,23 +21,10 @@ import java.util.Map;
 @Document(collection = "ei_kde")
 public class EiKdeDoc {
 
-    /** MongoDB {@code _id} — two-letter state abbreviation (e.g. "AL"). */
     @Id
     private String id;
-
-    /** State this document belongs to. */
     private State stateId;
-
-    /** Election year the EI was computed for (e.g. 2024). */
     private Integer electionYear;
-
-    /**
-     * Candidate-first EI KDE data.
-     * Each entry: {@code { candidateId, candidateName, party,
-     * racialGroups: [{ group, peakSupportEstimate,
-     *                  confidenceIntervalLow, confidenceIntervalHigh,
-     *                  kdePoints: [{ x, y }] }] }}.
-     */
     private List<Map<String, Object>> candidates;
 
     public EiKdeDoc() {}

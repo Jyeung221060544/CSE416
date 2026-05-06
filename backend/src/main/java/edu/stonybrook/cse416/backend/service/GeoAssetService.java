@@ -12,7 +12,7 @@ import java.util.Optional;
 /**
  * GeoAssetService — serves GeoJSON assets stored in MongoDB.
  *
- * <p>Covers the US-48 states outline and per-state congressional district
+ * Covers the US-48 states outline and per-state congressional district
  * boundaries.  Precinct GeoJSONs are too large for MongoDB and are served
  * directly from disk by {@code PrecinctGeoController}.
  */
@@ -31,24 +31,11 @@ public class GeoAssetService {
         return fetch("us_states");
     }
 
-    /**
-     * Returns the congressional district GeoJSON for the given state,
-     * or {@code null} if not found.
-     *
-     * @param stateId two-letter state abbreviation (e.g. "AL")
-     */
     @Cacheable(value = "geo_districts", key = "#stateId")
     public Map<String, Object> getDistricts(State stateId) {
         return fetch(stateId.name() + "_districts");
     }
 
-    /**
-     * Returns the GeoJSON for a pre-selected interesting ensemble plan, or
-     * {@code null} if this state/planType combination has no data.
-     *
-     * @param stateId  two-letter state abbreviation
-     * @param planType "low" (zero effective) or "high" (extra democratic)
-     */
     @Cacheable(value = "geo_interesting_plans", key = "#stateId + '_' + #planType")
     public Map<String, Object> getInterestingPlan(State stateId, String planType) {
         return fetch(stateId.name() + "_interesting_" + planType);

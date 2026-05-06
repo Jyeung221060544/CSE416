@@ -6,7 +6,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;
 
-/** Spring Data repository for the {@code gingles} collection. */
 public interface GinglesRepository extends MongoRepository<GinglesDoc, String> {
 
     /**

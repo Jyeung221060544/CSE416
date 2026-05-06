@@ -12,13 +12,7 @@ import java.util.Optional;
 
 /**
  * EffectivenessService — serves the effectiveness analysis endpoint:
- * <ul>
- *   <li>{@code GET /api/states/{stateId}/ensemble/effectiveness}</li>
- * </ul>
- *
- * <p>The entire document is returned in one response and race filtering is
- * done on the frontend.  The payload is small enough (~2 KB per state) that
- * splitting by race would add unnecessary round-trips with no benefit.
+ *   {@code GET /api/states/{stateId}/ensemble/effectiveness}
  */
 @Service
 public class EffectivenessService {
@@ -33,9 +27,9 @@ public class EffectivenessService {
      * Returns the full effectiveness payload for the given state, or
      * {@code null} if no data exists (controller returns 404 in that case).
      *
-     * <p>The response shape matches the source JSON exactly so the frontend
+     * The response shape matches the source JSON exactly so the frontend
      * can use it without transformation:
-     * <pre>{@code
+     * {@code
      * {
      *   "stateId":                 "AL",
      *   "numDistricts":            7,
@@ -45,7 +39,7 @@ public class EffectivenessService {
      *   "effectivenessBoxWhisker": { ... },
      *   "vraImpactThreshold":      { "black": { "rows": [...] } }
      * }
-     * }</pre>
+     * }
      */
     @Cacheable(value = "effectiveness", key = "#stateId")
     public Map<String, Object> getEffectiveness(State stateId) {

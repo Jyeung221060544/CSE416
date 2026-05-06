@@ -8,13 +8,7 @@ import java.util.Map;
 
 /**
  * StateOverviewDoc — MongoDB document for the {@code state_overview} collection.
- *
- * <p>Groups the three small payloads needed immediately when a user opens a state
- * page: state-level summary, district table, and ensemble metadata.  Stored as
- * one document so the {@code GET /api/states/{stateId}/overview} endpoint is a
- * single MongoDB read (~3 KB total).
- *
- * <p>Served by: {@code GET /api/states/{stateId}/overview}
+ * Served by: {@code GET /api/states/{stateId}/overview}
  */
 @Document(collection = "state_overview")
 public class StateOverviewDoc {
@@ -56,7 +50,7 @@ public class StateOverviewDoc {
      * Discovered at seed time from the feature map keys in the source JSON —
      * never hardcoded, since different states may model different racial groups.
      *
-     * <p>Example: {@code ["black", "white", "hispanic", "asian", "other"]}.
+     * Example: {@code ["black", "white", "hispanic", "asian", "other"]}.
      * The frontend uses this list to know which {@code race} values are valid
      * for {@code GET /heatmap?race=} requests.
      */
@@ -66,7 +60,7 @@ public class StateOverviewDoc {
      * Race pairs for which EI comparison data is available.
      * Each entry is a sorted two-element list, e.g. {@code ["black", "white"]}.
      *
-     * <p>The frontend uses this to enable only valid options in
+     * The frontend uses this to enable only valid options in
      * {@code Select2RaceFilter} — pairs absent from this list will 404 and
      * should not be offered.  Composition varies by state and what EI modelled.
      */

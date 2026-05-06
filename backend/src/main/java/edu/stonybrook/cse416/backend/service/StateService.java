@@ -11,10 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * StateService — serves the {@code GET /api/states} splash-page endpoint.
- *
- * <p>Cached under {@code "states"} (Caffeine, 24 h TTL).  The list rarely
- * changes between restarts, so a single cache entry covers all clients.
+ * StateService — serves the {@code GET /api/states} splash-page endpoint. Cached under {@code "states"} (Caffeine, 24 h TTL).  
  */
 @Service
 public class StateService {
@@ -27,10 +24,6 @@ public class StateService {
 
     /**
      * Returns the list of all states with splash-page metadata.
-     *
-     * <p>Response shape:
-     * <pre>{ "states": [ { stateId, stateName, hasData, numDistricts,
-     *                      isPreclearance, center, zoom } ] }</pre>
      */
     @Cacheable("states")
     public Map<String, Object> listStates() {
