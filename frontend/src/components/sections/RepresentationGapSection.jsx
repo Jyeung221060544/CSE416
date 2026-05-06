@@ -4,11 +4,6 @@ import SectionHeader     from '@/components/ui/section-header'
 import useAppStore       from '@/store/useAppStore'
 import RepresentationGapMap from '@/components/maps/RepresentationGapMap'
 
-// Fallback for states where the backend districtSummary lacks racialGroup fields.
-import AL_DISTRICTS from '@/dummy/AL-district-summary.json'
-import OR_DISTRICTS from '@/dummy/OR-district-summary.json'
-const DISTRICT_DUMMY = { AL: AL_DISTRICTS, OR: OR_DISTRICTS }
-
 
 const PLAN_LABELS = {
     current: 'Current Enacted Plan',
@@ -16,6 +11,12 @@ const PLAN_LABELS = {
     low:     'Post-VRA Decision Scenario',
 }
 
+/**
+ * Displays the effective district count for a given plan, with an optional
+ * delta vs. the enacted plan for the low-effectiveness scenario.
+ * @param {string} plan - Plan key ('current' | 'high' | 'low').
+ * @param {object} countsByPlan - Map of plan key → effective district count.
+ */
 function PlanStat({ plan, countsByPlan }) {
     if (plan === 'current') {
         const n = countsByPlan['current']
@@ -49,22 +50,16 @@ function PlanStat({ plan, countsByPlan }) {
     return null
 }
 
-
 /**
- * Side-by-side district plan comparison (GUI-8 / GUI-19).
- *
- * @param {{ data: object|null, stateId: string }} props
+ * Renders the Representation Gap section with a side-by-side or single-plan
+ * map view showing district effectiveness under different redistricting scenarios.
+ * @param {object} data - State overview data (used to derive district summary).
+ * @param {string} stateId - State identifier passed to the map components.
  */
 export default function RepresentationGapSection({ data, stateId }) {
 
     const mapCompareFilter = useAppStore(s => s.mapCompareFilter)
     const effRaceFilter    = useAppStore(s => s.effRaceFilter)
-
-    const backendDistricts = data?.districtSummary
-    /* Fall back to dummy data when backend districtSummary lacks racialGroup fields. */
-    const districtSummary = (backendDistricts?.districts?.[0]?.racialGroup != null)
-        ? backendDistricts
-        : (DISTRICT_DUMMY[stateId?.toUpperCase()] ?? backendDistricts ?? null)
 
     const planA = mapCompareFilter[0] ?? null
     const planB = mapCompareFilter[1] ?? null
@@ -74,6 +69,7 @@ export default function RepresentationGapSection({ data, stateId }) {
 
     const hasTwo = mapCompareFilter.length >= 2
 
+    // Step 0: Track effective district counts per plan for PlanStat display
     const [countsByPlan, setCountsByPlan] = useState({})
     const onCountCurrent = useCallback(n => setCountsByPlan(p => ({ ...p, current: n })), [])
     const onCountHigh    = useCallback(n => setCountsByPlan(p => ({ ...p, high:    n })), [])
@@ -83,6 +79,7 @@ export default function RepresentationGapSection({ data, stateId }) {
         planKey === 'high'    ? onCountHigh    :
         planKey === 'low'     ? onCountLow     : undefined
 
+    // Step 1: Render side-by-side maps if two plans selected, otherwise single map + prompt
     return (
         <section
             id="representation-gap"
@@ -113,10 +110,10 @@ export default function RepresentationGapSection({ data, stateId }) {
                         <SectionHeader title={titleA} />
                         <PlanStat plan={planA} countsByPlan={countsByPlan} />
                         <MapFrame className="flex-1 min-h-0">
+                            {/* Representation Gap Map — Plan A */}
                             <RepresentationGapMap
                                 stateId={stateId}
                                 plan={planA}
-                                districtSummary={districtSummary}
                                 feasibleRace={effRaceFilter}
                                 onEffectiveCount={getCountHandler(planA)}
                             />
@@ -127,10 +124,10 @@ export default function RepresentationGapSection({ data, stateId }) {
                         <SectionHeader title={titleB} />
                         <PlanStat plan={planB} countsByPlan={countsByPlan} />
                         <MapFrame className="flex-1 min-h-0">
+                            {/* Representation Gap Map — Plan B */}
                             <RepresentationGapMap
                                 stateId={stateId}
                                 plan={planB}
-                                districtSummary={districtSummary}
                                 feasibleRace={effRaceFilter}
                                 onEffectiveCount={getCountHandler(planB)}
                             />
@@ -148,10 +145,10 @@ export default function RepresentationGapSection({ data, stateId }) {
                         <PlanStat plan={planA} countsByPlan={countsByPlan} />
                         <MapFrame className="flex-1 min-h-0">
                             {planA ? (
+                                /* Representation Gap Map — Single Plan */
                                 <RepresentationGapMap
                                     stateId={stateId}
                                     plan={planA}
-                                    districtSummary={districtSummary}
                                     feasibleRace={effRaceFilter}
                                     onEffectiveCount={getCountHandler(planA)}
                                 />

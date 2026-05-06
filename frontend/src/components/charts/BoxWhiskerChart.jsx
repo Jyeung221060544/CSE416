@@ -11,6 +11,7 @@ const GRID_CLR    = '#dce8f0'
 
 const MARGIN = { top: 30, right: 22, bottom: 62, left: 74 }
 
+/** Tracks the pixel dimensions of a DOM element via ResizeObserver. */
 function useContainerSize(ref) {
     const [size, setSize] = useState({ width: 0, height: 0 })
     useEffect(() => {
@@ -25,10 +26,6 @@ function useContainerSize(ref) {
     return size
 }
 
-/**
- * Soft gradient background rect. Uses a unique gradient ID per instance to prevent
- * cross-chart bleed when two BoxWhiskerChart instances share the same DOM.
- */
 function BgRect({ innerWidth, innerHeight, chartId }) {
     const gradId = `bwBg_${chartId}`
     return (
@@ -45,9 +42,10 @@ function BgRect({ innerWidth, innerHeight, chartId }) {
     )
 }
 
+/** Absolute-positioned tooltip showing full box stats + enacted plan value on hover. */
 function Tooltip({ district, enactedDistricts, x, y }) {
     if (!district) return null
-    const d   = district
+    const d = district
     const fmt = v => `${(v * 100).toFixed(1)}%`
     const enacted = enactedDistricts?.find(e => e.index === d.index)
     return (
@@ -76,15 +74,24 @@ function Tooltip({ district, enactedDistricts, x, y }) {
     )
 }
 
+/**
+ * Renders a responsive SVG box-and-whisker chart per district using D3 scales.
+ * @param {Array}  districts        - Array of {index, min, q1, median, mean, q3, max}.
+ * @param {Array}  enactedDistricts - Enacted-plan overlay points {index, groupVapPercentage, districtId}.
+ * @param {string} raceName         - Label used on axes and legend (e.g. "Black").
+ * @param {string} chartId          - Unique ID for SVG gradient namespacing.
+ * @param {number} sharedYMax       - Optional shared y-axis ceiling across sibling charts.
+ */
 export default function BoxWhiskerChart({
     districts,
     enactedDistricts,
-    raceName    = 'Group',
-    chartId     = 'bw',
+    raceName = 'Group',
+    chartId = 'bw',
     sharedYMax,
     className,
 }) {
 
+    /* ── Step 0: Container size + hover state ────────────────────────────── */
     const containerRef = useRef(null)
     const { width, height } = useContainerSize(containerRef)
     const [hovered, setHovered] = useState({ district: null, x: 0, y: 0 })
@@ -92,6 +99,7 @@ export default function BoxWhiskerChart({
     const innerW = Math.max(0, width  - MARGIN.left - MARGIN.right)
     const innerH = Math.max(0, height - MARGIN.top  - MARGIN.bottom)
 
+    /* ── Step 1: Build x-scale (band) + y-scale (linear, shared ceiling) ── */
     const xScale = useMemo(() => {
         if (!innerW || !districts?.length) return null
         return d3.scaleBand()
@@ -110,6 +118,7 @@ export default function BoxWhiskerChart({
 
     const yTicks = useMemo(() => (yScale ? yScale.ticks(8) : []), [yScale])
 
+    /* ── Step 2: Render ──────────────────────────────────────────────────── */
     if (!districts?.length) {
         return (
             <div className={`w-full rounded-xl border border-dashed border-brand-muted/30 bg-brand-surface/20 flex items-center justify-center ${className ?? 'h-[360px]'}`}>

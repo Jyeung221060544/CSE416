@@ -17,6 +17,7 @@ const GRID_CLR    = '#dce8f0'
 const MARGIN    = { top: 30, right: 22, bottom: 62, left: 74 }
 const INNER_GAP = 5
 
+/** Tracks the pixel dimensions of a DOM element via ResizeObserver. */
 function useContainerSize(ref) {
     const [size, setSize] = useState({ width: 0, height: 0 })
     useEffect(() => {
@@ -46,6 +47,7 @@ function BgRect({ innerWidth, innerHeight }) {
     )
 }
 
+/** Tooltip that resolves stats from whichever ensemble half (rb/vra) the cursor is over. */
 function CompareTooltip({ districtIdx, ensemble, rbDistricts, vraDistricts, enactedDistricts, x, y }) {
     if (!districtIdx) return null
     const arr = ensemble === 'rb' ? rbDistricts : vraDistricts
@@ -85,6 +87,7 @@ function CompareTooltip({ districtIdx, ensemble, rbDistricts, vraDistricts, enac
     )
 }
 
+/** Renders one box-and-whisker glyph (whiskers, IQR rect, median line, mean dot) at a given cx. */
 function SingleBox({ cx, boxW, d, yScale, stroke, fill, medClr }) {
     const capW = boxW * 0.65
     const yQ1  = yScale(d.q1)
@@ -116,6 +119,15 @@ function SingleBox({ cx, boxW, d, yScale, stroke, fill, medClr }) {
     )
 }
 
+/**
+ * Side-by-side box-and-whisker chart for the Ensemble Anlaysis — compares
+ * Race-Blind vs VRA-Constrained ensemble distributions per district on a shared axis.
+ * @param {Array}  rbDistricts      - Race-Blind ensemble stats {index, min, q1, median, mean, q3, max}.
+ * @param {Array}  vraDistricts     - VRA-Constrained ensemble stats (same shape).
+ * @param {Array}  enactedDistricts - Enacted-plan overlay {index, groupVapPercentage, districtId}.
+ * @param {string} raceName         - Racial group label used on axes (e.g. "Black").
+ * @param {number} sharedYMax       - Optional shared y-axis ceiling across sibling charts.
+ */
 export default function BoxWhiskerCompareChart({
     rbDistricts,
     vraDistricts,
@@ -124,6 +136,7 @@ export default function BoxWhiskerCompareChart({
     sharedYMax,
     className,
 }) {
+    /* ── Step 0: Container size + hover state ────────────────────────────── */
     const containerRef = useRef(null)
     const { width, height } = useContainerSize(containerRef)
     const [hovered, setHovered] = useState({ districtIdx: null, ensemble: null, x: 0, y: 0 })
@@ -131,7 +144,7 @@ export default function BoxWhiskerCompareChart({
     const innerW = Math.max(0, width  - MARGIN.left - MARGIN.right)
     const innerH = Math.max(0, height - MARGIN.top  - MARGIN.bottom)
 
-    /* Union of all district indices present in either ensemble */
+    /* ── Step 1: Union district indices across both ensembles ────────────── */
     const allIndices = useMemo(() => {
         const set = new Set([
             ...(rbDistricts  ?? []).map(d => d.index),
@@ -140,6 +153,7 @@ export default function BoxWhiskerCompareChart({
         return [...set].sort((a, b) => a - b)
     }, [rbDistricts, vraDistricts])
 
+    /* ── Step 2: Build x-scale (band) + y-scale (linear, shared ceiling) ── */
     const xScale = useMemo(() => {
         if (!innerW || !allIndices.length) return null
         return d3.scaleBand()
@@ -157,6 +171,7 @@ export default function BoxWhiskerCompareChart({
 
     const yTicks = useMemo(() => (yScale ? yScale.ticks(8) : []), [yScale])
 
+    /* ── Step 3: Render ──────────────────────────────────────────────────── */
     if (!allIndices.length) {
         return (
             <div className={`w-full rounded-xl border border-dashed border-brand-muted/30 bg-brand-surface/20 flex items-center justify-center ${className ?? 'h-[360px]'}`}>

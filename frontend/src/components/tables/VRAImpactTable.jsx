@@ -17,7 +17,6 @@ function DonutGauge({ pct, color }) {
     useEffect(() => {
         const el = arcRef.current
         if (!el) return
-        // Reset to empty, then animate to target on next frame
         el.style.transition = 'none'
         el.style.strokeDasharray = `0 ${DONUT_CIRC}`
         const id = requestAnimationFrame(() => {
@@ -53,11 +52,6 @@ export default function VRAImpactTable({ data, raceKey }) {
     if (!rows?.length) return null
 
     return (
-        /*
-         * Single unified grid: 4 cols × 4 rows.
-         * All cells in the same row share identical height — perfect alignment.
-         * Col widths: label=35%, then 3 equal chart cols sharing the remaining 65%.
-         */
         <div
             className="grid grid-rows-[auto_1fr_1fr_1fr] gap-3 h-full"
             style={{ gridTemplateColumns: '35% repeat(3, calc(65% / 3 - 0.75rem))' }}

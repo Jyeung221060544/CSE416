@@ -1,19 +1,3 @@
-/**
- * Select2RaceFilter.jsx — Up-to-2 race selector for EI Polarization KDE comparison.
- *
- * Renders a checkbox group where the user picks exactly 2 races to compare.
- * Any number of races can be selected (0, 1, or 2); the chart shows an empty-state
- * message until exactly 2 are active.  When a 3rd is selected it replaces the oldest.
- *
- * Available options are derived from the dynamically-loaded demographicGroups in
- * Zustand (all groups, not filtered by isFeasible), so the list adapts per state
- * without hardcoding any race keys.
- *
- * STATE SOURCE
- *   eiKdeCompareRaces / setEiKdeCompareRaces — from useAppStore (Zustand).
- *   demographicGroups                        — from useAppStore (set by useStateData).
- */
-
 import { useMemo }      from 'react'
 import CollapsibleGroup from './CollapsibleGroup'
 import useAppStore      from '../../store/useAppStore'
@@ -22,12 +6,10 @@ import { RACE_COLORS }  from '@/lib/partyColors'
 
 export default function Select2RaceFilter() {
 
-    /* ── Step 1: Read state from Zustand ─────────────────────────────────── */
     const demographicGroups    = useAppStore(s => s.demographicGroups)
     const eiKdeCompareRaces    = useAppStore(s => s.eiKdeCompareRaces)
     const setEiKdeCompareRaces = useAppStore(s => s.setEiKdeCompareRaces)
 
-    /* ── Step 2: Build option list from demographicGroups (all, not feasible) */
     const options = useMemo(() =>
         demographicGroups.map(g => ({
             value: g.group.toLowerCase(),
@@ -36,7 +18,6 @@ export default function Select2RaceFilter() {
     [demographicGroups])
 
 
-    /* ── Toggle handler ──────────────────────────────────────────────────── */
     function handleToggle(value) {
         const current = eiKdeCompareRaces
         if (current.includes(value)) {
@@ -44,13 +25,9 @@ export default function Select2RaceFilter() {
         } else if (current.length < 2) {
             setEiKdeCompareRaces([...current, value])
         }
-        // At limit: unselected items are disabled — click cannot fire
     }
 
-
-    /* ── Render ──────────────────────────────────────────────────────────── */
     const atLimit = eiKdeCompareRaces.length >= 2
-
     return (
         <CollapsibleGroup label="Race Pair">
 

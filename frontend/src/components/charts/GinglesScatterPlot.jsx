@@ -1,26 +1,3 @@
-/**
- * GinglesScatterPlot.jsx — Nivo scatter plot for Gingles precinct analysis.
- *
- * Plots two series per precinct (Democratic + Republican vote share) against
- * the minority VAP percentage on the x-axis.  Key visual elements:
- *
- *   bgLayer          — Soft blue gradient background rectangle.
- *   thresholdLayer   — Dashed 50% majority line.
- *   trendlineLayer   — Smoothed D3 monotone-X trendlines for each party.
- *   customNodesLayer — Custom circle nodes with selected-state styling and
- *                      hover-only tooltip (Nivo's built-in tooltip is disabled).
- *
- * INTERACTION
- *   Clicking a dot toggles its selection and syncs with GinglesPrecinctTable
- *   via selectedId / onDotClick props.
- *
- * PROPS
- *   ginglesData {object}          — Full ginglesPrecinct bundle.
- *   raceFilter  {string}          — Active race key (e.g. 'black').
- *   selectedId  {string|null}     — Currently highlighted precinct id.
- *   onDotClick  {(id) => void}    — Fired when a dot is clicked.
- *   className   {string}          — Optional height class.
- */
 
 import { useMemo, useCallback, useState, useRef } from 'react'
 import { ResponsiveScatterPlot } from '@nivo/scatterplot'
@@ -28,16 +5,11 @@ import * as d3 from 'd3'
 import { DEM_COLOR, DEM_DARK, REP_COLOR, REP_DARK, THRESH_COLOR, AXIS_COLOR, LABEL_COLOR } from '@/lib/partyColors'
 
 
-/* ── Step 0: Helpers ─────────────────────────────────────────────────────── */
-
 /**
- * getSeries — Extracts the active race series from the gingles data bundle.
- *
+ * Extracts the active race series from the gingles data bundle.
  * Falls back to 'black' if the requested raceFilter key doesn't exist.
- *
- * @param {object|null} ginglesData — Full ginglesPrecinct data bundle.
- * @param {string}      raceFilter  — Race key to look up (e.g. 'black').
- * @returns {object|null}
+ * @param {object|null} ginglesData - Full ginglesPrecinct data bundle.
+ * @param {string}      raceFilter  - Race key to look up (e.g. "black").
  */
 function getSeries(ginglesData, raceFilter) {
     const byRace = ginglesData?.feasibleSeriesByRace ?? {}
@@ -45,15 +17,7 @@ function getSeries(ginglesData, raceFilter) {
 }
 
 
-/* ── Step 1: Tooltip ─────────────────────────────────────────────────────── */
-
-/**
- * GinglesTooltip — HTML tooltip positioned absolutely over hovered dots.
- *
- * @param {{ node: object }} props
- *   node — Nivo node with serieId, data.name, data.x (VAP%), data.y (vote share%).
- * @returns {JSX.Element}
- */
+/** Hover tooltip showing precinct name, minority VAP %, and vote share for one dot. */
 function GinglesTooltip({ node }) {
     const isDem = node.serieId === 'Democratic'
     const color = isDem ? DEM_COLOR : REP_COLOR
@@ -72,7 +36,7 @@ function GinglesTooltip({ node }) {
 }
 
 
-/* ── Step 2: Nivo theme ──────────────────────────────────────────────────── */
+/** Shared Nivo theme — axes, tick labels, grid lines, and legend text. */
 const NIVO_THEME = {
     background: 'transparent',
     axis: {
@@ -85,15 +49,19 @@ const NIVO_THEME = {
 }
 
 
-/* ── Step 3: Main component ──────────────────────────────────────────────── */
-
 /**
- * GinglesScatterPlot — Interactive scatter plot for Gingles minority VAP analysis.
- *
- * @param {{ ginglesData:object|null, raceFilter:string, selectedId:string|null, onDotClick:(id)=>void, className:string }} props
- * @returns {JSX.Element}
+ * Scatter plot for the Gingles precinct analysis — plots Dem and Rep vote share
+ * against minority VAP % per precinct, with trendlines, a 50% threshold line,
+ * and click-to-select dot interaction synced with GinglesPrecinctTable.
+ * @param {object}        ginglesData - Full ginglesPrecinct data bundle.
+ * @param {string}        raceFilter  - Active race key (e.g. "black").
+ * @param {string|null}   selectedId  - Currently highlighted precinct id.
+ * @param {(id) => void}  onDotClick  - Fired when a dot is clicked; null deselects.
+ * @param {string}        className   - Optional height/layout class.
  */
 export default function GinglesScatterPlot({ ginglesData, raceFilter, selectedId, onDotClick, className }) {
+
+    /* ── Step 0: Extract series + init state ────────────────────────────── */
     const series   = getSeries(ginglesData, raceFilter)
     const points   = series?.points ?? []
     const demTrend = series?.democraticTrendline ?? []
@@ -102,7 +70,7 @@ export default function GinglesScatterPlot({ ginglesData, raceFilter, selectedId
     const [tooltip, setTooltip] = useState(null)
     const raceName = raceFilter ? raceFilter.charAt(0).toUpperCase() + raceFilter.slice(1) : 'Minority'
 
-    /* ── Step 3a: Build Nivo data — two nodes per precinct (Dem + Rep) ──── */
+    /* ── Step 1: Build Nivo data — two nodes per precinct (Dem + Rep) ───── */
     const nivoData = useMemo(() => {
         if (!points.length) return []
         return [
@@ -111,9 +79,7 @@ export default function GinglesScatterPlot({ ginglesData, raceFilter, selectedId
         ]
     }, [points])
 
-    /* ── Step 3b: Custom SVG layers ──────────────────────────────────────── */
-
-    /* bgLayer — gradient background rectangle */
+    /* ── Step 2: Build custom SVG layers ─────────────────────────────────── */
     const bgLayer = useCallback(({ innerWidth, innerHeight }) => (
         <g>
             <defs><linearGradient id="ginglesPlotBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#eef6ff" /><stop offset="100%" stopColor="#f8fafc" /></linearGradient></defs>
@@ -122,7 +88,6 @@ export default function GinglesScatterPlot({ ginglesData, raceFilter, selectedId
         </g>
     ), [])
 
-    /* thresholdLayer — dashed 50% majority horizontal line */
     const thresholdLayer = useCallback(({ yScale, innerWidth }) => {
         const y = yScale(0.5)
         return (
@@ -133,7 +98,6 @@ export default function GinglesScatterPlot({ ginglesData, raceFilter, selectedId
         )
     }, [])
 
-    /* trendlineLayer — D3 monotone-X smoothed trendlines with glow halos */
     const trendlineLayer = useCallback(({ xScale, yScale }) => {
         const lineGen = d3.line().x(p=>xScale(p.x)).y(p=>yScale(p.y)).curve(d3.curveMonotoneX)
         const dPath = demTrend.length ? lineGen(demTrend) : null
@@ -148,11 +112,6 @@ export default function GinglesScatterPlot({ ginglesData, raceFilter, selectedId
         )
     }, [demTrend, repTrend])
 
-    /*
-     * customNodesLayer — Replaces Nivo's default node rendering.
-     * Selected dots are enlarged (r=9) and fully opaque.
-     * Clicking toggles selection; second click deselects.
-     */
     const customNodesLayer = useCallback(({ nodes }) => (
         <g>
             {nodes.map(node => {
@@ -177,10 +136,9 @@ export default function GinglesScatterPlot({ ginglesData, raceFilter, selectedId
         </g>
     ), [selectedId, onDotClick, setTooltip])
 
-    /* ── Step 3c: Render ─────────────────────────────────────────────────── */
+    /* ── Step 3: Render ──────────────────────────────────────────────────── */
     return (
         <div ref={containerRef} className={`w-full rounded-xl border border-brand-muted/25 shadow-sm bg-white flex flex-col relative ${className ?? 'h-[404px]'}`}>
-            {/* Hover-only tooltip — absolutely positioned, pointer-events none */}
             {tooltip && (
                 <div style={{ position:'absolute', left:tooltip.left, top:tooltip.top, zIndex:10, pointerEvents:'none' }}>
                     <GinglesTooltip node={tooltip.node} />
@@ -190,13 +148,11 @@ export default function GinglesScatterPlot({ ginglesData, raceFilter, selectedId
                 <div className="h-full flex items-center justify-center text-brand-muted/60 text-sm italic">No Gingles scatter data available for this race.</div>
             ) : (
                 <>
-                    {/* ── LEGEND ─────────────────────────────────────────── */}
                     <div className="flex items-center gap-5 px-4 pt-3 pb-1 flex-shrink-0">
                         <div className="flex items-center gap-1.5"><span style={{ width:10, height:10, borderRadius:'50%', background:DEM_COLOR, display:'inline-block', flexShrink:0 }} /><span style={{ fontSize:12, fontWeight:600, color:LABEL_COLOR }}>Democratic</span></div>
                         <div className="flex items-center gap-1.5"><span style={{ width:10, height:10, borderRadius:'50%', background:REP_COLOR, display:'inline-block', flexShrink:0 }} /><span style={{ fontSize:12, fontWeight:600, color:LABEL_COLOR }}>Republican</span></div>
                         <span className="ml-auto text-[11px] font-semibold text-slate-500 opacity-70 select-none">{points.length} Precincts Plotted</span>
                     </div>
-                    {/* ── CHART — 'mesh' omitted; tooltip + click handled per-circle ── */}
                     <div className="flex-1 min-h-0">
                         <ResponsiveScatterPlot
                             data={nivoData}

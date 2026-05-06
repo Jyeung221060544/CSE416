@@ -112,7 +112,6 @@ export default function DistrictMap2022({ stateId, districtSummary }) {
         (districtSummary?.districts ?? []).map(d => [d.districtNumber, d])
     )
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const onEachFeature = useCallback((feature, layer) => {
         const distNum = parseInt(feature.properties.CD119FP, 10)
 
@@ -187,7 +186,6 @@ export default function DistrictMap2022({ stateId, districtSummary }) {
             <FitBounds geoData={geoData} />
             <MapResizeHandler geoData={geoData} />
             <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
-            {/* Re-keyed on selectedDistrict so Leaflet re-applies styles on highlight change */}
             <GeoJSON
                 key={`${stateId}-${selectedDistrict ?? 'none'}-${districtSummary?.districts?.length ?? 0}`}
                 ref={geoJsonRef}

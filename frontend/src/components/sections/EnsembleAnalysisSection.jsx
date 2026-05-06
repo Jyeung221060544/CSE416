@@ -10,7 +10,6 @@ import useAppStore                  from '@/store/useAppStore'
 import { fetchEnsembleSplits, fetchEnsembleBoxWhisker, fetchEnsembleMinorityDistricts } from '../../api'
 import { RACE_LABELS }              from '@/lib/partyColors'
 
-// ids must match the EA_SUBSECTIONS ids in SectionPanel and activeEATab in useAppStore
 const EA_TABS = [
     { id: 'ensemble-splits',    label: 'Ensemble Splits'    },
     { id: 'box-whisker',        label: 'Box & Whisker'      },
@@ -18,10 +17,10 @@ const EA_TABS = [
 ]
 
 /**
- * Tabbed ensemble splits + box & whisker section.
- * The mini nav bar swaps the entire section body between the two sub-views.
- *
- * @param {{ data: object|null, stateId: string }} props
+ * Renders the Ensemble Analysis section with three tabs:
+ * seat-split histograms, box-and-whisker minority VAP plots, and minority district histograms.
+ * @param {object} data - State overview data (unused directly; data is fetched per-tab).
+ * @param {string} stateId - State identifier used to fetch ensemble data.
  */
 export default function EnsembleAnalysisSection({ data, stateId }) {
 
@@ -45,6 +44,7 @@ export default function EnsembleAnalysisSection({ data, stateId }) {
     const [effData, setEffData] = useState(null)
     const hasEffFetched = useRef(false)
 
+    // Step 0: Reset all data and fetch flags when state changes
     useEffect(() => {
         setSplitsData(null)
         setBwData(null)
@@ -54,6 +54,7 @@ export default function EnsembleAnalysisSection({ data, stateId }) {
         hasEffFetched.current = false
     }, [stateId])
 
+    // Step 1: Fetch ensemble splits on first entry to that tab
     useEffect(() => {
         if (!stateId || !inEA || activeTab !== 'ensemble-splits') return
         if (hasSplitsFetched.current) return
@@ -63,6 +64,7 @@ export default function EnsembleAnalysisSection({ data, stateId }) {
             .catch(err => console.error('[Ensemble] fetchEnsembleSplits error:', err))
     }, [stateId, inEA, activeTab])
 
+    // Step 2: Fetch box-whisker data on first entry to that tab
     useEffect(() => {
         if (!stateId || !inEA || activeTab !== 'box-whisker') return
         if (hasBWFetched.current) return
@@ -72,6 +74,7 @@ export default function EnsembleAnalysisSection({ data, stateId }) {
             .catch(err => console.error('[Ensemble] fetchEnsembleBoxWhisker error:', err))
     }, [stateId, inEA, activeTab])
 
+    // Step 3: Fetch minority districts data on first entry to that tab
     useEffect(() => {
         if (!stateId || !inEA || activeTab !== 'minority-districts') return
         if (hasEffFetched.current) return
@@ -87,10 +90,7 @@ export default function EnsembleAnalysisSection({ data, stateId }) {
     const raceBlind = splitsData?.ensembles?.find(e => e.ensembleType === 'race-blind')     ?? null
     const vraConstr = splitsData?.ensembles?.find(e => e.ensembleType === 'vra-constrained') ?? null
 
-    /*
-     * splitYMax — Highest plan frequency across both ensembles, padded 10% and
-     * rounded up to the nearest 100 so both charts share the same y-axis scale.
-     */
+    // Step 4: Compute shared Y-axis max for split charts
     const splitYMax = useMemo(() => {
         const allFreqs = [raceBlind, vraConstr]
             .filter(Boolean)
@@ -99,11 +99,7 @@ export default function EnsembleAnalysisSection({ data, stateId }) {
         return Math.ceil(Math.max(...allFreqs) * 1.1 / 100) * 100
     }, [raceBlind, vraConstr])
 
-    /*
-     * compareNivoData — Pre-merged rows for EnsembleSplitCompareChart (pure renderer).
-     * Each row carries both frequencies + totals.
-     * `?? 0` guards against missing r/d on extreme splits (0R-7D, 7R-0D).
-     */
+    // Step 5: Build merged compare data for the split compare chart
     const compareNivoData = useMemo(() => {
         if (!raceBlind || !vraConstr) return []
         const rbTotal  = raceBlind.splits.reduce((s, r) => s + r.frequency, 0)
@@ -128,10 +124,7 @@ export default function EnsembleAnalysisSection({ data, stateId }) {
     const bwRaceBlind = bwData?.ensembles?.find(e => e.ensembleType === 'race-blind')     ?? null
     const bwVraConstr = bwData?.ensembles?.find(e => e.ensembleType === 'vra-constrained') ?? null
 
-    /*
-     * bwSharedYMax — Highest max across both ensembles for the selected race,
-     * padded 5% and snapped to the nearest 0.05 so both charts share the same y-axis.
-     */
+    // Step 6: Compute shared Y-axis max for box-whisker charts
     const bwSharedYMax = useMemo(() => {
         const race = feasibleRaceFilter
         const allMax = [bwRaceBlind, bwVraConstr]
@@ -143,9 +136,9 @@ export default function EnsembleAnalysisSection({ data, stateId }) {
 
     const raceName = RACE_LABELS[feasibleRaceFilter] ?? feasibleRaceFilter
 
-    // Normalize majorityMinorityHistogram into the same shape EffectivenessHistogram expects
+    // Step 7: Normalize majority-minority histogram to match EffectivenessHistogram's expected shape
     const mmHistNormalized = useMemo(() => {
-        const mm = effData?.majorityMinorityHistogram  // from minority-districts endpoint
+        const mm = effData?.majorityMinorityHistogram
         if (!mm) return null
         return {
             enactedEffectiveByGroup: mm.enactedMMByGroup,
@@ -161,7 +154,7 @@ export default function EnsembleAnalysisSection({ data, stateId }) {
         }
     }, [effData])
 
-
+    // Step 8: Render tabbed layout — splits, box-whisker, or minority districts
     return (
         <section id="ensemble-analysis" className="p-2 sm:p-3 lg:p-4 border-b border-brand-muted/30 h-[calc(100vh-3.5rem)] flex flex-col overflow-hidden">
 
@@ -185,6 +178,7 @@ export default function EnsembleAnalysisSection({ data, stateId }) {
                         eaCompareMode ? (
                             <div className="flex flex-col gap-3 h-full">
                                 <SectionHeader title="Race-Blind vs VRA-Constrained" className="shrink-0" />
+                                {/* Ensemble Split Compare Chart */}
                                 <EnsembleSplitCompareChart
                                     data={compareNivoData}
                                     enactedSplit={enactedSplit}
@@ -196,6 +190,7 @@ export default function EnsembleAnalysisSection({ data, stateId }) {
                             <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 h-full">
                                 <div className="flex flex-col gap-3 min-h-0">
                                     <SectionHeader title="Race-Blind" />
+                                    {/* Ensemble Split Chart — Race-Blind */}
                                     <EnsembleSplitChart
                                         ensembleData={raceBlind}
                                         enactedSplit={enactedSplit}
@@ -206,6 +201,7 @@ export default function EnsembleAnalysisSection({ data, stateId }) {
                                 </div>
                                 <div className="flex flex-col gap-3 min-h-0">
                                     <SectionHeader title="VRA-Constrained" />
+                                    {/* Ensemble Split Chart — VRA-Constrained */}
                                     <EnsembleSplitChart
                                         ensembleData={vraConstr}
                                         enactedSplit={enactedSplit}
@@ -230,6 +226,7 @@ export default function EnsembleAnalysisSection({ data, stateId }) {
                         eaCompareMode ? (
                             <div className="flex flex-col gap-3 h-full">
                                 <SectionHeader title="Race-Blind vs VRA-Constrained" className="shrink-0" />
+                                {/* Box Whisker Compare Chart */}
                                 <BoxWhiskerCompareChart
                                     rbDistricts={bwRaceBlind?.groupDistricts?.[feasibleRaceFilter] ?? []}
                                     vraDistricts={bwVraConstr?.groupDistricts?.[feasibleRaceFilter] ?? []}
@@ -243,6 +240,7 @@ export default function EnsembleAnalysisSection({ data, stateId }) {
                             <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 h-full">
                                 <div className="flex flex-col gap-3 min-h-0">
                                     <SectionHeader title="Race-Blind" />
+                                    {/* Box Whisker Chart — Race-Blind */}
                                     <BoxWhiskerChart
                                         districts={bwRaceBlind?.groupDistricts?.[feasibleRaceFilter] ?? []}
                                         enactedDistricts={bwData.enactedPlan?.groupDistricts?.[feasibleRaceFilter] ?? null}
@@ -254,6 +252,7 @@ export default function EnsembleAnalysisSection({ data, stateId }) {
                                 </div>
                                 <div className="flex flex-col gap-3 min-h-0">
                                     <SectionHeader title="VRA-Constrained" />
+                                    {/* Box Whisker Chart — VRA-Constrained */}
                                     <BoxWhiskerChart
                                         districts={bwVraConstr?.groupDistricts?.[feasibleRaceFilter] ?? []}
                                         enactedDistricts={bwData.enactedPlan?.groupDistricts?.[feasibleRaceFilter] ?? null}
@@ -279,6 +278,7 @@ export default function EnsembleAnalysisSection({ data, stateId }) {
                         <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 h-full">
                             <div className="flex flex-col gap-1 min-w-0 h-full">
                                 <SectionHeader title="Minority-Effective Districts" className="shrink-0" />
+                                {/* Effectiveness Histogram — Minority-Effective */}
                                 <EffectivenessHistogram
                                     data={effData.minorityEffectiveHistogram}
                                     raceKey={effData.feasibleGroups?.[0]}
@@ -289,6 +289,7 @@ export default function EnsembleAnalysisSection({ data, stateId }) {
                             </div>
                             <div className="flex flex-col gap-1 min-w-0 h-full">
                                 <SectionHeader title="Majority-Minority Districts" className="shrink-0" />
+                                {/* Effectiveness Histogram — Majority-Minority */}
                                 <EffectivenessHistogram
                                     data={mmHistNormalized}
                                     raceKey={effData.feasibleGroups?.[0]}

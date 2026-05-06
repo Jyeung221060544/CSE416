@@ -9,6 +9,7 @@ const ENACTED_CLR = '#595a96'
 
 const MARGIN = { top: 38, right: 20, bottom: 58, left: 72 }
 
+/** Tracks the pixel dimensions of a DOM element via ResizeObserver. */
 function useContainerSize(ref) {
     const [size, setSize] = useState({ width: 0, height: 0 })
     useEffect(() => {
@@ -38,6 +39,7 @@ function BgRect({ innerWidth, innerHeight }) {
     )
 }
 
+/** Tooltip showing RB and VRA plan counts for the hovered district-count bin. */
 function Tooltip({ hovered, x, y, metricLabel }) {
     if (!hovered) return null
     return (
@@ -60,8 +62,18 @@ function Tooltip({ hovered, x, y, metricLabel }) {
     )
 }
 
+/**
+ * Overlapping histogram for the Effectiveness Analysis — shows how many ensemble plans
+ * produced each count of effective districts, with Race-Blind and VRA-Constrained bars
+ * drawn behind/in-front and a dashed enacted-plan marker on the matching bin.
+ * @param {object} data        - API response: { ensembles, enactedEffectiveByGroup }.
+ * @param {string} raceKey     - Race key to extract from groupCounts (e.g. "black").
+ * @param {string} raceName    - Human-readable label for axis/legend (e.g. "Black").
+ * @param {string} metricLabel - Descriptor for the metric, e.g. "Effective" or "Opportunity".
+ */
 export default function EffectivenessHistogram({ data, raceKey, raceName = 'Group', metricLabel = 'Effective', className }) {
 
+    /* ── Step 0: Container size + hover state ────────────────────────────── */
     const containerRef = useRef(null)
     const { width, height } = useContainerSize(containerRef)
     const [hovered, setHovered] = useState({ bin: null, x: 0, y: 0 })
@@ -69,6 +81,7 @@ export default function EffectivenessHistogram({ data, raceKey, raceName = 'Grou
     const innerW = Math.max(0, width  - MARGIN.left - MARGIN.right)
     const innerH = Math.max(0, height - MARGIN.top  - MARGIN.bottom)
 
+    /* ── Step 1: Merge RB + VRA frequency counts into unified bin array ──── */
     const { bins, enactedCount } = useMemo(() => {
         if (!data || !raceKey) return { bins: [], enactedCount: null }
 
@@ -77,7 +90,6 @@ export default function EffectivenessHistogram({ data, raceKey, raceName = 'Grou
         const rbCounts  = rb?.groupCounts?.[raceKey]  ?? []
         const vraCounts = vra?.groupCounts?.[raceKey] ?? []
 
-        /* Build a unified index covering all numEffective values in both series */
         const allNums = new Set([
             ...rbCounts.map(c => c.numEffective),
             ...vraCounts.map(c => c.numEffective),
@@ -95,6 +107,7 @@ export default function EffectivenessHistogram({ data, raceKey, raceName = 'Grou
         }
     }, [data, raceKey])
 
+    /* ── Step 2: Build x-scale (band) + y-scale (linear) ────────────────── */
     const xScale = useMemo(() => {
         if (!innerW || !bins.length) return null
         return d3.scaleBand()
@@ -114,6 +127,11 @@ export default function EffectivenessHistogram({ data, raceKey, raceName = 'Grou
 
     const yTicks = useMemo(() => (yScale ? yScale.ticks(6) : []), [yScale])
 
+    /* ── Step 3: Resolve enacted bin position ────────────────────────────── */
+    const enactedBinX = (xScale && enactedCount != null) ? xScale(enactedCount) : null
+    const enactedBinW = xScale ? xScale.bandwidth() : 0
+
+    /* ── Step 4: Render ──────────────────────────────────────────────────── */
     if (!data || !bins.length) {
         return (
             <div className={`w-full rounded-xl border border-dashed border-brand-muted/30 bg-brand-surface/20 flex items-center justify-center ${className ?? 'h-full'}`}>
@@ -127,9 +145,6 @@ export default function EffectivenessHistogram({ data, raceKey, raceName = 'Grou
         const rect = containerRef.current.getBoundingClientRect()
         setHovered({ bin, x: e.clientX - rect.left, y: e.clientY - rect.top })
     }
-
-    const enactedBinX = (xScale && enactedCount != null) ? xScale(enactedCount) : null
-    const enactedBinW = xScale ? xScale.bandwidth() : 0
 
     return (
         <div className={`w-full rounded-xl border border-brand-muted/25 shadow-sm bg-white flex flex-col ${className ?? 'h-full'}`}>

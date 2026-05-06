@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react'
 import useAppStore from '../store/useAppStore'
 import { isScrollLocked } from '../utils/scrollLock'
 
-// Must match the id="" attributes on each <section> in StatePage, top-to-bottom.
 const SECTION_IDS = [
     'state-overview',
     'demographic',
@@ -13,11 +12,9 @@ const SECTION_IDS = [
 /**
  * Attaches a scroll listener to scrollRef and updates activeSection in Zustand
  * whenever the visible section changes.
- *
  * Trigger threshold adapts to scroll direction:
  *   DOWN → 30% from viewport top (eager — register new section early)
  *   UP   → 50% (previous section must fill half the viewport to re-activate)
- *
  * Scroll events are ignored while isScrollLocked() to prevent flickering when
  * SectionPanel triggers a programmatic scrollIntoView.
  *

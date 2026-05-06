@@ -1,22 +1,3 @@
-/**
- * EIKDEChart.jsx — Nivo line chart for Ecological Inference KDE density curves.
- *
- * Renders one KDE probability density curve per selected racial group for
- * a single candidate (Democratic or Republican).  Key visual elements:
- *
- *   BgLayer        — Soft blue gradient background rectangle.
- *   ciLayer        — Per-race shaded confidence-interval band with dashed borders.
- *   ResponsiveLine — Smooth area curves for each race's KDE points.
- *
- * The y-axis max (yMax) is shared between the Democratic and Republican chart
- * instances so they stay visually aligned (computed in RacialPolarizationSection).
- *
- * PROPS
- *   candidate   {object|null} — One entry from eiData.candidates.
- *   activeRaces {string[]}    — Race keys to render (from eiRaceFilter Zustand state).
- *   yMax        {number}      — Shared y-axis ceiling.
- *   className   {string}      — Optional height class.
- */
 
 import { useMemo, useCallback } from 'react'
 import { ResponsiveLine } from '@nivo/line'
@@ -24,7 +5,7 @@ import { DEM_COLOR, REP_COLOR, RACE_COLORS, RACE_LABELS, AXIS_COLOR, LABEL_COLOR
 import PortalTooltip from '@/components/ui/PortalTooltip'
 
 
-/* ── Step 0: Nivo theme ──────────────────────────────────────────────────── */
+/** Shared Nivo theme — axes, tick labels, and grid lines. */
 const NIVO_THEME = {
     background: 'transparent',
     axis: {
@@ -36,15 +17,10 @@ const NIVO_THEME = {
 }
 
 
-/* ── Step 1: Slice tooltip factory ──────────────────────────────────────── */
-
 /**
- * makeSliceTooltip — Returns a slice tooltip component bound to the given candidate.
- *
- * Shows party colour header, vote share at cursor x, and each race group's density.
- * Highlights the point nearest its peak estimate with a coloured "Peak" badge.
- *
- * @param {object|null} candidate — One eiData.candidates entry.
+ * Factory that returns a Nivo slice tooltip bound to a single candidate.
+ * Highlights the race group whose peak is nearest the hovered x value.
+ * @param {object} candidate - Candidate object from eiData.candidates.
  * @returns {React.ComponentType}
  */
 function makeSliceTooltip(candidate) {
@@ -84,15 +60,10 @@ function makeSliceTooltip(candidate) {
 }
 
 
-/* ── Step 2: CI band layer factory ──────────────────────────────────────── */
-
 /**
- * makeCILayer — Returns a layer that draws shaded CI bands for each active race.
- *
- * Each band is a translucent rect between ciLow and ciHigh on the x-axis,
- * with dashed vertical boundary lines.
- *
- * @param {Array<{ group:string, ciLow:number, ciHigh:number }>} groupData
+ * Factory that returns a Nivo custom layer drawing 95% CI bands for each race group.
+ * Renders a shaded rect + dashed boundary lines spanning the full chart height.
+ * @param {Array<{group: string, ciLow: number, ciHigh: number}>} groupData - CI bounds per race.
  * @returns {React.ComponentType}
  */
 function makeCILayer(groupData) {
@@ -116,13 +87,7 @@ function makeCILayer(groupData) {
 }
 
 
-/* ── Step 3: Background layer ────────────────────────────────────────────── */
-
-/**
- * BgLayer — Static gradient background for the KDE chart.
- *
- * @param {{ innerWidth:number, innerHeight:number }} props — Injected by Nivo.
- */
+/** Nivo custom layer — soft blue gradient background rect injected behind the lines. */
 function BgLayer({ innerWidth, innerHeight }) {
     return (
         <g>
@@ -134,45 +99,42 @@ function BgLayer({ innerWidth, innerHeight }) {
 }
 
 
-/* ── Step 4: Main component ──────────────────────────────────────────────── */
-
 /**
- * EIKDEChart — KDE probability density line chart for one EI candidate.
- *
- * @param {{ candidate:object|null, activeRaces:string[], yMax:number, className:string }} props
- *   candidate   — One eiData.candidates entry (candidateName, party, racialGroups).
- *   activeRaces — Race keys to render as KDE overlay lines.
- *   yMax        — Shared y-axis ceiling from parent section.
- *   className   — Optional height class.
- * @returns {JSX.Element|null}
+ * KDE line chart for the Ecological Inference (EI) analysis.
+ * Renders one smoothed density curve per active racial group for a single candidate,
+ * with 95% CI bands and a slice tooltip that highlights the peak support estimate.
+ * @param {object}   candidate   - Candidate object from eiData.candidates.
+ * @param {string[]} activeRaces - Race keys to render as lines (e.g. ["black", "white"]).
+ * @param {number}   yMax        - Optional shared y-axis ceiling across sibling charts.
+ * @param {string}   className   - Optional height/layout class.
  */
 export default function EIKDEChart({ candidate, activeRaces, yMax, className }) {
+
+    /* ── Step 0: Guard + resolve party color ─────────────────────────────── */
     if (!candidate) return null
     const partyColor = candidate.party === 'Democratic' ? DEM_COLOR : REP_COLOR
 
-    /* ── Step 4a: Build Nivo line series — one per active race ───────────── */
+    /* ── Step 1: Build Nivo line series from KDE points ──────────────────── */
     const nivoData = useMemo(() => activeRaces.map(race => {
         const group = candidate.racialGroups.find(g => g.group.toLowerCase() === race)
         if (!group) return null
         return { id:race, data: group.kdePoints.map(p => ({ x:p.x, y:p.y })) }
     }).filter(Boolean), [candidate, activeRaces])
 
-    /* ── Step 4b: Build CI data for the custom layer ─────────────────────── */
+    /* ── Step 2: Build CI band data + memoize custom layers ─────────────── */
     const ciData = useMemo(() => activeRaces.map(race => {
         const group = candidate.racialGroups.find(g => g.group.toLowerCase() === race)
         if (!group) return null
         return { group:race, ciLow:group.confidenceIntervalLow, ciHigh:group.confidenceIntervalHigh }
     }).filter(Boolean), [candidate, activeRaces])
 
-    /* Memoize layers to prevent recreation every render */
     const ciLayer      = useCallback(makeCILayer(ciData), [ciData])
     const sliceTooltip = useMemo(() => makeSliceTooltip(candidate), [candidate])
 
-    /* ── Step 4c: Render ─────────────────────────────────────────────────── */
+    /* ── Step 3: Render header + legend + chart ──────────────────────────── */
     return (
         <div className={`w-full rounded-xl border border-brand-muted/25 shadow-sm bg-white flex flex-col ${className ?? 'h-[380px]'}`}>
 
-            {/* ── CANDIDATE HEADER ─────────────────────────────────────────── */}
             <div className="flex items-center justify-between px-4 pt-3 pb-1 flex-shrink-0 border-b border-brand-muted/10">
                 <span className="text-lg font-bold" style={{ color:partyColor }}>{candidate.candidateName ?? candidate.party}</span>
 
@@ -189,7 +151,6 @@ export default function EIKDEChart({ candidate, activeRaces, yMax, className }) 
                 </div>
             </div>
 
-            {/* ── RACE LEGEND ──────────────────────────────────────────────── */}
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 px-4 pt-2 pb-0 flex-shrink-0">
                 {activeRaces.map(race => (
                     <div key={race} className="flex items-center gap-1.5">
@@ -199,7 +160,6 @@ export default function EIKDEChart({ candidate, activeRaces, yMax, className }) 
                 ))}
             </div>
 
-            {/* ── KDE LINE CHART ───────────────────────────────────────────── */}
             <div className="flex-1 min-h-0">
                 {nivoData.length === 0 ? (
                     <div className="h-full flex items-center justify-center text-brand-muted/50 text-sm italic">Select at least one race group.</div>

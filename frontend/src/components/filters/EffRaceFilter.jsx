@@ -1,14 +1,3 @@
-/**
- * EffRaceFilter.jsx — Single-select race filter for Effectiveness Histogram + VRA Impact Table.
- *
- * Shows only feasible non-white racial groups.  This keeps the filter focused on
- * minority communities of interest and avoids duplicating the white-majority baseline
- * that the ensemble analysis already captures.
- *
- * STATE SOURCE
- *   effRaceFilter / setEffRaceFilter — from Zustand (useAppStore).
- *   demographicGroups               — from Zustand; populated by useStateData on load.
- */
 
 import useAppStore from '../../store/useAppStore'
 import CollapsibleGroup from './CollapsibleGroup'
@@ -22,18 +11,14 @@ import CollapsibleGroup from './CollapsibleGroup'
  */
 export default function EffRaceFilter() {
 
-    /* ── Step 1: Read filter state and demographic groups from Zustand ───── */
     const effRaceFilter    = useAppStore(s => s.effRaceFilter)
     const setEffRaceFilter = useAppStore(s => s.setEffRaceFilter)
     const demographicGroups = useAppStore(s => s.demographicGroups)
 
-    /* ── Step 2: Derive non-white feasible race options ──────────────────── */
     const options = demographicGroups
         .filter(g => g.isFeasible && g.group.toLowerCase() !== 'white')
         .map(g => ({ value: g.group.toLowerCase(), label: g.group.charAt(0).toUpperCase() + g.group.slice(1) }))
 
-
-    /* ── Step 3: Render ──────────────────────────────────────────────────── */
     return (
         <CollapsibleGroup label="Minority Race">
             {options.map((opt) => (

@@ -1,16 +1,3 @@
-/**
- * CompareFilter.jsx — Toggle to switch Ensemble Analysis between side-by-side and compare view.
- *
- * When enabled, the active Ensemble Analysis tab (Splits or Box & Whisker) renders
- * a single overlaid compare chart instead of two separate side-by-side charts.
- *
- * PLACEMENT
- *   Shown in FilterPanel when activeSection === 'ensemble-analysis' (both tabs).
- *
- * STATE SOURCE
- *   eaCompareMode / setEaCompareMode — from useFilters() (Zustand via useAppStore).
- *   Resets to false on tab switch (handled in EnsembleAnalysisSection useEffect).
- */
 
 import CollapsibleGroup from './CollapsibleGroup'
 import useFilters from '../../hooks/useFilters'

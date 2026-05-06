@@ -1,16 +1,3 @@
-/**
- * EffBWRaceFilter.jsx — Multi-select race filter for the Effectiveness Box & Whisker chart.
- *
- * Shows only feasible non-white racial groups.  Selecting a subset controls which
- * groups appear as x-axis positions in the EffectivenessBoxWhisker chart.
- *
- * GUARD: At least one race must remain selected.  When only one is checked,
- * its checkbox is disabled so the user can't deselect the last item.
- *
- * STATE SOURCE
- *   effBWRaceFilter / toggleEffBWRaceFilter — from Zustand (useAppStore).
- *   demographicGroups                       — from Zustand; populated by useStateData on load.
- */
 
 import useAppStore from '../../store/useAppStore'
 import CollapsibleGroup from './CollapsibleGroup'
@@ -24,18 +11,13 @@ import CollapsibleGroup from './CollapsibleGroup'
  */
 export default function EffBWRaceFilter() {
 
-    /* ── Step 1: Read filter state and demographic groups from Zustand ───── */
     const effBWRaceFilter       = useAppStore(s => s.effBWRaceFilter)
     const toggleEffBWRaceFilter = useAppStore(s => s.toggleEffBWRaceFilter)
     const demographicGroups     = useAppStore(s => s.demographicGroups)
-
-    /* ── Step 2: Derive non-white feasible race options ──────────────────── */
     const options = demographicGroups
         .filter(g => g.isFeasible && g.group.toLowerCase() !== 'white')
         .map(g => ({ value: g.group.toLowerCase(), label: g.group.charAt(0).toUpperCase() + g.group.slice(1) }))
 
-
-    /* ── Step 3: Render ──────────────────────────────────────────────────── */
     return (
         <CollapsibleGroup label="Minority Races">
             {options.map((opt) => {

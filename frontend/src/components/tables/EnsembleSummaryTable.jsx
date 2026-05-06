@@ -1,7 +1,6 @@
 import SurfacePanel from '@/components/ui/surface-panel'
 import { ROW_BORDER, TABLE_HEADER, rowBg } from '@/lib/tableStyles'
 
-/** Maps raw ensembleType strings to human-readable labels. */
 const TYPE_META = {
     'race-blind':      { label: 'Race-Blind' },
     'vra-constrained': { label: 'VRA-Constrained' },

@@ -1,34 +1,4 @@
-/**
- * SectionPanel.jsx — Sidebar navigation panel for jumping between page sections.
- *
- * SECTION STRUCTURE
- *   SECTIONS        — top-level sections rendered as nav buttons (always visible).
- *   SO_SUBSECTIONS  — tab items shown under State Overview when it is active.
- *   RP_SUBSECTIONS  — tab items shown under Racial Polarization when it is active.
- *   EA_SUBSECTIONS  — scroll sub-sections shown under Ensemble Analysis when active.
- *
- * SUB-NAV BEHAVIOR
- *   State Overview sub-items  → call setActiveSOTab() + scroll to section.
- *   Racial Polarization items → call setActiveRPTab() + scroll to section.
- *   Ensemble Analysis items   → scroll to the sub-section DOM element (scroll-based).
- *   The active highlight for SO/RP reflects the current tab store value so the
- *   sidebar always mirrors the mini-nav pills in the page sections.
- *
- * COLLAPSED STATE
- *   When collapsed=true (passed from Sidebar), buttons shrink to icon-only dots
- *   wrapped in Shadcn Tooltips so the label is still discoverable on hover.
- *   Sub-section tabs (SubSectionNav) are hidden when collapsed.
- *
- * NAV BEHAVIOR
- *   Clicking a section button:
- *     • If that section is NOT active → smooth-scroll to it and mark it active.
- *     • If that section IS active and it has sub-sections → toggle the sub-nav open/closed.
- *   scrollLock() is called before every scroll so useActiveSection's scroll listener
- *   doesn't fight the programmatic navigation.
- *
- * PROPS
- *   collapsed {boolean} — Forwarded from Sidebar; true = icon-only mode.
- */
+
 
 import { useState } from 'react'
 import { LayoutList, ChevronDown, ChevronRight } from 'lucide-react'
@@ -38,16 +8,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import SubSectionNav from '@/components/ui/sub-section-nav'
 import useAppStore from '../store/useAppStore'
 
-
-/* ── Step 0: Section + sub-section data ──────────────────────────────────────
- *
- * SECTIONS        — ordered list of top-level nav buttons.
- * SO_SUBSECTIONS  — tab ids match OVERVIEW_TABS in StateOverviewSection; clicking
- *                   one calls setActiveSOTab() rather than scrolling to a DOM id.
- * RP_SUBSECTIONS  — tab ids match RP_TABS in RacialPolarizationSection; clicking
- *                   one calls setActiveRPTab() rather than scrolling to a DOM id.
- * EA_SUBSECTIONS  — DOM ids used for scroll-based navigation inside the section.
- * ─────────────────────────────────────────────────────────────────────────── */
 const SECTIONS = [
     { id: 'state-overview',          label: 'State Overview' },
     { id: 'demographic',             label: 'Demographic Data' },
@@ -89,22 +49,13 @@ const EFF_SUBSECTIONS = [
  * @returns {JSX.Element}
  */
 export default function SectionPanel({ collapsed }) {
-
-    /* ── Step 1: Global state + local accordion state ────────────────────── */
-
-    // activeSection  — updated by scroll detection and nav clicks.
-    // activeSOTab / activeRPTab / activeEATab — updated by sub-nav clicks and section pills.
     const { activeSection, setActiveSection,
             activeSOTab, setActiveSOTab,
             activeRPTab, setActiveRPTab,
             activeEATab, setActiveEATab,
             activeEFFTab, setActiveEFFTab } = useAppStore()
 
-    // expandedSection — id of the section whose subsections are currently visible
     const [expandedSection, setExpandedSection] = useState('state-overview')
-
-
-    /* ── Step 2: Navigation helpers ──────────────────────────────────────── */
 
     const toggleExpand = (id) => setExpandedSection(prev => prev === id ? null : id)
 
@@ -119,12 +70,8 @@ export default function SectionPanel({ collapsed }) {
     const handleEFFClick = () => { setActiveSection('effectiveness-analysis'); toggleExpand('effectiveness-analysis') }
 
 
-    /* ── Step 3: Render ──────────────────────────────────────────────────── */
     return (
         <div className="flex flex-col gap-2">
-
-            {/* ── HEADER ───────────────────────────────────────────────────── */}
-            {/* Icon always visible; "Sections" label hidden when sidebar is collapsed */}
             <div className="flex items-center gap-2 px-1">
                 <LayoutList className="w-4 h-4 text-brand-surface shrink-0" />
                 {!collapsed && (
@@ -135,15 +82,8 @@ export default function SectionPanel({ collapsed }) {
             </div>
 
             <Separator className="bg-brand-deep" />
-
-            {/* ── NAV BUTTONS ──────────────────────────────────────────────── */}
-            {/* Each section in SECTIONS gets one button.
-                Active section is highlighted with brand-primary background.
-                Sections with sub-nav (RP, EA) show a chevron indicator. */}
             <div className="flex flex-col gap-1 px-1">
                 {SECTIONS.map((section) => {
-
-                    /* Per-section derived flags */
                     const isActive  = activeSection === section.id
                     const isSO      = section.id === 'state-overview'
                     const isRP      = section.id === 'racial-polarization'
@@ -151,14 +91,12 @@ export default function SectionPanel({ collapsed }) {
                     const isEFF     = section.id === 'effectiveness-analysis'
                     const hasSubNav = isSO || isRP || isEA || isEFF
 
-                    /* Route click to the correct handler */
                     const handleClick = isSO  ? handleSOClick
                                       : isRP  ? handleRPClick
                                       : isEA  ? handleEAClick
                                       : isEFF ? handleEFFClick
                                       : () => { setActiveSection(section.id); setExpandedSection(null) }
 
-                    /* Which sub-nav state / items / active id / select handler belong to this section */
                     const subNavOpen     = expandedSection === section.id
                     const subsections    = isSO  ? SO_SUBSECTIONS
                                         : isRP  ? RP_SUBSECTIONS
@@ -176,7 +114,6 @@ export default function SectionPanel({ collapsed }) {
                     return (
                         <div key={section.id}>
 
-                            {/* ── COLLAPSED MODE: dot button + tooltip ─────── */}
                             {collapsed ? (
                                 <TooltipProvider delayDuration={100}>
                                     <Tooltip>
@@ -194,7 +131,6 @@ export default function SectionPanel({ collapsed }) {
                                                     shadow-sm shadow-black/10
                                                 `}
                                             >
-                                                {/* Dot indicator replaces text label */}
                                                 <span className={`w-2 h-2 rounded-full ${isActive ? 'bg-white' : 'bg-brand-muted'}`} />
                                             </Button>
                                         </TooltipTrigger>
@@ -205,7 +141,6 @@ export default function SectionPanel({ collapsed }) {
                                 </TooltipProvider>
                             ) : (
 
-                                /* ── EXPANDED MODE: full-width labeled button ─ */
                                 <Button
                                     variant="ghost"
                                     size="sm"
@@ -222,7 +157,6 @@ export default function SectionPanel({ collapsed }) {
                                 >
                                     <span>{section.label}</span>
 
-                                    {/* Chevron for sections that have sub-sections */}
                                     {hasSubNav && !collapsed && (
                                         subNavOpen
                                             ? <ChevronDown className="w-3.5 h-3.5 opacity-70 shrink-0" />
@@ -231,9 +165,6 @@ export default function SectionPanel({ collapsed }) {
                                 </Button>
                             )}
 
-                            {/* ── SUB-SECTION TABS ─────────────────────────── */}
-                            {/* Rendered when hovering over this section's group (button + tabs).
-                                SubSectionNav renders the Gingles/EI or Splits/BoxWhisker tabs. */}
                             {hasSubNav && subNavOpen && (
                                 <SubSectionNav
                                     subsections={subsections}

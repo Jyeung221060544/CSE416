@@ -1,20 +1,3 @@
-/**
- * RacialPolarizationSection.jsx — Third section on StatePage (id="racial-polarization").
- *
- * Lazy fetch strategy (all fetches gated on activeSection + activeRPTab):
- *   Gingles    — GET /gingles?race=           when activeRPTab === 'gingles'
- *                Results cached in ginglesByRace map; re-used on tab revisit.
- *   EI KDE     — GET /ei                      when activeRPTab === 'ei-kde' or 'ei-bar'
- *                All feasible races returned in one call; hasFetchedEI guard prevents re-fetch.
- *   EI Compare — GET /ei-compare?race1=&race2= when activeRPTab === 'ei-bar'
- *   VS-SS      — GET /vote-seat-share          on section entry (activeSection gate only)
- *                Fetched at section level (not tab) so the VS-SS tab can show
- *                enabled/disabled based on raciallyPolarized before it is clicked.
- *
- * The server stores EI KDE race-first (one doc per race, all candidates).
- * We invert back to candidate-first here so EIKDEChart/EIBarChart receive the
- * same shape they always expected: candidate.racialGroups[].kdePoints.
- */
 
 import { useState, useEffect, useRef, useMemo } from 'react'
 import SectionHeader        from '@/components/ui/section-header'
@@ -28,10 +11,14 @@ import EIKDECompareChart    from '@/components/charts/EIKDECompareChart'
 import VoteSeatShareChart   from '@/components/charts/VoteSeatShareChart'
 import { fetchGingles, fetchEiKde, fetchEiCompare, fetchVoteSeatShare } from '../../api'
 
-
+/**
+ * Renders the Racial Polarization section with three tabs:
+ * Gingles scatter analysis, EI KDE charts, and EI bar + polarization comparison.
+ * @param {object} data - State overview data containing stateSummary.
+ * @param {string} stateId - State identifier used to fetch Gingles, EI, and vote-seat-share data.
+ */
 export default function RacialPolarizationSection({ data, stateId }) {
 
-    /* ── Zustand filters ─────────────────────────────────────────────────── */
     const feasibleRaceFilter = useAppStore(s => s.feasibleRaceFilter)
     const eiRaceFilter       = useAppStore(s => s.eiRaceFilter)
     const eiKdeCompareRaces  = useAppStore(s => s.eiKdeCompareRaces)
@@ -41,25 +28,18 @@ export default function RacialPolarizationSection({ data, stateId }) {
 
     const inRP = activeSection === 'racial-polarization'
 
-    /* ── Local selection state ───────────────────────────────────────────── */
     const [selectedId, setSelectedId] = useState(null)
     useEffect(() => { setSelectedId(null) }, [feasibleRaceFilter])
 
-    /* ── Section-level fetched data ──────────────────────────────────────── */
-    // ginglesByRace: { race → serverDoc } — cache; never cleared mid-session
     const [ginglesByRace,  setGinglesByRace]  = useState({})
-    // eiData: candidate-first doc from server; null until fetched
     const [eiData,         setEiData]         = useState(null)
-    // eiCompareDoc: single pair doc from server
     const [eiCompareDoc,   setEiCompareDoc]   = useState(null)
-    // voteSeatData: VS-SS bundle
     const [voteSeatData,   setVoteSeatData]   = useState(null)
 
-    // One-time fetch guards
     const hasVSSFetched = useRef(false)
     const hasEIFetched  = useRef(false)
 
-    /* Reset all on stateId change */
+    // Step 0: Reset all data when state changes
     useEffect(() => {
         setGinglesByRace({})
         setEiData(null)
@@ -69,17 +49,17 @@ export default function RacialPolarizationSection({ data, stateId }) {
         hasEIFetched.current  = false
     }, [stateId])
 
-    /* ── Fetch: Gingles — gated on Gingles tab ───────────────────────────── */
+    // Step 1: Fetch Gingles data for the selected race when on the Gingles tab
     useEffect(() => {
         if (!stateId || !feasibleRaceFilter) return
         if (!inRP || activeTab !== 'gingles') return
-        if (ginglesByRace[feasibleRaceFilter]) return  // already cached
+        if (ginglesByRace[feasibleRaceFilter]) return
         fetchGingles(stateId, feasibleRaceFilter)
             .then(doc => setGinglesByRace(prev => ({ ...prev, [feasibleRaceFilter]: doc })))
             .catch(err => console.error('[RP] fetchGingles error:', err))
-    }, [stateId, feasibleRaceFilter, inRP, activeTab])  // eslint-disable-line react-hooks/exhaustive-deps
+    }, [stateId, feasibleRaceFilter, inRP, activeTab])
 
-    /* ── Fetch: EI KDE — gated on ei-kde or ei-bar tab (one-time) ───────────── */
+    // Step 2: Fetch EI KDE data once when entering either EI tab
     useEffect(() => {
         if (!stateId) return
         if (!inRP || (activeTab !== 'ei-kde' && activeTab !== 'ei-bar')) return
@@ -90,7 +70,7 @@ export default function RacialPolarizationSection({ data, stateId }) {
             .catch(err => console.error('[RP] fetchEiKde error:', err))
     }, [stateId, inRP, activeTab])  // eslint-disable-line react-hooks/exhaustive-deps
 
-    /* ── Fetch: EI Compare — gated on ei-bar tab ─────────────────────────── */
+    // Step 3: Fetch EI compare doc when race pair or tab changes
     useEffect(() => {
         if (!stateId || eiKdeCompareRaces.length !== 2) return
         if (!inRP || activeTab !== 'ei-bar') return
@@ -100,9 +80,7 @@ export default function RacialPolarizationSection({ data, stateId }) {
             .catch(err => console.error('[RP] fetchEiCompare error:', err))
     }, [stateId, eiKdeCompareRaces, inRP, activeTab])
 
-    /* ── Fetch: Vote / Seat Share — gated on section entry (one-time) ───────
-     * Fetched at section level (not tab) so the VS-SS tab can show
-     * enabled/disabled based on raciallyPolarized before it is clicked. */
+    // Step 4: Fetch vote-seat-share once on first entry to this section
     useEffect(() => {
         if (!stateId || !inRP) return
         if (hasVSSFetched.current) return
@@ -112,9 +90,7 @@ export default function RacialPolarizationSection({ data, stateId }) {
             .catch(err => console.error('[RP] fetchVoteSeatShare error:', err))
     }, [stateId, inRP])
 
-    /* eiData is candidate-first directly from server — no inversion needed */
-
-    /* ── Build gingles adapted shape for GinglesScatterPlot ──────────────── */
+    // Step 5: Adapt per-race Gingles docs into the shape GinglesScatterPlot expects
     const ginglesAdapted = useMemo(() => {
         if (!Object.keys(ginglesByRace).length) return null
         return {
@@ -129,9 +105,8 @@ export default function RacialPolarizationSection({ data, stateId }) {
         }
     }, [ginglesByRace])
 
-    /* ── Derived ─────────────────────────────────────────────────────────── */
-    const stateName = data?.stateSummary?.stateName ?? null
 
+    const stateName = data?.stateSummary?.stateName ?? null
     const demCandidate = useMemo(
         () => eiData?.candidates?.find(c => c.party === 'Democratic') ?? null,
         [eiData]
@@ -141,6 +116,7 @@ export default function RacialPolarizationSection({ data, stateId }) {
         [eiData]
     )
 
+    // Step 6: Compute shared Y-axis max across all visible EI KDE curves
     const eiYMax = useMemo(() => {
         if (!eiData) return 10
         let max = 0
@@ -153,18 +129,15 @@ export default function RacialPolarizationSection({ data, stateId }) {
         return Math.ceil(max * 1.1 * 10) / 10
     }, [eiData, eiRaceFilter])
 
-    const isRaciallyPolarized = voteSeatData?.raciallyPolarized === true
-
     const RP_TABS = useMemo(() => [
         { id: 'gingles', label: 'Gingles Analysis'       },
         { id: 'ei-kde',  label: 'EI KDE Charts'          },
         { id: 'ei-bar',  label: 'EI Bar & Polarization'  },
     ], [])
 
-    /* Current gingles series for the precinct table */
     const currentGinglesSeries = ginglesByRace[feasibleRaceFilter] ?? null
 
-    /* ── Render ──────────────────────────────────────────────────────────── */
+    // Step 7: Render tabbed layout with chart/table pairs per tab
     return (
         <section id="racial-polarization" className="p-2 sm:p-3 lg:p-4 border-b border-brand-muted/30 h-[calc(100vh-3.5rem)] flex flex-col overflow-hidden">
 
@@ -182,12 +155,12 @@ export default function RacialPolarizationSection({ data, stateId }) {
                 className="flex flex-col flex-1 min-h-0"
                 panelClassName="flex-1 min-h-0 overflow-hidden p-5"
             >
-
-                {/* ── GINGLES ─────────────────────────────────────────────── */}
+                {/* Gingles Section */}
                 {activeTab === 'gingles' && (
                     <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 h-full">
                         <div className="flex flex-col gap-3 min-h-0">
                             <SectionHeader title="Gingles Scatter Plot" />
+                            {/* Gingles Scatter Plot */}
                             <GinglesScatterPlot
                                 ginglesData={ginglesAdapted}
                                 raceFilter={feasibleRaceFilter}
@@ -199,6 +172,7 @@ export default function RacialPolarizationSection({ data, stateId }) {
                         <div className="flex flex-col gap-3 min-h-0">
                             <SectionHeader title="Precinct Detail" />
                             <div className="flex-1 min-h-0">
+                                {/* Gingles Precinct Table */}
                                 <GinglesPrecinctTable
                                     points={currentGinglesSeries?.points ?? []}
                                     selectedId={selectedId}
@@ -208,12 +182,12 @@ export default function RacialPolarizationSection({ data, stateId }) {
                         </div>
                     </div>
                 )}
-
-                {/* ── EI KDE ──────────────────────────────────────────────── */}
+                {/* EI KDE Section */}
                 {activeTab === 'ei-kde' && (
                     <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 h-full">
                         <div className="flex flex-col gap-3 min-h-0">
                             <SectionHeader title="Democratic Support" />
+                            {/* EI KDE Chart — Democratic Candidate */}
                             <EIKDEChart
                                 candidate={demCandidate}
                                 activeRaces={eiRaceFilter}
@@ -223,6 +197,7 @@ export default function RacialPolarizationSection({ data, stateId }) {
                         </div>
                         <div className="flex flex-col gap-3 min-h-0">
                             <SectionHeader title="Republican Support" />
+                            {/* EI KDE Chart — Republican Candidate */}
                             <EIKDEChart
                                 candidate={repCandidate}
                                 activeRaces={eiRaceFilter}
@@ -232,12 +207,12 @@ export default function RacialPolarizationSection({ data, stateId }) {
                         </div>
                     </div>
                 )}
-
-                {/* ── EI BAR + POLARIZATION KDE ───────────────────────────── */}
+                {/* EI Bar/Compare Section */}
                 {activeTab === 'ei-bar' && (
                     <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 h-full">
                         <div className="flex flex-col gap-3 min-h-0">
                             <SectionHeader title="Peak Support Estimates" />
+                            {/* EI Bar Chart */}
                             <EIBarChart
                                 demCandidate={demCandidate}
                                 repCandidate={repCandidate}
@@ -247,6 +222,7 @@ export default function RacialPolarizationSection({ data, stateId }) {
                         </div>
                         <div className="flex flex-col gap-3 min-h-0">
                             <SectionHeader title="Polarization KDE" />
+                            {/* EI KDE Compare Chart */}
                             <EIKDECompareChart
                                 pairData={eiCompareDoc}
                                 races={eiKdeCompareRaces}

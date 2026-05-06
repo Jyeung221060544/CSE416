@@ -1,29 +1,10 @@
-/**
- * EIBarChart.jsx — Nivo grouped bar chart for EI peak support estimates.
- *
- * Shows peak KDE support estimates for Democratic and Republican candidates
- * grouped by racial group.  Bracket-style error bars show the 95% CI.
- * A dashed 50% threshold marker is drawn across all groups.
- *
- * Key visual elements:
- *   BgLayer  — Soft blue gradient background rectangle.
- *   CILayer  — Bracket error bars drawn on top of each bar.
- *   markers  — Nivo built-in dashed 50% threshold line.
- *
- * PROPS
- *   demCandidate {object|null} — Democratic candidate from eiData.candidates.
- *   repCandidate {object|null} — Republican candidate from eiData.candidates.
- *   activeRaces  {string[]}    — Race keys to include as bar groups.
- *   className    {string}      — Optional height class.
- */
-
 import { useMemo } from 'react'
 import { ResponsiveBar } from '@nivo/bar'
 import { DEM_COLOR, REP_COLOR, AXIS_COLOR, LABEL_COLOR, THRESH_COLOR, RACE_LABELS, RACE_COLORS } from '@/lib/partyColors'
 import PortalTooltip from '@/components/ui/PortalTooltip'
 
 
-/* ── Step 0: Nivo theme ──────────────────────────────────────────────────── */
+/** Shared Nivo theme — axes, tick labels, and grid lines. */
 const NIVO_THEME = {
     background: 'transparent',
     axis: {
@@ -35,13 +16,7 @@ const NIVO_THEME = {
 }
 
 
-/* ── Step 1: Background layer ────────────────────────────────────────────── */
-
-/**
- * BgLayer — Static gradient background for the bar chart.
- *
- * @param {{ innerWidth:number, innerHeight:number }} props — Injected by Nivo.
- */
+/** Nivo custom layer — soft blue gradient background rect injected behind the bars. */
 function BgLayer({ innerWidth, innerHeight }) {
     return (
         <g>
@@ -53,28 +28,24 @@ function BgLayer({ innerWidth, innerHeight }) {
 }
 
 
-/* ── Step 2: CI error bar layer ──────────────────────────────────────────── */
-
 /**
- * CILayer — Draws bracket-style 95% CI error bars on top of each bar.
- *
+ * Nivo custom layer — bracket-style 95% CI error bars drawn on top of each bar.
  * Reads CI bounds from bar.data.data[`${party}CILow`] / [`${party}CIHigh`].
- *
- * @param {{ bars:object[], yScale:function }} props — Injected by Nivo.
+ * @param {{ bars: object[], yScale: function }} props - Injected by Nivo.
  */
 function CILayer({ bars, yScale }) {
     return (
         <g>
             {bars.map(bar => {
                 const d    = bar.data.data
-                const key  = bar.data.id   // 'Democratic' or 'Republican'
+                const key  = bar.data.id  
                 const low  = d[`${key}CILow`]
                 const high = d[`${key}CIHigh`]
                 if (low == null || high == null) return null
                 const cx = bar.x + bar.width/2
                 const yL = yScale(low), yH = yScale(high)
                 const cap = bar.width * 0.22
-                const CI_COLOR = '#1e293b'  // dark slate — stands out on both party bars
+                const CI_COLOR = '#1e293b'
                 return (
                     <g key={bar.key}>
                         <line x1={cx} y1={yL} x2={cx} y2={yH} stroke={CI_COLOR} strokeWidth={2} strokeOpacity={0.75} />
@@ -88,12 +59,9 @@ function CILayer({ bars, yScale }) {
 }
 
 
-/* ── Step 3: Tooltip factory ─────────────────────────────────────────────── */
-
 /**
- * makeBarTooltip — Returns a tooltip component bound to candidate name labels.
- *
- * @param {{ Democratic:string, Republican:string }} nameMap  Candidate names by party key.
+ * Factory that returns a Nivo tooltip component bound to candidate name labels.
+ * @param {{ Democratic: string, Republican: string }} nameMap - Display names keyed by party.
  * @returns {React.ComponentType}
  */
 function makeBarTooltip(nameMap) {
@@ -116,29 +84,22 @@ function makeBarTooltip(nameMap) {
 }
 
 
-/* ── Step 4: Main component ──────────────────────────────────────────────── */
-
 /**
- * EIBarChart — Grouped bar chart of peak EI support estimates by race.
- *
- * @param {{ demCandidate:object|null, repCandidate:object|null, activeRaces:string[], className:string }} props
- *   demCandidate — Democratic candidate from eiData.candidates.
- *   repCandidate — Republican candidate from eiData.candidates.
- *   activeRaces  — Race keys to display as grouped bars.
- *   className    — Optional height class.
- * @returns {JSX.Element}
+ * Grouped bar chart of peak EI support estimates by racial group.
+ * Dem/Rep bars are shown side-by-side per group with 95% CI brackets and a 50% threshold marker.
+ * @param {object|null} demCandidate - Democratic candidate from eiData.candidates.
+ * @param {object|null} repCandidate - Republican candidate from eiData.candidates.
+ * @param {string[]}    activeRaces  - Race keys to display as bar groups.
+ * @param {string}      className    - Optional height/layout class.
  */
 export default function EIBarChart({ demCandidate, repCandidate, activeRaces, className }) {
 
-    const demName = demCandidate?.candidateName ?? 'Democratic'
-    const repName = repCandidate?.candidateName ?? 'Republican'
+    /* ── Step 0: Resolve candidate display names + memoize tooltip renderer ─ */
+    const demName    = demCandidate?.candidateName ?? 'Democratic'
+    const repName    = repCandidate?.candidateName ?? 'Republican'
     const barTooltip = useMemo(() => makeBarTooltip({ Democratic: demName, Republican: repName }), [demName, repName])
 
-    /* ── Step 4a: Build Nivo data rows ───────────────────────────────────── */
-    /*
-     * Each row is one race group.  Democratic/Republican peak estimates + CI bounds
-     * are stored as flat keys so CILayer and EIBarTooltip can read them from bar.data.data.
-     */
+    /* ── Step 1: Build Nivo data rows ────────────────────────────────────── */
     const nivoData = useMemo(() => {
         if (!demCandidate || !repCandidate) return []
         return activeRaces.map(race => {
@@ -152,25 +113,21 @@ export default function EIBarChart({ demCandidate, repCandidate, activeRaces, cl
         })
     }, [demCandidate, repCandidate, activeRaces])
 
-    /* ── Step 4b: Render ─────────────────────────────────────────────────── */
-    // More padding = slimmer bars; scale down as more races are added
+    /* ── Step 2: Compute responsive bar padding ──────────────────────────── */
     const groupPadding = Math.max(0.28, 0.78 - activeRaces.length * 0.12)
 
+    /* ── Step 3: Render legend + chart ───────────────────────────────────── */
     return (
         <div className={`w-full rounded-xl border border-brand-muted/25 shadow-sm bg-white flex flex-col ${className ?? 'h-[320px]'}`}>
-
-            {/* ── LEGEND ROW ───────────────────────────────────────────────── */}
             <div className="flex items-center gap-5 px-4 pt-3 pb-1 flex-shrink-0">
                 <div className="flex items-center gap-1.5"><span style={{ width:12, height:12, borderRadius:3, background:DEM_COLOR, display:'inline-block', flexShrink:0 }} /><span style={{ fontSize:12, fontWeight:600, color:LABEL_COLOR }}>{demName}</span></div>
                 <div className="flex items-center gap-1.5"><span style={{ width:12, height:12, borderRadius:3, background:REP_COLOR, display:'inline-block', flexShrink:0 }} /><span style={{ fontSize:12, fontWeight:600, color:LABEL_COLOR }}>{repName}</span></div>
-                {/* CI bracket icon */}
                 <div className="flex items-center gap-1.5 ml-2">
                     <svg width="14" height="16"><line x1="7" y1="0" x2="7" y2="16" stroke={AXIS_COLOR} strokeWidth={1.5} strokeOpacity={0.7} /><line x1="3" y1="1" x2="11" y2="1" stroke={AXIS_COLOR} strokeWidth={1.5} strokeOpacity={0.7} /><line x1="3" y1="15" x2="11" y2="15" stroke={AXIS_COLOR} strokeWidth={1.5} strokeOpacity={0.7} /></svg>
                     <span style={{ fontSize:11, fontWeight:500, color:THRESH_COLOR }}>95% CI</span>
                 </div>
             </div>
 
-            {/* ── GROUPED BAR CHART ────────────────────────────────────────── */}
             <div className="flex-1 min-h-0">
                 <ResponsiveBar
                     data={nivoData} keys={['Democratic','Republican']} indexBy="race" groupMode="grouped"

@@ -1,42 +1,14 @@
-/**
- * @file DemographicHeatmap.jsx
- * @description Leaflet choropleth map that colors precincts by the concentration
- *   of a selected racial/ethnic group (race-density heatmap).
- *   Colors come from server-assigned bin IDs so the client only maps binId → hex.
- *
- * PROPS
- * @prop {string} stateId      - Two-letter state abbreviation ("AL" | "OR").
- * @prop {object} heatmapData  - Binning data from the backend:
- *   { bins: [{ binId, color }], features: [{ idx, binId }] }
- * @prop {string} raceFilter   - Currently selected race group key
- *   ("black" | "white" | "latino" | "asian" | "other").
- *
- * LAYOUT
- * - Full-bleed <MapContainer> (Leaflet), re-keyed on state+race.
- * - <FitBounds>       : fits to state outline on mount.
- * - <MapResizeHandler>: invalidates + re-fits on container resize.
- * - State outline GeoJSON layer (teal border, near-transparent fill).
- * - Precinct heatmap GeoJSON layer (per-feature fill from server binId color).
- */
-
-/* ── Step 0: React + map library imports ──────────────────────────────── */
 import { useEffect, useRef, useState } from 'react'
 import { MapContainer, GeoJSON, TileLayer, useMap } from 'react-leaflet'
 import L from 'leaflet'
 
-/* ── Step 1: GeoJSON — fetched from backend, cached per stateId ─────────── */
 import { fetchDistricts, fetchPrecincts } from '../../api'
-const districtOutlineCache = {} // keyed by stateId
-const precinctCache        = {} // keyed by stateId
+const districtOutlineCache = {}
+const precinctCache        = {}
 
-/* ── Step 3: FitBounds helper ─────────────────────────────────────────── */
 /**
- * Inner Leaflet component that fits the map viewport to the extent of the
- * provided GeoJSON. Used to keep the full state in frame on first render.
- *
- * @param {object} props
- * @param {object} props.data - GeoJSON to compute bounds from.
- * @returns {null} Renders nothing — side-effect only.
+ * Fits the map viewport to the bounds of the given GeoJSON data.
+ * @param {object} data - GeoJSON FeatureCollection to fit the map to.
  */
 function FitBounds({ data }) {
     const map = useMap()
@@ -50,14 +22,9 @@ function FitBounds({ data }) {
     return null
 }
 
-/* ── Step 4: MapResizeHandler helper ─────────────────────────────────── */
 /**
- * Watches the Leaflet container for ResizeObserver events and invalidates +
- * re-fits the map so the state always fills the panel after sidebar toggles.
- *
- * @param {object} props
- * @param {object} props.data - GeoJSON used for re-fitting after resize.
- * @returns {null} Renders nothing — side-effect only.
+ * Observes container resize events and invalidates the map size accordingly.
+ * @param {object} data - GeoJSON FeatureCollection used to re-fit bounds on resize.
  */
 function MapResizeHandler({ data }) {
     const map = useMap()
@@ -79,25 +46,19 @@ function MapResizeHandler({ data }) {
     return null
 }
 
-/* ── Step 5: Main DemographicHeatmap component ────────────────────────── */
 /**
- * Renders the precinct-level demographic density heatmap for a given state.
- * Each precinct is colored according to the server-assigned bin for the
- * currently selected race group.
- *
- * @param {object}        props
- * @param {string}        props.stateId      - Two-letter state abbreviation.
- * @param {object}        props.heatmapData  - Bin + feature data from the backend.
- * @param {string}        props.raceFilter   - Selected race key for color lookup.
- * @param {{ center: [number,number], zoom: number }|null} props.mapView
- *                                           - Initial map center + zoom from stateSummary.
- *                                             FitBounds overrides this after mount, so this
- *                                             only affects the brief first-render position.
- *                                             Falls back to the US center if null.
- * @returns {JSX.Element} Full-height Leaflet map or an "unavailable" fallback.
+ * Renders a Leaflet map with a demographic heatmap layer at the precinct level,
+ * an optional district boundary overlay, and party-colored district outlines.
+ * @param {string} stateId - State identifier used to fetch district/precinct data.
+ * @param {object} heatmapData - Bin/feature data used to color precincts.
+ * @param {string} raceFilter - Selected race filter; used as part of the map key.
+ * @param {{center: number[], zoom: number}} mapView - Initial map center and zoom.
+ * @param {boolean} showDistrictOverlay - Whether to render party-colored district borders.
+ * @param {object} districtPartyMap - Map of district number → party string.
+ * @param {boolean} isActive - Whether this tab is active; defers precinct fetch until true.
  */
 export default function DemographicHeatmap({ stateId, heatmapData, raceFilter, mapView, showDistrictOverlay, districtPartyMap, isActive }) {
-    /* ── Step 6a: Resolve geometry sources ── */
+    // Step 0: Load district outlines (cached per state)
     const [outlineData, setOutlineData] = useState(districtOutlineCache[stateId] ?? null)
     useEffect(() => {
         if (districtOutlineCache[stateId]) { setOutlineData(districtOutlineCache[stateId]); return }
@@ -107,8 +68,7 @@ export default function DemographicHeatmap({ stateId, heatmapData, raceFilter, m
             .catch(err => console.error('[DemographicHeatmap] fetchDistricts error:', err))
     }, [stateId])
 
-    // Precinct GeoJSON (fetched from backend, cached in module scope)
-    // Gated on isActive so precincts are not fetched until the Demographic section is in view.
+    // Step 1: Load precinct GeoJSON (cached per state, deferred until tab is active)
     const [precinctData, setPrecinctData] = useState(null)
     useEffect(() => {
         if (precinctCache[stateId]) { setPrecinctData(precinctCache[stateId]); return }
@@ -119,8 +79,7 @@ export default function DemographicHeatmap({ stateId, heatmapData, raceFilter, m
             .catch(err => console.error('[DemographicHeatmap] fetchPrecincts error:', err))
     }, [stateId, isActive])
 
-    /* ── Step 6b: Build idx → hex color map from server bin data ── */
-    // Server returns per-race features: { idx, binId } — no race key lookup needed.
+    // Step 2: Build idx → color lookup from heatmap bin data
     const colorByIdx = {}
     if (heatmapData?.features && heatmapData?.bins) {
         const binColor = {}
@@ -130,10 +89,7 @@ export default function DemographicHeatmap({ stateId, heatmapData, raceFilter, m
         })
     }
 
-    /* ── Step 6b-ii: Imperatively re-style precinct heatmap when data arrives ─
-     * We do NOT change the GeoJSON key when heatmapData loads. Remounting the
-     * heatmap layer after the district overlay would push the heatmap on top.
-     * Instead we call layer.setStyle() on every feature via the ref. ──────── */
+    // Step 3: Imperatively restyle precinct layer when heatmap data changes
     const heatmapLayerRef = useRef(null)
     useEffect(() => {
         if (!heatmapLayerRef.current || !heatmapData) return
@@ -147,22 +103,13 @@ export default function DemographicHeatmap({ stateId, heatmapData, raceFilter, m
                 weight:      0.5,
             })
         })
-    }, [heatmapData]) // eslint-disable-line react-hooks/exhaustive-deps
+    }, [heatmapData])
 
-    /* ── Step 6b-iii: Keep district overlay on top ────────────────────────────────
-     * The precinct GeoJSON loads async and gets stacked above the district overlay
-     * when it arrives. We use Leaflet's `add` event (fires when the layer actually
-     * joins the map) to call bringToFront() at the right moment — not in a React
-     * effect, which fires before the layer is in the Leaflet DOM. ──────────────── */
     const districtOverlayRef = useRef(null)
-
-    /* ── Step 6c: Map re-key token (forces layer remount on param change) ── */
     const mapKey = `${stateId}-${raceFilter}`
-
-    /* ── Step 6e: Running counter for features without an explicit idx ── */
     let counter = 0
 
-    /* ── Step 6f: Render ── */
+    // Step 4: Render map with tile layer, precinct heatmap, and optional district overlays
     return (
         <div style={{ position: 'relative', height: '100%', width: '100%' }}>
             <MapContainer
@@ -176,14 +123,11 @@ export default function DemographicHeatmap({ stateId, heatmapData, raceFilter, m
                 attributionControl={false}
                 style={{ height: '100%', width: '100%' }}
             >
-                {/* ── MAP UTILITIES ──────────────────────────────────────── */}
                 <FitBounds data={outlineData} />
                 <MapResizeHandler data={outlineData} />
 
-                {/* ── BASE TILE LAYER ────────────────────────────────────── */}
                 <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
 
-                {/* ── STATE OUTLINE LAYER ────────────────────────────────── */}
                 {outlineData && (
                     <GeoJSON
                         key={`outline-${stateId}`}
@@ -192,7 +136,6 @@ export default function DemographicHeatmap({ stateId, heatmapData, raceFilter, m
                     />
                 )}
 
-                {/* ── PRECINCT HEATMAP LAYER ─────────────────────────────── */}
                 {precinctData && (
                     <GeoJSON
                         key={`heat-${mapKey}`}
@@ -211,7 +154,6 @@ export default function DemographicHeatmap({ stateId, heatmapData, raceFilter, m
                     />
                 )}
 
-                {/* ── DISTRICT BOUNDARY OVERLAY ───────────────────────────── */}
                 {showDistrictOverlay && outlineData && (
                     <GeoJSON
                         key={`district-overlay-${stateId}-${showDistrictOverlay}`}

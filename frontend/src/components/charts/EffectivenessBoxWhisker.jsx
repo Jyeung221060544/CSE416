@@ -13,6 +13,7 @@ const GRID_CLR     = '#dce8f0'
 
 const MARGIN = { top: 28, right: 20, bottom: 58, left: 62 }
 
+/** Tracks the pixel dimensions of a DOM element via ResizeObserver. */
 function useContainerSize(ref) {
     const [size, setSize] = useState({ width: 0, height: 0 })
     useEffect(() => {
@@ -42,6 +43,7 @@ function BgRect({ innerWidth, innerHeight }) {
     )
 }
 
+/** Tooltip showing box stats and enacted count for a hovered Race-Blind or VRA-Constrained box. */
 function Tooltip({ hovered, x, y }) {
     if (!hovered) return null
     const { raceName, type, stats, enacted } = hovered
@@ -72,6 +74,7 @@ function Tooltip({ hovered, x, y }) {
     )
 }
 
+/** Renders one box-and-whisker glyph (whiskers, IQR rect, median line) with a transparent hover target. */
 function BoxGroup({ cx, bw, stats, yScale, fill, stroke, medianClr, onMouseMove, onMouseLeave }) {
     const capW  = bw * 0.55
     const yQ1   = yScale(stats.q1)
@@ -108,18 +111,28 @@ function BoxGroup({ cx, bw, stats, yScale, fill, stroke, medianClr, onMouseMove,
     )
 }
 
+/**
+ * Box-and-whisker chart for the Effectiveness Analysis — shows count of "effective"
+ * districts per racial group, comparing Race-Blind vs VRA-Constrained ensembles.
+ * Y-axis is integer district counts (not percentages), one slot per feasible group.
+ * @param {object} data           - API response: { ensembles: [...], enactedPlan: {...} }.
+ * @param {Array}  feasibleGroups - Race keys to display (e.g. ["black", "hispanic"]).
+ */
 export default function EffectivenessBoxWhisker({ data, feasibleGroups, className }) {
 
+    /* ── Step 0: Container size + hover state ────────────────────────────── */
     const containerRef = useRef(null)
     const { width, height } = useContainerSize(containerRef)
     const [hovered, setHovered] = useState({ info: null, x: 0, y: 0 })
 
+    /* ── Step 1: Resolve ensembles + inner dimensions ────────────────────── */
     const rbEnsemble  = data?.ensembles?.find(e => e.ensembleType === 'race-blind')
     const vraEnsemble = data?.ensembles?.find(e => e.ensembleType === 'vra-constrained')
 
     const innerW = Math.max(0, width  - MARGIN.left - MARGIN.right)
     const innerH = Math.max(0, height - MARGIN.top  - MARGIN.bottom)
 
+    /* ── Step 2: Build y-scale from max across both ensembles ────────────── */
     const yScale = useMemo(() => {
         if (!innerH || !data || !feasibleGroups?.length) return null
         const allMax = feasibleGroups.flatMap(r => [
@@ -135,10 +148,7 @@ export default function EffectivenessBoxWhisker({ data, feasibleGroups, classNam
 
     const yTicks = useMemo(() => (yScale ? yScale.ticks(6).filter(Number.isInteger) : []), [yScale])
 
-    /*
-     * Each racial group occupies a "slot" on the x-axis.
-     * Within each slot, two boxes (RB left, VRA right) are placed side-by-side.
-     */
+    /* ── Step 3: Compute per-group slot positions ────────────────────────── */
     const groupLayout = useMemo(() => {
         if (!innerW || !feasibleGroups?.length) return []
         const n        = feasibleGroups.length
@@ -158,6 +168,7 @@ export default function EffectivenessBoxWhisker({ data, feasibleGroups, classNam
         })
     }, [innerW, feasibleGroups])
 
+    /* ── Step 4: Render ──────────────────────────────────────────────────── */
     if (!data || !feasibleGroups?.length) {
         return (
             <div className={`w-full rounded-xl border border-dashed border-brand-muted/30 bg-brand-surface/20 flex items-center justify-center ${className ?? 'h-full'}`}>

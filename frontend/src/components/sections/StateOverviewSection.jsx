@@ -1,31 +1,3 @@
-/**
- * StateOverviewSection.jsx — First section on StatePage (id="state-overview").
- *
- * LAYOUT
- *   ┌──────────────────────────────────┬───────────────────────────────────┐
- *   │  DistrictMap2024                 │  [State Summary] [Congressional]  │
- *   │  (interactive choropleth)        │   [Ensemble & Demographic]        │
- *   │                                  │  ───────────────────────────────  │
- *   │                                  │  Tabbed right panel (no scroll):  │
- *   │                                  │  · State Summary        (default) │
- *   │                                  │  · Congressional District Summary │
- *   │                                  │  · Ensemble & Demographic Summary │
- *   │                                  │                                   │
- *   │                                  │  OR — when a district is clicked: │
- *   │                                  │  · "Return to <tab>" back button  │
- *   │                                  │  · DistrictDetailCard             │
- *   └──────────────────────────────────┴───────────────────────────────────┘
- *
- * PROPS
- *   data    {object|null} — Full state data bundle from useStateData.
- *   stateId {string}      — Two-letter state abbreviation (e.g. 'AL').
- *
- * STATE SOURCES
- *   selectedDistrict / setSelectedDistrict — Zustand; district number (1-based int).
- *   raceFilter / setRaceFilter             — Zustand; active race for population table.
- *   activeSOTab / setActiveSOTab           — Zustand; active mini-nav tab; also drives
- *                                            the SectionPanel SO sub-nav highlight.
- */
 
 import React from 'react'
 import { MapPin, ArrowLeft } from 'lucide-react'
@@ -44,28 +16,17 @@ import EnsembleSummaryTable       from '@/components/tables/EnsembleSummaryTable
 import DemographicPopulationTable from '@/components/tables/DemographicPopulationTable'
 
 
-/* ── Tab definitions ─────────────────────────────────────────────────────────
- * ids must match the SO_SUBSECTIONS ids in SectionPanel and the activeSOTab
- * values in useAppStore so the sidebar sub-nav and pills stay in sync.
- * ─────────────────────────────────────────────────────────────────────────── */
-
 const OVERVIEW_TABS = [
     { id: 'state-stats',   label: 'State Stats'                 },
     { id: 'congressional', label: 'District Stats' },
     { id: 'ensemble-demo', label: 'Ensemble/Demographic Stats' },
 ]
 
-
-/* ── Step 0: Sub-components ──────────────────────────────────────────────── */
-
 /**
- * StatCard — Small summary tile with a label, primary value, and optional subtitle.
- *
- * @param {{ label: string, value: string|number|null, sub?: string }} props
- *   label — Short uppercase key shown in tiny text.
- *   value — Main display value (e.g. population, district count). Renders '—' if null.
- *   sub   — Optional secondary line shown below value in muted smaller text.
- * @returns {JSX.Element}
+ * Small summary card displaying a single labeled stat value.
+ * @param {string} label - Card title text.
+ * @param {string|number} value - Primary stat value to display.
+ * @param {string} [sub] - Optional subtitle/sub-label text.
  */
 function StatCard({ label, value, sub }) {
     return (
@@ -80,12 +41,9 @@ function StatCard({ label, value, sub }) {
 }
 
 /**
- * DistBar — Horizontal stacked bar showing Democratic vs Republican share.
- *
- * @param {{ demPct: number, repPct: number }} props
- *   demPct — Democratic percentage (0–100); controls the blue segment width.
- *   repPct — Republican percentage (0–100); controls the red segment width.
- * @returns {JSX.Element}
+ * Horizontal Dem/Rep seat or vote distribution bar.
+ * @param {number} demPct - Democratic percentage (0–100).
+ * @param {number} repPct - Republican percentage (0–100).
  */
 function DistBar({ demPct, repPct }) {
     return (
@@ -97,20 +55,12 @@ function DistBar({ demPct, repPct }) {
 }
 
 /**
- * DistrictDetailCard — Right-panel card displaying a single district's details.
- *
- * Renders an empty-state prompt if no district is selected.
- * Sourced from: districtData.districts[n] filtered by districtNumber === selectedDistrict.
- *
- * @param {{ district: object|null }} props
- *   district — District record from districtSummary.districts, or null if none selected.
- *              Fields: districtNumber, representative, party, racialGroup,
- *                      voteMarginPercentage, voteMarginDirection.
- * @returns {JSX.Element}
+ * Detail panel for the currently selected congressional district,
+ * or an empty-state prompt when no district is selected.
+ * @param {object|null} district - District object from districtSummary, or null.
  */
 function DistrictDetailCard({ district }) {
 
-    /* ── Empty state — no district selected yet ── */
     if (!district) {
         return (
             <Card className="h-full p-0 border-brand-muted/25 shadow-sm">
@@ -129,13 +79,11 @@ function DistrictDetailCard({ district }) {
         )
     }
 
-    /* ── Derive display values from raw district data ── */
     const isUncontested = district.voteMarginPercentage >= 1.0
     const marginCls     = district.voteMarginDirection === 'D' ? DEM_TEXT : REP_TEXT
     const marginLabel   = `${district.voteMarginDirection}+${isUncontested ? '100' : (district.voteMarginPercentage * 100).toFixed(1)}%`
     const isEffective   = district.isEffective ?? false
 
-    /* ── Populated district card ── */
     return (
         <Card className="h-full p-0 border-brand-muted/25 shadow-sm overflow-hidden">
             <CardHeader className="pb-3 pt-6 px-6">
@@ -186,61 +134,40 @@ function DistrictDetailCard({ district }) {
     )
 }
 
-
-/* ── Step 1: Main exported section component ─────────────────────────────── */
-
 /**
- * StateOverviewSection — Top section of StatePage.
- *
- * The right panel is a fixed-height tabbed container (no viewport scrolling).
- * Selecting a district swaps the panel to a detail card; the back button
- * restores the tab that was active when the district was clicked.
- *
- * @param {{ data: object|null, stateId: string }} props
- *   data    — Full state data bundle (stateSummary, districtSummary, ensembleSummary, …).
- *   stateId — Two-letter abbreviation for the current state (e.g. 'AL').
- * @returns {JSX.Element}
+ * Renders the State Overview section with a district map and a tabbed panel
+ * showing state stats, congressional district details, or ensemble/demographic summaries.
+ * @param {object} data - State overview data containing stateSummary, districtSummary, and ensembleSummary.
+ * @param {string} stateId - State identifier.
  */
 export default function StateOverviewSection({ data, stateId }) {
 
-    /* ── Zustand state ───────────────────────────────────────────────────── */
     const selectedDistrict    = useAppStore(s => s.selectedDistrict)
     const setSelectedDistrict = useAppStore(s => s.setSelectedDistrict)
     const raceFilter          = useAppStore(s => s.raceFilter)
     const setRaceFilter       = useAppStore(s => s.setRaceFilter)
 
-
-    /* ── Tab state (global — mirrors sidebar sub-nav) ───────────────────── */
     const activeTab    = useAppStore(s => s.activeSOTab)
     const setActiveTab = useAppStore(s => s.setActiveSOTab)
 
-
-    /* ensembleSummary is included in the state-stats response — no separate fetch needed */
-
-    /* ── Derived data ────────────────────────────────────────────────────── */
     const stateData         = data?.stateSummary
     const districtData      = data?.districtSummary
     const demographicGroups = stateData?.demographicGroups ?? []
 
-    /* Congressional seat breakdown */
     const demSeats = stateData?.congressionalRepresentatives?.byParty?.find(p => p.party === 'Democratic')?.seats ?? 0
     const repSeats = stateData?.congressionalRepresentatives?.byParty?.find(p => p.party === 'Republican')?.seats ?? 0
     const total    = stateData?.congressionalRepresentatives?.totalSeats ?? 0
 
-    /* Voter distribution percentages */
     const demVote  = stateData?.voterDistribution?.democraticVoteShare
     const repVote  = stateData?.voterDistribution?.republicanVoteShare
     const voteYear = stateData?.voterDistribution?.electionYear
 
-    /* Full district record for the currently-selected district number */
     const selectedDistrictData = districtData?.districts?.find(d => d.districtNumber === selectedDistrict) ?? null
 
 
-    /* ── Render ──────────────────────────────────────────────────────────── */
     return (
         <section id="state-overview" className="p-2 sm:p-3 lg:p-4 border-b border-brand-muted/30 h-[calc(100vh-3.5rem)] flex flex-col overflow-hidden">
 
-            {/* ── SECTION HEADER ───────────────────────────────────────────── */}
             <div className="flex items-baseline justify-between mb-3 shrink-0">
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-brand-darkest tracking-tight">
                     State Overview
@@ -248,15 +175,8 @@ export default function StateOverviewSection({ data, stateId }) {
                 <span className="hidden sm:inline-flex items-center gap-1.5 text-sm italic font-medium text-brand-primary bg-brand-primary/10 border border-brand-primary/20 px-3 py-0.5 rounded-full">&ldquo;Who are we looking at?&rdquo;</span>
             </div>
 
-            {/* ── UNIFIED 4-CELL GRID ───────────────────────────────────────── */}
-            {/* Row 1: [map legend]  [tab bar / back button]                     */}
-            {/* Row 2: [map]         [lavender panel content]                    */}
-            {/* gap-y-0 keeps the tab shelf (row 1 right) flush against the      */}
-            {/* panel top (row 2 right) — the browser-tab trick still works.     */}
-            {/* CSS order swaps tab bar / map on mobile so map follows legend.   */}
             <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-5 lg:grid-rows-[auto_1fr]">
 
-                {/* ── [Row 1, Col 1] MAP LEGEND ─────────────────────────────── */}
                 <div className="order-1 flex items-center gap-4 text-sm text-brand-muted/70 pb-2">
                     <span className="flex items-center gap-1.5">
                         <span className="w-3 h-3 rounded-sm bg-blue-400/60 border border-blue-600 shrink-0" /> Democratic
@@ -269,11 +189,7 @@ export default function StateOverviewSection({ data, stateId }) {
                     </span>
                 </div>
 
-                {/* ── [Row 1, Col 2] TAB BAR ────────────────────────────────── */}
-                {/* On mobile: order-3 keeps it between map (order-2) and         */}
-                {/* panel (order-4) so it always sits directly above the panel.   */}
                 {(selectedDistrict && activeTab !== 'congressional') ? (
-                    /* Back button — only shown when detail card is visible */
                     <div
                         className="order-3 lg:order-2 flex items-end pb-1"
                         style={{ borderBottom: '2px solid rgba(89,90,150,0.55)' }}
@@ -289,7 +205,6 @@ export default function StateOverviewSection({ data, stateId }) {
                         </Button>
                     </div>
                 ) : (
-                /* Browser-tab shelf: active tab pierces it via marginBottom:-2px */
                 <div
                     className="order-3 lg:order-2"
                     style={{ display: 'flex', alignItems: 'flex-end', gap: '3px', borderBottom: '2px solid rgba(89,90,150,0.55)', paddingLeft: '2px' }}
@@ -328,13 +243,11 @@ export default function StateOverviewSection({ data, stateId }) {
                 </div>
                 )}
 
-                {/* ── [Row 2, Col 1] DISTRICT MAP ───────────────────────────── */}
                 <MapFrame className="h-[340px] sm:h-[420px] lg:h-full order-2 lg:order-3">
+                    {/* District Map */}
                     <DistrictMap2024 stateId={stateId} districtSummary={districtData} />
                 </MapFrame>
 
-                {/* ── [Row 2, Col 2] CONTENT PANEL ──────────────────────────── */}
-                {/* borderTop:none — the shelf line above is the visual top edge. */}
                 <div
                     className="order-4 h-[340px] sm:h-[420px] lg:h-full overflow-hidden"
                     style={{
@@ -348,18 +261,17 @@ export default function StateOverviewSection({ data, stateId }) {
                     }}
                 >
                     {(selectedDistrict && activeTab !== 'congressional') ? (
-                        /* ── DISTRICT DETAIL ─────────────────────────────────── */
                         <div className="h-full p-3">
+                            {/* District Detail Card */}
                             <DistrictDetailCard district={selectedDistrictData} />
                         </div>
                     ) : (
-                        /* ── TAB CONTENT ──────────────────────────────────────── */
                         <div className="h-full">
 
-                            {/* State Summary */}
                             {activeTab === 'state-stats' && (
                                 <div className="flex flex-col gap-4 h-full overflow-hidden px-4 pt-3 pb-2">
 
+                                    {/* State Stat Cards */}
                                     <div className="grid grid-cols-2 gap-3 shrink-0">
                                         <StatCard label="Total Population"  value={stateData?.totalPopulation?.toLocaleString()} />
                                         <StatCard label="Voting Age Pop."   value={stateData?.votingAgePopulation?.toLocaleString()} />
@@ -389,6 +301,7 @@ export default function StateOverviewSection({ data, stateId }) {
                                                         {(repVote * 100).toFixed(1)}%
                                                     </span>
                                                 </div>
+                                                {/* Voter Distribution Bar */}
                                                 <DistBar demPct={demVote * 100} repPct={repVote * 100} />
                                             </div>
                                         </div>
@@ -415,6 +328,7 @@ export default function StateOverviewSection({ data, stateId }) {
                                                     {repSeats} <span className="text-brand-muted/60 text-sm font-normal">/ {total}</span>
                                                 </span>
                                             </div>
+                                            {/* Seat Distribution Bar */}
                                             {total > 0 && <DistBar demPct={(demSeats / total) * 100} repPct={(repSeats / total) * 100} />}
                                         </div>
                                     </div>
@@ -422,23 +336,24 @@ export default function StateOverviewSection({ data, stateId }) {
                                 </div>
                             )}
 
-                            {/* Congressional Districts */}
                             {activeTab === 'congressional' && (
                                 <div className="h-full overflow-hidden px-3 pt-2">
                                     <SectionHeader title={`${districtData?.electionYear ?? 'Enacted'} Congressional Districts`} />
+                                    {/* Congressional Table */}
                                     <CongressionalTable districtSummary={districtData} />
                                 </div>
                             )}
 
-                            {/* Ensemble & Demographic */}
                             {activeTab === 'ensemble-demo' && (
                                 <div className="flex flex-col gap-3 overflow-hidden px-3 pt-2 pb-2">
                                     <div>
                                         <SectionHeader title="Ensemble Summary" />
+                                        {/* Ensemble Summary Table */}
                                         <EnsembleSummaryTable ensembleSummary={data?.ensembleSummary ?? null} />
                                     </div>
                                     <div>
                                         <SectionHeader title="Population By Group" />
+                                        {/* Demographic Population Table (read-only) */}
                                         <DemographicPopulationTable
                                             demographicGroups={demographicGroups}
                                             raceFilter={raceFilter}

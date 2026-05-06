@@ -1,19 +1,3 @@
-/**
- * EIKDECompareChart.jsx — Polarization KDE for two racial groups (Democratic candidate).
- *
- * Renders a single KDE curve showing the probability density of the DIFFERENCE in
- * vote-share support between two racial groups for the Democratic candidate only.
- *
- * X-axis: (race1 − race2) support, from −100% to +100%.
- * Zero-line marks no difference.
- *
- * Shows an empty-state prompt when fewer than 2 races are selected.
- *
- * PROPS
- *   pairData  {object|null} — Matching racePair from eiCompare.racePairs.
- *   races     {string[]}    — The two selected race keys (may be 0, 1, or 2 items).
- *   className {string}      — Optional height class.
- */
 
 import { useMemo }        from 'react'
 import { ResponsiveLine } from '@nivo/line'
@@ -21,7 +5,6 @@ import { DEM_COLOR, RACE_LABELS, AXIS_COLOR, LABEL_COLOR } from '@/lib/partyColo
 import PortalTooltip from '@/components/ui/PortalTooltip'
 
 
-/* ── Step 0: Nivo theme ──────────────────────────────────────────────────── */
 const NIVO_THEME = {
     background: 'transparent',
     axis: {
@@ -33,7 +16,6 @@ const NIVO_THEME = {
 }
 
 
-/* ── Step 1: Background layer ────────────────────────────────────────────── */
 function BgLayer({ innerWidth, innerHeight }) {
     return (
         <g>
@@ -50,7 +32,6 @@ function BgLayer({ innerWidth, innerHeight }) {
 }
 
 
-/* ── Zero-line layer ─────────────────────────────────────────────────────── */
 function ZeroLine({ xScale, innerHeight }) {
     const x0 = xScale(0)
     return (
@@ -62,7 +43,6 @@ function ZeroLine({ xScale, innerHeight }) {
 }
 
 
-/* ── Slice tooltip ───────────────────────────────────────────────────────── */
 function makeSliceTooltip(r0Label, r1Label) {
     return function CompareSliceTooltip({ slice }) {
         const x  = slice.points[0]?.data.x
@@ -83,8 +63,6 @@ function makeSliceTooltip(r0Label, r1Label) {
     }
 }
 
-
-/* ── KDE fold — convert signed [-1,1] difference to absolute [0,1] ────────── */
 function foldKdePoints(kdePoints) {
     if (!kdePoints?.length) return []
     function interp(x) {
@@ -100,17 +78,7 @@ function foldKdePoints(kdePoints) {
 }
 
 
-/* ── Threshold shading layer factory ────────────────────────────────────── */
-/**
- * Returns a Nivo custom layer that shades the KDE tail beyond `threshold`
- * (in the direction of the peak) and annotates the probability.
- *
- * peakX >= 0 → shade x > threshold (race0 is more Dem-favoring)
- * peakX <  0 → shade x < -threshold (race1 is more Dem-favoring, curve peaks left)
- */
-/* kdePoints are the already-folded [0,1] points */
 function makeThresholdLayer(kdePoints, threshold) {
-    /* Trapezoidal integration over [threshold, 1] */
     let probGT = 0
     for (let i = 0; i < kdePoints.length - 1; i++) {
         const p0 = kdePoints[i], p1 = kdePoints[i + 1]
@@ -122,7 +90,6 @@ function makeThresholdLayer(kdePoints, threshold) {
         probGT += (sHi - sLo) * (y0 + y1) / 2
     }
 
-    /* Polygon points for the shaded tail */
     const shadePts = []
     for (let i = 0; i < kdePoints.length - 1; i++) {
         const p0 = kdePoints[i], p1 = kdePoints[i + 1]
@@ -162,10 +129,18 @@ function makeThresholdLayer(kdePoints, threshold) {
 }
 
 
-/* ── Main component ──────────────────────────────────────────────────────── */
+/**
+ * KDE line chart showing the folded polarization magnitude between two racial groups.
+ * X-axis is |race0 − race1| Dem support difference [0, 1]; y-axis is probability density.
+ * Shades the tail beyond `threshold` and annotates the exceedance probability.
+ * @param {object|null} pairData  - Matching racePair entry from eiCompare.racePairs.
+ * @param {string[]}    races     - The two selected race keys (must have exactly 2 items).
+ * @param {number}      threshold - Polarization threshold for tail shading (default 0.4).
+ * @param {string}      className - Optional height/layout class.
+ */
 export default function EIKDECompareChart({ pairData, races, threshold = 0.4, className }) {
 
-    /* ── Empty state: fewer than 2 races selected ───────────────────────── */
+    /* ── Step 0: Guards — fewer than 2 races or no pair data ─────────────── */
     if (!races || races.length < 2) {
         return (
             <div className={`w-full rounded-xl border border-brand-muted/25 shadow-sm bg-white flex items-center justify-center text-brand-muted/50 text-sm italic ${className ?? 'h-[380px]'}`}>
@@ -174,7 +149,6 @@ export default function EIKDECompareChart({ pairData, races, threshold = 0.4, cl
         )
     }
 
-    /* ── No data for pair ───────────────────────────────────────────────── */
     if (!pairData) {
         return (
             <div className={`w-full rounded-xl border border-brand-muted/25 shadow-sm bg-white flex items-center justify-center text-brand-muted/50 text-sm italic ${className ?? 'h-[380px]'}`}>
@@ -183,17 +157,18 @@ export default function EIKDECompareChart({ pairData, races, threshold = 0.4, cl
         )
     }
 
+    /* ── Step 1: Resolve Dem candidate + fold KDE to absolute [0,1] ─────── */
     const demCandidate = useMemo(
         () => pairData.candidates.find(c => c.party === 'Democratic') ?? null,
         [pairData]
     )
 
-    /* Fold signed [-1,1] KDE to absolute [0,1] — polarization magnitude only */
     const foldedPts = useMemo(
         () => foldKdePoints(demCandidate?.kdePoints ?? []),
         [demCandidate]
     )
 
+    /* ── Step 2: Build Nivo line data + y-ceiling + tooltip ─────────────── */
     const nivoData = useMemo(
         () => [{ id: 'kde', data: foldedPts.map(p => ({ x: p.x, y: p.y })) }],
         [foldedPts]
@@ -214,15 +189,14 @@ export default function EIKDECompareChart({ pairData, races, threshold = 0.4, cl
 
     if (!demCandidate) return null
 
+    /* ── Step 3: Resolve race labels + build threshold layer ─────────────── */
     const r0Label = RACE_LABELS[pairData.races[0]] ?? pairData.races[0]
     const r1Label = RACE_LABELS[pairData.races[1]] ?? pairData.races[1]
     const thresholdLayer = makeThresholdLayer(foldedPts, threshold)
 
-    /* ── Render ─────────────────────────────────────────────────────────── */
+    /* ── Step 4: Render ──────────────────────────────────────────────────── */
     return (
         <div className={`w-full rounded-xl border border-brand-muted/25 shadow-sm bg-white flex flex-col ${className ?? 'h-[380px]'}`}>
-
-            {/* ── CHART ────────────────────────────────────────────────── */}
             <div className="flex-1 min-h-0">
                 <ResponsiveLine
                     data={nivoData}

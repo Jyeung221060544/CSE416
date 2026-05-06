@@ -15,9 +15,10 @@ const EFF_TABS = [
 ]
 
 /**
- * Effectiveness analysis section: histogram + box & whisker, and VRA impact table.
- *
- * @param {{ data: object|null, stateId: string }} props
+ * Renders the Effectiveness Analysis section with two tabs:
+ * an effectiveness histogram + box-whisker, and a VRA impact donut table.
+ * @param {object} data - State overview data (unused directly; data is fetched on activation).
+ * @param {string} stateId - State identifier used to fetch effectiveness data.
  */
 export default function EffectivenessSection({ data, stateId }) {
 
@@ -32,11 +33,13 @@ export default function EffectivenessSection({ data, stateId }) {
     const [effectivenessData, setEffectivenessData] = useState(null)
     const hasFetched = useRef(false)
 
+    // Step 0: Reset data when state changes
     useEffect(() => {
         setEffectivenessData(null)
         hasFetched.current = false
     }, [stateId])
 
+    // Step 1: Fetch effectiveness data once on first entry to this section
     useEffect(() => {
         if (!stateId || !inEFF) return
         if (hasFetched.current) return
@@ -56,6 +59,7 @@ export default function EffectivenessSection({ data, stateId }) {
         </div>
     )
 
+    // Step 2: Render tabbed layout — visualizations or VRA impact table
     return (
         <section
             id="effectiveness-analysis"
@@ -85,6 +89,7 @@ export default function EffectivenessSection({ data, stateId }) {
 
                             <div className="flex flex-col gap-1 min-w-0 h-full">
                                 <SectionHeader title="Effectiveness Histogram" className="shrink-0" />
+                                {/* Effectiveness Histogram */}
                                 <EffectivenessHistogram
                                     data={effectivenessData.effectivenessHistogram}
                                     raceKey={effRaceFilter}
@@ -95,6 +100,7 @@ export default function EffectivenessSection({ data, stateId }) {
 
                             <div className="flex flex-col gap-1 min-w-0 h-full">
                                 <SectionHeader title="Effectiveness Box & Whisker" className="shrink-0" />
+                                {/* Effectiveness Box & Whisker */}
                                 <EffectivenessBoxWhisker
                                     data={effectivenessData.effectivenessBoxWhisker}
                                     feasibleGroups={effBWRaceFilter.length > 0 ? effBWRaceFilter : effectivenessData.feasibleGroups}
@@ -110,6 +116,7 @@ export default function EffectivenessSection({ data, stateId }) {
                     effectivenessData ? (
                         <div className="h-full flex">
                             <div className="w-[70%] h-full">
+                                {/* VRA Impact Table */}
                                 <VRAImpactTable
                                     data={effectivenessData.vraImpactThreshold}
                                     raceKey={effRaceFilter}

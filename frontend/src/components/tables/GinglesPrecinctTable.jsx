@@ -6,7 +6,6 @@ import InfoCallout from '@/components/ui/info-callout'
 import { REGION_CLS, DEM_TEXT, REP_TEXT, DEM_HEADER_TEXT, REP_HEADER_TEXT } from '@/lib/partyColors'
 import { ROW_BORDER, ACTIVE_LABEL, INACTIVE_LABEL, rowBg } from '@/lib/tableStyles'
 
-// Matches the rendered row height: py-2.5 (10px × 2) + text-xs line-height (16px)
 const ROW_HEIGHT = 40
 
 const COLS = 'grid-cols-[1fr_50px_60px_62px_52px_50px_50px]'

@@ -1,48 +1,41 @@
-/**
- * @file RepresentationGapMap.jsx
- *
- * LAYER STACK (bottom to top)
- *   1. CartoDB light tiles
- *   2. Precinct heatmap — choropleth by selected minority race's population concentration
- *   3. District boundaries — coloring depends on plan:
- *        · current plan  → enacted GeoJSON geometry; green (effective) / black outline (not)
- *        · high/low plan → interesting plan geometry; green (is_effective=true) / black outline
- *
- * PROPS
- * @prop {string} stateId         - "AL" | "OR"
- * @prop {string} plan            - 'current' | 'high' | 'low'
- * @prop {object} districtSummary - District metadata (racialGroup per district for current plan).
- * @prop {string} feasibleRace    - Minority race key driving heatmap + effectiveness overlay.
- */
 
 import { useEffect, useRef, useState } from 'react'
 import { MapContainer, GeoJSON, TileLayer, useMap } from 'react-leaflet'
 import L from 'leaflet'
 import { fetchDistricts, fetchInterestingPlan, fetchPrecincts, fetchHeatmap } from '../../api'
-import { EFFECTIVE_FILL, EFFECTIVE_BORDER } from '../../lib/partyColors'
+import { EFFECTIVE_FILL } from '../../lib/partyColors'
 
-/* ── Module-level caches ─────────────────────────────────────────────────── */
-const enactedGeoCache      = {}  // stateId → enacted district GeoJSON (clean boundaries)
-const interestingPlanCache = {}  // `${stateId}_${plan}` → interesting plan feature data
-const precinctGeoCache     = {}  // stateId → precinct GeoJSON
-const heatmapDataCache     = {}  // `${stateId}_${race}` → { bins, features }
-const _heatmapInFlight     = {}  // dedup in-flight heatmap requests
+const enactedGeoCache      = {}  
+const interestingPlanCache = {}  
+const precinctGeoCache     = {} 
+const heatmapDataCache     = {} 
+const _heatmapInFlight     = {} 
 
-/* ── Shared effectiveness style ──────────────────────────────────────────── */
-// effective   → green fill + bright white border with green glow
-// not effective → transparent fill + white border with white glow (visible over teal heatmap)
+
+/**
+ * Returns a Leaflet style object for a district based on its effectiveness.
+ * @param {boolean} isEffective - Whether the district is considered effective.
+ * @returns {object} Leaflet path style options.
+ */
 function effectivenessStyle(isEffective) {
     return isEffective
         ? { fillColor: EFFECTIVE_FILL, fillOpacity: 0.28, color: '#fef08a', weight: 4, opacity: 0.45, className: 'rg-district-effective' }
         : { fillOpacity: 0, fillColor: 'none',            color: '#fef08a', weight: 4, opacity: 0.45, className: 'rg-district-outline'    }
 }
 
-/* ── Unified district style — reads isEffective directly from feature properties ── */
+/**
+ * Derives the Leaflet style for a GeoJSON district feature.
+ * @param {object} feature - GeoJSON feature with an isEffective property.
+ * @returns {object} Leaflet path style options.
+ */
 function getDistrictStyle(feature) {
     return effectivenessStyle(feature.properties?.isEffective ?? false)
 }
 
-/* ── FitBounds helper ─────────────────────────────────────────────────────── */
+/**
+ * Fits the map viewport to the bounds of the given GeoJSON data.
+ * @param {object} geoData - GeoJSON FeatureCollection to fit the map to.
+ */
 function FitBounds({ geoData }) {
     const map = useMap()
     useEffect(() => {
@@ -55,7 +48,10 @@ function FitBounds({ geoData }) {
     return null
 }
 
-/* ── MapResizeHandler helper ──────────────────────────────────────────────── */
+/**
+ * Observes container resize events and invalidates the map size accordingly.
+ * @param {object} geoData - GeoJSON FeatureCollection used to re-fit bounds on resize.
+ */
 function MapResizeHandler({ geoData }) {
     const map = useMap()
     useEffect(() => {
@@ -76,7 +72,11 @@ function MapResizeHandler({ geoData }) {
     return null
 }
 
-/* ── Heatmap legend ───────────────────────────────────────────────────────── */
+/**
+ * Renders a color-coded legend for the demographic heatmap overlay.
+ * @param {Array<{binId: string, color: string, rangeMin: number, rangeMax: number}>} bins - Bin definitions from heatmap data.
+ * @param {string} raceName - Display name of the selected race/demographic.
+ */
 function HeatmapLegend({ bins, raceName }) {
     if (!bins?.length || !raceName) return null
     return (
@@ -100,9 +100,18 @@ function HeatmapLegend({ bins, raceName }) {
     )
 }
 
-/* ── Main component ───────────────────────────────────────────────────────── */
-export default function RepresentationGapMap({ stateId, plan, districtSummary, feasibleRace, onEffectiveCount }) {
+/**
+ * Renders a Leaflet map showing district effectiveness for a given plan,
+ * with an optional demographic heatmap overlay at the precinct level.
+ * @param {string} stateId - State identifier used to fetch geographic data.
+ * @param {string} plan - Selected plan key ('current' or an interesting plan ID).
+ * @param {object} districtSummary - Summary data for district-level statistics.
+ * @param {string|null} feasibleRace - Race filter for the heatmap overlay; null hides it.
+ * @param {function} onEffectiveCount - Callback fired with the count of effective districts.
+ */
+export default function RepresentationGapMap({ stateId, plan, feasibleRace, onEffectiveCount }) {
 
+    // Step 0: Declare state for geo layers and loading flags
     const [enactedGeoData,    setEnactedGeoData]    = useState(null)  // enacted plan (clean boundaries)
     const [interestingGeoData, setInterestingGeoData] = useState(null)  // interesting plan GeoJSON
     const [precinctData,      setPrecinctData]      = useState(null)
@@ -112,7 +121,7 @@ export default function RepresentationGapMap({ stateId, plan, districtSummary, f
     const precinctLayerRef = useRef(null)
     const districtLayerRef = useRef(null)
 
-    /* ── Always fetch the enacted district GeoJSON (clean boundaries) ─────── */
+    // Step 1: Load enacted district boundaries (cached per state)
     useEffect(() => {
         if (enactedGeoCache[stateId]) { setEnactedGeoData(enactedGeoCache[stateId]); return }
         setEnactedGeoData(null)
@@ -121,14 +130,14 @@ export default function RepresentationGapMap({ stateId, plan, districtSummary, f
             .catch(err => console.error('[RepresentationGapMap] fetchDistricts error:', err))
     }, [stateId])
 
-    /* ── Report effective district count when enacted GeoJSON loads ──────── */
+    // Step 2: Report effective district count for the enacted plan
     useEffect(() => {
         if (plan !== 'current' || !enactedGeoData || !onEffectiveCount) return
         const count = enactedGeoData.features?.filter(f => f.properties?.isEffective).length ?? 0
         onEffectiveCount(count)
     }, [plan, enactedGeoData, onEffectiveCount])
 
-    /* ── For interesting plans: fetch the full GeoJSON (geometry + properties) */
+    // Step 3: Load interesting plan GeoJSON when a non-current plan is selected
     useEffect(() => {
         setNotFound(false)
         if (plan === 'current') { setInterestingGeoData(null); return }
@@ -144,14 +153,14 @@ export default function RepresentationGapMap({ stateId, plan, districtSummary, f
             })
     }, [stateId, plan])
 
-    /* ── Report effective district count when interesting GeoJSON loads ──── */
+    // Step 4: Report effective district count for the interesting plan
     useEffect(() => {
         if (plan === 'current' || !interestingGeoData || !onEffectiveCount) return
         const count = interestingGeoData.features?.filter(f => f.properties?.isEffective).length ?? 0
         onEffectiveCount(count)
     }, [plan, interestingGeoData, onEffectiveCount])
 
-    /* ── Fetch precinct GeoJSON (heatmap base layer) ─────────────────────── */
+    // Step 5: Load precinct GeoJSON for the heatmap base layer (cached per state)
     useEffect(() => {
         if (precinctGeoCache[stateId]) { setPrecinctData(precinctGeoCache[stateId]); return }
         setPrecinctData(null)
@@ -160,7 +169,7 @@ export default function RepresentationGapMap({ stateId, plan, districtSummary, f
             .catch(err => console.error('[RepresentationGapMap] fetchPrecincts error:', err))
     }, [stateId])
 
-    /* ── Fetch heatmap bin colors for the selected race ──────────────────── */
+    // Step 6: Fetch heatmap bin data for the selected race (deduped in-flight requests)
     useEffect(() => {
         if (!feasibleRace) { setHeatmapData(null); return }
         const key = `${stateId}_${feasibleRace}`
@@ -173,7 +182,7 @@ export default function RepresentationGapMap({ stateId, plan, districtSummary, f
         _heatmapInFlight[key].then(data => { if (data) setHeatmapData(data) })
     }, [stateId, feasibleRace])
 
-    /* ── Imperatively re-style precinct layer when heatmap colors change ──── */
+    // Step 7: Imperatively restyle precinct layer when heatmap data changes
     useEffect(() => {
         if (!precinctLayerRef.current || !heatmapData) return
         const binColor = {}
@@ -185,9 +194,9 @@ export default function RepresentationGapMap({ stateId, plan, districtSummary, f
             const idx = layer.feature?.properties?.idx ?? counter++
             layer.setStyle({ fillColor: colorByIdx[idx] ?? '#f0fdfa', fillOpacity: 0.80, color: '#134e4a', weight: 0.5 })
         })
-    }, [heatmapData]) // eslint-disable-line react-hooks/exhaustive-deps
+    }, [heatmapData])
 
-    /* ── Build initial colorByIdx for first precinct render ─────────────── */
+    // Step 8: Build idx → color lookup for initial precinct render
     const colorByIdx = {}
     if (heatmapData?.features && heatmapData?.bins) {
         const binColor = {}
@@ -198,6 +207,7 @@ export default function RepresentationGapMap({ stateId, plan, districtSummary, f
     let precinctCounter = 0
     const center = [39.5, -98.35]
 
+    // Step 9: Render map with precinct heatmap, district outlines, and legend
     return (
         <div style={{ position: 'relative', height: '100%', width: '100%' }}>
             <style>{`
@@ -219,11 +229,6 @@ export default function RepresentationGapMap({ stateId, plan, districtSummary, f
                 <MapResizeHandler geoData={enactedGeoData} />
                 <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
 
-                {/* ── PRECINCT HEATMAP (base layer) ──────────────────────────
-                    Keyed only on stateId — re-styles imperatively on race change
-                    to avoid remounting the 100+ MB precinct geometry layer.
-                    add event fires when precincts join the map, pushing the
-                    district layer back on top via bringToFront(). ─────────── */}
                 {precinctData && (
                     <GeoJSON
                         key={`rg-precincts-${stateId}`}
@@ -242,7 +247,6 @@ export default function RepresentationGapMap({ stateId, plan, districtSummary, f
                     />
                 )}
 
-                {/* ── CURRENT PLAN: enacted boundaries, isEffective from feature properties ── */}
                 {plan === 'current' && enactedGeoData && (
                     <GeoJSON
                         key={`rg-current-${stateId}`}
@@ -252,7 +256,6 @@ export default function RepresentationGapMap({ stateId, plan, districtSummary, f
                     />
                 )}
 
-                {/* ── INTERESTING PLAN: own geometry, isEffective from feature properties ── */}
                 {plan !== 'current' && interestingGeoData && (
                     <GeoJSON
                         key={`rg-interesting-${stateId}-${plan}`}
@@ -263,10 +266,8 @@ export default function RepresentationGapMap({ stateId, plan, districtSummary, f
                 )}
             </MapContainer>
 
-            {/* ── HEATMAP LEGEND ────────────────────────────────────────────── */}
             <HeatmapLegend bins={heatmapData?.bins} raceName={feasibleRace} />
 
-            {/* ── "NOT AVAILABLE" OVERLAY (404 from backend) ───────────────── */}
             {notFound && (
                 <div style={{
                     position: 'absolute', inset: 0, pointerEvents: 'none',

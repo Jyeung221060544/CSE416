@@ -1,22 +1,3 @@
-/**
- * MapCompareFilter.jsx — Multi-select plan picker for the Representation Gap section.
- *
- * Lets the user choose exactly which two district plans are shown side-by-side.
- * Three options: Current Plan, High Effectiveness Plan, Low Effectiveness Plan.
- *
- * GUARDS
- *   Min 1: when only one plan remains checked, its checkbox is disabled so the
- *          user cannot deselect the last item.
- *   Max 2: when two plans are already checked, unchecked options are disabled so
- *          the user cannot select a third. Deselect one first before swapping.
- *
- * PLACEMENT
- *   Shown in FilterPanel when activeSection === 'representation-gap'.
- *
- * STATE SOURCE
- *   mapCompareFilter / toggleMapCompareFilter — from useAppStore (Zustand).
- */
-
 import CollapsibleGroup from './CollapsibleGroup'
 import useAppStore from '@/store/useAppStore'
 

@@ -7,7 +7,10 @@ import DemographicHeatmap         from '@/components/maps/DemographicHeatmap'
 import DemographicPopulationTable from '@/components/tables/DemographicPopulationTable'
 import { fetchHeatmap } from '../../api'
 
-
+/**
+ * Color-coded legend for the demographic heatmap bins.
+ * @param {Array<{binId: string, color: string, rangeMin: number, rangeMax: number}>} bins - Bin definitions from heatmap data.
+ */
 function HeatmapLegend({ bins }) {
     if (!bins?.length) return null
     return (
@@ -32,7 +35,12 @@ function HeatmapLegend({ bins }) {
     )
 }
 
-
+/**
+ * Renders the Demographic Analysis section with a precinct-level heatmap
+ * and a population breakdown table by racial group.
+ * @param {object} data - State overview data containing stateSummary and districtSummary.
+ * @param {string} stateId - State identifier used to fetch heatmap data.
+ */
 export default function DemographicSection({ data, stateId }) {
 
     const raceFilter          = useAppStore(s => s.raceFilter)
@@ -43,12 +51,13 @@ export default function DemographicSection({ data, stateId }) {
     const [heatmapData, setHeatmapData] = useState(null)
     const hasActivated = useRef(false)
 
+    // Step 0: Reset heatmap when state changes
     useEffect(() => {
         hasActivated.current = false
         setHeatmapData(null)
     }, [stateId])
 
-    // First-activation fetch: fires when user scrolls to demographic section.
+    // Step 1: Fetch heatmap on first activation of this section
     useEffect(() => {
         if (activeSection !== 'demographic') return
         if (hasActivated.current) return
@@ -58,9 +67,9 @@ export default function DemographicSection({ data, stateId }) {
         fetchHeatmap(stateId, raceFilter)
             .then(setHeatmapData)
             .catch(err => console.error('[Demographic] fetchHeatmap error:', err))
-    }, [activeSection, stateId, raceFilter]) // eslint-disable-line react-hooks/exhaustive-deps
+    }, [activeSection, stateId, raceFilter])
 
-    // Re-fetch when filters change after initial activation.
+    // Step 2: Re-fetch heatmap when race filter changes after activation
     useEffect(() => {
         if (!stateId || !raceFilter) return
         if (!hasActivated.current) return
@@ -68,16 +77,18 @@ export default function DemographicSection({ data, stateId }) {
         fetchHeatmap(stateId, raceFilter)
             .then(setHeatmapData)
             .catch(err => console.error('[Demographic] fetchHeatmap error:', err))
-    }, [stateId, raceFilter]) // eslint-disable-line react-hooks/exhaustive-deps
+    }, [stateId, raceFilter])
 
     const s               = data?.stateSummary
     const demographicGroups = s?.demographicGroups ?? []
 
+    // Step 3: Build district → party lookup for overlay coloring
     const districtPartyMap = {}
     ;(data?.districtSummary?.districts ?? []).forEach(d => {
         districtPartyMap[d.districtNumber] = d.party
     })
 
+    // Step 4: Render heatmap (left) and population table (right)
     return (
         <section id="demographic" className="p-2 sm:p-3 lg:p-4 border-b border-brand-muted/30 h-[calc(100vh-3.5rem)] flex flex-col overflow-hidden">
 
@@ -93,6 +104,7 @@ export default function DemographicSection({ data, stateId }) {
                 <div className="flex flex-col gap-1 min-h-0">
                     <SectionHeader title="Demographic Heat Map" />
                     <MapFrame className="flex-1 min-h-0">
+                        {/* Demographic Heatmap */}
                         <DemographicHeatmap
                             stateId={stateId}
                             heatmapData={heatmapData}
@@ -103,6 +115,7 @@ export default function DemographicSection({ data, stateId }) {
                             isActive={activeSection === 'demographic'}
                         />
                     </MapFrame>
+                    {/* Heatmap Legend */}
                     {heatmapData
                         ? <HeatmapLegend bins={heatmapData.bins} />
                         : stateId && (
@@ -116,6 +129,7 @@ export default function DemographicSection({ data, stateId }) {
                 <div className="flex flex-col gap-1 min-h-0">
                     <SectionHeader title="Population by Group" />
                     <div className="flex flex-col flex-1 min-h-0">
+                        {/* Demographic Population Table */}
                         <DemographicPopulationTable
                             demographicGroups={demographicGroups}
                             raceFilter={raceFilter}

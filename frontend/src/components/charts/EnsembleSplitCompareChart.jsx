@@ -1,25 +1,3 @@
-/**
- * EnsembleSplitCompareChart.jsx — Grouped bar chart overlaying Race-Blind and
- * VRA-Constrained ensemble splits side-by-side for each R-D split outcome.
- *
- * Pure renderer — all data merging happens in EnsembleAnalysisSection.
- *
- * Visual encoding
- *   Fill color  — constant per ensemble type (not party):
- *                   Race-Blind    → dark green  (COMPARE_RB_COLOR)
- *                   VRA-Constrained → dark purple (COMPARE_VRA_COLOR)
- *   Border color — party majority of the split outcome:
- *                   R-majority → REP_COLOR (red)
- *                   D-majority → DEM_COLOR (blue)
- *                   Tie        → TIE_COLOR (purple)
- *
- * PROPS
- *   data         {Array}       — Pre-merged rows from EnsembleAnalysisSection.
- *                                Each row: { split, r, d, raceBlind, vra, rbTotal, vraTotal }
- *   enactedSplit {object|null} — { republican, democratic }
- *   yMax         {number}      — Shared y-axis ceiling (same as individual charts)
- *   className    {string}      — Optional height override
- */
 
 import { useMemo } from 'react'
 import { ResponsiveBar } from '@nivo/bar'
@@ -30,7 +8,7 @@ import {
 } from '@/lib/partyColors'
 
 
-/* ── Nivo theme ──────────────────────────────────────────────────────────── */
+/** Shared Nivo theme — axes, tick labels, and grid lines. */
 const NIVO_THEME = {
     background: 'transparent',
     axis: {
@@ -42,7 +20,7 @@ const NIVO_THEME = {
 }
 
 
-/* ── Background layer ────────────────────────────────────────────────────── */
+/** Nivo custom layer — soft blue gradient background rect injected behind the bars. */
 function BgLayer({ innerWidth, innerHeight }) {
     return (
         <g>
@@ -59,9 +37,10 @@ function BgLayer({ innerWidth, innerHeight }) {
 }
 
 
-/* ── Enacted column highlight layer ─────────────────────────────────────── */
-/*
- * Spans the full grouped-column (both bars) for the enacted split.
+/**
+ * Factory returning a Nivo layer that highlights the enacted-plan grouped column.
+ * Spans both RB and VRA bars for the matching split label.
+ * @param {string|null} enactedLabel - e.g. "5R-2D"; null renders nothing.
  */
 function makeEnactedLayer(enactedLabel) {
     return function EnactedLayer({ bars, innerHeight }) {
@@ -89,13 +68,7 @@ function makeEnactedLayer(enactedLabel) {
 }
 
 
-/* ── Party border overlay layer ─────────────────────────────────────────── */
-/*
- * Drawn on top of 'bars'. Adds a red/blue stroke on each visible bar to
- * encode the majority party of that split outcome.
- * Uses bar.data.data.r / bar.data.data.d (Nivo custom-layer bar shape).
- * `?? 0` guards against missing values for extreme splits (0R-7D, 7R-0D).
- */
+/** Nivo custom layer — adds a red/blue/purple stroke on each bar to encode majority party. */
 function PartyBorderLayer({ bars }) {
     return (
         <g>
@@ -122,7 +95,8 @@ function PartyBorderLayer({ bars }) {
 }
 
 
-/* ── Tooltip ─────────────────────────────────────────────────────────────── */
+
+/** Tooltip showing split label, ensemble type, plan count, and share of total for one bar. */
 function CompareTooltip({ indexValue, id, value, data }) {
     const r = data.r ?? 0
     const d = data.d ?? 0
@@ -145,23 +119,33 @@ function CompareTooltip({ indexValue, id, value, data }) {
 }
 
 
-/* ── Main component ──────────────────────────────────────────────────────── */
+/**
+ * Grouped bar chart overlaying Race-Blind and VRA-Constrained ensemble splits side-by-side.
+ * Fill color encodes ensemble type; border stroke encodes majority party via PartyBorderLayer.
+ * @param {Array}       data         - Pre-merged rows: { split, r, d, raceBlind, vra, rbTotal, vraTotal }.
+ * @param {object|null} enactedSplit - { republican, democratic } for the enacted plan column.
+ * @param {number}      yMax         - Shared y-axis ceiling across sibling charts.
+ * @param {string}      className    - Optional height/layout class.
+ */
 export default function EnsembleSplitCompareChart({ data, enactedSplit, yMax, className }) {
+
+    /* ── Step 0: Guard + resolve enacted label ───────────────────────────── */
     if (!data?.length) return null
 
     const enactedLabel = enactedSplit
         ? `${enactedSplit.republican}R-${enactedSplit.democratic}D`
         : null
 
+    /* ── Step 1: Memoize enacted layer + bar color function ──────────────── */
     const enactedLayer = useMemo(() => makeEnactedLayer(enactedLabel), [enactedLabel])
 
     /* Fill color by ensemble key only — border encodes party (via PartyBorderLayer) */
     const getBarColor = bar => bar.id === 'vra' ? COMPARE_VRA_COLOR : COMPARE_RB_COLOR
 
+    /* ── Step 2: Render ──────────────────────────────────────────────────── */
     return (
         <div className={`w-full rounded-xl border border-brand-muted/25 shadow-sm bg-white flex flex-col relative ${className ?? 'h-[380px]'}`}>
 
-            {/* ── LEGEND — inline row above chart ────────────────────────── */}
             <div className="flex items-center gap-4 px-4 pt-2.5 pb-1 shrink-0 flex-wrap">
                 <div className="flex items-center gap-1.5">
                     <span style={{ width: 12, height: 12, borderRadius: 2, background: COMPARE_RB_COLOR, display: 'inline-block', flexShrink: 0 }} />
@@ -194,7 +178,6 @@ export default function EnsembleSplitCompareChart({ data, enactedSplit, yMax, cl
                 )}
             </div>
 
-            {/* ── GROUPED BAR CHART ─────────────────────────────────────── */}
             <div className="flex-1 min-h-0">
                 <ResponsiveBar
                     data={data}
