@@ -56,4 +56,11 @@ public class EnsembleController {
         if (bw == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok().cacheControl(CACHE).body(bw);
     }
+
+    @GetMapping("/minority-districts")
+    public ResponseEntity<Map<String, Object>> getMinorityDistricts(@PathVariable State stateId) {
+        Map<String, Object> data = ensembleService.getMinorityDistricts(stateId);
+        if (data == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().cacheControl(CACHE).body(data);
+    }
 }

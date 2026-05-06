@@ -8,13 +8,19 @@ CONFIGS = [
     {
         "state": "AL",
         "graph_path": ROOT / "AL_data" / "AL_graph.json",
-        "plans_path": ROOT / "cse416_seawulf_results" / "AL_output_raceblind" / "plans_final.jsonl",
+        "plans_path": (
+            ROOT / "cse416_seawulf_results"
+            / "AL_output_raceblind" / "plans_final.jsonl"
+        ),
         "output_path": ROOT / "AL_data" / "AL_seat_vote_curve.json",
     },
     {
         "state": "OR",
         "graph_path": ROOT / "OR_data" / "OR_graph.json",
-        "plans_path": ROOT / "cse416_seawulf_results" / "OR_output_raceblind" / "plans_final.jsonl",
+        "plans_path": (
+            ROOT / "cse416_seawulf_results"
+            / "OR_output_raceblind" / "plans_final.jsonl"
+        ),
         "output_path": ROOT / "OR_data" / "OR_seat_vote_curve.json",
     },
 ]
@@ -66,7 +72,9 @@ def iter_saved_plans(plans_path: Path):
             if assignment:
                 yield {
                     "step": rec.get("step"),
-                    "assignment": {str(k): str(v) for k, v in assignment.items()},
+                    "assignment": {
+                        str(k): str(v) for k, v in assignment.items()
+                    },
                 }
 
 
@@ -171,7 +179,9 @@ def build_seat_vote_curve_for_state(state_cfg):
     diagnostics = []
 
     for idx, plan in enumerate(saved_plans):
-        curve, diag = compute_plan_curve(plan["assignment"], precinct_votes, swings)
+        curve, diag = compute_plan_curve(
+            plan["assignment"], precinct_votes, swings
+        )
         per_plan_curves.append({
             "plan_index": idx,
             "step": plan.get("step"),
@@ -181,10 +191,16 @@ def build_seat_vote_curve_for_state(state_cfg):
 
     averaged_points = []
     for i, swing in enumerate(swings):
-        vote_shares = [plan["curve"][i]["vote_share"] for plan in per_plan_curves]
-        seat_shares = [plan["curve"][i]["seat_share"] for plan in per_plan_curves]
+        vote_shares = [
+            plan["curve"][i]["vote_share"] for plan in per_plan_curves
+        ]
+        seat_shares = [
+            plan["curve"][i]["seat_share"] for plan in per_plan_curves
+        ]
         dem_seats = [plan["curve"][i]["dem_seats"] for plan in per_plan_curves]
-        total_seats_vals = [plan["curve"][i]["total_seats"] for plan in per_plan_curves]
+        total_seats_vals = [
+            plan["curve"][i]["total_seats"] for plan in per_plan_curves
+        ]
 
         averaged_points.append({
             "swing": swing,
@@ -199,7 +215,9 @@ def build_seat_vote_curve_for_state(state_cfg):
         "graph_file": str(graph_path),
         "plans_file": str(plans_path),
         "plans_used": len(per_plan_curves),
-        "swing_method": "uniform partisan swing on district two-party vote shares",
+        "swing_method": (
+            "uniform partisan swing on district two-party vote shares"
+        ),
         "swing_range": {
             "min": MIN_SWING,
             "max": MAX_SWING,
@@ -211,9 +229,15 @@ def build_seat_vote_curve_for_state(state_cfg):
         "mean_dem_seats": [pt["mean_dem_seats"] for pt in averaged_points],
         "per_plan_curves": per_plan_curves,
         "diagnostics": {
-            "avg_matched_precincts": mean(d["matched_precincts"] for d in diagnostics),
-            "avg_missing_assignments": mean(d["missing_assignments"] for d in diagnostics),
-            "district_counts_seen": sorted({d["total_seats"] for d in diagnostics}),
+            "avg_matched_precincts": mean(
+                d["matched_precincts"] for d in diagnostics
+            ),
+            "avg_missing_assignments": mean(
+                d["missing_assignments"] for d in diagnostics
+            ),
+            "district_counts_seen": sorted(
+                {d["total_seats"] for d in diagnostics}
+            ),
         },
     }
 
@@ -224,7 +248,10 @@ def build_seat_vote_curve_for_state(state_cfg):
     print(f"Wrote: {output_path}")
     print(f"Plans used: {len(per_plan_curves)}")
     print(f"District counts seen: {output['diagnostics']['district_counts_seen']}")
-    print(f"Avg missing assignments: {output['diagnostics']['avg_missing_assignments']}")
+    print(
+        f"Avg missing assignments:"
+        f" {output['diagnostics']['avg_missing_assignments']}"
+    )
 
 
 def main():

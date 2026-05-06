@@ -50,4 +50,30 @@ public class EnsembleService {
         if (opt.isEmpty()) return null;
         return opt.get().getBoxWhisker();
     }
+
+    /**
+     * Returns both minority-district histogram payloads for the given state, or
+     * {@code null} if no data exists.
+     */
+    @SuppressWarnings("unchecked")
+    @Cacheable(value = "ensembleMinorityDistricts", key = "#stateId")
+    public Map<String, Object> getMinorityDistricts(State stateId) {
+        Optional<EnsembleDoc> opt = ensembleRepo.findByStateId(stateId);
+        if (opt.isEmpty()) return null;
+        EnsembleDoc doc = opt.get();
+
+        // Derive feasibleGroups from the enactedEffectiveByGroup keys
+        java.util.List<String> feasibleGroups = java.util.Collections.emptyList();
+        Map<String, Object> meHist = doc.getMinorityEffectiveHistogram();
+        if (meHist != null) {
+            Map<String, Object> enacted = (Map<String, Object>) meHist.get("enactedEffectiveByGroup");
+            if (enacted != null) feasibleGroups = new java.util.ArrayList<>(enacted.keySet());
+        }
+
+        Map<String, Object> result = new java.util.LinkedHashMap<>();
+        result.put("feasibleGroups",             feasibleGroups);
+        result.put("minorityEffectiveHistogram",  meHist);
+        result.put("majorityMinorityHistogram",   doc.getMajorityMinorityHistogram());
+        return result;
+    }
 }

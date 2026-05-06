@@ -78,6 +78,15 @@ export async function fetchEffectiveness(stateId) {
     return res.json()
 }
 
+/** GET /api/states/:stateId/ensemble/minority-districts
+ *  Returns { minorityEffectiveHistogram, majorityMinorityHistogram }
+ *  Triggered by: entering the Minority Districts tab in Ensemble Analysis */
+export async function fetchEnsembleMinorityDistricts(stateId) {
+    const res = await fetch(`${BASE}/api/states/${stateId}/ensemble/minority-districts`)
+    if (!res.ok) throw new Error(`GET /api/states/${stateId}/ensemble/minority-districts failed: ${res.status}`)
+    return res.json()
+}
+
 /** GET /api/states/:stateId/gingles?race=
  *  Returns { stateId, race, points, democraticTrendline, republicanTrendline, summaryRows }
  *  Triggered by: entering Gingles tab OR feasibleRaceFilter change */

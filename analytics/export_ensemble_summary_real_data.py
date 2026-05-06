@@ -6,14 +6,22 @@ ROOT = Path(__file__).resolve().parent.parent
 JOBS = [
     {
         "state": "AL",
-        "raceblind_summary": ROOT / "cse416_seawulf_results" / "AL_output_raceblind" / "summary_final.json",
-        "vra_summary": ROOT / "cse416_seawulf_results" / "AL_output_vra" / "summary_final.json",
+        "raceblind_summary": (
+            ROOT / "cse416_seawulf_results" / "AL_output_raceblind" / "summary_final.json"
+        ),
+        "vra_summary": (
+            ROOT / "cse416_seawulf_results" / "AL_output_vra" / "summary_final.json"
+        ),
         "out": ROOT / "AL-real-data" / "AL-ensemble-summary.json",
     },
     {
         "state": "OR",
-        "raceblind_summary": ROOT / "cse416_seawulf_results" / "OR_output_raceblind" / "summary_final.json",
-        "vra_summary": ROOT / "cse416_seawulf_results" / "OR_output_vra" / "summary_final.json",
+        "raceblind_summary": (
+            ROOT / "cse416_seawulf_results" / "OR_output_raceblind" / "summary_final.json"
+        ),
+        "vra_summary": (
+            ROOT / "cse416_seawulf_results" / "OR_output_vra" / "summary_final.json"
+        ),
         "out": ROOT / "OR-real-data" / "OR-ensemble-summary.json",
     },
 ]

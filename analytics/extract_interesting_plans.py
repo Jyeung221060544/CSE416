@@ -16,7 +16,10 @@ ROOT = Path(__file__).resolve().parent.parent
 JOBS = [
     {
         "label": "AL raceblind",
-        "plans": ROOT / "cse416_seawulf_results" / "AL_output_raceblind" / "plans_final.jsonl",
+        "plans": (
+            ROOT / "cse416_seawulf_results"
+            / "AL_output_raceblind" / "plans_final.jsonl"
+        ),
         "outdir": ROOT / "cse416_seawulf_results" / "AL_output_raceblind",
         "interesting_plans": [
             {
@@ -28,12 +31,17 @@ JOBS = [
     },
     {
         "label": "OR raceblind",
-        "plans": ROOT / "cse416_seawulf_results" / "OR_output_raceblind" / "plans_final.jsonl",
+        "plans": (
+            ROOT / "cse416_seawulf_results"
+            / "OR_output_raceblind" / "plans_final.jsonl"
+        ),
         "outdir": ROOT / "cse416_seawulf_results" / "OR_output_raceblind",
         "interesting_plans": [
             {
                 "id": "high_effectiveness",
-                "description": "Two or more effective Latino minority districts",
+                "description": (
+                    "Two or more effective Latino minority districts"
+                ),
                 "criteria": {"eff_districts": {"gte": 2}},
             },
             {
@@ -128,7 +136,10 @@ def extract_job(job):
 
     for plan_def in defs:
         if not found[plan_def["id"]]:
-            print(f"[{label}] WARNING: '{plan_def['id']}' not found (no saved-assignment plan matched).")
+            print(
+                f"[{label}] WARNING: '{plan_def['id']}'"
+                " not found (no saved-assignment plan matched)."
+            )
 
 
 def main():

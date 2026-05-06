@@ -20,6 +20,8 @@ import { Home } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
+import logo from '@/assets/logo.png'
+import { STATE_COLORS } from '../lib/partyColors'
 
 /**
  * Navbar — Fixed-height top bar with app branding and home navigation.
@@ -64,6 +66,7 @@ export default function Navbar() {
 
             {/* ── LEFT: App title + current state badge ──────────────────── */}
             <div className="flex items-center gap-3">
+                <img src={logo} alt="CSE416 Cubs logo" className="h-9 w-auto object-contain mix-blend-mode-multiply" style={{ mixBlendMode: 'multiply' }} />
                 <span className="text-brand-darkest font-semibold text-xl tracking-wide">
                     Voting Rights Act Redistricting
                 </span>
@@ -74,7 +77,7 @@ export default function Navbar() {
                         <Separator orientation="vertical" className="h-5 bg-brand-muted/40" />
                         <Badge
                             variant="outline"
-                            className="text-brand-deep border-brand-muted bg-brand-surface font-medium"
+                            className={`font-semibold ${STATE_COLORS[selectedState]?.badge ?? 'text-brand-deep border-brand-muted bg-brand-surface'}`}
                         >
                             {selectedState}
                         </Badge>
@@ -86,7 +89,7 @@ export default function Navbar() {
             <div className="flex items-center gap-4">
 
                 {/* Course / team label (hidden on small screens) */}
-                <span className="text-black text-sm font-medium tracking-widest uppercase hidden sm:block">
+                <span className="text-black text-base font-bold tracking-widest uppercase hidden sm:block">
                     CSE416 · Cubs
                 </span>
                 <Separator orientation="vertical" className="h-5 bg-brand-muted/30 hidden sm:block" />

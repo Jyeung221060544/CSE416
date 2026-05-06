@@ -1,0 +1,86 @@
+{
+  "stateId": "AL",
+  "numDistricts": 7,
+  "totalPlans": 5000,
+  "feasibleGroups": [
+    "black"
+  ],
+  "minorityEffectiveHistogram": {
+    "enactedEffectiveByGroup": {
+      "black": 2
+    },
+    "ensembles": [
+      {
+        "ensembleType": "race-blind",
+        "groupCounts": {
+          "black": [
+            {
+              "numEffective": 0,
+              "frequency": 4954
+            },
+            {
+              "numEffective": 1,
+              "frequency": 46
+            }
+          ]
+        }
+      },
+      {
+        "ensembleType": "vra-constrained",
+        "groupCounts": {
+          "black": [
+            {
+              "numEffective": 2,
+              "frequency": 5000
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "majorityMinorityHistogram": {
+    "enactedMMByGroup": {
+      "black": 1
+    },
+    "ensembles": [
+      {
+        "ensembleType": "race-blind",
+        "groupCounts": {
+          "black": [
+            {
+              "numMajorityMinority": 0,
+              "frequency": 0
+            },
+            {
+              "numMajorityMinority": 1,
+              "frequency": 0
+            },
+            {
+              "numMajorityMinority": 2,
+              "frequency": 0
+            }
+          ]
+        }
+      },
+      {
+        "ensembleType": "vra-constrained",
+        "groupCounts": {
+          "black": [
+            {
+              "numMajorityMinority": 0,
+              "frequency": 0
+            },
+            {
+              "numMajorityMinority": 1,
+              "frequency": 0
+            },
+            {
+              "numMajorityMinority": 2,
+              "frequency": 0
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

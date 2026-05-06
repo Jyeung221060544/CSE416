@@ -28,7 +28,7 @@
  */
 
 import React from 'react'
-import { MapPin, ArrowLeft, MousePointerClick } from 'lucide-react'
+import { MapPin, ArrowLeft } from 'lucide-react'
 import { Badge }               from '@/components/ui/badge'
 import { Button }              from '@/components/ui/button'
 import { Separator }           from '@/components/ui/separator'
@@ -52,7 +52,7 @@ import DemographicPopulationTable from '@/components/tables/DemographicPopulatio
 const OVERVIEW_TABS = [
     { id: 'state-stats',   label: 'State Stats'                 },
     { id: 'congressional', label: 'District Stats' },
-    { id: 'ensemble-demo', label: 'Ensemble/Pop Stats' },
+    { id: 'ensemble-demo', label: 'Ensemble/Demographic Stats' },
 ]
 
 
@@ -121,7 +121,7 @@ function DistrictDetailCard({ district }) {
                     <div>
                         <p className="text-brand-darkest font-bold text-base">No District Selected</p>
                         <p className="text-brand-muted/60 text-sm mt-2 leading-relaxed">
-                            Click a district on the map or a row in the table below to view its details.
+                            Click a row in the table below to view its details.
                         </p>
                     </div>
                 </CardContent>
@@ -243,7 +243,7 @@ export default function StateOverviewSection({ data, stateId }) {
             {/* ── SECTION HEADER ───────────────────────────────────────────── */}
             <div className="flex items-baseline justify-between mb-3 shrink-0">
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-brand-darkest tracking-tight">
-                    {stateData?.stateName && <span className="text-brand-primary">{stateData.stateName} — </span>}State Overview
+                    State Overview
                 </h2>
                 <span className="hidden sm:inline-flex items-center gap-1.5 text-sm italic font-medium text-brand-primary bg-brand-primary/10 border border-brand-primary/20 px-3 py-0.5 rounded-full">&ldquo;Who are we looking at?&rdquo;</span>
             </div>
@@ -419,9 +419,6 @@ export default function StateOverviewSection({ data, stateId }) {
                                         </div>
                                     </div>
 
-                                    <InfoCallout icon={MousePointerClick} className="mt-auto shrink-0">
-                                        Click a district on the map or in the District Stats tab to highlight it.
-                                    </InfoCallout>
                                 </div>
                             )}
 

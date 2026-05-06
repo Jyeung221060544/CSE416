@@ -35,7 +35,9 @@ def safe_pct(numerator, denominator) -> float:
     return float(numerator) / float(denominator) * 100.0
 
 
-def compute_max_pct(gdf: gpd.GeoDataFrame, col: str, percentile: float = 0.90) -> float:
+def compute_max_pct(
+    gdf: gpd.GeoDataFrame, col: str, percentile: float = 0.90
+) -> float:
     pcts = gdf.apply(lambda r: safe_pct(r.get(col, 0), r.get("VAP", 0)), axis=1)
     raw = float(pcts.quantile(percentile))
     return max(5.0, math.ceil(raw / 5) * 5.0)
@@ -72,7 +74,9 @@ def pct_to_bin_id(pct: float, bins: list[dict]) -> int:
 def build_features(gdf: gpd.GeoDataFrame, bins_per_group: dict) -> list[dict]:
     features = []
     for idx, row in gdf.iterrows():
-        vap = float(row["VAP"]) if "VAP" in row and row["VAP"] is not None else 0.0
+        vap = (
+            float(row["VAP"]) if "VAP" in row and row["VAP"] is not None else 0.0
+        )
         feature = {"idx": int(idx)}
         for group, col in GROUP_COLS.items():
             pct = safe_pct(row.get(col, 0), vap)

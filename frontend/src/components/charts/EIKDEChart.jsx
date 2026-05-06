@@ -173,8 +173,20 @@ export default function EIKDEChart({ candidate, activeRaces, yMax, className }) 
         <div className={`w-full rounded-xl border border-brand-muted/25 shadow-sm bg-white flex flex-col ${className ?? 'h-[380px]'}`}>
 
             {/* ── CANDIDATE HEADER ─────────────────────────────────────────── */}
-            <div className="flex items-center gap-2 px-4 pt-3 pb-1 flex-shrink-0 border-b border-brand-muted/10">
+            <div className="flex items-center justify-between px-4 pt-3 pb-1 flex-shrink-0 border-b border-brand-muted/10">
                 <span className="text-lg font-bold" style={{ color:partyColor }}>{candidate.candidateName ?? candidate.party}</span>
+
+                {/* Polarized voting % — White vs each non-White active group */}
+                <div className="flex items-center gap-2 flex-wrap justify-end">
+                    {candidate.racialGroups
+                        .filter(g => g.group.toLowerCase() !== 'white' && g.group.toLowerCase() !== 'other' && activeRaces.includes(g.group.toLowerCase()))
+                        .map(g => (
+                            <span key={g.groupKey} className="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-500">
+                                White/{g.group.charAt(0).toUpperCase() + g.group.slice(1)} Overlap = <span className="text-slate-700">{(g.polarizedVotingPercentage ?? 0).toFixed(1)}%</span>
+                            </span>
+                        ))
+                    }
+                </div>
             </div>
 
             {/* ── RACE LEGEND ──────────────────────────────────────────────── */}

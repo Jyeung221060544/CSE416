@@ -44,7 +44,7 @@ function FitBounds({ data }) {
         if (!data) return
         try {
             const b = L.geoJSON(data).getBounds()
-            if (b.isValid()) map.fitBounds(b, { padding: [60, 60] })
+            if (b.isValid()) map.fitBounds(b, { padding: [40, 40] })
         } catch (_) {}
     }, [data, map])
     return null
@@ -69,7 +69,7 @@ function MapResizeHandler({ data }) {
             if (data) {
                 try {
                     const b = L.geoJSON(data).getBounds()
-                    if (b.isValid()) map.fitBounds(b, { padding: [60, 60] })
+                    if (b.isValid()) map.fitBounds(b, { padding: [40, 40] })
                 } catch (_) {}
             }
         })

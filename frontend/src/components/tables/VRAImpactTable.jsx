@@ -1,15 +1,3 @@
-/**
- * VRAImpactTable.jsx — 35/65 split infographic for VRA threshold comparisons.
- *
- * Outer grid: 2 cols (35% label | 65% charts).
- * Right side: inner 3-col grid (Race-Blind | VRA-Constrained | VRA Impact).
- * Each uses its own header + 3 data rows so alignment is exact.
- *
- * PROPS
- *   data    {object|null} — { [raceKey]: { rows: [{ id, label, raceBlindPct, vraConstrainedPct }] } }
- *   raceKey {string|null} — Race key to look up in data (e.g. 'black', 'latino').
- */
-
 import { useEffect, useRef } from 'react'
 import { COMPARE_RB_COLOR, COMPARE_VRA_COLOR } from '@/lib/partyColors'
 
@@ -21,9 +9,6 @@ const DONUT_R      = 38
 const DONUT_CIRC   = 2 * Math.PI * DONUT_R
 const DONUT_SW     = 11
 const DONUT_SIZE   = 110
-
-
-/* ── Donut gauge ─────────────────────────────────────────────────────────── */
 
 function DonutGauge({ pct, color }) {
     const arcRef  = useRef(null)
@@ -63,9 +48,6 @@ function DonutGauge({ pct, color }) {
     )
 }
 
-
-/* ── Main component ──────────────────────────────────────────────────────── */
-
 export default function VRAImpactTable({ data, raceKey }) {
     const rows = data?.[raceKey]?.rows
     if (!rows?.length) return null
@@ -80,7 +62,6 @@ export default function VRAImpactTable({ data, raceKey }) {
             className="grid grid-rows-[auto_1fr_1fr_1fr] gap-3 h-full"
             style={{ gridTemplateColumns: '35% repeat(3, calc(65% / 3 - 0.75rem))' }}
         >
-            {/* ── ROW 0: Headers ──────────────────────────────────────────── */}
             <div className="flex items-end justify-center pb-1">
                 <span className="text-sm font-bold text-slate-500">% of Ensemble Plans</span>
             </div>
@@ -94,12 +75,10 @@ export default function VRAImpactTable({ data, raceKey }) {
                 <span className="text-sm font-bold" style={{ color: IMPACT_COLOR }}>VRA Impact</span>
             </div>
 
-            {/* ── ROWS 1-3: Data ──────────────────────────────────────────── */}
             {rows.map(row => {
                 const delta    = row.vraConstrainedPct - row.raceBlindPct
                 const deltaStr = `+${Math.round(delta * 100)}%`
                 return [
-                    /* Label card */
                     <div key={`lbl-${row.id}`}
                         className="flex items-center justify-center rounded-2xl px-6 text-center"
                         style={{ background: 'linear-gradient(135deg, #0f172a 60%, #1e293b)' }}
@@ -109,19 +88,16 @@ export default function VRAImpactTable({ data, raceKey }) {
                         </span>
                     </div>,
 
-                    /* Race-Blind donut */
                     <div key={`rb-${row.id}`}
                         className="flex items-center justify-center rounded-2xl border border-brand-muted/15 bg-white shadow-sm">
                         <DonutGauge pct={row.raceBlindPct} color={RB_COLOR} />
                     </div>,
 
-                    /* VRA-Constrained donut */
                     <div key={`vra-${row.id}`}
                         className="flex items-center justify-center rounded-2xl border border-brand-muted/15 bg-white shadow-sm">
                         <DonutGauge pct={row.vraConstrainedPct} color={VRA_COLOR} />
                     </div>,
 
-                    /* VRA Impact */
                     <div key={`imp-${row.id}`}
                         className="flex items-center justify-center rounded-2xl border border-brand-muted/15 bg-white shadow-sm">
                         <div className="flex flex-col items-center gap-1 px-8">

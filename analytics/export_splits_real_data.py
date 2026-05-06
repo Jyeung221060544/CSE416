@@ -7,16 +7,24 @@ JOBS = [
     {
         "state": "AL",
         "num_districts": 7,
-        "raceblind_summary": ROOT / "cse416_seawulf_results" / "AL_output_raceblind" / "summary_final.json",
-        "vra_summary": ROOT / "cse416_seawulf_results" / "AL_output_vra" / "summary_final.json",
+        "raceblind_summary": (
+            ROOT / "cse416_seawulf_results" / "AL_output_raceblind" / "summary_final.json"
+        ),
+        "vra_summary": (
+            ROOT / "cse416_seawulf_results" / "AL_output_vra" / "summary_final.json"
+        ),
         "enacted_baseline": ROOT / "AL_data" / "AL_enacted_baseline.json",
         "out": ROOT / "AL-real-data" / "AL-splits.json",
     },
     {
         "state": "OR",
         "num_districts": 6,
-        "raceblind_summary": ROOT / "cse416_seawulf_results" / "OR_output_raceblind" / "summary_final.json",
-        "vra_summary": ROOT / "cse416_seawulf_results" / "OR_output_vra" / "summary_final.json",
+        "raceblind_summary": (
+            ROOT / "cse416_seawulf_results" / "OR_output_raceblind" / "summary_final.json"
+        ),
+        "vra_summary": (
+            ROOT / "cse416_seawulf_results" / "OR_output_vra" / "summary_final.json"
+        ),
         "enacted_baseline": ROOT / "OR_data" / "OR_enacted_baseline.json",
         "out": ROOT / "OR-real-data" / "OR-splits.json",
     },
@@ -28,7 +36,9 @@ def load_json(path: Path) -> dict:
         return json.load(f)
 
 
-def build_splits_array(seat_splits_dem_seats: dict, num_districts: int) -> list[dict]:
+def build_splits_array(
+    seat_splits_dem_seats: dict, num_districts: int
+) -> list[dict]:
     """
     Build a complete splits array from 0..num_districts Democratic seats.
     """
@@ -46,7 +56,9 @@ def build_splits_array(seat_splits_dem_seats: dict, num_districts: int) -> list[
     return splits
 
 
-def compute_union_split_range(raceblind_splits: list[dict], vra_splits: list[dict]) -> dict:
+def compute_union_split_range(
+    raceblind_splits: list[dict], vra_splits: list[dict]
+) -> dict:
     used_rep = []
 
     for row in raceblind_splits + vra_splits:
@@ -63,7 +75,9 @@ def compute_union_split_range(raceblind_splits: list[dict], vra_splits: list[dic
 
 
 def build_ensemble_entry(state: str, ensemble_type: str, splits: list[dict]) -> dict:
-    ensemble_id = f"{state}_{'RACEBLIND' if ensemble_type == 'race-blind' else 'VRA'}"
+    ensemble_id = (
+        f"{state}_{'RACEBLIND' if ensemble_type == 'race-blind' else 'VRA'}"
+    )
     return {
         "ensembleId": ensemble_id,
         "ensembleType": ensemble_type,
@@ -75,7 +89,10 @@ def export_state(job: dict) -> None:
     state = job["state"]
     num_districts = int(job["num_districts"])
 
-    if not job["raceblind_summary"].exists() or not job["vra_summary"].exists():
+    if (
+        not job["raceblind_summary"].exists()
+        or not job["vra_summary"].exists()
+    ):
         print(f"Skipping {state}: Seawulf summary files not found.")
         return
     raceblind_summary = load_json(job["raceblind_summary"])
@@ -95,7 +112,9 @@ def export_state(job: dict) -> None:
         "stateId": state,
         "numDistricts": num_districts,
         "totalPlans": int(raceblind_summary.get("plans_written", 0)),
-        "unionSplitRange": compute_union_split_range(raceblind_splits, vra_splits),
+        "unionSplitRange": compute_union_split_range(
+            raceblind_splits, vra_splits
+        ),
         "ensembles": [
             build_ensemble_entry(state, "race-blind", raceblind_splits),
             build_ensemble_entry(state, "vra-constrained", vra_splits),

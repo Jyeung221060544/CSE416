@@ -1,85 +1,14 @@
-/**
- * @file DistrictMap2024.jsx
- * @description Interactive Leaflet map showing the congressional districts for
- *   a single state, color-coded by party affiliation. Clicking a district
- *   polygon toggles the global `selectedDistrict` store value, which
- *   cross-highlights the corresponding row in CongressionalTable.
- *
- * PROPS
- * @prop {string} stateId          - Two-letter state abbreviation ("AL" | "OR").
- * @prop {object} districtSummary  - District metadata from useStateData:
- *   { districts: [{ districtNumber, party, representative, ... }] }
- *
- * STATE SOURCES
- * - DISTRICT_GEOJSON : Static asset lookup keyed by stateId.
- *                      Replace with GET /api/states/:stateId/districts/geojson
- *                      (see //CONNECT HERE markers below).
- * - selectedDistrict : Zustand store — shared with CongressionalTable for
- *                      bi-directional cross-highlight.
- *
- * LAYOUT
- * - Full-bleed <MapContainer> (Leaflet).
- * - CartoDB light basemap.
- * - <FitBounds>       : auto-fits map viewport to full state extent on mount.
- * - <MapResizeHandler>: invalidates + re-fits when the sidebar resizes.
- * - <GeoJSON>         : re-keyed on selectedDistrict so Leaflet re-paints
- *                       highlight styles without a full remount.
- *
- * ========================================================================
- * TODO – Replace Dummy Data with Real Backend API
- * ========================================================================
- *
- * CURRENT IMPLEMENTATION
- * - Imports ALCongressionalDistricts.json and ORCongressionalDistrict.json
- *   from src/assets/ as static GeoJSON bundles
- * - Builds a DISTRICT_GEOJSON lookup keyed by stateId: { AL: ..., OR: ... }
- * - districtSummary (party, representative, etc.) comes via props from
- *   useStateData, which currently reads from dummy JSON
- *
- * REQUIRED API CALL
- * - HTTP Method: GET
- * - Endpoint:    /api/states/:stateId/districts/geojson
- * - Purpose:     Returns the GeoJSON FeatureCollection for the state's districts
- *
- * RESPONSE SNAPSHOT (keys only)
- * {
- *   type: "FeatureCollection",
- *   features: [{
- *     type: "Feature",
- *     properties: {
- *       CD119FP,    (district number as string, e.g. "01")
- *       NAMELSAD20  (e.g. "Congressional District 1")
- *     },
- *     geometry: { type, coordinates }
- *   }]
- * }
- *
- * INTEGRATION INSTRUCTIONS
- * - Fetch inside a useEffect keyed on stateId
- * - Store result in: const [geoData, setGeoData] = useState(null)
- * - Replace the DISTRICT_GEOJSON[stateId] lookup with the fetched geoData
- * - districtSummary (party coloring) still flows in via props from useStateData
- *
- * SEARCHABLE MARKER
- * //CONNECT HERE: DISTRICT_GEOJSON lookup — replace asset imports + static object
- *
- * ========================================================================
- */
-
-/* ── Step 0: React + map library imports ──────────────────────────────── */
 import { useRef, useEffect, useCallback, useState } from 'react'
 import { MapContainer, GeoJSON, TileLayer, useMap } from 'react-leaflet'
 import L from 'leaflet'
 import useAppStore from '../../store/useAppStore'
 import { fetchDistricts } from '../../api'
 
-/* ── Step 1: Module-level cache — avoids re-fetching on re-renders ─────── */
-const districtGeoCache = {} // keyed by stateId
+const districtGeoCache = {}
 
-/* ── Step 3: District style resolver ─────────────────────────────────── */
 /**
  * Returns a Leaflet path style for a single district feature.
- * Selected district gets the brand primary color; others are colored by party.
+ * Selected district gets brand primary color; others are colored by party.
  *
  * @param {object} feature          - GeoJSON feature (properties.CD119FP holds the district number).
  * @param {object} districtByNumber - Map from district number (int) → district summary object.
@@ -103,15 +32,12 @@ function getStyle(feature, districtByNumber, selectedDistrict) {
     return { fillColor: '#7AB2B2', fillOpacity: 0.25, color: '#09637E', weight: 1 }
 }
 
-/* ── Step 4: FitBounds helper ─────────────────────────────────────────── */
 /**
- * Inner Leaflet component that fits the map viewport to the full extent of
- * the provided GeoJSON so the entire state is always visible regardless of
- * container height.
+ * Fits the map viewport to the full extent of the provided GeoJSON.
  *
  * @param {object} props
  * @param {object} props.geoData - GeoJSON FeatureCollection to fit.
- * @returns {null} Renders nothing — side-effect only.
+ * @returns {null}
  */
 function FitBounds({ geoData }) {
     const map = useMap()
@@ -125,15 +51,13 @@ function FitBounds({ geoData }) {
     return null
 }
 
-/* ── Step 5: MapResizeHandler helper ─────────────────────────────────── */
 /**
- * Watches the map container for size changes (e.g. sidebar collapse) and
- * calls invalidateSize() so Leaflet reflows the tile grid and re-fits bounds
- * to keep the full state in view.
+ * Watches the map container for size changes and calls invalidateSize() so
+ * Leaflet reflows the tile grid and re-fits bounds.
  *
  * @param {object} props
  * @param {object} props.geoData - GeoJSON used for re-fitting after resize.
- * @returns {null} Renders nothing — side-effect only.
+ * @returns {null}
  */
 function MapResizeHandler({ geoData }) {
     const map = useMap()
@@ -159,7 +83,6 @@ function MapResizeHandler({ geoData }) {
     return null
 }
 
-/* ── Step 6: Main DistrictMap2022 component ───────────────────────────── */
 /**
  * Renders the congressional district map for the given state.
  * Districts are color-coded by party; the selected district receives a
@@ -168,16 +91,14 @@ function MapResizeHandler({ geoData }) {
  * @param {object} props
  * @param {string} props.stateId         - Two-letter state abbreviation.
  * @param {object} props.districtSummary - Summary metadata for each district.
- * @returns {JSX.Element} Full-height Leaflet map or a "not available" fallback.
+ * @returns {JSX.Element}
  */
 export default function DistrictMap2022({ stateId, districtSummary }) {
-    /* ── Step 6a: Refs and global store ── */
     const geoJsonRef           = useRef(null)
     const selectedDistrict     = useAppStore(s => s.selectedDistrict)
     const setSelectedDistrict  = useAppStore(s => s.setSelectedDistrict)
     const hoveredLayerRef      = useRef(null)
 
-    /* ── Step 6b: Fetch district GeoJSON from backend (cached) ── */
     const [geoData, setGeoData] = useState(districtGeoCache[stateId] ?? null)
     useEffect(() => {
         if (districtGeoCache[stateId]) { setGeoData(districtGeoCache[stateId]); return }
@@ -187,25 +108,16 @@ export default function DistrictMap2022({ stateId, districtSummary }) {
             .catch(err => console.error('[DistrictMap] fetchDistricts error:', err))
     }, [stateId])
 
-    /* ── Step 6c: Build district number → summary lookup ── */
     const districtByNumber = Object.fromEntries(
         (districtSummary?.districts ?? []).map(d => [d.districtNumber, d])
     )
 
-    /* ── Step 6d: Per-feature event binding (memoized) ── */
-    /**
-     * Attaches hover and click handlers to each district polygon layer.
-     *
-     * @param {object} feature - GeoJSON feature.
-     * @param {object} layer   - Leaflet vector layer.
-     */
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const onEachFeature = useCallback((feature, layer) => {
         const distNum = parseInt(feature.properties.CD119FP, 10)
 
         layer.on({
             mouseover(e) {
-                // Reset the previously hovered layer before styling the new one
                 if (hoveredLayerRef.current && hoveredLayerRef.current !== e.target) {
                     const prev = hoveredLayerRef.current
                     const prevEl = prev.getElement()
@@ -241,7 +153,6 @@ export default function DistrictMap2022({ stateId, districtSummary }) {
         })
         }, [districtByNumber, selectedDistrict, setSelectedDistrict])
 
-    /* ── Step 6e: Apply drop-shadow filter to selected district element ── */
     useEffect(() => {
         if (!geoJsonRef.current) return
         geoJsonRef.current.eachLayer(layer => {
@@ -254,7 +165,6 @@ export default function DistrictMap2022({ stateId, districtSummary }) {
         })
     }, [selectedDistrict])
 
-    /* ── Step 6f: Render ── */
     if (!geoData) {
         return (
             <div className="h-full flex items-center justify-center text-brand-muted/50 text-sm italic">
@@ -274,19 +184,10 @@ export default function DistrictMap2022({ stateId, districtSummary }) {
             attributionControl={false}
             style={{ height: '100%', width: '100%' }}
         >
-            {/* ── MAP UTILITIES ──────────────────────────────────────── */}
-            {/* Auto-fits to full state extent on load */}
             <FitBounds geoData={geoData} />
-
-            {/* Re-fits + invalidates on sidebar resize */}
             <MapResizeHandler geoData={geoData} />
-
-            {/* ── BASE TILE LAYER ────────────────────────────────────── */}
-            {/* Light basemap for geographic context */}
             <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
-
-            {/* ── DISTRICT CHOROPLETH LAYER ──────────────────────────── */}
-            {/* Re-keyed on selectedDistrict so Leaflet re-applies styles on highlight */}
+            {/* Re-keyed on selectedDistrict so Leaflet re-applies styles on highlight change */}
             <GeoJSON
                 key={`${stateId}-${selectedDistrict ?? 'none'}-${districtSummary?.districts?.length ?? 0}`}
                 ref={geoJsonRef}

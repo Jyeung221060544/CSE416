@@ -76,7 +76,8 @@ def fill_holes(geom):
 def keep_largest_part(geom):
     """
     For MultiPolygon geometries, keep only the single largest polygon part.
-    This ensures every district renders as one contiguous shape with no island pieces.
+    This ensures every district renders as one contiguous shape
+    with no island pieces.
     """
     if geom.geom_type != "MultiPolygon":
         return geom
@@ -92,19 +93,28 @@ def chaikin_smooth(coords, iterations=3):
         new_pts = []
         for i in range(len(pts) - 1):
             p0, p1 = pts[i], pts[i + 1]
-            new_pts.append((0.75 * p0[0] + 0.25 * p1[0], 0.75 * p0[1] + 0.25 * p1[1]))
-            new_pts.append((0.25 * p0[0] + 0.75 * p1[0], 0.25 * p0[1] + 0.75 * p1[1]))
+            new_pts.append((
+                0.75 * p0[0] + 0.25 * p1[0],
+                0.75 * p0[1] + 0.25 * p1[1],
+            ))
+            new_pts.append((
+                0.25 * p0[0] + 0.75 * p1[0],
+                0.25 * p0[1] + 0.75 * p1[1],
+            ))
         new_pts.append(new_pts[0])
         pts = new_pts
     return pts
 
 
 def smooth_geom(geom):
-    """Apply Chaikin smoothing to a Polygon (exterior ring only, holes already removed)."""
+    """Apply Chaikin smoothing to a Polygon (exterior ring only, holes removed)."""
     if geom.geom_type == "Polygon":
         return Polygon(chaikin_smooth(list(geom.exterior.coords)))
     elif geom.geom_type == "MultiPolygon":
-        return MultiPolygon([Polygon(chaikin_smooth(list(p.exterior.coords))) for p in geom.geoms])
+        return MultiPolygon([
+            Polygon(chaikin_smooth(list(p.exterior.coords)))
+            for p in geom.geoms
+        ])
     return geom
 
 
@@ -123,7 +133,8 @@ def load_precincts(precincts_path):
 def find_precinct_id_column(gdf, assignment_keys):
     """
     Identify which column in the precinct GDF matches the plan assignment keys.
-    The assignment dict uses precinct node IDs (strings). Try common column names.
+    The assignment dict uses precinct node IDs (strings).
+    Try common column names.
     """
     sample_key = next(iter(assignment_keys))
     candidates = ["GEOID", "geoid", "id", "PRECINCT", "precinct", "GEO_ID"]
@@ -170,7 +181,9 @@ def build_district_geojson(plan_data, precincts_gdf, state, vra_cfg=None):
 
     unmapped = precincts_gdf["_district"].isna().sum()
     if unmapped > 0:
-        print(f"  WARNING: {unmapped} precincts could not be mapped to a district.")
+        print(
+            f"  WARNING: {unmapped} precincts could not be mapped to a district."
+        )
 
     precincts_gdf = precincts_gdf.dropna(subset=["_district"])
     precincts_gdf["_district"] = precincts_gdf["_district"].astype(int)
@@ -184,7 +197,9 @@ def build_district_geojson(plan_data, precincts_gdf, state, vra_cfg=None):
     if vote_cols:
         agg = precincts_gdf.groupby("_district").agg(vote_cols).reset_index()
     else:
-        agg = precincts_gdf[["_district"]].drop_duplicates().reset_index(drop=True)
+        agg = (
+            precincts_gdf[["_district"]].drop_duplicates().reset_index(drop=True)
+        )
 
     # Extract 5-digit county FIPS from precinct GEOID (first 5 digits)
     def _county_fips(node_id):
@@ -193,7 +208,7 @@ def build_district_geojson(plan_data, precincts_gdf, state, vra_cfg=None):
 
     precincts_gdf["_county"] = precincts_gdf["_node_id"].apply(_county_fips)
 
-    # Assign each county to the district that holds the majority of its precincts
+    # Assign each county to the district that holds the majority of precincts
     county_counts = (
         precincts_gdf.groupby(["_county", "_district"])
         .size()
@@ -204,18 +219,24 @@ def build_district_geojson(plan_data, precincts_gdf, state, vra_cfg=None):
     )
 
     # Dissolve precincts → county geometries (clean county-level shapes)
-    county_geoms = precincts_gdf.dissolve(by="_county", as_index=False)[["_county", "geometry"]]
+    county_geoms = precincts_gdf.dissolve(by="_county", as_index=False)[
+        ["_county", "geometry"]
+    ]
     county_geoms["geometry"] = county_geoms.geometry.buffer(0)
     county_geoms["_district"] = county_geoms["_county"].map(county_counts)
     county_geoms = county_geoms.dropna(subset=["_district"])
     county_geoms["_district"] = county_geoms["_district"].astype(int)
 
     # Dissolve county geometries → district geometries (county-following boundaries)
-    dissolved = county_geoms.dissolve(by="_district", as_index=False)[["_district", "geometry"]]
+    dissolved = county_geoms.dissolve(by="_district", as_index=False)[
+        ["_district", "geometry"]
+    ]
     dissolved["geometry"] = dissolved.geometry.buffer(0)
     dissolved["geometry"] = dissolved.geometry.apply(fill_holes)
     dissolved["geometry"] = dissolved.geometry.apply(keep_largest_part)
-    dissolved["geometry"] = dissolved.geometry.simplify(tolerance=0.02, preserve_topology=True)
+    dissolved["geometry"] = dissolved.geometry.simplify(
+        tolerance=0.02, preserve_topology=True
+    )
     dissolved["geometry"] = [g.buffer(0) for g in dissolved["geometry"]]
 
     dissolved = dissolved.merge(agg, on="_district", how="left")
@@ -226,7 +247,9 @@ def build_district_geojson(plan_data, precincts_gdf, state, vra_cfg=None):
             lambda r: "D" if r["votes_dem"] > r["votes_rep"] else "R", axis=1
         )
         total = dissolved["votes_dem"] + dissolved["votes_rep"]
-        dissolved["dem_share"] = (dissolved["votes_dem"] / total.where(total > 0, 1)).round(6)
+        dissolved["dem_share"] = (
+            dissolved["votes_dem"] / total.where(total > 0, 1)
+        ).round(6)
     else:
         dissolved["winner"] = None
         dissolved["dem_share"] = None
@@ -252,10 +275,18 @@ def build_district_geojson(plan_data, precincts_gdf, state, vra_cfg=None):
             .sum()
             .reset_index()
         )
-        vap_agg["_minority_pct"] = vap_agg[minority_col] / vap_agg["VAP"].where(vap_agg["VAP"] > 0, 1)
-        dissolved = dissolved.merge(vap_agg[["_district", "_minority_pct"]], left_on="district", right_on="_district", how="left")
+        vap_agg["_minority_pct"] = (
+            vap_agg[minority_col] / vap_agg["VAP"].where(vap_agg["VAP"] > 0, 1)
+        )
+        dissolved = dissolved.merge(
+            vap_agg[["_district", "_minority_pct"]],
+            left_on="district", right_on="_district", how="left",
+        )
         dissolved["isEffective"] = dissolved.apply(
-            lambda r: bool(r["_minority_pct"] >= threshold and r.get("winner") == party), axis=1
+            lambda r: bool(
+                r["_minority_pct"] >= threshold and r.get("winner") == party
+            ),
+            axis=1,
         )
         dissolved = dissolved.drop(columns=["_district", "_minority_pct"])
     else:
@@ -296,7 +327,9 @@ def process_plan(plan_path, precincts_path, outdir, state):
     precincts_gdf = load_precincts(precincts_path)
 
     print(f"  Dissolving precincts for plan '{plan_id}' …")
-    district_gdf = build_district_geojson(plan_data, precincts_gdf, state, vra_cfg=VRA_CONFIG.get(state))
+    district_gdf = build_district_geojson(
+        plan_data, precincts_gdf, state, vra_cfg=VRA_CONFIG.get(state)
+    )
 
     os.makedirs(outdir, exist_ok=True)
     outfile = os.path.join(outdir, f"{state}_{plan_id}_districts.json")
@@ -315,7 +348,7 @@ def process_plan(plan_path, precincts_path, outdir, state):
 _ROOT = Path(__file__).resolve().parent.parent
 _OUTDIR = str(_ROOT / "frontend" / "src" / "assets" / "interesting_plans")
 
-# VRA effectiveness config per state: minority column, VAP threshold, party of choice
+# VRA effectiveness config per state: minority column, VAP threshold, party
 VRA_CONFIG = {
     "AL": {"col": "NH_BLACK_ALONE_VAP", "threshold": 0.45, "party": "D"},
     "OR": {"col": "LATINO_VAP",          "threshold": 0.17, "party": "D"},
@@ -347,7 +380,9 @@ JOBS = [
 
 def main():
     for job in JOBS:
-        plan_files = sorted(Path(job["plan_dir"]).glob("interesting_plan_*.json"))
+        plan_files = sorted(
+            Path(job["plan_dir"]).glob("interesting_plan_*.json")
+        )
         if not plan_files:
             print(f"  No interesting plans found in {job['plan_dir']}, skipping.")
             continue
@@ -359,7 +394,9 @@ def main():
 # ── CLI ───────────────────────────────────────────────────────────────────────
 
 def _cli():
-    p = argparse.ArgumentParser(description="Generate district GeoJSON from interesting plan assignments.")
+    p = argparse.ArgumentParser(
+        description="Generate district GeoJSON from interesting plan assignments."
+    )
     p.add_argument("--state", required=True, choices=["AL", "OR"])
     p.add_argument("--precincts", required=True)
     p.add_argument("--outdir", required=True)

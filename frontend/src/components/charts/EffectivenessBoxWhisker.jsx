@@ -1,53 +1,17 @@
-/**
- * EffectivenessBoxWhisker.jsx — Side-by-side box & whisker chart comparing
- * minority effectiveness across ensemble types for each feasible racial group.
- *
- * LAYOUT
- *   ┌────────────────────────────────────────────────────────────┐
- *   │  Legend: [RB IQR] [VRA IQR] [● Enacted]                   │
- *   ├────────────────────────────────────────────────────────────┤
- *   │  SVG chart area (responsive via ResizeObserver)            │
- *   │    X-axis: racial/ethnic groups (e.g. Black, White)        │
- *   │    Y-axis: number of effective districts (integer, 0–N)    │
- *   │    Per group: two side-by-side boxes (Race-Blind | VRA)    │
- *   │    Enacted plan: red dot per group                         │
- *   └────────────────────────────────────────────────────────────┘
- *
- * Unlike BoxWhiskerChart (one box per district), this chart shows one group
- * per x-axis position with two boxes (Race-Blind and VRA-Constrained) so
- * users can compare how VRA constraints affect each racial group simultaneously.
- *
- * PROPS
- *   data          {object|null} — effectivenessBoxWhisker payload.
- *                   { enactedPlan: { [raceKey]: number },
- *                     ensembles: [{ ensembleType, groupStats: { [raceKey]: { min,q1,median,mean,q3,max } } }] }
- *   feasibleGroups {string[]}  — Ordered race keys to display on x-axis.
- *   className      {string}    — Optional height Tailwind class.
- */
-
 import { useRef, useEffect, useState, useMemo } from 'react'
 import * as d3 from 'd3'
 import { COMPARE_RB_COLOR, COMPARE_VRA_COLOR, AXIS_COLOR, LABEL_COLOR, RACE_LABELS } from '@/lib/partyColors'
 
-
-/* ── Step 0: Color constants ─────────────────────────────────────────────── */
-
-const RB_FILL      = COMPARE_RB_COLOR    // teal-green
+const RB_FILL      = COMPARE_RB_COLOR
 const RB_STROKE    = '#1aaa7a'
 const RB_MEDIAN    = '#0d6e4e'
-const VRA_FILL     = COMPARE_VRA_COLOR   // amber
+const VRA_FILL     = COMPARE_VRA_COLOR
 const VRA_STROKE   = '#b86a10'
 const VRA_MEDIAN   = '#7a4206'
-const ENACTED_CLR  = '#e11d48'           // rose-600
+const ENACTED_CLR  = '#e11d48'
 const GRID_CLR     = '#dce8f0'
 
-
-/* ── Step 1: Margins ─────────────────────────────────────────────────────── */
-
 const MARGIN = { top: 28, right: 20, bottom: 58, left: 62 }
-
-
-/* ── Step 2: Responsive size hook ────────────────────────────────────────── */
 
 function useContainerSize(ref) {
     const [size, setSize] = useState({ width: 0, height: 0 })
@@ -63,9 +27,6 @@ function useContainerSize(ref) {
     return size
 }
 
-
-/* ── Step 3: Background gradient ────────────────────────────────────────── */
-
 function BgRect({ innerWidth, innerHeight }) {
     return (
         <g>
@@ -80,9 +41,6 @@ function BgRect({ innerWidth, innerHeight }) {
         </g>
     )
 }
-
-
-/* ── Step 4: Tooltip ─────────────────────────────────────────────────────── */
 
 function Tooltip({ hovered, x, y }) {
     if (!hovered) return null
@@ -114,13 +72,6 @@ function Tooltip({ hovered, x, y }) {
     )
 }
 
-
-/* ── Step 5: Single box renderer ─────────────────────────────────────────── */
-
-/**
- * BoxGroup — Renders one box & whisker (Q1–Q3 IQR, median line, whiskers).
- * Does NOT render the enacted dot (drawn separately per group).
- */
 function BoxGroup({ cx, bw, stats, yScale, fill, stroke, medianClr, onMouseMove, onMouseLeave }) {
     const capW  = bw * 0.55
     const yQ1   = yScale(stats.q1)
@@ -131,29 +82,22 @@ function BoxGroup({ cx, bw, stats, yScale, fill, stroke, medianClr, onMouseMove,
 
     return (
         <g>
-            {/* Upper whisker */}
             <line x1={cx} y1={yQ3} x2={cx} y2={yMax}
                 stroke={stroke} strokeWidth={1.5} strokeDasharray="3 2" />
-            {/* Lower whisker */}
             <line x1={cx} y1={yQ1} x2={cx} y2={yMin}
                 stroke={stroke} strokeWidth={1.5} strokeDasharray="3 2" />
-            {/* Max cap */}
             <line x1={cx - capW / 2} y1={yMax} x2={cx + capW / 2} y2={yMax}
                 stroke={stroke} strokeWidth={2} />
-            {/* Min cap */}
             <line x1={cx - capW / 2} y1={yMin} x2={cx + capW / 2} y2={yMin}
                 stroke={stroke} strokeWidth={2} />
-            {/* IQR box */}
             <rect
                 x={cx - bw / 2} y={yQ3}
                 width={bw} height={Math.max(0, yQ1 - yQ3)}
                 fill={fill} fillOpacity={0.65}
                 stroke={stroke} strokeWidth={1.5} rx={2}
             />
-            {/* Median line */}
             <line x1={cx - bw / 2} y1={yMed} x2={cx + bw / 2} y2={yMed}
                 stroke={medianClr} strokeWidth={2.5} />
-            {/* Invisible hover rect */}
             <rect
                 x={cx - bw / 2 - 4} y={0} width={bw + 8} height={1000}
                 fill="transparent" style={{ cursor: 'crosshair' }}
@@ -164,37 +108,18 @@ function BoxGroup({ cx, bw, stats, yScale, fill, stroke, medianClr, onMouseMove,
     )
 }
 
-
-/* ── Step 6: Main component ──────────────────────────────────────────────── */
-
-/**
- * EffectivenessBoxWhisker — Grouped box & whisker chart for all feasible races.
- *
- * @param {{
- *   data:           object|null,
- *   feasibleGroups: string[],
- *   className:      string|undefined,
- * }} props
- * @returns {JSX.Element}
- */
 export default function EffectivenessBoxWhisker({ data, feasibleGroups, className }) {
 
-    /* ── Step 6a: Container size ─────────────────────────────────────────── */
     const containerRef = useRef(null)
     const { width, height } = useContainerSize(containerRef)
-
-    /* ── Step 6b: Hover state ────────────────────────────────────────────── */
     const [hovered, setHovered] = useState({ info: null, x: 0, y: 0 })
 
-    /* ── Step 6c: Derived ensembles ──────────────────────────────────────── */
     const rbEnsemble  = data?.ensembles?.find(e => e.ensembleType === 'race-blind')
     const vraEnsemble = data?.ensembles?.find(e => e.ensembleType === 'vra-constrained')
 
-    /* ── Step 6d: Inner dimensions ───────────────────────────────────────── */
     const innerW = Math.max(0, width  - MARGIN.left - MARGIN.right)
     const innerH = Math.max(0, height - MARGIN.top  - MARGIN.bottom)
 
-    /* ── Step 6e: Y scale (0 → max across all groups + both ensembles) ──── */
     const yScale = useMemo(() => {
         if (!innerH || !data || !feasibleGroups?.length) return null
         const allMax = feasibleGroups.flatMap(r => [
@@ -208,14 +133,11 @@ export default function EffectivenessBoxWhisker({ data, feasibleGroups, classNam
             .nice()
     }, [innerH, data, feasibleGroups, rbEnsemble, vraEnsemble])
 
-    /* ── Step 6f: Y ticks ────────────────────────────────────────────────── */
     const yTicks = useMemo(() => (yScale ? yScale.ticks(6).filter(Number.isInteger) : []), [yScale])
 
-    /* ── Step 6g: Per-group x layout ─────────────────────────────────────── */
     /*
      * Each racial group occupies a "slot" on the x-axis.
      * Within each slot, two boxes (RB left, VRA right) are placed side-by-side.
-     * groupGap controls the space between groups; boxSpacing controls box width.
      */
     const groupLayout = useMemo(() => {
         if (!innerW || !feasibleGroups?.length) return []
@@ -236,7 +158,6 @@ export default function EffectivenessBoxWhisker({ data, feasibleGroups, classNam
         })
     }, [innerW, feasibleGroups])
 
-    /* ── Step 6h: Empty guard ────────────────────────────────────────────── */
     if (!data || !feasibleGroups?.length) {
         return (
             <div className={`w-full rounded-xl border border-dashed border-brand-muted/30 bg-brand-surface/20 flex items-center justify-center ${className ?? 'h-full'}`}>
@@ -245,21 +166,16 @@ export default function EffectivenessBoxWhisker({ data, feasibleGroups, classNam
         )
     }
 
-    /* ── Step 6i: Mouse handler ──────────────────────────────────────────── */
     function handleMouseMove(e, info) {
         if (!containerRef.current) return
         const rect = containerRef.current.getBoundingClientRect()
         setHovered({ info, x: e.clientX - rect.left, y: e.clientY - rect.top })
     }
 
-
-    /* ── Step 6j: Render ─────────────────────────────────────────────────── */
     return (
         <div className={`w-full rounded-xl border border-brand-muted/25 shadow-sm bg-white flex flex-col ${className ?? 'h-full'}`}>
 
-            {/* ── LEGEND ROW ─────────────────────────────────────────────── */}
             <div className="flex flex-wrap items-center gap-4 px-4 pt-3 pb-1 shrink-0">
-
                 <div className="flex items-center gap-1.5">
                     <svg width="22" height="14">
                         <rect x="1" y="1" width="20" height="12" fill={RB_FILL} fillOpacity={0.65} stroke={RB_STROKE} strokeWidth={1.5} rx={2} />
@@ -267,7 +183,6 @@ export default function EffectivenessBoxWhisker({ data, feasibleGroups, classNam
                     </svg>
                     <span style={{ fontSize: 12, fontWeight: 600, color: LABEL_COLOR }}>Race-Blind</span>
                 </div>
-
                 <div className="flex items-center gap-1.5">
                     <svg width="22" height="14">
                         <rect x="1" y="1" width="20" height="12" fill={VRA_FILL} fillOpacity={0.65} stroke={VRA_STROKE} strokeWidth={1.5} rx={2} />
@@ -275,17 +190,14 @@ export default function EffectivenessBoxWhisker({ data, feasibleGroups, classNam
                     </svg>
                     <span style={{ fontSize: 12, fontWeight: 600, color: LABEL_COLOR }}>VRA-Constrained</span>
                 </div>
-
                 <div className="flex items-center gap-1.5">
                     <svg width="12" height="12">
                         <circle cx="6" cy="6" r="5" fill={ENACTED_CLR} stroke="white" strokeWidth={1} />
                     </svg>
                     <span style={{ fontSize: 12, fontWeight: 600, color: ENACTED_CLR }}>Enacted Plan</span>
                 </div>
-
             </div>
 
-            {/* ── SVG CHART ──────────────────────────────────────────────── */}
             <div
                 ref={containerRef}
                 className="flex-1 min-h-0 relative"
@@ -297,16 +209,13 @@ export default function EffectivenessBoxWhisker({ data, feasibleGroups, classNam
                     <svg width={width} height={height} style={{ display: 'block' }}>
                         <g transform={`translate(${MARGIN.left},${MARGIN.top})`}>
 
-                            {/* Background */}
                             <BgRect innerWidth={innerW} innerHeight={innerH} />
 
-                            {/* Grid lines */}
                             {yTicks.map(t => (
                                 <line key={`g-${t}`} x1={0} y1={yScale(t)} x2={innerW} y2={yScale(t)}
                                     stroke={GRID_CLR} strokeWidth={1} strokeDasharray="3 4" />
                             ))}
 
-                            {/* Y-axis */}
                             <line x1={0} y1={0} x2={0} y2={innerH} stroke={AXIS_COLOR} strokeWidth={1.5} />
                             {yTicks.map(t => (
                                 <g key={`yt-${t}`}>
@@ -324,7 +233,6 @@ export default function EffectivenessBoxWhisker({ data, feasibleGroups, classNam
                                 Effective Districts
                             </text>
 
-                            {/* X-axis */}
                             <line x1={0} y1={innerH} x2={innerW} y2={innerH} stroke={AXIS_COLOR} strokeWidth={1.5} />
                             {groupLayout.map(g => (
                                 <g key={`xl-${g.race}`}>
@@ -344,7 +252,6 @@ export default function EffectivenessBoxWhisker({ data, feasibleGroups, classNam
                                 Racial / Ethnic Group
                             </text>
 
-                            {/* Vertical group separators */}
                             {groupLayout.slice(0, -1).map(g => (
                                 <line key={`sep-${g.race}`}
                                     x1={g.slotCx + innerW / groupLayout.length / 2} y1={0}
@@ -352,7 +259,6 @@ export default function EffectivenessBoxWhisker({ data, feasibleGroups, classNam
                                     stroke={GRID_CLR} strokeWidth={1} strokeDasharray="4 4" />
                             ))}
 
-                            {/* ── Box plots per group ───────────────────── */}
                             {groupLayout.map(g => {
                                 const rbStats  = rbEnsemble?.groupStats?.[g.race]
                                 const vraStats = vraEnsemble?.groupStats?.[g.race]
@@ -360,8 +266,6 @@ export default function EffectivenessBoxWhisker({ data, feasibleGroups, classNam
 
                                 return (
                                     <g key={`grp-${g.race}`}>
-
-                                        {/* Race-Blind box */}
                                         {rbStats && (
                                             <BoxGroup
                                                 cx={g.rbCx} bw={g.boxW}
@@ -371,8 +275,6 @@ export default function EffectivenessBoxWhisker({ data, feasibleGroups, classNam
                                                 onMouseLeave={() => setHovered({ info: null, x: 0, y: 0 })}
                                             />
                                         )}
-
-                                        {/* VRA-Constrained box */}
                                         {vraStats && (
                                             <BoxGroup
                                                 cx={g.vraCx} bw={g.boxW}
@@ -382,15 +284,12 @@ export default function EffectivenessBoxWhisker({ data, feasibleGroups, classNam
                                                 onMouseLeave={() => setHovered({ info: null, x: 0, y: 0 })}
                                             />
                                         )}
-
-                                        {/* Enacted plan dot (centered between the two boxes) */}
                                         {enacted != null && yScale && (
                                             <circle
                                                 cx={g.slotCx} cy={yScale(enacted)}
                                                 r={5} fill={ENACTED_CLR} stroke="white" strokeWidth={1.5}
                                             />
                                         )}
-
                                     </g>
                                 )
                             })}

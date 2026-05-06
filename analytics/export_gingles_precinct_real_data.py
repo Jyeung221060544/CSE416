@@ -54,11 +54,15 @@ JOBS = [
         "groups": {
             "black": {
                 "minority_col": "NH_BLACK_ALONE_VAP",
-                "regression": ROOT / "AL_data" / "AL_gingles_regression_Black.json",
+                "regression": (
+                    ROOT / "AL_data" / "AL_gingles_regression_Black.json"
+                ),
             },
             "white": {
                 "minority_col": "NH_WHITE_ALONE_VAP",
-                "regression": ROOT / "AL_data" / "AL_gingles_regression_White.json",
+                "regression": (
+                    ROOT / "AL_data" / "AL_gingles_regression_White.json"
+                ),
             },
             "other": {
                 "minority_col": "OTHER_VAP",
@@ -73,11 +77,15 @@ JOBS = [
         "groups": {
             "white": {
                 "minority_col": "NH_WHITE_ALONE_VAP",
-                "regression": ROOT / "OR_data" / "OR_gingles_regression_White.json",
+                "regression": (
+                    ROOT / "OR_data" / "OR_gingles_regression_White.json"
+                ),
             },
             "hispanic": {
                 "minority_col": "LATINO_VAP",
-                "regression": ROOT / "OR_data" / "OR_gingles_regression_Latino.json",
+                "regression": (
+                    ROOT / "OR_data" / "OR_gingles_regression_Latino.json"
+                ),
             },
             "other": {
                 "minority_col": "OTHER_VAP",
@@ -98,8 +106,14 @@ def load_regression_trendlines(path: Path | None):
     dem_curve = data.get("dem_curve", [])
     rep_curve = data.get("rep_curve", [])
 
-    dem = [{"x": round(float(x), 3), "y": round(float(y), 4)} for x, y in zip(x_grid, dem_curve)]
-    rep = [{"x": round(float(x), 3), "y": round(float(y), 4)} for x, y in zip(x_grid, rep_curve)]
+    dem = [
+        {"x": round(float(x), 3), "y": round(float(y), 4)}
+        for x, y in zip(x_grid, dem_curve)
+    ]
+    rep = [
+        {"x": round(float(x), 3), "y": round(float(y), 4)}
+        for x, y in zip(x_grid, rep_curve)
+    ]
 
     return dem, rep
 
@@ -287,8 +301,16 @@ def build_points(
                 "y": y,
                 "totalPop": total_pop,
                 "minorityPop": minority_pop,
-                "avgHHIncome": int(row["AVG_HH_INC"]) if "AVG_HH_INC" in row and row["AVG_HH_INC"] is not None else 0,
-                "regionType": str(row["region_type"]) if "region_type" in row and row["region_type"] is not None else "",
+                "avgHHIncome": (
+                    int(row["AVG_HH_INC"])
+                    if "AVG_HH_INC" in row and row["AVG_HH_INC"] is not None
+                    else 0
+                ),
+                "regionType": (
+                    str(row["region_type"])
+                    if "region_type" in row and row["region_type"] is not None
+                    else ""
+                ),
                 "demVotes": dem_votes,
                 "repVotes": rep_votes,
             }

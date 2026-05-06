@@ -17,7 +17,10 @@ JOBS = [
         "state": "AL",
         "ensemble": "vra",
         "group_key": "NH_BLACK_ALONE_VAP",
-        "raw": ROOT / "cse416_seawulf_results" / "AL_output_vra" / "boxwhisker_raw_final.jsonl",
+        "raw": (
+            ROOT / "cse416_seawulf_results" / "AL_output_vra"
+            / "boxwhisker_raw_final.jsonl"
+        ),
         "precincts": ROOT / "AL_data" / "AL_precincts_full.geojson",
         "out": ROOT / "AL_data" / "AL_boxwhisker_vra_black.json",
     },
@@ -27,7 +30,10 @@ JOBS = [
         "state": "AL",
         "ensemble": "vra",
         "group_key": "NH_WHITE_ALONE_VAP",
-        "raw": ROOT / "cse416_seawulf_results" / "AL_output_vra" / "boxwhisker_raw_final.jsonl",
+        "raw": (
+            ROOT / "cse416_seawulf_results" / "AL_output_vra"
+            / "boxwhisker_raw_final.jsonl"
+        ),
         "precincts": ROOT / "AL_data" / "AL_precincts_full.geojson",
         "out": ROOT / "AL_data" / "AL_boxwhisker_vra_white.json",
     },
@@ -37,7 +43,10 @@ JOBS = [
         "state": "AL",
         "ensemble": "raceblind",
         "group_key": "NH_BLACK_ALONE_VAP",
-        "raw": ROOT / "cse416_seawulf_results" / "AL_output_raceblind" / "boxwhisker_raw_final.jsonl",
+        "raw": (
+            ROOT / "cse416_seawulf_results" / "AL_output_raceblind"
+            / "boxwhisker_raw_final.jsonl"
+        ),
         "precincts": ROOT / "AL_data" / "AL_precincts_full.geojson",
         "out": ROOT / "AL_data" / "AL_boxwhisker_raceblind_black.json",
     },
@@ -47,7 +56,10 @@ JOBS = [
         "state": "AL",
         "ensemble": "raceblind",
         "group_key": "NH_WHITE_ALONE_VAP",
-        "raw": ROOT / "cse416_seawulf_results" / "AL_output_raceblind" / "boxwhisker_raw_final.jsonl",
+        "raw": (
+            ROOT / "cse416_seawulf_results" / "AL_output_raceblind"
+            / "boxwhisker_raw_final.jsonl"
+        ),
         "precincts": ROOT / "AL_data" / "AL_precincts_full.geojson",
         "out": ROOT / "AL_data" / "AL_boxwhisker_raceblind_white.json",
     },
@@ -60,7 +72,10 @@ JOBS = [
         "state": "OR",
         "ensemble": "vra",
         "group_key": "LATINO_VAP",
-        "raw": ROOT / "cse416_seawulf_results" / "OR_output_vra" / "boxwhisker_raw_final.jsonl",
+        "raw": (
+            ROOT / "cse416_seawulf_results" / "OR_output_vra"
+            / "boxwhisker_raw_final.jsonl"
+        ),
         "precincts": ROOT / "OR_data" / "OR_precincts_full.geojson",
         "out": ROOT / "OR_data" / "OR_boxwhisker_vra_latino.json",
     },
@@ -70,7 +85,10 @@ JOBS = [
         "state": "OR",
         "ensemble": "vra",
         "group_key": "NH_WHITE_ALONE_VAP",
-        "raw": ROOT / "cse416_seawulf_results" / "OR_output_vra" / "boxwhisker_raw_final.jsonl",
+        "raw": (
+            ROOT / "cse416_seawulf_results" / "OR_output_vra"
+            / "boxwhisker_raw_final.jsonl"
+        ),
         "precincts": ROOT / "OR_data" / "OR_precincts_full.geojson",
         "out": ROOT / "OR_data" / "OR_boxwhisker_vra_white.json",
     },
@@ -80,7 +98,10 @@ JOBS = [
         "state": "OR",
         "ensemble": "raceblind",
         "group_key": "LATINO_VAP",
-        "raw": ROOT / "cse416_seawulf_results" / "OR_output_raceblind" / "boxwhisker_raw_final.jsonl",
+        "raw": (
+            ROOT / "cse416_seawulf_results" / "OR_output_raceblind"
+            / "boxwhisker_raw_final.jsonl"
+        ),
         "precincts": ROOT / "OR_data" / "OR_precincts_full.geojson",
         "out": ROOT / "OR_data" / "OR_boxwhisker_raceblind_latino.json",
     },
@@ -90,7 +111,10 @@ JOBS = [
         "state": "OR",
         "ensemble": "raceblind",
         "group_key": "NH_WHITE_ALONE_VAP",
-        "raw": ROOT / "cse416_seawulf_results" / "OR_output_raceblind" / "boxwhisker_raw_final.jsonl",
+        "raw": (
+            ROOT / "cse416_seawulf_results" / "OR_output_raceblind"
+            / "boxwhisker_raw_final.jsonl"
+        ),
         "precincts": ROOT / "OR_data" / "OR_precincts_full.geojson",
         "out": ROOT / "OR_data" / "OR_boxwhisker_raceblind_white.json",
     },
@@ -139,7 +163,9 @@ def load_boxwhisker_raw(raw_path: Path, target_group_key: str):
             plans.append(row)
 
     if not plans:
-        raise ValueError(f"No usable rows found in {raw_path} for group_key={target_group_key}")
+        raise ValueError(
+            f"No usable rows found in {raw_path} for group_key={target_group_key}"
+        )
 
     return plans
 
@@ -155,7 +181,9 @@ def compute_boxwhisker_from_raw(plans):
     for plan in plans:
         vals = plan["district_pcts_sorted"]
         if len(vals) != num_ranks:
-            raise ValueError("Inconsistent district_pcts_sorted lengths across plans")
+            raise ValueError(
+                "Inconsistent district_pcts_sorted lengths across plans"
+            )
         for i, v in enumerate(vals):
             per_rank[i].append(v)
 
@@ -168,10 +196,12 @@ def compute_boxwhisker_from_raw(plans):
     return stats
 
 
-def compute_enacted_points(precinct_geojson: Path, group_col: str, pop_col: str = "VAP"):
+def compute_enacted_points(
+    precinct_geojson: Path, group_col: str, pop_col: str = "VAP"
+):
     """
-    Computes enacted district minority percentages and returns them sorted by percentage,
-    so they align with the rank-based boxplots.
+    Computes enacted district minority percentages and returns them
+    sorted by percentage, so they align with the rank-based boxplots.
     """
     gdf = gpd.read_file(precinct_geojson)
 
@@ -180,7 +210,9 @@ def compute_enacted_points(precinct_geojson: Path, group_col: str, pop_col: str 
     if missing:
         raise ValueError(f"Missing columns in {precinct_geojson}: {missing}")
 
-    grouped = gdf.groupby("enacted_cd")[[group_col, pop_col]].sum().reset_index()
+    grouped = (
+        gdf.groupby("enacted_cd")[[group_col, pop_col]].sum().reset_index()
+    )
     grouped["pct"] = grouped[group_col] / grouped[pop_col]
     grouped = grouped.sort_values("pct").reset_index(drop=True)
 
@@ -296,7 +328,10 @@ def main():
                 print(f"Skipping job with unknown format: {job}")
                 print("-" * 60)
         except Exception as e:
-            print(f"Failed for {job.get('state', 'UNKNOWN')} {job.get('ensemble', 'UNKNOWN')}: {e}")
+            print(
+                f"Failed for {job.get('state', 'UNKNOWN')}"
+                f" {job.get('ensemble', 'UNKNOWN')}: {e}"
+            )
             print("-" * 60)
 
 

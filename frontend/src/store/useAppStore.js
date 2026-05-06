@@ -1,205 +1,77 @@
-/**
- * useAppStore.js — Global application state via Zustand.
- *
- * WHY ZUSTAND OVER REACT CONTEXT
- *   React Context rerenders every consumer whenever any value changes.
- *   Zustand's subscription model only rerenders components that subscribe to
- *   the specific slice of state that changed — much more efficient for an app
- *   where many components share a few independent filter values.
- *
- * HOW TO READ FROM THE STORE (in any component)
- *   import useAppStore from '../store/useAppStore'
- *   const raceFilter = useAppStore((state) => state.raceFilter)
- *
- * HOW TO WRITE TO THE STORE (in any component)
- *   const setRaceFilter = useAppStore((state) => state.setRaceFilter)
- *   // then: setRaceFilter('latino')
- *
- * SHORTCUT — useFilters hook
- *   For components that need several filter values at once, prefer the
- *   useFilters() hook (hooks/useFilters.js) which bundles all filter
- *   state + setters in a single import.
- */
-
 import { create } from 'zustand'
 
-
-/* ── Step 0: Create the Zustand store ────────────────────────────────────────
- *
- *  `create` takes a factory function that receives `set` (the state updater)
- *  and returns an object containing both state values and action functions.
- *
- *  State values — plain JS values that components read and subscribe to.
- *  Action functions — call set() to produce a partial state update.
- * ─────────────────────────────────────────────────────────────────────────── */
 const useAppStore = create((set) => ({
 
-    /* ── Step 1: Navigation state ────────────────────────────────────────── */
-
-    // Which state is currently loaded in StatePage (e.g. 'AL', 'OR', or null).
-    // Set by useStateData when the URL param changes; read by Navbar badge.
     selectedState: null,
-
-    // Which main section is currently in view in StatePage's scroll container.
-    // Set by useActiveSection on scroll; drives the sidebar nav highlight and FilterPanel.
     activeSection: 'state-overview',
-
-    // Legacy scroll-based sub-section tracker (no longer actively used).
-    // All section sub-navigation is now tab-based (activeSOTab, activeRPTab, activeEATab).
+    // no longer actively used — sub-navigation is now tab-based
     activeSubSection: 'ensemble-splits',
-
-    // Active mini-nav tab for State Overview (tab-based, not scroll-based).
-    // One of: 'state-stats' | 'congressional' | 'ensemble-demo'.
-    // Set by StateOverviewSection pills and SectionPanel SO sub-nav clicks.
     activeSOTab: 'state-stats',
-
-    // Active mini-nav tab for Racial Polarization (tab-based, not scroll-based).
-    // One of: 'gingles' | 'ei-kde' | 'ei-bar'.
-    // Set by RacialPolarizationSection pills and SectionPanel RP sub-nav clicks.
-    // Also drives the correct filter in FilterPanel (FeasibleRaceFilter vs EIRaceFilter).
     activeRPTab: 'gingles',
-
-    // Active mini-nav tab for Ensemble Analysis (tab-based, not scroll-based).
-    // One of: 'ensemble-splits' | 'box-whisker'.
-    // Set by EnsembleAnalysisSection pills and SectionPanel EA sub-nav clicks.
     activeEATab: 'ensemble-splits',
-
-    // Active mini-nav tab for Effectiveness Analysis section.
-    // One of: 'effectiveness-visualizations' | 'vra-impact'.
     activeEFFTab: 'effectiveness-visualizations',
 
-
-    /* ── Step 2: Filter state ────────────────────────────────────────────── */
-
-    // Selected race group for DemographicHeatmap and DemographicPopulationTable.
-    // One of: 'white' | 'black' | 'latino' | 'asian' | 'other'
     raceFilter: null,
-
-    // Selected race for GinglesScatterPlot and GinglesSummaryTable.
-    // Only includes races that meet the >= 400k VAP threshold (isFeasible = true).
     feasibleRaceFilter: null,
-
-    // Currently highlighted district number (int) or null.
-    // Set when user clicks a map polygon or a CongressionalTable row.
     selectedDistrict: null,
-
-    // Which ensemble type to display: 'race_blind' | 'vra'
     ensembleFilter: 'race_blind',
-
-    // Which district plans to show side-by-side in RepresentationGapSection.
-    // Multi-select: 'current' | 'high' | 'low'. Min 1, max 2. Default: current + low.
-    // 'low' (zero effective) exists for both AL and OR; 'high' is OR-only.
     mapCompareFilter: ['current', 'low'],
-
-    // Array of race keys to show on the EI KDE + bar charts.
-    // Multi-select; always contains at least one item (enforced in toggleEiRaceFilter).
     eiRaceFilter: [],
-
-    // Exactly 2 race keys selected for the EI Polarization KDE comparison tab.
-    // Derived options list comes from demographicGroups (all groups, not just feasible).
     eiKdeCompareRaces: [],
-
-    // Demographic groups for the currently-loaded state, populated by useStateData.
-    // Each entry: { group: string, vap: number, vapPercentage: number, isFeasible: boolean }.
-    // FeasibleRaceFilter derives its option list by filtering this array on isFeasible.
     demographicGroups: [],
-
-    // Whether to draw district boundary outlines (red/blue by party) over the heatmap.
     showDistrictOverlay: true,
-
-    // Whether the Ensemble Analysis section shows the compare chart instead of side-by-side.
-    // Resets to false on tab switch (handled in EnsembleAnalysisSection useEffect).
     eaCompareMode: false,
-
-    // Single-select race for EffectivenessHistogram + VRAImpactTable.
-    // Only non-white feasible groups are shown in EffRaceFilter.
     effRaceFilter: null,
-
-    // Multi-select races for EffectivenessBoxWhisker.
-    // Only non-white feasible groups are shown in EffBWRaceFilter.
     effBWRaceFilter: [],
 
-
-    /* ── Step 3: UI state ────────────────────────────────────────────────── */
-
-    // Dark mode toggle (true = dark sidebar, false = light).
-    // Stored in the global store so any component can read/write it.
     darkMode: true,
-
-    /** Flips darkMode between true and false. */
     toggleDarkMode: () => set((state) => ({ darkMode: !state.darkMode })),
-
-
-    /* ── Step 4: Action setters (one per state slice) ────────────────────── */
 
     /** @param {string|null} state  Two-letter state ID (e.g. 'AL') or null on home. */
     setSelectedState: (state)    => set({ selectedState: state }),
-
     /** @param {string} section  One of the SECTION_IDS in SectionPanel / useActiveSection. */
     setActiveSection: (section)  => set({ activeSection: section }),
-
-    /** @param {string} sub  Sub-section id ('ensemble-splits', 'box-whisker', etc.). */
     setActiveSubSection: (sub)   => set({ activeSubSection: sub }),
-
     /** @param {string} tab  One of the OVERVIEW_TABS ids in StateOverviewSection. */
     setActiveSOTab: (tab)        => set({ activeSOTab: tab }),
-
     /** @param {string} tab  One of the RP_TABS ids in RacialPolarizationSection. */
     setActiveRPTab: (tab)        => set({ activeRPTab: tab }),
-
     /** @param {string} tab  One of the EA_TABS ids in EnsembleAnalysisSection. */
     setActiveEATab: (tab)        => set({ activeEATab: tab }),
-
     /** @param {string} tab  One of the EFF_TABS ids in EffectivenessSection. */
     setActiveEFFTab: (tab)       => set({ activeEFFTab: tab }),
-
     /** @param {string} race  Lowercase race key: 'white'|'black'|'latino'|'asian'|'other'. */
     setRaceFilter: (race)        => set({ raceFilter: race }),
-
-    /** @param {string} race  Same values as raceFilter, but limited to feasible groups. */
+    /** @param {string} race  Limited to feasible groups only. */
     setFeasibleRaceFilter: (race) => set({ feasibleRaceFilter: race }),
-
-    /** @param {Array<{group:string,vap:number,vapPercentage:number,isFeasible:boolean}>} groups  Groups from stateSummary. */
     setDemographicGroups: (groups) => set({ demographicGroups: groups }),
-
     /** @param {string[]} races  Array of lowercase race keys for EI multi-select. */
     setEiRaceFilter: (races) => set({ eiRaceFilter: races }),
 
     /**
-     * toggleMapCompareFilter — Adds or removes a plan key from the comparison pair.
-     *
-     * Guards:
-     *   - Cannot remove the last selected plan (min 1).
-     *   - Cannot add a plan when 2 are already selected (max 2).
-     *
+     * Adds or removes a plan key from the comparison pair.
+     * Guards: cannot remove the last selected plan (min 1), cannot add when 2 selected (max 2).
      * @param {string} plan  One of 'current' | 'high' | 'low'.
      */
     toggleMapCompareFilter: (plan) => set((state) => {
         const current = state.mapCompareFilter
         if (current.includes(plan)) {
-            if (current.length <= 1) return {} // no-op — already at minimum
+            if (current.length <= 1) return {}
             return { mapCompareFilter: current.filter(p => p !== plan) }
         }
-        if (current.length >= 2) return {} // no-op — already at maximum
+        if (current.length >= 2) return {}
         return { mapCompareFilter: [...current, plan] }
     }),
 
-    /** @param {boolean} val  Show/hide district boundary overlay on the heatmap. */
     setShowDistrictOverlay: (val) => set({ showDistrictOverlay: val }),
-
-    /** @param {boolean} val  Toggle compare view in Ensemble Analysis. */
     setEaCompareMode: (val) => set({ eaCompareMode: val }),
-
-    /** @param {string|null} race  Non-white feasible race key for histogram + VRA table. */
+    /** @param {string|null} race  Non-white feasible race key. */
     setEffRaceFilter: (race) => set({ effRaceFilter: race }),
-
-    /** @param {string[]} races  Array of non-white feasible race keys for box & whisker. */
     setEffBWRaceFilter: (races) => set({ effBWRaceFilter: races }),
 
     /**
-     * toggleEffBWRaceFilter — Adds or removes a race from the EFF box-whisker multi-select.
+     * Adds or removes a race from the EFF box-whisker multi-select.
      * Guards against removing the last selected race.
-     *
      * @param {string} race  Lowercase race key to toggle.
      */
     toggleEffBWRaceFilter: (race) => set((state) => {
@@ -213,80 +85,58 @@ const useAppStore = create((set) => ({
 
     /** @param {number|null} district  District number (int) or null to deselect. */
     setSelectedDistrict: (district) => set({ selectedDistrict: district }),
-
     /** @param {string} ensemble  'race_blind' or 'vra'. */
     setEnsembleFilter: (ensemble) => set({ ensembleFilter: ensemble }),
 
     /**
-     * setEiKdeCompareRaces — Sets the exactly-2 race selection for the polarization KDE tab.
-     * Caller is responsible for enforcing the 2-item constraint (Select2RaceFilter handles this).
-     *
+     * Sets the exactly-2 race selection for the polarization KDE tab.
+     * Caller is responsible for enforcing the 2-item constraint.
      * @param {string[]} races  Array of exactly 2 lowercase race keys.
      */
     setEiKdeCompareRaces: (races) => set({ eiKdeCompareRaces: races }),
 
-
-    /* ── Step 5: EI multi-select race toggle ─────────────────────────────── */
-
     /**
-     * toggleEiRaceFilter — Adds or removes a race from the EI multi-select.
-     *
-     * Guards against removing the last item (at least one race must remain
-     * visible in the EI KDE and bar charts).
-     *
+     * Adds or removes a race from the EI multi-select.
+     * Guards against removing the last item — at least one race must remain visible.
      * @param {string} race  Lowercase race key to toggle in eiRaceFilter.
      */
     toggleEiRaceFilter: (race) => set((state) => {
         const current = state.eiRaceFilter
-
         if (current.includes(race)) {
-            // Guard: don't allow removing the last selected race
             if (current.length > 1) {
                 return { eiRaceFilter: current.filter((r) => r !== race) }
             }
-            return {}  // no-op — already at minimum
+            return {}
         }
-
         return { eiRaceFilter: [...current, race] }
     }),
 
-
-    /* ── Step 6: Reset all filters to defaults ───────────────────────────── */
-
     /**
-     * resetFilters — Resets all filter values to their initial defaults.
-     *
-     * Called by ResetFiltersButton and by Navbar's handleHome() when
-     * the user navigates back to the home page.
-     * Does NOT reset navigation state (selectedState, activeSection, etc.)
-     * because those are driven by the URL, not by user filter choices.
+     * Resets all filter values to their initial defaults.
+     * Does NOT reset navigation state (selectedState, activeSection, etc.) — those are
+     * driven by the URL.
      */
     resetFilters: () => set((state) => {
         const groups = state.demographicGroups
 
-        // Primary race: black (if feasible) > latino > first group
         const primary =
             groups.find(g => g.group.toLowerCase() === 'black' && g.isFeasible)?.group.toLowerCase() ??
             groups.find(g => g.group.toLowerCase() === 'latino')?.group.toLowerCase() ??
             groups[0]?.group.toLowerCase() ?? null
 
-        // Feasible race: black > latino > any feasible
         const preferredFeasible =
             groups.find(g => g.group.toLowerCase() === 'black'  && g.isFeasible)?.group.toLowerCase() ??
             groups.find(g => g.group.toLowerCase() === 'latino' && g.isFeasible)?.group.toLowerCase() ??
             groups.find(g => g.isFeasible)?.group.toLowerCase() ?? null
 
-        // Compare pair second race: white if primary is not white, else next available group
         const secondKey = primary && primary !== 'white'
             ? 'white'
             : groups.find(g => g.group.toLowerCase() !== primary)?.group.toLowerCase() ?? null
 
-        // EI race filter — default: [primary, white]
         const eiDefaults = primary && primary !== 'white'
             ? [primary, 'white']
             : (primary ? [primary] : [])
 
-        // Non-white feasible races for effectiveness filters
         const nonWhiteFeasible = groups
             .filter(g => g.isFeasible && g.group.toLowerCase() !== 'white')
             .map(g => g.group.toLowerCase())

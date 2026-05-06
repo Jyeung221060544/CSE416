@@ -1,17 +1,3 @@
-/**
- * useStateData.js — Reads the URL :stateId param, fetches the state overview
- * from the backend, syncs Zustand, and returns the overview bundle.
- *
- * Overview endpoint: GET /api/states/:stateId/overview/state-stats
- * Returns: { stateSummary, districtSummary }
- *
- * All other section data (heatmap, gingles, ei, ensemble, vote-seat-share)
- * is fetched on-demand inside each section component.
- *
- * @returns {{ stateId, data, loading, error }}
- *   data — state-stats bundle (stateSummary, districtSummary) or null
- */
-
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import useAppStore from '@/store/useAppStore'
@@ -53,7 +39,7 @@ export default function useStateData() {
                 setData(overview)
 
                 /* Normalize legacy "Hispanic" label → "Latino" for consistency.
-                 * The backend may be seeded from data using "Hispanic"; all frontend
+                 * The backend may be seeded from data that uses "Hispanic"; all frontend
                  * logic and partyColors.js use "latino" / "Latino" as the canonical key. */
                 const raw = overview.stateSummary?.demographicGroups ?? []
                 const groups = raw.map(g =>
@@ -63,40 +49,31 @@ export default function useStateData() {
                 )
                 setDemographicGroups(groups)
 
-                // Feasible race filter: black > latino > any feasible
                 const preferred =
                     groups.find(g => g.group.toLowerCase() === 'black' && g.isFeasible) ??
                     groups.find(g => g.group.toLowerCase() === 'latino' && g.isFeasible) ??
                     groups.find(g => g.isFeasible)
                 if (preferred) setFeasibleRaceFilter(preferred.group.toLowerCase())
 
-                // Primary race: black (if feasible) > latino > first group
                 const primary =
                     groups.find(g => g.group.toLowerCase() === 'black' && g.isFeasible) ??
                     groups.find(g => g.group.toLowerCase() === 'latino') ??
                     groups[0]
                 const primaryKey = primary?.group.toLowerCase()
 
-                // raceFilter (demographic heatmap) — derived from state data
                 if (primaryKey) setRaceFilter(primaryKey)
 
-                // EI race filter — default: [primary, white]
                 const whiteKey = 'white'
                 const eiDefaults = primaryKey && primaryKey !== whiteKey
                     ? [primaryKey, whiteKey]
                     : (primaryKey ? [primaryKey] : [])
                 if (eiDefaults.length) setEiRaceFilter(eiDefaults)
 
-                // EI KDE compare races: [primary, white] — white if primary isn't white,
-                // otherwise pick the next available group
                 const secondKey = primaryKey !== whiteKey
                     ? whiteKey
                     : groups.find(g => g.group.toLowerCase() !== primaryKey)?.group.toLowerCase()
                 if (primaryKey && secondKey) setEiKdeCompareRaces([primaryKey, secondKey])
 
-                // Effectiveness filters — non-white feasible races only
-                // effRaceFilter: black > latino > first non-white feasible
-                // effBWRaceFilter: all non-white feasible (multi-select, all pre-selected)
                 const nonWhiteFeasible = groups
                     .filter(g => g.isFeasible && g.group.toLowerCase() !== whiteKey)
                     .map(g => g.group.toLowerCase())

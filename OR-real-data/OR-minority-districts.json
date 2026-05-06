@@ -1,0 +1,78 @@
+{
+  "stateId": "OR",
+  "numDistricts": 6,
+  "totalPlans": 15000,
+  "feasibleGroups": [
+    "latino"
+  ],
+  "minorityEffectiveHistogram": {
+    "enactedEffectiveByGroup": {
+      "latino": 1
+    },
+    "ensembles": [
+      {
+        "ensembleType": "race-blind",
+        "groupCounts": {
+          "latino": [
+            {
+              "numEffective": 0,
+              "frequency": 4651
+            },
+            {
+              "numEffective": 1,
+              "frequency": 349
+            }
+          ]
+        }
+      },
+      {
+        "ensembleType": "vra-constrained",
+        "groupCounts": {
+          "latino": [
+            {
+              "numEffective": 1,
+              "frequency": 15000
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "majorityMinorityHistogram": {
+    "enactedMMByGroup": {
+      "latino": 0
+    },
+    "ensembles": [
+      {
+        "ensembleType": "race-blind",
+        "groupCounts": {
+          "latino": [
+            {
+              "numMajorityMinority": 0,
+              "frequency": 0
+            },
+            {
+              "numMajorityMinority": 1,
+              "frequency": 0
+            }
+          ]
+        }
+      },
+      {
+        "ensembleType": "vra-constrained",
+        "groupCounts": {
+          "latino": [
+            {
+              "numMajorityMinority": 0,
+              "frequency": 0
+            },
+            {
+              "numMajorityMinority": 1,
+              "frequency": 0
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,48 +1,22 @@
-/**
- * BoxWhiskerCompareChart.jsx — Overlay box & whisker comparison of
- * Race-Blind vs VRA-Constrained ensembles for a single race group.
- *
- * Both ensembles share the same rank-slot x position, drawn slightly offset:
- *   RB  — centered at (bandCenter − OFFSET), teal stroke
- *   VRA — centered at (bandCenter + OFFSET), orange stroke
- *
- * This overlay makes the distributional shift between ensembles immediately
- * visible at each rank position. Hover left-half → RB tooltip, right → VRA.
- *
- * Pure renderer — all district arrays are passed from EnsembleAnalysisSection.
- *
- * PROPS
- *   rbDistricts      {Array}       — bwRaceBlind.groupDistricts[race]
- *   vraDistricts     {Array}       — bwVraConstr.groupDistricts[race]
- *   enactedDistricts {Array|null}  — bwData.enactedPlan.groupDistricts[race]
- *   raceName         {string}      — Display label for y-axis + legend
- *   sharedYMax       {number}      — Shared y ceiling from parent
- *   className        {string}      — Optional height override
- */
-
 import { useRef, useEffect, useState, useMemo } from 'react'
 import * as d3 from 'd3'
 import { AXIS_COLOR, LABEL_COLOR, COMPARE_RB_COLOR, COMPARE_VRA_COLOR } from '@/lib/partyColors'
 
+const RB_STROKE  = COMPARE_RB_COLOR
+const RB_FILL    = '#d1fae5'
+const RB_MEDIAN  = '#065f46'
 
-/* ── Color palette ───────────────────────────────────────────────────────── */
-const RB_STROKE  = COMPARE_RB_COLOR   // teal   — Race-Blind border + whiskers
-const RB_FILL    = '#d1fae5'           // emerald-100 — Race-Blind IQR fill
-const RB_MEDIAN  = '#065f46'           // emerald-900 — Race-Blind median line
+const VRA_STROKE = COMPARE_VRA_COLOR
+const VRA_FILL   = '#fef3c7'
+const VRA_MEDIAN = '#92400e'
 
-const VRA_STROKE = COMPARE_VRA_COLOR  // orange — VRA border + whiskers
-const VRA_FILL   = '#fef3c7'           // amber-100  — VRA IQR fill
-const VRA_MEDIAN = '#92400e'           // amber-800  — VRA median line
-
-const MEAN_CLR    = '#f59e0b'   // amber-500 — mean dot (both ensembles)
-const ENACTED_CLR = '#ec4899'   // pink-500  — enacted plan dot
+const MEAN_CLR    = '#f59e0b'
+const ENACTED_CLR = '#ec4899'
 const GRID_CLR    = '#dce8f0'
 
 const MARGIN    = { top: 30, right: 22, bottom: 62, left: 74 }
-const INNER_GAP = 5   // px gap between the two boxes within a band
+const INNER_GAP = 5
 
-
-/* ── Container size hook ─────────────────────────────────────────────────── */
 function useContainerSize(ref) {
     const [size, setSize] = useState({ width: 0, height: 0 })
     useEffect(() => {
@@ -57,8 +31,6 @@ function useContainerSize(ref) {
     return size
 }
 
-
-/* ── Background gradient ─────────────────────────────────────────────────── */
 function BgRect({ innerWidth, innerHeight }) {
     return (
         <g>
@@ -74,8 +46,6 @@ function BgRect({ innerWidth, innerHeight }) {
     )
 }
 
-
-/* ── Tooltip ─────────────────────────────────────────────────────────────── */
 function CompareTooltip({ districtIdx, ensemble, rbDistricts, vraDistricts, enactedDistricts, x, y }) {
     if (!districtIdx) return null
     const arr = ensemble === 'rb' ? rbDistricts : vraDistricts
@@ -115,18 +85,8 @@ function CompareTooltip({ districtIdx, ensemble, rbDistricts, vraDistricts, enac
     )
 }
 
-
-/* ── Single box-and-whisker ──────────────────────────────────────────────── */
-/*
- * Renders one box plot (whiskers, IQR rect, median line, mean dot).
- * cx     — center x of this box within the SVG
- * boxW   — full pixel width of the IQR box
- * d      — district data row { index, min, q1, median, mean, q3, max }
- * stroke / fill / medClr — colors for this ensemble
- */
 function SingleBox({ cx, boxW, d, yScale, stroke, fill, medClr }) {
     const capW = boxW * 0.65
-
     const yQ1  = yScale(d.q1)
     const yQ3  = yScale(d.q3)
     const yMed = yScale(d.median)
@@ -136,35 +96,26 @@ function SingleBox({ cx, boxW, d, yScale, stroke, fill, medClr }) {
 
     return (
         <g>
-            {/* Upper whisker */}
             <line x1={cx} y1={yQ3} x2={cx} y2={yMax}
                 stroke={stroke} strokeWidth={1.5} strokeDasharray="3 2" />
-            {/* Lower whisker */}
             <line x1={cx} y1={yQ1} x2={cx} y2={yMin}
                 stroke={stroke} strokeWidth={1.5} strokeDasharray="3 2" />
-            {/* Max cap */}
             <line x1={cx - capW / 2} y1={yMax} x2={cx + capW / 2} y2={yMax}
                 stroke={stroke} strokeWidth={2} />
-            {/* Min cap */}
             <line x1={cx - capW / 2} y1={yMin} x2={cx + capW / 2} y2={yMin}
                 stroke={stroke} strokeWidth={2} />
-            {/* IQR box */}
             <rect
                 x={cx - boxW / 2} y={yQ3}
                 width={boxW} height={Math.max(0, yQ1 - yQ3)}
                 fill={fill} stroke={stroke} strokeWidth={2} rx={2}
             />
-            {/* Median line */}
             <line x1={cx - boxW / 2} y1={yMed} x2={cx + boxW / 2} y2={yMed}
                 stroke={medClr} strokeWidth={2.5} />
-            {/* Mean dot */}
             <circle cx={cx} cy={yAvg} r={4} fill={MEAN_CLR} stroke="white" strokeWidth={1.2} />
         </g>
     )
 }
 
-
-/* ── Main component ──────────────────────────────────────────────────────── */
 export default function BoxWhiskerCompareChart({
     rbDistricts,
     vraDistricts,
@@ -189,7 +140,6 @@ export default function BoxWhiskerCompareChart({
         return [...set].sort((a, b) => a - b)
     }, [rbDistricts, vraDistricts])
 
-    /* Band scale: one band per rank slot (slightly less padding for two boxes) */
     const xScale = useMemo(() => {
         if (!innerW || !allIndices.length) return null
         return d3.scaleBand()
@@ -224,7 +174,6 @@ export default function BoxWhiskerCompareChart({
     return (
         <div className={`w-full rounded-xl border border-brand-muted/25 shadow-sm bg-white flex flex-col relative ${className ?? 'h-[360px]'}`}>
 
-            {/* ── LEGEND — inline row above chart ────────────────────────── */}
             <div className="flex items-center gap-4 px-4 pt-2.5 pb-1 shrink-0 flex-wrap">
                 <div className="flex items-center gap-1.5">
                     <svg width="22" height="13">
@@ -250,7 +199,6 @@ export default function BoxWhiskerCompareChart({
                 </div>
             </div>
 
-            {/* ── SVG CHART ─────────────────────────────────────────────── */}
             <div
                 ref={containerRef}
                 className="flex-1 min-h-0 relative"
@@ -272,14 +220,12 @@ export default function BoxWhiskerCompareChart({
 
                             <BgRect innerWidth={innerW} innerHeight={innerH} />
 
-                            {/* Grid lines */}
                             {yTicks.map(t => (
                                 <line key={`grid-${t}`}
                                     x1={0} y1={yScale(t)} x2={innerW} y2={yScale(t)}
                                     stroke={GRID_CLR} strokeWidth={1} strokeDasharray="3 4" />
                             ))}
 
-                            {/* Y-axis */}
                             <line x1={0} y1={0} x2={0} y2={innerH} stroke={AXIS_COLOR} strokeWidth={1.5} />
                             {yTicks.map(t => (
                                 <g key={`ytick-${t}`}>
@@ -296,7 +242,6 @@ export default function BoxWhiskerCompareChart({
                                 {raceName} VAP %
                             </text>
 
-                            {/* X-axis */}
                             <line x1={0} y1={innerH} x2={innerW} y2={innerH} stroke={AXIS_COLOR} strokeWidth={1.5} />
                             {allIndices.map(idx => {
                                 const cx = xScale(idx) + xScale.bandwidth() / 2
@@ -315,7 +260,6 @@ export default function BoxWhiskerCompareChart({
                                 Rank Position (by {raceName} VAP %)
                             </text>
 
-                            {/* ── Box plots — side-by-side per rank slot ───── */}
                             {allIndices.map(idx => {
                                 const bandStart = xScale(idx)
                                 const bandW     = xScale.bandwidth()
@@ -331,8 +275,6 @@ export default function BoxWhiskerCompareChart({
 
                                 return (
                                     <g key={`group-${idx}`}>
-
-                                        {/* Race-Blind box — left half */}
                                         {rbD && (
                                             <SingleBox
                                                 cx={rbCx} boxW={boxW} d={rbD}
@@ -340,8 +282,6 @@ export default function BoxWhiskerCompareChart({
                                                 stroke={RB_STROKE} fill={RB_FILL} medClr={RB_MEDIAN}
                                             />
                                         )}
-
-                                        {/* VRA box — right half */}
                                         {vraD && (
                                             <SingleBox
                                                 cx={vraCx} boxW={boxW} d={vraD}
@@ -349,8 +289,6 @@ export default function BoxWhiskerCompareChart({
                                                 stroke={VRA_STROKE} fill={VRA_FILL} medClr={VRA_MEDIAN}
                                             />
                                         )}
-
-                                        {/* Enacted dot — between the two boxes */}
                                         {enacted && yEnacted !== null && (
                                             <circle
                                                 cx={bandStart + bandW / 2}
@@ -358,7 +296,6 @@ export default function BoxWhiskerCompareChart({
                                                 r={5} fill={ENACTED_CLR} stroke="white" strokeWidth={1.5}
                                             />
                                         )}
-
                                         {/* Hover rect — left half → RB tooltip */}
                                         <rect
                                             x={bandStart} y={0}

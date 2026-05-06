@@ -1,60 +1,16 @@
-/**
- * BoxWhiskerChart.jsx — SVG box & whisker chart for ensemble district analysis.
- *
- * LAYOUT (per chart instance)
- *   ┌────────────────────────────────────────────────────────────┐
- *   │  Legend row: [IQR box] [─ Median] [● Mean] [● Enacted]    │
- *   ├────────────────────────────────────────────────────────────┤
- *   │  SVG chart area (responsive via ResizeObserver)            │
- *   │    Y-axis: Group VAP %                                     │
- *   │    X-axis: Indexed Districts (sorted ascending by group %) │
- *   │    Per district:                                           │
- *   │      · Box (q1→q3)  · Median line  · Whiskers (min/max)   │
- *   │      · Mean dot (amber)  · Enacted dot (brand purple)      │
- *   └────────────────────────────────────────────────────────────┘
- *
- * PROPS
- *   districts        {Array}       — Box plot rows from boxWhisker.ensembles[].groupDistricts[race].
- *                                    Each row: { index, min, q1, median, mean, q3, max }.
- *   enactedDistricts {Array|null}  — From boxWhisker.enactedPlan.groupDistricts[race].
- *                                    Each row: { index, districtId, groupVapPercentage }.
- *   raceName         {string}      — Display name for legend + axis label (e.g. "Black").
- *   chartId          {string}      — Unique suffix for SVG gradient IDs (avoid collisions).
- *   sharedYMax       {number}      — Shared y-axis ceiling so both charts align vertically.
- *   className        {string}      — Optional height Tailwind class.
- */
-
 import { useRef, useEffect, useState, useMemo } from 'react'
 import * as d3 from 'd3'
 import { AXIS_COLOR, LABEL_COLOR } from '@/lib/partyColors'
 
-
-/* ── Step 0: Color constants ─────────────────────────────────────────────── */
-
-const BOX_FILL     = '#dbeafe'   // blue-100  — IQR rectangle fill
-const BOX_STROKE   = '#2563eb'   // blue-600  — IQR rectangle + whisker stroke
-const MEDIAN_CLR   = '#1e40af'   // blue-800  — median line inside box
-const MEAN_CLR     = '#f59e0b'   // amber-500 — mean dot ("Average for the district")
-const ENACTED_COLOR = '#ec4899'  // pink-500  — enacted plan dot
-const GRID_CLR    = '#dce8f0'   // same grid color as EnsembleSplitChart
-
-
-/* ── Step 1: Chart margin convention (matches EnsembleSplitChart margins) ── */
+const BOX_FILL     = '#dbeafe'
+const BOX_STROKE   = '#2563eb'
+const MEDIAN_CLR   = '#1e40af'
+const MEAN_CLR     = '#f59e0b'
+const ENACTED_COLOR = '#ec4899'
+const GRID_CLR    = '#dce8f0'
 
 const MARGIN = { top: 30, right: 22, bottom: 62, left: 74 }
 
-
-/* ── Step 2: Responsive size hook (ResizeObserver on container div) ─────── */
-
-/**
- * useContainerSize — Observes a div ref and returns its current { width, height }.
- *
- * Triggers a re-render whenever the container is resized so the SVG redraws
- * without a page reload.  Disconnects the observer on unmount.
- *
- * @param {React.RefObject<HTMLDivElement>} ref
- * @returns {{ width: number, height: number }}
- */
 function useContainerSize(ref) {
     const [size, setSize] = useState({ width: 0, height: 0 })
     useEffect(() => {
@@ -69,16 +25,9 @@ function useContainerSize(ref) {
     return size
 }
 
-
-/* ── Step 3: Background gradient layer ──────────────────────────────────── */
-
 /**
- * BgRect — Soft gradient rectangle that fills the chart plot area.
- *
- * Uses a unique gradient ID per instance to prevent cross-chart bleed
- * when two BoxWhiskerChart instances share the same DOM.
- *
- * @param {{ innerWidth, innerHeight, chartId }} props
+ * Soft gradient background rect. Uses a unique gradient ID per instance to prevent
+ * cross-chart bleed when two BoxWhiskerChart instances share the same DOM.
  */
 function BgRect({ innerWidth, innerHeight, chartId }) {
     const gradId = `bwBg_${chartId}`
@@ -96,20 +45,6 @@ function BgRect({ innerWidth, innerHeight, chartId }) {
     )
 }
 
-
-/* ── Step 4: Hover tooltip ───────────────────────────────────────────────── */
-
-/**
- * Tooltip — Positioned HTML div showing district stats on hover.
- *
- * Absolute-positioned inside the chart container div so it renders above the SVG.
- * Always visible above the cursor; clamped left/right so it stays within view.
- *
- * @param {{ district, enactedDistricts, x, y }} props
- *   district         — The hovered district box-plot row (null when nothing hovered).
- *   enactedDistricts — Enacted plan array for dot lookup.
- *   x, y             — Mouse position relative to the container div.
- */
 function Tooltip({ district, enactedDistricts, x, y }) {
     if (!district) return null
     const d   = district
@@ -141,23 +76,6 @@ function Tooltip({ district, enactedDistricts, x, y }) {
     )
 }
 
-
-/* ── Step 5: Main component ──────────────────────────────────────────────── */
-
-/**
- * BoxWhiskerChart — Responsive SVG box & whisker chart for one ensemble.
- *
- * @param {{
- *   districts:        Array<{ index, min, q1, median, mean, q3, max }>,
- *   enactedDistricts: Array<{ index, districtId, groupVapPercentage }>|null,
- *   raceName:         string,
- *   chartId:          string,
- *   sharedYMax:       number|undefined,
- *   className:        string|undefined,
- * }} props
- *
- * @returns {JSX.Element}
- */
 export default function BoxWhiskerChart({
     districts,
     enactedDistricts,
@@ -167,18 +85,13 @@ export default function BoxWhiskerChart({
     className,
 }) {
 
-    /* ── Step 5a: Container size via ResizeObserver ──────────────────────── */
     const containerRef = useRef(null)
     const { width, height } = useContainerSize(containerRef)
-
-    /* ── Step 5b: Hover tooltip state ────────────────────────────────────── */
     const [hovered, setHovered] = useState({ district: null, x: 0, y: 0 })
 
-    /* ── Step 5c: Derived inner dimensions ───────────────────────────────── */
     const innerW = Math.max(0, width  - MARGIN.left - MARGIN.right)
     const innerH = Math.max(0, height - MARGIN.top  - MARGIN.bottom)
 
-    /* ── Step 5d: D3 band scale — x maps each district index to a pixel x ── */
     const xScale = useMemo(() => {
         if (!innerW || !districts?.length) return null
         return d3.scaleBand()
@@ -187,7 +100,6 @@ export default function BoxWhiskerChart({
             .padding(0.35)
     }, [innerW, districts])
 
-    /* ── Step 5e: D3 linear scale — y maps 0–yMax to pixel y (inverted) ── */
     const yScale = useMemo(() => {
         if (!innerH) return null
         const yMax = sharedYMax ?? 1.0
@@ -196,10 +108,8 @@ export default function BoxWhiskerChart({
             .range([innerH, 0])
     }, [innerH, sharedYMax])
 
-    /* ── Step 5f: Y-axis ticks (D3 nice tick generation) ─────────────────── */
     const yTicks = useMemo(() => (yScale ? yScale.ticks(8) : []), [yScale])
 
-    /* ── Step 5g: Empty state guard ──────────────────────────────────────── */
     if (!districts?.length) {
         return (
             <div className={`w-full rounded-xl border border-dashed border-brand-muted/30 bg-brand-surface/20 flex items-center justify-center ${className ?? 'h-[360px]'}`}>
@@ -208,22 +118,16 @@ export default function BoxWhiskerChart({
         )
     }
 
-    /* ── Step 5h: Mouse-move handler (computes position relative to SVG container) */
     function handleMouseMove(e, d) {
         if (!containerRef.current) return
         const rect = containerRef.current.getBoundingClientRect()
         setHovered({ district: d, x: e.clientX - rect.left, y: e.clientY - rect.top })
     }
 
-
-    /* ── Step 5i: Render ─────────────────────────────────────────────────── */
     return (
         <div className={`w-full rounded-xl border border-brand-muted/25 shadow-sm bg-white flex flex-col ${className ?? 'h-[360px]'}`}>
 
-            {/* ── LEGEND ROW ─────────────────────────────────────────────── */}
             <div className="flex flex-wrap items-center gap-4 px-4 pt-3 pb-1 flex-shrink-0">
-
-                {/* IQR box with median */}
                 <div className="flex items-center gap-1.5">
                     <svg width="22" height="14">
                         <rect x="1" y="1" width="20" height="12" fill={BOX_FILL} stroke={BOX_STROKE} strokeWidth={1.5} rx={2} />
@@ -231,37 +135,28 @@ export default function BoxWhiskerChart({
                     </svg>
                     <span style={{ fontSize: 12, fontWeight: 600, color: LABEL_COLOR }}>IQR (Q1–Q3)</span>
                 </div>
-
-                {/* Mean dot */}
                 <div className="flex items-center gap-1.5">
                     <svg width="12" height="12">
                         <circle cx="6" cy="6" r="5" fill={MEAN_CLR} stroke="white" strokeWidth={1} />
                     </svg>
                     <span style={{ fontSize: 12, fontWeight: 600, color: LABEL_COLOR }}>Mean</span>
                 </div>
-
-                {/* Enacted plan dot */}
                 <div className="flex items-center gap-1.5">
                     <svg width="12" height="12">
                         <circle cx="6" cy="6" r="5" fill={ENACTED_COLOR} stroke="white" strokeWidth={1} />
                     </svg>
                     <span style={{ fontSize: 12, fontWeight: 600, color: ENACTED_COLOR }}>Enacted</span>
                 </div>
-
-                {/* Right-aligned race label */}
                 <span className="ml-auto text-[11px] font-semibold text-slate-500 opacity-70 select-none">
                     {raceName} VAP %
                 </span>
             </div>
 
-            {/* ── SVG CHART AREA ─────────────────────────────────────────── */}
-            {/* Container ref for ResizeObserver + tooltip positioning */}
             <div
                 ref={containerRef}
                 className="flex-1 min-h-0 relative"
                 onMouseLeave={() => setHovered({ district: null, x: 0, y: 0 })}
             >
-                {/* Tooltip (absolutely positioned HTML div) */}
                 <Tooltip
                     district={hovered.district}
                     enactedDistricts={enactedDistricts}
@@ -269,15 +164,12 @@ export default function BoxWhiskerChart({
                     y={hovered.y}
                 />
 
-                {/* Only render SVG once dimensions are known */}
                 {width > 0 && height > 0 && xScale && yScale && (
                     <svg width={width} height={height} style={{ display: 'block' }}>
                         <g transform={`translate(${MARGIN.left},${MARGIN.top})`}>
 
-                            {/* ── Background gradient + border ─────────── */}
                             <BgRect innerWidth={innerW} innerHeight={innerH} chartId={chartId} />
 
-                            {/* ── Y-axis grid lines ─────────────────────── */}
                             {yTicks.map(t => {
                                 const py = yScale(t)
                                 return (
@@ -289,10 +181,8 @@ export default function BoxWhiskerChart({
                                 )
                             })}
 
-                            {/* ── Y-axis domain line ────────────────────── */}
                             <line x1={0} y1={0} x2={0} y2={innerH} stroke={AXIS_COLOR} strokeWidth={1.5} />
 
-                            {/* ── Y-axis tick marks + labels ────────────── */}
                             {yTicks.map(t => {
                                 const py = yScale(t)
                                 return (
@@ -309,7 +199,6 @@ export default function BoxWhiskerChart({
                                 )
                             })}
 
-                            {/* ── Y-axis legend label ───────────────────── */}
                             <text
                                 transform={`translate(${-(MARGIN.left - 16)},${innerH / 2}) rotate(-90)`}
                                 textAnchor="middle"
@@ -318,10 +207,8 @@ export default function BoxWhiskerChart({
                                 {raceName} VAP %
                             </text>
 
-                            {/* ── X-axis domain line ────────────────────── */}
                             <line x1={0} y1={innerH} x2={innerW} y2={innerH} stroke={AXIS_COLOR} strokeWidth={1.5} />
 
-                            {/* ── X-axis tick marks + district index labels  */}
                             {districts.map(d => {
                                 const cx = xScale(d.index) + xScale.bandwidth() / 2
                                 return (
@@ -338,7 +225,6 @@ export default function BoxWhiskerChart({
                                 )
                             })}
 
-                            {/* ── X-axis legend label ───────────────────── */}
                             <text
                                 x={innerW / 2} y={innerH + MARGIN.bottom - 10}
                                 textAnchor="middle"
@@ -347,12 +233,10 @@ export default function BoxWhiskerChart({
                                 Indexed Districts (sorted by {raceName} %)
                             </text>
 
-
-                            {/* ── Box plots — one per district ─────────── */}
                             {districts.map(d => {
                                 const cx  = xScale(d.index) + xScale.bandwidth() / 2
-                                const bw  = xScale.bandwidth() * 0.80   // box uses 80% of band
-                                const capW = xScale.bandwidth() * 0.45  // whisker cap = 45% of band
+                                const bw  = xScale.bandwidth() * 0.80
+                                const capW = xScale.bandwidth() * 0.45
 
                                 const yQ1  = yScale(d.q1)
                                 const yQ3  = yScale(d.q3)
@@ -364,60 +248,32 @@ export default function BoxWhiskerChart({
                                 const enacted  = enactedDistricts?.find(e => e.index === d.index)
                                 const yEnacted = enacted ? yScale(enacted.groupVapPercentage) : null
 
-                                /* Offset dots horizontally when they'd overlap (<10 px apart) */
+                                /* Offset mean and enacted dots horizontally when they'd overlap (<10 px apart) */
                                 const overlapping = enacted && Math.abs(yAvg - yEnacted) < 10
                                 const meanDotCx    = overlapping ? cx - 5 : cx
                                 const enactedDotCx = overlapping ? cx + 5 : cx
 
                                 return (
                                     <g key={`box-${d.index}`}>
-
-                                        {/* Upper whisker: q3 → max (dashed) */}
-                                        <line
-                                            x1={cx} y1={yQ3} x2={cx} y2={yMax}
-                                            stroke={BOX_STROKE} strokeWidth={1.5} strokeDasharray="3 2"
-                                        />
-
-                                        {/* Lower whisker: q1 → min (dashed) */}
-                                        <line
-                                            x1={cx} y1={yQ1} x2={cx} y2={yMin}
-                                            stroke={BOX_STROKE} strokeWidth={1.5} strokeDasharray="3 2"
-                                        />
-
-                                        {/* Max whisker cap */}
-                                        <line
-                                            x1={cx - capW / 2} y1={yMax} x2={cx + capW / 2} y2={yMax}
-                                            stroke={BOX_STROKE} strokeWidth={2}
-                                        />
-
-                                        {/* Min whisker cap */}
-                                        <line
-                                            x1={cx - capW / 2} y1={yMin} x2={cx + capW / 2} y2={yMin}
-                                            stroke={BOX_STROKE} strokeWidth={2}
-                                        />
-
-                                        {/* IQR box (q1 → q3) */}
+                                        <line x1={cx} y1={yQ3} x2={cx} y2={yMax}
+                                            stroke={BOX_STROKE} strokeWidth={1.5} strokeDasharray="3 2" />
+                                        <line x1={cx} y1={yQ1} x2={cx} y2={yMin}
+                                            stroke={BOX_STROKE} strokeWidth={1.5} strokeDasharray="3 2" />
+                                        <line x1={cx - capW / 2} y1={yMax} x2={cx + capW / 2} y2={yMax}
+                                            stroke={BOX_STROKE} strokeWidth={2} />
+                                        <line x1={cx - capW / 2} y1={yMin} x2={cx + capW / 2} y2={yMin}
+                                            stroke={BOX_STROKE} strokeWidth={2} />
                                         <rect
                                             x={cx - bw / 2} y={yQ3}
                                             width={bw} height={Math.max(0, yQ1 - yQ3)}
                                             fill={BOX_FILL} stroke={BOX_STROKE} strokeWidth={1.5} rx={2}
                                         />
-
-                                        {/* Median line (drawn on top of box) */}
-                                        <line
-                                            x1={cx - bw / 2} y1={yMed} x2={cx + bw / 2} y2={yMed}
-                                            stroke={MEDIAN_CLR} strokeWidth={2.5}
-                                        />
-
-                                        {/* Mean dot (amber) — "Average for the district" */}
+                                        <line x1={cx - bw / 2} y1={yMed} x2={cx + bw / 2} y2={yMed}
+                                            stroke={MEDIAN_CLR} strokeWidth={2.5} />
                                         <circle cx={meanDotCx} cy={yAvg} r={4} fill={MEAN_CLR} stroke="white" strokeWidth={1.2} />
-
-                                        {/* Enacted plan dot (brand purple) */}
                                         {enacted && (
                                             <circle cx={enactedDotCx} cy={yEnacted} r={4.5} fill={ENACTED_COLOR} stroke="white" strokeWidth={1.5} />
                                         )}
-
-                                        {/* Invisible hover rect for the full column width */}
                                         <rect
                                             x={xScale(d.index)} y={0}
                                             width={xScale.bandwidth()} height={innerH}

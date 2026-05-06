@@ -170,7 +170,7 @@ export default function RacialPolarizationSection({ data, stateId }) {
 
             <div className="flex items-baseline justify-between mb-3 shrink-0">
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-brand-darkest tracking-tight">
-                    {stateName && <span className="text-brand-primary">{stateName} — </span>}Racial Polarization
+                    Racial Polarization
                 </h2>
                 <span className="hidden sm:inline-flex items-center gap-1.5 text-sm italic font-medium text-brand-primary bg-brand-primary/10 border border-brand-primary/20 px-3 py-0.5 rounded-full">&ldquo;Do race and voting actually correlate?&rdquo;</span>
             </div>

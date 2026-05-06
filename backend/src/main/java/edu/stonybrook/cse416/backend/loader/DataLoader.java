@@ -391,12 +391,14 @@ public class DataLoader implements CommandLineRunner {
 
     // ── ensemble_analysis ─────────────────────────────────────────────────────
 
+    @SuppressWarnings("unchecked")
     private void loadEnsemble(String state, File dir) throws Exception {
         String prefix = state + "-";
         Map<String, Object> splits     = readIfExists(dir, prefix + "splits.json");
         Map<String, Object> boxWhisker = readIfExists(dir, prefix + "boxwhisker.json");
+        Map<String, Object> minority   = readIfExists(dir, prefix + "minority-districts.json");
 
-        if (splits == null && boxWhisker == null) {
+        if (splits == null && boxWhisker == null && minority == null) {
             System.out.println("[DataLoader] ensemble_analysis: no files found for " + state + ", skipping");
             return;
         }
@@ -406,6 +408,10 @@ public class DataLoader implements CommandLineRunner {
         doc.setStateId(State.valueOf(state));
         doc.setSplits(splits);
         doc.setBoxWhisker(boxWhisker);
+        if (minority != null) {
+            doc.setMinorityEffectiveHistogram((Map<String, Object>) minority.get("minorityEffectiveHistogram"));
+            doc.setMajorityMinorityHistogram((Map<String, Object>)  minority.get("majorityMinorityHistogram"));
+        }
         ensembleRepo.save(doc);
         System.out.println("[DataLoader] ensemble_analysis: saved " + state);
     }

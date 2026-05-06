@@ -1,11 +1,3 @@
-/**
- * DemographicSection.jsx — Second section on StatePage (id="demographic").
- *
- * Fetches heatmap data from: GET /api/states/:stateId/heatmap?race=
- * Re-fetches whenever stateId or raceFilter changes.
- * Server returns one race at a time: { bins, features:[{idx, binId}] }
- */
-
 import { useEffect, useRef, useState } from 'react'
 import SectionHeader from '@/components/ui/section-header'
 import SurfacePanel  from '@/components/ui/surface-panel'
@@ -48,9 +40,6 @@ export default function DemographicSection({ data, stateId }) {
     const showDistrictOverlay = useAppStore(s => s.showDistrictOverlay)
     const activeSection       = useAppStore(s => s.activeSection)
 
-    /* ── Fetch heatmap lazily — only once the Demographic section is active ─
-     * hasActivated gates the very first fetch via the activation effect below.
-     * After first activation, filter/state changes re-fetch via the second effect. */
     const [heatmapData, setHeatmapData] = useState(null)
     const hasActivated = useRef(false)
 
@@ -81,7 +70,6 @@ export default function DemographicSection({ data, stateId }) {
             .catch(err => console.error('[Demographic] fetchHeatmap error:', err))
     }, [stateId, raceFilter]) // eslint-disable-line react-hooks/exhaustive-deps
 
-    /* ── Derived data from overview ──────────────────────────────────────── */
     const s               = data?.stateSummary
     const demographicGroups = s?.demographicGroups ?? []
 
@@ -90,13 +78,12 @@ export default function DemographicSection({ data, stateId }) {
         districtPartyMap[d.districtNumber] = d.party
     })
 
-    /* ── Render ──────────────────────────────────────────────────────────── */
     return (
         <section id="demographic" className="p-2 sm:p-3 lg:p-4 border-b border-brand-muted/30 h-[calc(100vh-3.5rem)] flex flex-col overflow-hidden">
 
             <div className="flex items-baseline justify-between mb-4 shrink-0">
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-brand-darkest tracking-tight">
-                    {s?.stateName && <span className="text-brand-primary">{s.stateName} — </span>}Demographic Analysis
+                    Demographic Analysis
                 </h2>
                 <span className="hidden sm:inline-flex items-center gap-1.5 text-sm italic font-medium text-brand-primary bg-brand-primary/10 border border-brand-primary/20 px-3 py-0.5 rounded-full">&ldquo;What does the minority landscape look like?&rdquo;</span>
             </div>

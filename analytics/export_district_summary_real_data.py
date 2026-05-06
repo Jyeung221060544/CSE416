@@ -71,7 +71,9 @@ def export_state(job: dict) -> None:
                 "representative": meta.get("representative", ""),
                 "party": meta.get("party") or party_label_from_winner(winner),
                 "racialGroup": meta.get("racialGroup", ""),
-                "voteMarginPercentage": compute_vote_margin_percentage(votes_dem, votes_rep),
+                "voteMarginPercentage": compute_vote_margin_percentage(
+                    votes_dem, votes_rep
+                ),
                 "voteMarginDirection": margin_direction_from_winner(winner),
             }
         )

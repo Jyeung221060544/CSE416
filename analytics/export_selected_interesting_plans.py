@@ -8,21 +8,39 @@ from shapely.geometry import Polygon, MultiPolygon, GeometryCollection
 JOBS = [
     {
         "name": "AL_zero_effective_raceblind",
-        "generated": "frontend/src/assets/interesting_plans/AL_zero_effective_raceblind_districts.json",
+        "generated": (
+            "frontend/src/assets/interesting_plans"
+            "/AL_zero_effective_raceblind_districts.json"
+        ),
         "enacted": "frontend/src/assets/ALCongressionalDistricts.json",
-        "out": "frontend/src/assets/interesting_plans/AL_zero_effective_raceblind_visual.json",
+        "out": (
+            "frontend/src/assets/interesting_plans"
+            "/AL_zero_effective_raceblind_visual.json"
+        ),
     },
     {
         "name": "OR_extra_democratic_vra",
-        "generated": "frontend/src/assets/interesting_plans/OR_extra_democratic_vra_districts.json",
+        "generated": (
+            "frontend/src/assets/interesting_plans"
+            "/OR_extra_democratic_vra_districts.json"
+        ),
         "enacted": "frontend/src/assets/ORCongressionalDistrict.json",
-        "out": "frontend/src/assets/interesting_plans/OR_extra_democratic_vra_visual.json",
+        "out": (
+            "frontend/src/assets/interesting_plans"
+            "/OR_extra_democratic_vra_visual.json"
+        ),
     },
     {
         "name": "OR_zero_effective_raceblind",
-        "generated": "frontend/src/assets/interesting_plans/OR_zero_effective_raceblind_districts.json",
+        "generated": (
+            "frontend/src/assets/interesting_plans"
+            "/OR_zero_effective_raceblind_districts.json"
+        ),
         "enacted": "frontend/src/assets/ORCongressionalDistrict.json",
-        "out": "frontend/src/assets/interesting_plans/OR_zero_effective_raceblind_visual.json",
+        "out": (
+            "frontend/src/assets/interesting_plans"
+            "/OR_zero_effective_raceblind_visual.json"
+        ),
     },
 ]
 
@@ -136,19 +154,26 @@ def assign_gaps(gen, state_outline):
     if missing.is_empty:
         return gen
 
-    parts = list(missing.geoms) if missing.geom_type == "MultiPolygon" else [missing]
+    parts = (
+        list(missing.geoms) if missing.geom_type == "MultiPolygon" else [missing]
+    )
     for gap in parts:
         if gap.is_empty:
             continue
         best_idx, best_score = None, -1
         for idx, row in gen.iterrows():
             shared = row.geometry.boundary.intersection(gap.boundary).length
-            score = shared if shared > 0 else 1 / (row.geometry.distance(gap) + 1e-9)
+            score = (
+                shared if shared > 0
+                else 1 / (row.geometry.distance(gap) + 1e-9)
+            )
             if score > best_score:
                 best_score = score
                 best_idx = idx
         if best_idx is not None:
-            gen.at[best_idx, "geometry"] = gen.at[best_idx, "geometry"].union(gap).buffer(0)
+            gen.at[best_idx, "geometry"] = (
+                gen.at[best_idx, "geometry"].union(gap).buffer(0)
+            )
     return gen
 
 def reassign_non_contiguous(gen):
@@ -171,7 +196,10 @@ def reassign_non_contiguous(gen):
         best_idx, best_score = None, -1
         for idx, row in gen.iterrows():
             shared = row.geometry.boundary.intersection(piece.boundary).length
-            score = shared if shared > 0 else 1 / (row.geometry.distance(piece) + 1e-9)
+            score = (
+                shared if shared > 0
+                else 1 / (row.geometry.distance(piece) + 1e-9)
+            )
             if score > best_score:
                 best_score = score
                 best_idx = idx
@@ -210,7 +238,9 @@ def make_visual_plan(gen_path, enacted_path, out_path):
         gen.geometry
         .apply(polygon_only)
         .buffer(0)
-        .apply(lambda g: remove_skinny_slivers(g, min_area=10_000_000, min_width=10_000))
+        .apply(lambda g: remove_skinny_slivers(
+            g, min_area=10_000_000, min_width=10_000
+        ))
         .apply(lambda g: keep_large_parts_only(g, min_ratio=0.01))
         .apply(polygon_only)
         .buffer(0)
@@ -223,7 +253,10 @@ def make_visual_plan(gen_path, enacted_path, out_path):
         # Drop tiny satellite pieces (< 5% of largest part)
         .apply(lambda g: keep_large_parts_only(g, min_ratio=0.05))
         # Force single polygon – keep only the dominant piece
-        .apply(lambda g: max(g.geoms, key=lambda p: p.area) if g.geom_type == "MultiPolygon" else g)
+        .apply(lambda g: (
+            max(g.geoms, key=lambda p: p.area)
+            if g.geom_type == "MultiPolygon" else g
+        ))
         # Simplify to reduce file size (~500 m tolerance in EPSG:5070)
         .apply(lambda g: g.simplify(500, preserve_topology=True))
         .buffer(0)
@@ -240,7 +273,10 @@ def make_visual_plan(gen_path, enacted_path, out_path):
         for g in gen.geometry if g and not g.is_empty
     )
     import os
-    print(f"  Wrote {out_path} ({os.path.getsize(out_path)//1024}KB, ~{n_pts} exterior pts)")
+    print(
+        f"  Wrote {out_path}"
+        f" ({os.path.getsize(out_path)//1024}KB, ~{n_pts} exterior pts)"
+    )
 
 
 def main():

@@ -107,6 +107,9 @@ def build_group_payload(group_key: str, group_info: dict, draw_key: str, summary
         "confidenceIntervalLow": float(ci_low),
         "confidenceIntervalHigh": float(ci_high),
         "kdePoints": kde_points,
+        # Prepro-15: overlap between White_NH KDE and this group's KDE, as % of white vote area.
+        # Lower = more polarized. 0 = placeholder; populate from EI output.
+        "polarizedVotingPercentage": 0,
     }
 
 

@@ -30,7 +30,9 @@ def load_json(path: Path) -> dict:
         return json.load(f)
 
 
-def build_demographic_groups(state: str, gdf: gpd.GeoDataFrame, vap_total: int) -> list[dict]:
+def build_demographic_groups(
+    state: str, gdf: gpd.GeoDataFrame, vap_total: int
+) -> list[dict]:
     white_vap = int(gdf["NH_WHITE_ALONE_VAP"].sum())
     black_vap = int(gdf["NH_BLACK_ALONE_VAP"].sum())
     latino_vap = int(gdf["LATINO_VAP"].sum())
@@ -59,7 +61,9 @@ def build_demographic_groups(state: str, gdf: gpd.GeoDataFrame, vap_total: int) 
                 "group": label,
                 "vap": int(vap),
                 "vapPercentage": pct,
-                "isFeasible": (vap >= FEASIBLE_THRESHOLD) if thresholded else False,
+                "isFeasible": (
+                    (vap >= FEASIBLE_THRESHOLD) if thresholded else False
+                ),
             }
         )
 
@@ -93,8 +97,12 @@ def export_state(job: dict) -> None:
         "isPreclearance": bool(meta["isPreclearance"]),
         "voterDistribution": {
             "electionYear": 2024,
-            "democraticVoteShare": 0.0 if total_two_party <= 0 else dem_votes / total_two_party,
-            "republicanVoteShare": 0.0 if total_two_party <= 0 else rep_votes / total_two_party,
+            "democraticVoteShare": (
+                0.0 if total_two_party <= 0 else dem_votes / total_two_party
+            ),
+            "republicanVoteShare": (
+                0.0 if total_two_party <= 0 else rep_votes / total_two_party
+            ),
         },
         "demographicGroups": demographic_groups,
         "redistrictingControl": {

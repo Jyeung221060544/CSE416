@@ -11,12 +11,16 @@ JOBS = [
         "feasible_groups": ["black", "white"],
         "group_map": {
             "black": {
-                "raceblind": ROOT / "AL_data" / "AL_boxwhisker_raceblind_black.json",
+                "raceblind": (
+                    ROOT / "AL_data" / "AL_boxwhisker_raceblind_black.json"
+                ),
                 "vra": ROOT / "AL_data" / "AL_boxwhisker_vra_black.json",
                 "district_prefix": "AL",
             },
             "white": {
-                "raceblind": ROOT / "AL_data" / "AL_boxwhisker_raceblind_white.json",
+                "raceblind": (
+                    ROOT / "AL_data" / "AL_boxwhisker_raceblind_white.json"
+                ),
                 "vra": ROOT / "AL_data" / "AL_boxwhisker_vra_white.json",
                 "district_prefix": "AL",
             },
@@ -29,12 +33,16 @@ JOBS = [
         "feasible_groups": ["latino", "white"],
         "group_map": {
             "latino": {
-                "raceblind": ROOT / "OR_data" / "OR_boxwhisker_raceblind_latino.json",
+                "raceblind": (
+                    ROOT / "OR_data" / "OR_boxwhisker_raceblind_latino.json"
+                ),
                 "vra": ROOT / "OR_data" / "OR_boxwhisker_vra_latino.json",
                 "district_prefix": "OR",
             },
             "white": {
-                "raceblind": ROOT / "OR_data" / "OR_boxwhisker_raceblind_white.json",
+                "raceblind": (
+                    ROOT / "OR_data" / "OR_boxwhisker_raceblind_white.json"
+                ),
                 "vra": ROOT / "OR_data" / "OR_boxwhisker_vra_white.json",
                 "district_prefix": "OR",
             },
@@ -71,20 +79,26 @@ def convert_box_rows(real_rows: list[dict]) -> list[dict]:
     return converted
 
 
-def convert_enacted_points(points: list[dict], district_prefix: str) -> list[dict]:
+def convert_enacted_points(
+    points: list[dict], district_prefix: str
+) -> list[dict]:
     converted = []
     for row in points:
         converted.append(
             {
                 "index": int(row["district_rank"]),
-                "districtId": district_id_label(district_prefix, row["enacted_cd"]),
+                "districtId": district_id_label(
+                    district_prefix, row["enacted_cd"]
+                ),
                 "groupVapPercentage": float(row["pct"]),
             }
         )
     return converted
 
 
-def build_ensemble_payload(ensemble_id: str, ensemble_type: str, group_payloads: dict) -> dict:
+def build_ensemble_payload(
+    ensemble_id: str, ensemble_type: str, group_payloads: dict
+) -> dict:
     return {
         "ensembleId": ensemble_id,
         "ensembleType": ensemble_type,
@@ -109,7 +123,9 @@ def export_state(job: dict) -> None:
         spec = group_map[group_name]
 
         if not spec["raceblind"].exists() or not spec["vra"].exists():
-            print(f"Skipping {state} {group_name}: boxwhisker input files not found.")
+            print(
+                f"Skipping {state} {group_name}: boxwhisker input files not found."
+            )
             return
         raceblind = load_json(spec["raceblind"])
         vra = load_json(spec["vra"])
@@ -117,8 +133,12 @@ def export_state(job: dict) -> None:
         if total_plans is None:
             total_plans = int(raceblind["num_plans"])
 
-        raceblind_group_districts[group_name] = convert_box_rows(raceblind["district_boxwhisker"])
-        vra_group_districts[group_name] = convert_box_rows(vra["district_boxwhisker"])
+        raceblind_group_districts[group_name] = convert_box_rows(
+            raceblind["district_boxwhisker"]
+        )
+        vra_group_districts[group_name] = convert_box_rows(
+            vra["district_boxwhisker"]
+        )
 
         # enacted points should be the same ranking concept for both files;
         # use raceblind as the source

@@ -15,7 +15,9 @@ JOBS = [
     {
         "state": "AL",
         "precincts": ROOT / "AL_data" / "AL_precincts_full.geojson",
-        "districts_geojson": ROOT / "frontend" / "src" / "assets" / "ALCongressionalDistricts.json",
+        "districts_geojson": (
+            ROOT / "frontend" / "src" / "assets" / "ALCongressionalDistricts.json"
+        ),
         "effectiveness_json": ROOT / "AL-real-data" / "AL-effectiveness.json",
         "minority_col": "NH_BLACK_ALONE_VAP",
         "threshold": 0.45,
@@ -25,7 +27,9 @@ JOBS = [
     {
         "state": "OR",
         "precincts": ROOT / "OR_data" / "OR_precincts_full.geojson",
-        "districts_geojson": ROOT / "frontend" / "src" / "assets" / "ORCongressionalDistrict.json",
+        "districts_geojson": (
+            ROOT / "frontend" / "src" / "assets" / "ORCongressionalDistrict.json"
+        ),
         "effectiveness_json": ROOT / "OR-real-data" / "OR-effectiveness.json",
         "minority_col": "LATINO_VAP",
         "threshold": 0.17,
@@ -38,7 +42,10 @@ JOBS = [
 def compute_enacted_effectiveness(precincts_path, minority_col, threshold, party):
     """Return dict mapping district_number -> {isEffective, minority_pct, winner}."""
     gdf = gpd.read_file(precincts_path)
-    grouped = gdf.groupby("enacted_cd")[[minority_col, "VAP", "votes_dem", "votes_rep"]].sum()
+    grouped = (
+        gdf.groupby("enacted_cd")[[minority_col, "VAP", "votes_dem", "votes_rep"]]
+        .sum()
+    )
     result = {}
     for cd, row in grouped.iterrows():
         pct = row[minority_col] / row["VAP"] if row["VAP"] > 0 else 0.0
@@ -90,7 +97,10 @@ def update_effectiveness_json(effectiveness_path, effectiveness_map):
         json.dump(data, f, indent=2)
 
     effective_count = sum(1 for v in effectiveness_map.values() if v["isEffective"])
-    print(f"  Updated {effectiveness_path.name} — {effective_count} effective district(s)")
+    print(
+        f"  Updated {effectiveness_path.name}"
+        f" — {effective_count} effective district(s)"
+    )
 
 
 def main():
@@ -100,9 +110,14 @@ def main():
             job["precincts"], job["minority_col"], job["threshold"], job["party"]
         )
         for cd, info in sorted(effectiveness_map.items()):
-            print(f"  CD{cd}: pct={info['minority_pct']:.3f} winner={info['winner']} effective={info['isEffective']}")
+            print(
+                f"  CD{cd}: pct={info['minority_pct']:.3f}"
+                f" winner={info['winner']} effective={info['isEffective']}"
+            )
 
-        annotate_district_geojson(job["districts_geojson"], effectiveness_map, job["cd_key"])
+        annotate_district_geojson(
+            job["districts_geojson"], effectiveness_map, job["cd_key"]
+        )
         update_effectiveness_json(job["effectiveness_json"], effectiveness_map)
 
     print("\nDone.")

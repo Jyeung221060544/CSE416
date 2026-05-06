@@ -37,7 +37,9 @@ def load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def build_kde_points(samples: np.ndarray, n_points: int = 201) -> tuple[list[dict], float]:
+def build_kde_points(
+    samples: np.ndarray, n_points: int = 201
+) -> tuple[list[dict], float]:
     x_grid = np.linspace(-1.0, 1.0, n_points)
 
     if len(samples) == 0:
@@ -55,7 +57,10 @@ def build_kde_points(samples: np.ndarray, n_points: int = 201) -> tuple[list[dic
     return points, peak_x
 
 
-def candidate_payload(candidate_id: str, candidate_name: str, party: str, diff_samples: np.ndarray) -> dict:
+def candidate_payload(
+    candidate_id: str, candidate_name: str, party: str,
+    diff_samples: np.ndarray,
+) -> dict:
     kde_points, peak_diff = build_kde_points(diff_samples)
     prob_gt = float(np.mean(diff_samples > DIFFERENCE_THRESHOLD))
     prob_lt = float(np.mean(diff_samples < -DIFFERENCE_THRESHOLD))
@@ -71,7 +76,9 @@ def candidate_payload(candidate_id: str, candidate_name: str, party: str, diff_s
     }
 
 
-def get_group_draws(rxc_payload: dict, group_name: str) -> tuple[np.ndarray, np.ndarray]:
+def get_group_draws(
+    rxc_payload: dict, group_name: str
+) -> tuple[np.ndarray, np.ndarray]:
     groups = rxc_payload.get("groups", {})
     if group_name not in groups:
         raise KeyError(f"Missing group '{group_name}' in RxC payload")
@@ -89,13 +96,20 @@ def get_group_draws(rxc_payload: dict, group_name: str) -> tuple[np.ndarray, np.
     return dem[:n], rep[:n]
 
 
-def build_pair_payload(group_a: str, group_b: str, dem_a: np.ndarray, rep_a: np.ndarray, dem_b: np.ndarray, rep_b: np.ndarray) -> dict:
+def build_pair_payload(
+    group_a: str, group_b: str,
+    dem_a: np.ndarray, rep_a: np.ndarray,
+    dem_b: np.ndarray, rep_b: np.ndarray,
+) -> dict:
     dem_diff = dem_a - dem_b
     rep_diff = rep_a - rep_b
 
     return {
         "groups": [group_a, group_b],
-        "label": f"{DISPLAY_LABELS.get(group_a, group_a)} \u2212 {DISPLAY_LABELS.get(group_b, group_b)}",
+        "label": (
+            f"{DISPLAY_LABELS.get(group_a, group_a)}"
+            f" \u2212 {DISPLAY_LABELS.get(group_b, group_b)}"
+        ),
         "candidates": [
             candidate_payload(
                 candidate_id="DEM_PRES_2024",

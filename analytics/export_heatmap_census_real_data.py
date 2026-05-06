@@ -84,7 +84,9 @@ def load_block_vap(vap_csv_path: Path) -> pd.DataFrame:
         .str.zfill(15)
     )
 
-    for col in ["P4_001N", "P4_002N", "P4_003N", "P4_005N", "P4_006N", "P4_008N"]:
+    for col in [
+        "P4_001N", "P4_002N", "P4_003N", "P4_005N", "P4_006N", "P4_008N"
+    ]:
         if col in pop.columns:
             pop[col] = pd.to_numeric(pop[col], errors="coerce").fillna(0).astype(int)
 
@@ -128,8 +130,12 @@ def export_state(job: dict) -> None:
     merged = blocks.merge(vap, on="GEOID_BLOCK", how="left")
 
     for col in GROUP_COLS.values():
-        merged[col] = pd.to_numeric(merged[col], errors="coerce").fillna(0).astype(int)
-    merged["VAP"] = pd.to_numeric(merged["VAP"], errors="coerce").fillna(0).astype(int)
+        merged[col] = (
+            pd.to_numeric(merged[col], errors="coerce").fillna(0).astype(int)
+        )
+    merged["VAP"] = (
+        pd.to_numeric(merged["VAP"], errors="coerce").fillna(0).astype(int)
+    )
 
     bins_per_group = {
         group: build_bins(compute_max_pct(merged, col))

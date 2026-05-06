@@ -128,7 +128,7 @@ export default function SectionPanel({ collapsed }) {
             <div className="flex items-center gap-2 px-1">
                 <LayoutList className="w-4 h-4 text-brand-surface shrink-0" />
                 {!collapsed && (
-                    <span className="text-brand-surface text-xs font-bold uppercase tracking-widest">
+                    <span className="text-brand-surface text-sm font-bold tracking-widest">
                         Sections
                     </span>
                 )}

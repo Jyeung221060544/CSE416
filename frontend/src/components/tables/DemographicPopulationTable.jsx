@@ -1,61 +1,22 @@
-/**
- * @file DemographicPopulationTable.jsx
- * @description Table displaying Voting Age Population (VAP) statistics by racial
- *   or ethnic group for a state. Clicking a row sets the active `raceFilter`,
- *   which drives the demographic heatmap color scheme and Gingles analysis.
- *
- * PROPS
- * @prop {Array}    demographicGroups - Array of group objects:
- *   { group: string, vap: number, vapPercentage: number, isFeasible: boolean }
- * @prop {string}   raceFilter        - Currently active race group key
- *   (lowercase, e.g. "black"). Used to highlight the matching row.
- * @prop {Function} setRaceFilter     - Callback to update the active race filter.
- * @prop {boolean}  [fillHeight=false]- If true, the panel expands to fill its
- *   parent container height.
- *
- * STATE SOURCES
- * - raceFilter / setRaceFilter : Lifted state from the parent page component.
- *
- * LAYOUT
- * - <SurfacePanel> wrapping a <table> with responsive overflow.
- * - Columns: Group | VAP | % VAP | Opportunity (feasibility badge).
- * - Dark header; alternating row backgrounds; active row highlighted.
- * - "Feasible" / "Not Feasible" badges from FEASIBLE_CLS / NOT_FEASIBLE_CLS.
- */
-
-/* ── Step 0: UI component and utility imports ─────────────────────────── */
 import { Badge } from '@/components/ui/badge'
 import SurfacePanel from '@/components/ui/surface-panel'
 import { cn } from '@/lib/utils'
 import { FEASIBLE_CLS, NOT_FEASIBLE_CLS } from '@/lib/partyColors'
 import { ROW_BORDER, ACTIVE_LABEL, INACTIVE_LABEL, rowBg } from '@/lib/tableStyles'
 
-/* ── Step 1: Group key normalizer ────────────────────────────────────── */
-/**
- * Converts a display group name to the lowercase key used by raceFilter.
- * @param {string} g - Display name (e.g. "Black").
- * @returns {string} Lowercase key (e.g. "black").
- */
+/** @param {string} g @returns {string} */
 function groupKey(g) { return g.toLowerCase() }
 
-/* ── Step 2: Main DemographicPopulationTable component ───────────────── */
 /**
- * Renders the VAP demographic breakdown table with clickable rows that
- * update the global race filter for the heatmap and Gingles views.
+ * VAP demographic table with clickable rows that update the global race filter.
  *
- * @param {object}   props
- * @param {Array}    props.demographicGroups - Per-group VAP data.
- * @param {string}   props.raceFilter        - Currently selected group key.
- * @param {Function} props.setRaceFilter     - Setter for the race filter.
- * @param {boolean}  [props.fillHeight]      - Expand panel to fill parent height.
- * @returns {JSX.Element|JSX.Element} Table panel, or italic "no data" text.
+ * @param {{ demographicGroups: Array, raceFilter: string, setRaceFilter: Function, fillHeight?: boolean, readOnly?: boolean, districtSummary?: object, numDistricts?: number }} props
  */
 export default function DemographicPopulationTable({ demographicGroups, raceFilter, setRaceFilter, fillHeight = false, readOnly = false, districtSummary = null, numDistricts = null }) {
     if (!demographicGroups?.length) {
         return <p className="text-brand-muted/50 text-sm italic">No demographic data available.</p>
     }
 
-    /* ── Derive effective district counts per group from districtSummary ── */
     const districts    = districtSummary?.districts ?? []
     const totalDist    = numDistricts ?? districts.length ?? 0
     const effectiveMap = {}
@@ -65,21 +26,19 @@ export default function DemographicPopulationTable({ demographicGroups, raceFilt
     })
 
     return (
-        <SurfacePanel className={cn('overflow-auto border-brand-muted/20', fillHeight && 'h-full')}>
+        <SurfacePanel className={cn('overflow-y-auto overflow-x-hidden border-brand-muted/20', fillHeight && 'h-full')}>
             <table className="w-full text-sm border-collapse">
 
-                {/* ── COLUMN HEADER ──────────────────────────────────── */}
                 <thead>
                     <tr className="bg-brand-darkest text-brand-surface text-sm font-semibold">
-                        <th className="px-4 py-3 text-left font-bold">Group</th>
-                        <th className="px-4 py-3 text-right font-bold">VAP</th>
-                        <th className="px-4 py-3 text-right font-bold">% VAP</th>
+                        <th className="px-4 py-3 text-center font-bold">Group</th>
+                        <th className="px-4 py-3 text-center font-bold">VAP</th>
+                        <th className="px-4 py-3 text-center font-bold">% VAP</th>
                         {totalDist > 0 && <th className="px-4 py-3 text-center font-bold">Rough Proportionality</th>}
-                        <th className="px-4 py-3 text-center font-bold">Opportunity</th>
+                        <th className="px-4 py-3 text-center font-bold">Feasibility</th>
                     </tr>
                 </thead>
 
-                {/* ── DATA ROWS ──────────────────────────────────────── */}
                 <tbody>
                     {demographicGroups.map((row, i) => {
                         const key      = groupKey(row.group)
@@ -105,26 +64,19 @@ export default function DemographicPopulationTable({ demographicGroups, raceFilt
                                     rowBg(i, !readOnly && isActive),
                                 ].join(' ')}
                             >
-                                {/* Group name */}
                                 <td className="px-4 py-3">
                                     <span className={`font-bold text-sm ${!readOnly && isActive ? ACTIVE_LABEL : INACTIVE_LABEL}`}>
                                         {row.group.charAt(0).toUpperCase() + row.group.slice(1)}
                                     </span>
                                 </td>
-
-                                {/* VAP count */}
                                 <td className="px-4 py-3 text-right tabular-nums text-brand-darkest font-medium">
                                     {row.vap?.toLocaleString() ?? '-'}
                                 </td>
-
-                                {/* % VAP */}
                                 <td className="px-4 py-3 text-right">
-                                    <span className={`tabular-nums font-bold text-base ${!readOnly && isActive ? ACTIVE_LABEL : INACTIVE_LABEL}`}>
+                                    <span className={`tabular-nums font-medium text-sm ${!readOnly && isActive ? ACTIVE_LABEL : INACTIVE_LABEL}`}>
                                         {row.vapPercentage != null ? `${(row.vapPercentage * 100).toFixed(1)}%` : '-'}
                                     </span>
                                 </td>
-
-                                {/* Rough proportionality: effective districts / total */}
                                 {totalDist > 0 && (
                                     <td className="px-4 py-3 text-center">
                                         <span className="tabular-nums font-semibold text-brand-darkest">
@@ -132,8 +84,6 @@ export default function DemographicPopulationTable({ demographicGroups, raceFilt
                                         </span>
                                     </td>
                                 )}
-
-                                {/* Feasibility badge */}
                                 <td className="px-4 py-3 text-center">
                                     {row.isFeasible
                                         ? <Badge className={FEASIBLE_CLS}>Feasible</Badge>

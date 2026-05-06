@@ -29,7 +29,9 @@ def load_json(path: Path) -> dict:
 
 
 def closest_point(points: list[dict], target_vote_share: float) -> dict:
-    return min(points, key=lambda p: abs(float(p["mean_vote_share"]) - target_vote_share))
+    return min(
+        points, key=lambda p: abs(float(p["mean_vote_share"]) - target_vote_share)
+    )
 
 
 def build_dem_curve_points(curve_points: list[dict]) -> list[dict]:
@@ -40,7 +42,11 @@ def build_dem_curve_points(curve_points: list[dict]) -> list[dict]:
         }
         for p in curve_points
     ]
-    points = [{"voteShare": 0.0, "seatShare": 0.0}] + points + [{"voteShare": 1.0, "seatShare": 1.0}]
+    points = (
+        [{"voteShare": 0.0, "seatShare": 0.0}]
+        + points
+        + [{"voteShare": 1.0, "seatShare": 1.0}]
+    )
     points = sorted(points, key=lambda p: p["voteShare"])
     return points
 
@@ -53,7 +59,11 @@ def build_rep_curve_points(curve_points: list[dict]) -> list[dict]:
         }
         for p in curve_points
     ]
-    points = [{"voteShare": 0.0, "seatShare": 0.0}] + points + [{"voteShare": 1.0, "seatShare": 1.0}]
+    points = (
+        [{"voteShare": 0.0, "seatShare": 0.0}]
+        + points
+        + [{"voteShare": 1.0, "seatShare": 1.0}]
+    )
     points = sorted(points, key=lambda p: p["voteShare"])
     return points
 
@@ -76,12 +86,15 @@ def export_state(job: dict) -> None:
     dem_seat_share_at_50 = float(p50["mean_seat_share"])
     partisan_bias = dem_seat_share_at_50 - 0.5
 
-    enacted_dem_vote_share = float(state_summary["voterDistribution"]["democraticVoteShare"])
+    enacted_dem_vote_share = float(
+        state_summary["voterDistribution"]["democraticVoteShare"]
+    )
     enacted_dem_seat_share = float(enacted["dem_seats"]) / float(total_districts)
 
     notes = (
-        f"At 50% Democratic vote share, Democrats win ~{dem_seat_share_at_50:.3f} "
-        f"of seats (partisan bias ≈ {partisan_bias:.3f})."
+        f"At 50% Democratic vote share, Democrats win"
+        f" ~{dem_seat_share_at_50:.3f} of seats"
+        f" (partisan bias ≈ {partisan_bias:.3f})."
     )
 
     payload = {
