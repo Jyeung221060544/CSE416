@@ -77,7 +77,7 @@ export default function GinglesPrecinctTable({ points = [], selectedId, onSelect
                 <div className={`shrink-0 ${COLS} grid items-center px-3 py-2.5 bg-brand-darkest text-brand-surface text-xs font-semibold`}>
                     <span className="text-center">Precinct</span>
                     <span className="text-center">Pop</span>
-                    <span className="text-center">Region</span>
+                    <span className="text-center pl-3">Region</span>
                     <span className="text-center">Minority</span>
                     <span className="text-center">Income</span>
                     <span className={`text-center ${DEM_HEADER_TEXT}`}>Dem</span>
@@ -105,7 +105,7 @@ export default function GinglesPrecinctTable({ points = [], selectedId, onSelect
                                 <span className="text-right tabular-nums text-brand-deep text-xs">
                                     {fmt(row.totalPop)}
                                 </span>
-                                <div className="flex justify-center">
+                                <div className="flex justify-center pl-3">
                                     <Badge
                                         variant="outline"
                                         className={`text-[10px] font-semibold px-1.5 py-0.5 leading-tight capitalize w-full text-center ${REGION_CLS[row.regionType] ?? ''}`}
