@@ -11,10 +11,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * EiController — {@code GET /api/states/{stateId}/ei}
- *
- * <p>Returns the full EI KDE document for the given state in one response.
- * The document is candidate-first; race filtering is done on the frontend
- * via {@code eiRaceFilter}.  No {@code ?race=} parameter needed.
  */
 @RestController
 @RequestMapping("/api/states/{stateId}/ei")
@@ -31,14 +27,11 @@ public class EiController {
     /**
      * Returns EI KDE data for all candidates and racial groups for the given state.
      *
-     * <p>Response: {@code { stateId, electionYear,
+     * Response: {@code { stateId, electionYear,
      * candidates: [{ candidateId, candidateName, party,
      *                racialGroups: [{ group, peakSupportEstimate,
      *                                confidenceIntervalLow, confidenceIntervalHigh,
      *                                kdePoints: [{ x, y }] }] }] }}
-     *
-     * @param stateId two-letter state abbreviation (e.g. "AL")
-     * @return 200 with EI KDE doc; 404 if no data found for state
      */
     @GetMapping
     public ResponseEntity<EiKdeDoc> getEiKde(@PathVariable State stateId) {

@@ -41,18 +41,7 @@ public class PrecinctGeoController {
 
     /**
      * Streams the full precinct GeoJSON for the given state.
-     *
-     * <p>The file path is looked up from the {@code states} MongoDB collection
-     * via {@code StateDoc.precinctGeoPath}, rather than being hardcoded.
-     *
-     * <p>Each precinct feature includes polygon geometry and properties:
-     * {@code GEOID, enacted_cd, votes_dem, votes_rep, VAP, NH_BLACK_ALONE_VAP,
-     * NH_WHITE_ALONE_VAP, LATINO_VAP, NH_ASIAN_ALONE_VAP, OTHER_VAP}.
-     * The frontend uses array position (matching the heatmap {@code idx} field)
-     * for coloring.
-     *
-     * @param stateId two-letter state abbreviation (e.g. "AL")
-     * @return 200 with GeoJSON stream; 404 if state or file not found
+     * Return 200 with GeoJSON stream; 404 if state or file not found
      */
     @GetMapping
     public ResponseEntity<Resource> getPrecincts(@PathVariable State stateId) {

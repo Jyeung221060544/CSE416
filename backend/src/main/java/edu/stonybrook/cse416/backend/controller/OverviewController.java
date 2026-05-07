@@ -11,11 +11,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * OverviewController — lazy-loaded state overview endpoints.
- *
- * <ul>
- *   <li>{@code GET /api/states/{stateId}/overview/state-stats} — fetched on
- *       state-overview section entry; stateSummary + districtSummary + ensembleSummary.</li>
- * </ul>
  */
 @RestController
 @RequestMapping("/api/states/{stateId}/overview")
@@ -32,11 +27,8 @@ public class OverviewController {
     /**
      * Returns the state-stats bundle needed immediately on state-page load.
      *
-     * <p>Response: {@code { stateSummary, districtSummary,
+     * Response: {@code { stateSummary, districtSummary,
      *                        availableHeatmapRaces, availableEiComparePairs }}
-     *
-     * @param stateId two-letter state abbreviation (e.g. "AL")
-     * @return 200 with bundle; 404 if state is unknown
      */
     @GetMapping("/state-stats")
     public ResponseEntity<Map<String, Object>> getStateStats(@PathVariable State stateId) {

@@ -10,8 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * StateController — {@code GET /api/states}
- *
- * <p>Returns the splash-page list of all states with metadata used to render
+ * Returns the splash-page list of all states with metadata used to render
  * the interactive US map and the state-selection cards.
  */
 @RestController
@@ -29,7 +28,7 @@ public class StateController {
     /**
      * Returns all states.
      *
-     * <p>Response: {@code { states: [{ stateId, stateName, hasData,
+     * Response: {@code { states: [{ stateId, stateName, hasData,
      * numDistricts, isPreclearance, center, zoom }] }}
      */
     @GetMapping

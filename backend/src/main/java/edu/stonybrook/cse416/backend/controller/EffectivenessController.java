@@ -11,13 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * EffectivenessController — effectiveness analysis endpoint.
- *
- * <ul>
- *   <li>{@code GET /api/states/{stateId}/effectiveness} — full payload;
- *       fetched once when the user first enters the Effectiveness Analysis section.</li>
- * </ul>
- *
- * <p>The entire document is returned in one response.  Race filtering
+ * The entire document is returned in one response.  Race filtering
  * is handled on the frontend — no {@code ?race=} query parameter is needed.
  */
 @RestController
@@ -34,9 +28,6 @@ public class EffectivenessController {
 
     /**
      * Returns the full effectiveness analysis payload for the given state.
-     *
-     * @param stateId two-letter state abbreviation (e.g. "AL")
-     * @return 200 with effectiveness data; 404 if state is unknown
      */
     @GetMapping("/effectiveness")
     public ResponseEntity<Map<String, Object>> getEffectiveness(@PathVariable State stateId) {

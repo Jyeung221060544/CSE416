@@ -11,14 +11,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * GinglesController — {@code GET /api/states/{stateId}/gingles?race=}
- *
- * <p>Fetched when the user enters the Gingles tab, and again each time they
- * change {@code feasibleRaceFilter}.  Each race is fetched independently
- * (~500 KB each) and cached, so switching back to a previously viewed race
- * is served from the Caffeine cache without a MongoDB round-trip.
- *
- * <p>The {@code race} parameter must be a lowercase racial group key
- * (e.g. {@code "black"}, {@code "white"}).
  */
 @RestController
 @RequestMapping("/api/states/{stateId}/gingles")
@@ -34,13 +26,8 @@ public class GinglesController {
 
     /**
      * Returns Gingles precinct data for one racial group.
-     *
-     * <p>Response: {@code { stateId, race, points: [...],
+     * Response: {@code { stateId, race, points: [...],
      * democraticTrendline: [...], republicanTrendline: [...], summaryRows: [...] }}
-     *
-     * @param stateId two-letter state abbreviation (e.g. "AL")
-     * @param race    lowercase racial group key (e.g. "black")
-     * @return 200 with data; 404 if state or race not found
      */
     @GetMapping
     public ResponseEntity<GinglesDoc> getGingles(

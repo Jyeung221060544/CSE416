@@ -27,12 +27,8 @@ public class VoteSeatShareController {
 
     /**
      * Returns vote-seat share data for the given state.
-     *
-     * <p>Response: {@code { stateId, electionYear, raciallyPolarized,
+     * Response: {@code { stateId, electionYear, raciallyPolarized,
      * totalDistricts, partisanBias, curves: [...], enactedPlan: {...} }}
-     *
-     * @param stateId two-letter state abbreviation (e.g. "AL")
-     * @return 200 with data; 404 if state not found
      */
     @GetMapping
     public ResponseEntity<VoteSeatShareDoc> getVoteSeatShare(@PathVariable State stateId) {
