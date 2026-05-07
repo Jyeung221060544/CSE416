@@ -9,10 +9,8 @@ import java.util.Optional;
 public interface GinglesRepository extends MongoRepository<GinglesDoc, String> {
 
     /**
-     * Finds the Gingles document for a given state and racial group.
-     *
-     * @param stateId state enum value (e.g. State.AL)
-     * @param race    lowercase racial group key (e.g. "black", "white")
+     * Spring Data derives the Mongo query from this method name:
+     * { stateId: ..., race: ... }.
      */
     Optional<GinglesDoc> findByStateIdAndRace(State stateId, String race);
 }

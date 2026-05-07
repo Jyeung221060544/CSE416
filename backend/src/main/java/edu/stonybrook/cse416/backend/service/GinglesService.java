@@ -20,13 +20,7 @@ public class GinglesService {
         this.ginglesRepo = ginglesRepo;
     }
 
-    /**
-     * Returns the Gingles document for the given state and racial group,
-     * or {@code null} if not found.
-     *
-     * @param stateId 
-     * @param race    
-     */
+    // Gingles payloads are large and static, so cache each state/race lookup.
     @Cacheable(value = "gingles", key = "#stateId + '_' + #race")
     public GinglesDoc getGingles(State stateId, String race) {
         Optional<GinglesDoc> opt = ginglesRepo.findByStateIdAndRace(stateId, race.toLowerCase());

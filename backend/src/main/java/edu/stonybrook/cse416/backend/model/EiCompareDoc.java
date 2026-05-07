@@ -6,9 +6,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 import java.util.Map;
 
-/**
- * EiCompareDoc — MongoDB document for the {@code ei_compare} collection.
- */
+
+ // EiCompareDoc — MongoDB document for the {@code ei_compare} collection.
+
 @Document(collection = "ei_compare")
 public class EiCompareDoc {
 
@@ -19,6 +19,9 @@ public class EiCompareDoc {
     private String label;
     private Integer electionYear;
     private Double differenceThreshold;
+
+    // Candidate payloads are stored as analytics-shaped JSON so the frontend can
+    // consume KDE points without a separate nested Java model for each field.
     private List<Map<String, Object>> candidates;
 
     public EiCompareDoc() {}
