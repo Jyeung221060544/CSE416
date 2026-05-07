@@ -10,12 +10,23 @@ const ROW_HEIGHT = 40
 
 const COLS = 'grid-cols-[1fr_50px_60px_62px_52px_50px_50px]'
 
-function fmt(n)       { return n?.toLocaleString() ?? '—' }
-function fmtIncome(n) { return n == null ? '—' : '$' + (n / 1000).toFixed(0) + 'k' }
 
+function fmt(n)       { return (n == null || isNaN(n)) ? '—' : n.toLocaleString() }
+function fmtIncome(n) { return (n == null || isNaN(n)) ? '—' : '$' + (n / 1000).toFixed(0) + 'k' }
+
+/**
+ * Paginated table of Gingles precinct data, cross-highlights with GinglesScatterPlot.
+ * Page size adapts dynamically so rows fill the available panel height.
+ *
+ * @param {Object[]} points    - Array of precinct objects from the scatter plot data set.
+ * @param {string|null} selectedId  - ID of the currently selected precinct (controlled externally).
+ * @param {Function} onSelectId     - Callback fired with the precinct ID on row click, or null to deselect.
+ */
 export default function GinglesPrecinctTable({ points = [], selectedId, onSelectId }) {
+    // Step 0: Filter out precincts with no population data (incomplete records)
     const rows = points.filter(p => p.totalPop != null)
 
+    // Step 1: Measure the scrollable area so page size adapts to panel height
     const rowsRef = useRef(null)
     const [rowsHeight, setRowsHeight] = useState(0)
 
@@ -26,23 +37,28 @@ export default function GinglesPrecinctTable({ points = [], selectedId, onSelect
         return () => ro.disconnect()
     }, [rows.length])
 
+    // Step 2: Derive page size and total pages from measured height
     const pageSize   = Math.max(1, Math.floor(rowsHeight / ROW_HEIGHT))
     const totalPages = Math.max(1, Math.ceil(rows.length / pageSize))
 
     const [page, setPage] = useState(0)
 
+    // Step 3: Clamp current page if pageSize changes and the last page shrinks
     useEffect(() => {
         setPage(p => Math.min(p, totalPages - 1))
     }, [totalPages])
 
+    // Step 4: When a precinct is selected externally (e.g. scatter dot click), jump to its page
     useEffect(() => {
         if (!selectedId) return
         const idx = rows.findIndex(p => p.id === selectedId)
         if (idx >= 0) setPage(Math.floor(idx / pageSize))
-    }, [selectedId, pageSize]) // eslint-disable-line react-hooks/exhaustive-deps
+    }, [selectedId, pageSize])
 
+    // Step 5: Slice the visible rows for the current page
     const pageRows = rows.slice(page * pageSize, page * pageSize + pageSize)
 
+    // Step 6: Guard — render empty state if no valid rows exist
     if (!rows.length) {
         return (
             <SurfacePanel className="flex-1 min-h-0 border-brand-muted/25 bg-white flex items-center justify-center">
@@ -51,11 +67,13 @@ export default function GinglesPrecinctTable({ points = [], selectedId, onSelect
         )
     }
 
+    // Step 7: Render the table — header, paginated rows, and pagination controls
     return (
         <div className="flex flex-col gap-2 h-full">
 
             <SurfacePanel className="flex-1 min-h-0 border-brand-muted/25 flex flex-col overflow-hidden">
 
+                {/* Column header row */}
                 <div className={`shrink-0 ${COLS} grid items-center px-3 py-2.5 bg-brand-darkest text-brand-surface text-xs font-semibold`}>
                     <span className="text-center">Precinct</span>
                     <span className="text-center">Pop</span>
@@ -66,6 +84,7 @@ export default function GinglesPrecinctTable({ points = [], selectedId, onSelect
                     <span className={`text-center ${REP_HEADER_TEXT}`}>Rep</span>
                 </div>
 
+                {/* Scrollable body — measured by ResizeObserver (Step 1) */}
                 <div ref={rowsRef} className="flex-1 overflow-y-auto min-h-0">
                     {pageRows.map((row, i) => {
                         const isSelected = row.id === selectedId
@@ -111,6 +130,7 @@ export default function GinglesPrecinctTable({ points = [], selectedId, onSelect
                     })}
                 </div>
 
+                {/* Pagination footer — row range label + prev/next buttons */}
                 <div className="shrink-0 border-t border-brand-muted/20 bg-brand-primary/[0.03] px-3 py-2 flex items-center justify-between gap-2">
                     <span className="text-[11px] text-brand-muted/70">
                         {page * pageSize + 1}–{Math.min(page * pageSize + pageSize, rows.length)} of {rows.length} precincts
