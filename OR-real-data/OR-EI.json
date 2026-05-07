@@ -822,7 +822,7 @@
               "y": 0.0
             }
           ],
-          "polarizedVotingPercentage": 0
+          "polarizedVotingPercentage": 1.05
         },
         {
           "group": "White",
@@ -3277,7 +3277,7 @@
               "y": 0.0
             }
           ],
-          "polarizedVotingPercentage": 0
+          "polarizedVotingPercentage": 1.05
         },
         {
           "group": "White",

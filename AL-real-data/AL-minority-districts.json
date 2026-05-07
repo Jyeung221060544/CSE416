@@ -49,11 +49,11 @@
           "black": [
             {
               "numMajorityMinority": 0,
-              "frequency": 0
+              "frequency": 4916
             },
             {
               "numMajorityMinority": 1,
-              "frequency": 0
+              "frequency": 84
             },
             {
               "numMajorityMinority": 2,
@@ -68,11 +68,11 @@
           "black": [
             {
               "numMajorityMinority": 0,
-              "frequency": 0
+              "frequency": 4972
             },
             {
               "numMajorityMinority": 1,
-              "frequency": 0
+              "frequency": 28
             },
             {
               "numMajorityMinority": 2,

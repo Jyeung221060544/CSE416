@@ -49,7 +49,7 @@
           "latino": [
             {
               "numMajorityMinority": 0,
-              "frequency": 0
+              "frequency": 5000
             },
             {
               "numMajorityMinority": 1,
@@ -64,7 +64,7 @@
           "latino": [
             {
               "numMajorityMinority": 0,
-              "frequency": 0
+              "frequency": 15000
             },
             {
               "numMajorityMinority": 1,
