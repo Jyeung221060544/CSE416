@@ -175,7 +175,7 @@ public class DataLoader implements CommandLineRunner {
 
         // Pre-selected interesting ensemble plans (coordinate precision already reduced to 6 dp)
         loadInterestingPlanGeo("AL", "low",  "AL_best.json");
-        loadInterestingPlanGeo("OR", "low",  "OR_zero_effective_districts.json");
+        loadInterestingPlanGeo("OR", "low",  "OR_best.json");
         loadInterestingPlanGeo("OR", "high", "OR_extra_democratic_districts.json");
     }
 
