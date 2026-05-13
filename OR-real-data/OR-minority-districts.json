@@ -1,7 +1,7 @@
 {
   "stateId": "OR",
   "numDistricts": 6,
-  "totalPlans": 15000,
+  "totalPlans": 5000,
   "feasibleGroups": [
     "latino"
   ],
@@ -31,7 +31,7 @@
           "latino": [
             {
               "numEffective": 1,
-              "frequency": 15000
+              "frequency": 5000
             }
           ]
         }
@@ -64,7 +64,7 @@
           "latino": [
             {
               "numMajorityMinority": 0,
-              "frequency": 15000
+              "frequency": 5000
             },
             {
               "numMajorityMinority": 1,
